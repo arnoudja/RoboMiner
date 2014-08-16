@@ -30,7 +30,7 @@ namespace robotcode
         CWhileProgramItem(const CValueProgramItem* condition, const CProgramItem* body, bool isDoWhile = false);
         virtual ~CWhileProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 

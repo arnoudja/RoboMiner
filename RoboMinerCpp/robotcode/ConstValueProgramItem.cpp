@@ -34,12 +34,7 @@ CConstValueProgramItem::CConstValueProgramItem(const CValue& value) :
 }
 
 
-CConstValueProgramItem::~CConstValueProgramItem()
-{
-}
-
-
-CProgramAction* CConstValueProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CConstValueProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     if (!status)
     {

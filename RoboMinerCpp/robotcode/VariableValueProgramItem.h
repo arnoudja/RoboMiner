@@ -32,7 +32,7 @@ namespace robotcode
         CVariableValueProgramItem(const std::string& variableName);
         virtual ~CVariableValueProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const                { return 1; }
 

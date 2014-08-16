@@ -20,12 +20,13 @@
 #include "../stdafx.h"
 
 #include "MoveProgramItem.h"
-#include "ValueProgramItem.h"
 #include "ProgramItemStatus.h"
 #include "CallAction.h"
 #include "MoveAction.h"
-#include "ReturnAction.h"
+#include "ConstReturnAction.h"
 #include "CompileInput.h"
+
+#include "../Robot.h"
 
 
 using namespace std;
@@ -38,12 +39,7 @@ CMoveProgramItem::CMoveProgramItem(CValueProgramItem* valueProgramItem) :
 }
 
 
-CMoveProgramItem::~CMoveProgramItem()
-{
-}
-
-
-CProgramAction* CMoveProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CMoveProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 
@@ -54,7 +50,7 @@ CProgramAction* CMoveProgramItem::getNextAction(CProgramItemStatus*& status) con
     }
     else if (dynamic_cast<CCallAction*>(status->getProgramAction()))
     {
-        action = new CMoveAction(status->getValue());
+        action = new CMoveAction(robot->getPosition(), status->getValue());
     }
     else
     {
@@ -67,7 +63,7 @@ CProgramAction* CMoveProgramItem::getNextAction(CProgramItemStatus*& status) con
         }
         else
         {
-            action = new CReturnAction();
+            action = new CConstReturnAction(robot->getPosition().distance(moveAction->getStartPosition()));
         }
     }
 
@@ -86,7 +82,7 @@ int CMoveProgramItem::size() const
 }
 
 
-CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input, bool& terminated)
+CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input)
 {
     CMoveProgramItem* result = NULL;
 
@@ -111,8 +107,6 @@ CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input, bool& terminat
         }
 
         result = new CMoveProgramItem(value);
-
-        terminated = input.eatChar(';');
     }
 
     return result;

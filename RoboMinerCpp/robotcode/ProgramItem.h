@@ -21,6 +21,8 @@
 
 #include "ProgramItemStatus.h"
 
+class CRobot;
+
 namespace robotcode
 {
     class CProgramAction;
@@ -34,7 +36,7 @@ namespace robotcode
         CProgramItem();
         virtual ~CProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const = 0;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const = 0;
         virtual void processReturnValue(CProgramItemStatus* status, const CValue& value) const      { if (status) status->processReturnValue(value); }
 
         virtual int size() const = 0;

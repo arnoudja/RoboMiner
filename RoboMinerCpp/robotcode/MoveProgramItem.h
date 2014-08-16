@@ -19,24 +19,22 @@
 
 #pragma once
 
-#include "ProgramItem.h"
+#include "ValueProgramItem.h"
 
 namespace robotcode
 {
-    class CValueProgramItem;
-
     class CMoveProgramItem :
-        public CProgramItem
+        public CValueProgramItem
     {
     public:
         CMoveProgramItem(CValueProgramItem* valueProgramItem);
-        virtual ~CMoveProgramItem();
+        virtual ~CMoveProgramItem()                                 {}
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 
-        static CMoveProgramItem* compile(CCompileInput& input, bool& terminated);
+        static CMoveProgramItem* compile(CCompileInput& input);
 
     private:
         CValueProgramItem* m_valueProgramItem;

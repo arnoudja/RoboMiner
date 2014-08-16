@@ -61,7 +61,7 @@ CWhileProgramItem::~CWhileProgramItem()
 }
 
 
-CProgramAction* CWhileProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CWhileProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CWhileStatus* currentStatus = dynamic_cast<CWhileStatus*>(status);
     assert(currentStatus || !status);

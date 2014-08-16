@@ -20,6 +20,8 @@
 #pragma once
 
 #include "ProgramAction.h"
+#include "../Position.h"
+
 
 namespace robotcode
 {
@@ -29,13 +31,15 @@ namespace robotcode
         public CProgramAction
     {
     public:
-        CMoveAction(const CValue& distance);
-        virtual ~CMoveAction();
+        CMoveAction(const CPosition& startPosition, const CValue& distance);
+        virtual ~CMoveAction()                          {}
 
         double getDistance() const                      { return m_distance; }
         void traveled(double distance)                  { m_distance -= distance; }
+        const CPosition& getStartPosition() const       { return m_startPosition; }
 
     private:
-        double m_distance;
+        CPosition   m_startPosition;
+        double      m_distance;
     };
 }

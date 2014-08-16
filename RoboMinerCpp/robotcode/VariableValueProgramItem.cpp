@@ -39,7 +39,7 @@ CVariableValueProgramItem::~CVariableValueProgramItem()
 }
 
 
-CProgramAction* CVariableValueProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CVariableValueProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     if (!status)
     {

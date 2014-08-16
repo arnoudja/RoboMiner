@@ -30,7 +30,7 @@ namespace robotcode
         CMineProgramItem();
         virtual ~CMineProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const                        { return 1; }
 

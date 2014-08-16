@@ -29,9 +29,9 @@ namespace robotcode
     {
     public:
         CConstValueProgramItem(const CValue& value);
-        virtual ~CConstValueProgramItem();
+        virtual ~CConstValueProgramItem()               {}
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const                        { return 1; }
 

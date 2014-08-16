@@ -96,7 +96,7 @@ CRobot::EAction CRobotProgram::getNextAction()
             m_currentStep   = m_program;
         }
 
-        CProgramAction* programAction = m_currentStep->getNextAction(m_currentStatus);
+        CProgramAction* programAction = m_currentStep->getNextAction(this, m_currentStatus);
 
         CMineAction*           mineAction           = dynamic_cast<CMineAction*>(programAction);
         CMoveAction*           moveAction           = dynamic_cast<CMoveAction*>(programAction);

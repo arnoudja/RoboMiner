@@ -32,7 +32,7 @@ namespace robotcode
         CRotateProgramItem(CValueProgramItem* valueProgramItem);
         virtual ~CRotateProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 

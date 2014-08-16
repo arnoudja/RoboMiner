@@ -43,7 +43,7 @@ CSequenceProgramItem::~CSequenceProgramItem()
 }
 
 
-CProgramAction* CSequenceProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CSequenceProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CSequenceStatus* currentStatus = dynamic_cast<CSequenceStatus*>(status);
     assert(status || !currentStatus);

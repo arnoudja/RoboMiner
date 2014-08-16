@@ -25,7 +25,6 @@
 #include "SequenceProgramItem.h"
 #include "WhileProgramItem.h"
 #include "IfProgramItem.h"
-#include "MoveProgramItem.h"
 #include "RotateProgramItem.h"
 #include "SetVariableProgramItem.h"
 #include "ValueProgramItem.h"
@@ -58,11 +57,6 @@ CProgramItem* CProgramItem::compile(CCompileInput& input, bool& terminated)
         if (!result)
         {
             result = CIfProgramItem::compile(input, terminated);
-        }
-
-        if (!result)
-        {
-            result = CMoveProgramItem::compile(input, terminated);
         }
 
         if (!result)

@@ -31,7 +31,7 @@ namespace robotcode
         CIfProgramItem(const CValueProgramItem* condition, const CProgramItem* trueBody, const CProgramItem* falseBody = NULL);
         virtual ~CIfProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 

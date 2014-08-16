@@ -33,7 +33,7 @@ namespace robotcode
         CSequenceProgramItem();
         virtual ~CSequenceProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         void adoptStep(CProgramItem* step)              { m_sequence.push_back(step); }
 

@@ -24,6 +24,7 @@
 #include "ConstValueProgramItem.h"
 #include "VariableValueProgramItem.h"
 #include "MineProgramItem.h"
+#include "MoveProgramItem.h"
 #include "OperatorProgramItem.h"
 #include "CompileInput.h"
 
@@ -65,6 +66,11 @@ CValueProgramItem* CValueProgramItem::compileSingleValue(CCompileInput& input)
     if (!result)
     {
         result = CMineProgramItem::compile(input);
+    }
+
+    if (!result)
+    {
+        result = CMoveProgramItem::compile(input);
     }
 
     if (!result)

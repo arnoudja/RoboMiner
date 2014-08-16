@@ -62,7 +62,7 @@ CIfProgramItem::~CIfProgramItem()
 }
 
 
-CProgramAction* CIfProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CIfProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CIfStatus* currentStatus = dynamic_cast<CIfStatus*>(status);
     assert(currentStatus || !status);

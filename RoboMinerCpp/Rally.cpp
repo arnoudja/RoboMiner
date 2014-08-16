@@ -224,11 +224,11 @@ void CRally::processRobotMove(CRobot& robot)
     switch (action)
     {
     case CRobot::eForward:
-        processMove(robot, robot.getForwardSpeed() * robot.getTimeFraction());
+        processMove(robot, robot.getForwardSpeed(), robot.getTimeFraction());
         break;
 
     case CRobot::eBackward:
-        processMove(robot, -robot.getBackwardSpeed() * robot.getTimeFraction());
+        processMove(robot, -robot.getBackwardSpeed(), robot.getTimeFraction());
         break;
 
     case CRobot::eRotateLeft:
@@ -251,10 +251,10 @@ void CRally::processRobotMove(CRobot& robot)
 }
 
 
-void CRally::processMove(CRobot& robot, double speed)
+void CRally::processMove(CRobot& robot, double speed, double timefraction)
 {
-    robot.setDestination(robot.getPosition().calculateMovePosition(speed));
-    robot.setTimeFraction(1.);
+    robot.setDestination(robot.getPosition().calculateMovePosition(speed * timefraction));
+    robot.setTimeFraction(timefraction);
     robot.setCurrentSpeed(speed);
 }
 

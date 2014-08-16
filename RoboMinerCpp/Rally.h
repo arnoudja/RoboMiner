@@ -49,7 +49,7 @@ protected:
     void processStep();
     void processRobotMove(CRobot& robot);
 
-    void processMove(CRobot& robot, double speed);
+    void processMove(CRobot& robot, double speed, double timefraction);
     void processMine(CRobot& robot);
     void applyMining(CRobot& robot);
 

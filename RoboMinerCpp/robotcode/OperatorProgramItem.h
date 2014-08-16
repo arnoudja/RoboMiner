@@ -45,7 +45,7 @@ namespace robotcode
         COperatorProgramItem(EOperatorType operatorType, const CValueProgramItem* left, CValueProgramItem* right);
         virtual ~COperatorProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 

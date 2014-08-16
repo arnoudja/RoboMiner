@@ -45,7 +45,7 @@ CRotateProgramItem::~CRotateProgramItem()
 }
 
 
-CProgramAction* CRotateProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CRotateProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 

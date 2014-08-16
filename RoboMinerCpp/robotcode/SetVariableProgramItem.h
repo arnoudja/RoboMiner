@@ -35,7 +35,7 @@ namespace robotcode
         CSetVariableProgramItem(const std::string& variableName, CValue::EValueType variableCreateType, CValueProgramItem* valueProgramItem);
         virtual ~CSetVariableProgramItem();
 
-        virtual CProgramAction* getNextAction(CProgramItemStatus*& status) const;
+        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 

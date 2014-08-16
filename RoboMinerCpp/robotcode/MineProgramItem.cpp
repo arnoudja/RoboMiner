@@ -40,7 +40,7 @@ CMineProgramItem::~CMineProgramItem()
 }
 
 
-CProgramAction* CMineProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CMineProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 

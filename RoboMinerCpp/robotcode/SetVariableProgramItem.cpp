@@ -56,7 +56,7 @@ CSetVariableProgramItem::~CSetVariableProgramItem()
 }
 
 
-CProgramAction* CSetVariableProgramItem::getNextAction(CProgramItemStatus*& status) const
+CProgramAction* CSetVariableProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 

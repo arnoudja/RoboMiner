@@ -26,12 +26,8 @@
 using namespace robotcode;
 
 
-CMoveAction::CMoveAction(const CValue& distance) :
+CMoveAction::CMoveAction(const CPosition& startPosition, const CValue& distance) :
+    m_startPosition(startPosition),
     m_distance(distance.getDoubleValue())
-{
-}
-
-
-CMoveAction::~CMoveAction()
 {
 }
