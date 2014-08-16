@@ -17,25 +17,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 <h1>Mining Queue</h1>
-<table>
-    <c:forEach var='queueItem' items='${miningQueueList}'>
-        <tr>
-            <td>${queueItem.miningQueue.id}</td>
-            <td>${fn:escapeXml(queueItem.miningQueue.robot.robotName)}</td>
-            <td>${fn:escapeXml(queueItem.miningQueue.miningArea.areaName)}</td>
-            <td>${fn:escapeXml(queueItem.statusDescription)}</td>
-            <td id="timeLeft${queueItem.miningQueue.id}"/>
-            <script>countdownTimer(${queueItem.timeLeft} + 1,
-                        function(secondsLeft) {
-                            document.getElementById('timeLeft' + ${queueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                        },
-                        function() {
-                            document.getElementById("addqueueform").submit();
-                        });</script>
-        </tr>
-    </c:forEach>
-</table>
-<h1>Add to Mining Queue</h1>
 <script>
     function robotQueueSize(robotId) {
         switch (robotId) {
@@ -55,7 +36,14 @@
             alert('Maximum queue size reached for this robot.');
         }
         else {
-            document.getElementById("submitcheck").checked = true;
+            document.getElementById("submitType").value = "add";
+            document.getElementById("addqueueform").submit();
+        }
+    }
+    
+    function removeMiningQueueItems() {
+        if (confirm("Paid fees will be lost. Remove selected items?")) {
+            document.getElementById("submitType").value = "remove";
             document.getElementById("addqueueform").submit();
         }
     }
@@ -69,7 +57,42 @@
     }
 </script>
 <form id='addqueueform' action="<c:url value='miningQueue'/>" method="post">
-    <input type='checkbox' id='submitcheck' name='submitType' value='add' hidden='true'/>
+    <input type='hidden' id='submitType' name='submitType' value='' />
+    <table>
+        <tr>
+            <th></th>
+            <th>Robot</th>
+            <th>Area</th>
+            <th>Status</th>
+            <th>ETC</th>
+        </tr>
+        <c:forEach var='queueItem' items='${miningQueueList}'>
+            <tr>
+                <td class="checkbox">
+                    <c:if test="${queueItem.itemStatus.queued}">
+                        <input type="checkbox" name="selectedQueueItemId" value="${queueItem.miningQueue.id}" ${queueItem.selected ? 'checked' : ''}/>
+                    </c:if>
+                </td>
+                <td>${fn:escapeXml(queueItem.miningQueue.robot.robotName)}</td>
+                <td>${fn:escapeXml(queueItem.miningQueue.miningArea.areaName)}</td>
+                <td>${fn:escapeXml(queueItem.itemStatus.description)}</td>
+                <td id="timeLeft${queueItem.miningQueue.id}"/>
+                <script>countdownTimer(${queueItem.timeLeft} + 1,
+                            function(secondsLeft) {
+                                document.getElementById('timeLeft' + ${queueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                            },
+                            function() {
+                                document.getElementById("addqueueform").submit();
+                            });</script>
+            </tr>
+        </c:forEach>
+        <tr>
+            <td>
+                <input type="button" value="remove" onclick="removeMiningQueueItems();"/>
+            </td>
+        </tr>
+    </table>
+    <h1>Add to Mining Queue</h1>
     <table>
         <tr>
             <td>

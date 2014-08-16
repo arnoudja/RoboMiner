@@ -36,6 +36,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import nl.robominer.businessentity.MiningQueueItem;
+import nl.robominer.businessentity.MiningQueueItem.EMiningQueueItemStatus;
 import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.MiningQueue;
@@ -93,9 +94,20 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         int robotId = getItemId(request, "robotId");
         int miningAreaId = getItemId(request, "miningAreaId");
         String submitType = request.getParameter("submitType");
+        String[] selectedQueueItems = request.getParameterValues("selectedQueueItemId");
         
-        if ("add".equals(submitType)) {
-            updateMiningQueue(userId, robotId, miningAreaId);
+        if (submitType != null) {
+            switch (submitType) {
+                case "add":
+                    addMiningQueueItem(userId, robotId, miningAreaId);
+                    break;
+                    
+                case "remove":
+                    if (selectedQueueItems != null) {
+                        removeMiningQueueItems(userId, selectedQueueItems);
+                    }
+                    break;
+            }
         }
         
         // Add the user item
@@ -103,7 +115,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         request.setAttribute("user", user);
         
         // Add the list of mining queue items
-        List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId));
+        List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
         request.setAttribute("miningQueueList", miningQueueList);
         
         // Add the map of queue sizes
@@ -134,7 +146,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
     }
 
-    private void updateMiningQueue(int userId, int robotId, int miningAreaId) throws ServletException {
+    private void addMiningQueueItem(int userId, int robotId, int miningAreaId) throws ServletException {
         
         List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robotId);
         Robot robot = robotFacade.find(robotId);
@@ -164,7 +176,17 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
     }
     
-    private List<MiningQueueItem> getQueueInfo(List<MiningQueue> miningQueueList) {
+    private void removeMiningQueueItems(int userId, String[] selectedQueueItems) {
+        List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
+        
+        for (MiningQueueItem item : miningQueueList) {
+            if (item.isSelected() && item.getItemStatus() == EMiningQueueItemStatus.QUEUED) {
+                miningQueueFacade.remove(item.getMiningQueue());
+            }
+        }
+    }
+    
+    private List<MiningQueueItem> getQueueInfo(List<MiningQueue> miningQueueList, String[] selectedItems) {
         
         List<MiningQueueItem> result = new LinkedList<>();
         
@@ -172,6 +194,16 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         
         for (MiningQueue miningQueue : miningQueueList)
         {
+            boolean selected = false;
+            
+            if (selectedItems != null) {
+                for (String item : selectedItems) {
+                    if (miningQueue.getId() == Integer.parseInt(item)) {
+                        selected = true;
+                    }
+                }
+            }
+            
             Robot robot = miningQueue.getRobot();
             
             if (!robotTimeLeft.containsKey(robot.getId())) {
@@ -188,7 +220,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
                         timeLeft = 1;
                     }
                     
-                    result.add(new MiningQueueItem(miningQueue, "Recharging", timeLeft));
+                    result.add(new MiningQueueItem(miningQueue, EMiningQueueItemStatus.RECHARGING, timeLeft, selected));
                     
                     timeLeft += miningQueue.getMiningArea().getMiningTime();
                     
@@ -211,13 +243,13 @@ public class MiningQueueServlet extends RoboMinerServletBase {
                     
                     if (timeLeft > 0) {
                         
-                        result.add(new MiningQueueItem(miningQueue, "Mining", timeLeft));
+                        result.add(new MiningQueueItem(miningQueue, EMiningQueueItemStatus.MINING, timeLeft, selected));
                         
                         robotTimeLeft.put(robot.getId(), timeLeft);
                     }
                     else {
                         
-                        result.add(new MiningQueueItem(miningQueue, "Updating", 1));
+                        result.add(new MiningQueueItem(miningQueue, EMiningQueueItemStatus.UPDATING, 1, selected));
                     
                         robotTimeLeft.put(robot.getId(), 1L);
                     }
@@ -229,7 +261,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
                 
                 timeLeft += miningQueue.getRobot().getRechargeTime() + miningQueue.getMiningArea().getMiningTime();
                 
-                result.add(new MiningQueueItem(miningQueue, "Queued", timeLeft));
+                result.add(new MiningQueueItem(miningQueue, EMiningQueueItemStatus.QUEUED, timeLeft, selected));
                 
                 robotTimeLeft.put(robot.getId(), timeLeft);
             }

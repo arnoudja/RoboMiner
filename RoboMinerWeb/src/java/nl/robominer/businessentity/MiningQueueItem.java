@@ -27,15 +27,38 @@ import nl.robominer.entity.MiningQueue;
  */
 public class MiningQueueItem {
     
-    private final MiningQueue miningQueue;
-    private final String statusDescription;
-    private final long timeLeft;
+    public enum EMiningQueueItemStatus {
+        MINING("Mining"),
+        RECHARGING("Recharging"),
+        QUEUED("Queued"),
+        UPDATING("Updating");
+        
+        private final String description;
+        
+        private EMiningQueueItemStatus(String description) {
+            this.description = description;
+        }
+        
+        public String getDescription() {
+            return description;
+        }
+        
+        public boolean isQueued() {
+            return this == QUEUED;
+        }
+    }
     
-    public MiningQueueItem(MiningQueue miningQueue, String statusDescription, long timeLeft) {
+    private final MiningQueue miningQueue;
+    private final EMiningQueueItemStatus itemStatus;
+    private final long timeLeft;
+    private final boolean selected;
+    
+    public MiningQueueItem(MiningQueue miningQueue, EMiningQueueItemStatus itemStatus, long timeLeft, boolean selected) {
         
         this.miningQueue        = miningQueue;
-        this.statusDescription  = statusDescription;
+        this.itemStatus         = itemStatus;
         this.timeLeft           = timeLeft;
+        this.selected           = selected;
     }
     
     public MiningQueue getMiningQueue() {
@@ -43,13 +66,18 @@ public class MiningQueueItem {
         return miningQueue;
     }
     
-    public String getStatusDescription() {
+    public EMiningQueueItemStatus getItemStatus() {
         
-        return statusDescription;
+        return itemStatus;
     }
     
     public long getTimeLeft() {
         
         return timeLeft;
     }
+    
+    public boolean isSelected() {
+        return selected;
+    }
+    
 }

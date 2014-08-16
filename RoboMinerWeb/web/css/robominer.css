@@ -109,3 +109,8 @@ table {
 .error {
     color: red;
 }
+
+
+td.checkbox {
+    text-align: center;
+}
