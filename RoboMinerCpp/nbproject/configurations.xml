@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="robotcode" projectFiles="true">
+        <itemPath>robotcode/CallAction.h</itemPath>
+        <itemPath>robotcode/CompileInput.h</itemPath>
+        <itemPath>robotcode/ConstReturnAction.h</itemPath>
+        <itemPath>robotcode/ConstValueProgramItem.h</itemPath>
+        <itemPath>robotcode/IfProgramItem.h</itemPath>
+        <itemPath>robotcode/MineAction.h</itemPath>
+        <itemPath>robotcode/MineProgramItem.h</itemPath>
+        <itemPath>robotcode/MineReturnAction.h</itemPath>
+        <itemPath>robotcode/MoveAction.h</itemPath>
+        <itemPath>robotcode/MoveProgramItem.h</itemPath>
+        <itemPath>robotcode/OperatorProgramItem.h</itemPath>
+        <itemPath>robotcode/ProgramAction.h</itemPath>
+        <itemPath>robotcode/ProgramItem.h</itemPath>
+        <itemPath>robotcode/ProgramItemStatus.h</itemPath>
+        <itemPath>robotcode/ReturnAction.h</itemPath>
+        <itemPath>robotcode/RobotProgram.h</itemPath>
+        <itemPath>robotcode/RotateAction.h</itemPath>
+        <itemPath>robotcode/RotateProgramItem.h</itemPath>
+        <itemPath>robotcode/SequenceProgramItem.h</itemPath>
+        <itemPath>robotcode/SetVariableAction.h</itemPath>
+        <itemPath>robotcode/SetVariableProgramItem.h</itemPath>
+        <itemPath>robotcode/Value.h</itemPath>
+        <itemPath>robotcode/ValueProgramItem.h</itemPath>
+        <itemPath>robotcode/ValueReturnAction.h</itemPath>
+        <itemPath>robotcode/Variable.h</itemPath>
+        <itemPath>robotcode/VariableReturnAction.h</itemPath>
+        <itemPath>robotcode/VariableStorage.h</itemPath>
+        <itemPath>robotcode/VariableValueProgramItem.h</itemPath>
+        <itemPath>robotcode/WhileProgramItem.h</itemPath>
+      </logicalFolder>
+      <itemPath>Animation.h</itemPath>
+      <itemPath>AnimationStep.h</itemPath>
+      <itemPath>Database.h</itemPath>
+      <itemPath>Ground.h</itemPath>
+      <itemPath>GroundChangeStep.h</itemPath>
+      <itemPath>GroundUnit.h</itemPath>
+      <itemPath>Position.h</itemPath>
+      <itemPath>Rally.h</itemPath>
+      <itemPath>Robot.h</itemPath>
+      <itemPath>stdafx.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+      <itemPath>createDatabase.sql</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="robotcode" projectFiles="true">
+        <itemPath>robotcode/CallAction.cpp</itemPath>
+        <itemPath>robotcode/CompileInput.cpp</itemPath>
+        <itemPath>robotcode/ConstReturnAction.cpp</itemPath>
+        <itemPath>robotcode/ConstValueProgramItem.cpp</itemPath>
+        <itemPath>robotcode/IfProgramItem.cpp</itemPath>
+        <itemPath>robotcode/MineAction.cpp</itemPath>
+        <itemPath>robotcode/MineProgramItem.cpp</itemPath>
+        <itemPath>robotcode/MineReturnAction.cpp</itemPath>
+        <itemPath>robotcode/MoveAction.cpp</itemPath>
+        <itemPath>robotcode/MoveProgramItem.cpp</itemPath>
+        <itemPath>robotcode/OperatorProgramItem.cpp</itemPath>
+        <itemPath>robotcode/ProgramAction.cpp</itemPath>
+        <itemPath>robotcode/ProgramItem.cpp</itemPath>
+        <itemPath>robotcode/ProgramItemStatus.cpp</itemPath>
+        <itemPath>robotcode/ReturnAction.cpp</itemPath>
+        <itemPath>robotcode/RobotProgram.cpp</itemPath>
+        <itemPath>robotcode/RotateAction.cpp</itemPath>
+        <itemPath>robotcode/RotateProgramItem.cpp</itemPath>
+        <itemPath>robotcode/SequenceProgramItem.cpp</itemPath>
+        <itemPath>robotcode/SetVariableAction.cpp</itemPath>
+        <itemPath>robotcode/SetVariableProgramItem.cpp</itemPath>
+        <itemPath>robotcode/Value.cpp</itemPath>
+        <itemPath>robotcode/ValueProgramItem.cpp</itemPath>
+        <itemPath>robotcode/ValueReturnAction.cpp</itemPath>
+        <itemPath>robotcode/Variable.cpp</itemPath>
+        <itemPath>robotcode/VariableReturnAction.cpp</itemPath>
+        <itemPath>robotcode/VariableStorage.cpp</itemPath>
+        <itemPath>robotcode/VariableValueProgramItem.cpp</itemPath>
+        <itemPath>robotcode/WhileProgramItem.cpp</itemPath>
+      </logicalFolder>
+      <itemPath>Animation.cpp</itemPath>
+      <itemPath>AnimationStep.cpp</itemPath>
+      <itemPath>Database.cpp</itemPath>
+      <itemPath>Ground.cpp</itemPath>
+      <itemPath>GroundChangeStep.cpp</itemPath>
+      <itemPath>GroundUnit.cpp</itemPath>
+      <itemPath>Position.cpp</itemPath>
+      <itemPath>Rally.cpp</itemPath>
+      <itemPath>RoboMine.cpp</itemPath>
+      <itemPath>Robot.cpp</itemPath>
+      <itemPath>stdafx.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <itemPath>gpl.txt</itemPath>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>/usr/lib64/mysql</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>mysqlclient</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Animation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="AnimationStep.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AnimationStep.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Database.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GroundChangeStep.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroundChangeStep.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GroundUnit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroundUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Position.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Position.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Rally.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Rally.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RoboMine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Robot.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Robot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="createDatabase.sql" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gpl.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/CallAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/CallAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/CompileInput.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/CompileInput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ConstReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ConstReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ConstValueProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/ConstValueProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/IfProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/IfProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MoveAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MoveAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MoveProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MoveProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/OperatorProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/OperatorProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItemStatus.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItemStatus.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RobotProgram.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RobotProgram.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RotateAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RotateAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RotateProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RotateProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SequenceProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/SequenceProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/Value.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/Value.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ValueProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ValueProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ValueReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ValueReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/Variable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/Variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/VariableReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableStorage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/VariableStorage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableValueProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/VariableValueProgramItem.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="robotcode/WhileProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/WhileProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="stdafx.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stdafx.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>/usr/lib64/mysql</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>mysqlclient</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Animation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="AnimationStep.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AnimationStep.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Database.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GroundChangeStep.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroundChangeStep.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GroundUnit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GroundUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Position.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Position.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Rally.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Rally.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="RoboMine.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Robot.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Robot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="createDatabase.sql" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gpl.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/CallAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/CallAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/CompileInput.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/CompileInput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ConstReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ConstReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ConstValueProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/ConstValueProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/IfProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/IfProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MineReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MineReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MoveAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MoveAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/MoveProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/MoveProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/OperatorProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/OperatorProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItemStatus.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ProgramItemStatus.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RobotProgram.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RobotProgram.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RotateAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RotateAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/RotateProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/RotateProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SequenceProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/SequenceProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/SetVariableProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/Value.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/Value.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ValueProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ValueProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/ValueReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/ValueReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/Variable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/Variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableReturnAction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/VariableReturnAction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableStorage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/VariableStorage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/VariableValueProgramItem.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="robotcode/VariableValueProgramItem.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="robotcode/WhileProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/WhileProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="stdafx.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stdafx.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

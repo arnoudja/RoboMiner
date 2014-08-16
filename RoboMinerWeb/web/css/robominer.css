@@ -1,0 +1,111 @@
+/*
+ * Copyright (C) 2014 Arnoud Jagerman
+ *
+ * This file is part of RoboMiner.
+ *
+ * RoboMiner is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RoboMiner is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 0px;
+    height: 100%;
+}
+
+header {
+    background: #aaa;
+}
+
+footer {
+    height: 60px;
+    background: #aaa;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+table {
+    margin: 0 auto;
+    text-align: left;
+}
+
+
+#main { 
+    min-height: 100%;
+    position: relative;
+    background: #eee;
+}
+
+#interface {
+    background: #eee;
+    padding-bottom: 60px; /* height of the footer */
+}
+
+
+.menubar {
+    display: inline-block;
+}
+
+
+.menuitem {
+    float: left;
+    list-style: none;
+    cursor: pointer;
+}
+
+
+.menuitem:hover {
+    background-color: #888;
+}
+
+
+.menuitemtext {
+    margin: 10px;
+}
+
+
+.selectiontableselect {
+    width: 100%;
+}
+
+
+.sufficientbalance {
+    color: green;
+}
+
+
+.insufficientbalance {
+    color: red;
+}
+
+
+.valid {
+    color: green;
+}
+
+
+.invalid {
+    color: red;
+}
+
+
+.error {
+    color: red;
+}
