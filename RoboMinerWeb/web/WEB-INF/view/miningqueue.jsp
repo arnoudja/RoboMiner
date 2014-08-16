@@ -37,6 +37,29 @@
 </table>
 <h1>Add to Mining Queue</h1>
 <script>
+    function robotQueueSize(robotId) {
+        switch (robotId) {
+            <c:forEach var="queueSize" items="${miningQueueSizes}">
+                case ${queueSize.key}:
+                            return ${queueSize.value};
+            </c:forEach>
+            default:
+                return 0;
+        }
+    }
+    
+    function addMiningQueueItem() {
+        var robotId = parseInt(document.getElementById('robotId').value);
+        
+        if (robotQueueSize(robotId) >= 5) {
+            alert('Maximum queue size reached for this robot.');
+        }
+        else {
+            document.getElementById("submitcheck").checked = true;
+            document.getElementById("addqueueform").submit();
+        }
+    }
+    
     function showMiningAreaDetails() {
         var prevId = document.getElementById('prevMiningAreaId').value;
         hidePart('miningAreaDetails' + prevId);
@@ -50,7 +73,7 @@
     <table>
         <tr>
             <td>
-                <select name="robotId" class="selectiontableselect">
+                <select id="robotId" name="robotId" class="selectiontableselect">
                     <c:forEach var='robot' items='${robotList}'>
                         <option value="${robot.id}" ${robot.id eq robotId ? 'selected="selected"' : ''}>${fn:escapeXml(robot.robotName)}</option>
                     </c:forEach>
@@ -64,7 +87,7 @@
                 </select>
             </td>
             <td>
-                <input type='button' value='add' onclick='document.getElementById("submitcheck").checked = true; document.getElementById("addqueueform").submit();'/>
+                <input type='button' value='add' onclick='addMiningQueueItem();'/>
             </td>
         </tr>
         <tr>

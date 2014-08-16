@@ -106,6 +106,10 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId));
         request.setAttribute("miningQueueList", miningQueueList);
         
+        // Add the map of queue sizes
+        Map<Integer, Integer> miningQueueSizes = getQueueSizes(miningQueueList);
+        request.setAttribute("miningQueueSizes", miningQueueSizes);
+        
         // Add the list of robots
         List<Robot> robotList = robotFacade.findByUsersId(userId);
         request.setAttribute("robotList", robotList);
@@ -132,6 +136,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
     private void updateMiningQueue(int userId, int robotId, int miningAreaId) throws ServletException {
         
+        List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robotId);
         Robot robot = robotFacade.find(robotId);
 
         if (robot.getUser().getId() != userId) {
@@ -140,7 +145,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         
         MiningArea miningArea = miningAreaFacade.find(miningAreaId);
         
-        if (robot != null && miningArea != null) {
+        if (robot != null && miningArea != null && robotMiningQueueList.size() < 5) {
             
             try {
                 
@@ -233,6 +238,26 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         return result;
     }
 
+    Map<Integer, Integer> getQueueSizes(List<MiningQueueItem> miningQueueList) {
+        
+        Map<Integer, Integer> result = new HashMap<>();
+        
+        for (MiningQueueItem queueItem : miningQueueList) {
+            
+            int robotId = queueItem.getMiningQueue().getRobot().getId();
+            Integer items = result.get(robotId);
+            
+            if (items == null) {
+                result.put(robotId, 1);
+            }
+            else {
+                result.put(robotId, items + 1);
+            }
+        }
+        
+        return result;
+    }
+    
     /**
      * Returns a short description of the servlet.
      *
