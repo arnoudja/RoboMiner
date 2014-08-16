@@ -96,9 +96,17 @@ function drawGround(step, scale)
             }
         }
 
+        var oreAMax = typeof myOreTypes.A !== 'undefined' ? myOreTypes.A.max : 255;
+        var oreBMax = typeof myOreTypes.B !== 'undefined' ? myOreTypes.B.max : 255;
+        var oreCMax = typeof myOreTypes.C !== 'undefined' ? myOreTypes.C.max : 255;
+
+        var oreAIntensity = Math.floor(oreA * 255 / oreAMax);
+        var oreBIntensity = Math.floor(oreB * 255 / oreBMax);
+        var oreCIntensity = Math.floor(oreC * 255 / oreCMax);
+
         myRallyContext.beginPath();
         myRallyContext.rect(x * scale, y * scale, scale, scale);
-        myRallyContext.fillStyle = rgbToHex(oreA > 255 ? 255 : oreA, oreB > 255 ? 255 : oreB, oreC > 255 ? 255 : oreC);
+        myRallyContext.fillStyle = rgbToHex(oreAIntensity, oreBIntensity, oreCIntensity);
         myRallyContext.fill();
     }
 }

@@ -196,7 +196,7 @@ public class LoginServlet extends RoboMinerServletBase {
         robot.fillDefaults(robotPartFacade.find(101), robotPartFacade.find(201),
                            robotPartFacade.find(301), robotPartFacade.find(401),
                            robotPartFacade.find(501), robotPartFacade.find(601));
-        robot.setRobotName("Robot 1");
+        robot.setRobotName("Robot1");
         robot.setUser(user);
         robotFacade.create(robot);
     }

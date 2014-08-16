@@ -33,18 +33,24 @@
 class CAnimation
 {
 public:
+    struct OreData
+    {
+        int id;
+        int maxAmount;
+    };
+    
     CAnimation();
     ~CAnimation();
 
     void addStep(unsigned int robotNr, const CRobot& robot);
     void addGroundChange(const CPosition& position, const CGroundChangeStep step);
 
-    std::string getAnimationData(const TRobots& robotList, const CGround& ground, const std::map<int, int>& oreNumberToId);
+    std::string getAnimationData(const TRobots& robotList, const CGround& ground, const std::map<int, OreData>& oreData);
 
 protected:
     void writeRobotsData(const TRobots& robotList);
     void writeGroundData(const CGround& ground);
-    void writeOreData(const std::map<int, int>& oreNumberToId);
+    void writeOreData(const std::map<int, OreData>& oreData);
 
     std::string getRobotColor(int iRobot);
 

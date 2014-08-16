@@ -77,7 +77,7 @@ void CRally::start()
         processStep();
     }
 
-    m_animationData = m_animation.getAnimationData(m_robots, m_ground, m_oreNumberToId);
+    m_animationData = m_animation.getAnimationData(m_robots, m_ground, m_oreData);
 }
 
 
@@ -85,18 +85,24 @@ void CRally::addOreHeap(int oreId, int amount, int radius)
 {
     int number = -1;
     
-    for (map<int, int>::const_iterator iter = m_oreNumberToId.begin(); iter != m_oreNumberToId.end(); ++iter)
+    for (map<int, CAnimation::OreData>::iterator iter = m_oreData.begin(); iter != m_oreData.end(); ++iter)
     {
-        if (iter->second == oreId)
+        if (iter->second.id == oreId)
         {
             number = iter->first;
+            if (amount > iter->second.maxAmount)
+            {
+                iter->second.maxAmount = amount;
+            }
         }
     }
     
     if (number < 0)
     {
-        number = m_oreNumberToId.size();
-        m_oreNumberToId[number] = oreId;
+        number = m_oreData.size();
+        
+        m_oreData[number].id        = oreId;
+        m_oreData[number].maxAmount = amount;
     }
     
     m_ground.addOreHeap(m_ground.getSizeX() / 4 + rand() % (m_ground.getSizeX() / 2),

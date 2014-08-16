@@ -39,7 +39,7 @@ public:
     void start();
     const std::string& getAnimationData() const         { return m_animationData; }
 
-    int getOreId(int oreNumber)                         { return m_oreNumberToId[oreNumber]; }
+    int getOreId(int oreNumber)                         { return m_oreData[oreNumber].id; }
     
 protected:
     void addOreHeap(int oreId, int amount, int radius);
@@ -60,14 +60,14 @@ protected:
     CPosition positionAtTime(const CPosition& startPosition, const CPosition& endPosition, double travelTime, double time);
 
 private:
-    CGround             m_ground;
-    TRobots             m_robots;
+    CGround     m_ground;
+    TRobots     m_robots;
 
-    int                 m_totalMoves;
-    int                 m_time;
+    int         m_totalMoves;
+    int         m_time;
 
-    CAnimation          m_animation;
-    std::string         m_animationData;
+    CAnimation  m_animation;
+    std::string m_animationData;
     
-    std::map<int, int>  m_oreNumberToId;
+    std::map<int, CAnimation::OreData>  m_oreData;
 };

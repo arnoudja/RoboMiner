@@ -234,6 +234,11 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1021, 102, 1,
 insert into RobotPart (id,  typeId, partName,                 orePriceId, oreCapacity, weight, volume, powerUsage)
                values (102, 1,      'Enhanced Ore Container', 102,        40,          14,     45,     2);
 
+insert into OrePrice (id, description) values (103, 'Cerbonium Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1031, 103, 1, 100);
+insert into RobotPart (id,  typeId, partName,                  orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (103, 1,      'Cerbonium Ore Container', 103,        60,          15,     65,     2);
+
 -- Mining units
 insert into OrePrice (id, description) values (201, 'Standard Mining Unit price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2011, 201, 1, 2);
@@ -256,6 +261,11 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3021, 302, 1,
 insert into RobotPart (id,  typeId, partName,           orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
                values (302, 3,      'Enhanced Battery', 302,        1800,            30,           3,      3,      0);
 
+insert into OrePrice (id, description) values (303, 'Cerbonium Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3031, 303, 1, 100);
+insert into RobotPart (id,  typeId, partName,            orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (303, 3,      'Cerbonium Battery', 303,        2400,            35,           4,      3,      0);
+
 -- Memory modules
 insert into OrePrice (id, description) values (401, 'Memory Module 5 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4011, 401, 1, 2);
@@ -268,12 +278,12 @@ insert into RobotPart (id,  typeId, partName,          orePriceId, memoryCapacit
                values (402, 4,      'Memory Module 8', 402,        8,              1,      1,      1);
 
 insert into OrePrice (id, description) values (403, 'Memory Module 12 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4031, 403, 1, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4031, 403, 1, 100);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (403, 4,      'Memory Module 12', 403,        12,             1,      1,      1);
 
 insert into OrePrice (id, description) values (404, 'Memory Module 19 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4041, 404, 1, 50);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4041, 404, 1, 250);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (404, 4,      'Memory Module 19', 404,        19,             1,      1,      1);
 
@@ -339,7 +349,7 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10031, 1003, 
 insert into MiningArea (id, areaName,  orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (3,  'Charlie', 1003,       25,    25,    300,      45,         25,      1);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 1, 250, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 2, 50, 2);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 2, 10, 3);
 
 
 -- Test data

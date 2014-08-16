@@ -104,7 +104,7 @@
         context.rect(0, 0, canvas.width, canvas.height);
         context.fillStyle = 'red';
         context.fill();
-        document.getElementById('oreLegendAName').innerHTML = getOreName(myOreTypes.A);
+        document.getElementById('oreLegendAName').innerHTML = getOreName(myOreTypes.A.id);
         document.getElementById('oreLegendA').style = '';
     }
 
@@ -115,7 +115,7 @@
         context.rect(0, 0, canvas.width, canvas.height);
         context.fillStyle = 'green';
         context.fill();
-        document.getElementById('oreLegendBName').innerHTML = getOreName(myOreTypes.B);
+        document.getElementById('oreLegendBName').innerHTML = getOreName(myOreTypes.B.id);
         document.getElementById('oreLegendB').style = '';
     }
 
@@ -126,7 +126,7 @@
         context.rect(0, 0, canvas.width, canvas.height);
         context.fillStyle = 'blue';
         context.fill();
-        document.getElementById('oreLegendCName').innerHTML = getOreName(myOreTypes.C);
+        document.getElementById('oreLegendCName').innerHTML = getOreName(myOreTypes.C.id);
         document.getElementById('oreLegendC').style = '';
     }
 

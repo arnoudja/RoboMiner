@@ -22,6 +22,7 @@
 #include "Animation.h"
 #include "Position.h"
 #include "Robot.h"
+#include "Rally.h"
 
 #include <cassert>
 
@@ -57,13 +58,13 @@ void CAnimation::addGroundChange(const CPosition& position, const CGroundChangeS
 }
 
 
-string CAnimation::getAnimationData(const TRobots& robotList, const CGround& ground, const map<int, int>& oreNumberToId)
+string CAnimation::getAnimationData(const TRobots& robotList, const CGround& ground, const map<int, OreData>& oreData)
 {
     m_output.clear();
 
     writeRobotsData(robotList);
     writeGroundData(ground);
-    writeOreData(oreNumberToId);
+    writeOreData(oreData);
 
     return m_output.str();
 }
@@ -212,18 +213,19 @@ void CAnimation::writeGroundData(const CGround& ground)
 }
 
 
-void CAnimation::writeOreData(const map<int, int>& oreNumberToId)
+void CAnimation::writeOreData(const map<int, OreData>& oreData)
 {
     m_output << "var myOreTypes = {";
 
-    for (map<int, int>::const_iterator iter = oreNumberToId.begin(); iter != oreNumberToId.end(); ++iter)
+    for (map<int, OreData>::const_iterator iter = oreData.begin(); iter != oreData.end(); ++iter)
     {
-        if (iter != oreNumberToId.begin())
+        if (iter != oreData.begin())
         {
             m_output << ",";
         }
 
-        m_output << (char)('A' + iter->first) << ":" << iter->second;
+        m_output << (char)('A' + iter->first) << ":";
+        m_output << "{id:" << iter->second.id << ",max:" << iter->second.maxAmount << "}";
     }
     
     m_output << "};" << std::endl;
