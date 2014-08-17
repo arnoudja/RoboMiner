@@ -351,7 +351,7 @@ values (1, 1, 'AI-1', 'move(2); while (mine());',
 
 insert into Robot (id, usersId, robotName, sourceCode,
  rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
-values (2, 1, 'AI-2', 'if (move(2) >= 1) while (mine()); else { move(-2); rotate(45); }',
+values (2, 1, 'AI-2', 'if (move(2) >= 1) { while (mine()); } else { move(-2); rotate(45); }',
  0,            50,     2,           200,      2,        2,            2,             25,          3);
 
 
