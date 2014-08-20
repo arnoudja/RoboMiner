@@ -20,12 +20,13 @@
 #include "../stdafx.h"
 
 #include "RotateProgramItem.h"
-#include "ValueProgramItem.h"
 #include "ProgramItemStatus.h"
 #include "CallAction.h"
 #include "RotateAction.h"
-#include "ReturnAction.h"
+#include "ConstReturnAction.h"
 #include "CompileInput.h"
+
+#include "../Robot.h"
 
 #include <sstream>
 
@@ -36,11 +37,6 @@ using namespace robotcode;
 
 CRotateProgramItem::CRotateProgramItem(CValueProgramItem* valueProgramItem) :
     m_valueProgramItem(valueProgramItem)
-{
-}
-
-
-CRotateProgramItem::~CRotateProgramItem()
 {
 }
 
@@ -56,7 +52,7 @@ CProgramAction* CRotateProgramItem::getNextAction(const CRobot* robot, CProgramI
     }
     else if (dynamic_cast<CCallAction*>(status->getProgramAction()))
     {
-        action = new CRotateAction(status->getValue());
+        action = new CRotateAction(robot->getPosition(), status->getValue());
     }
     else
     {
@@ -69,7 +65,13 @@ CProgramAction* CRotateProgramItem::getNextAction(const CRobot* robot, CProgramI
         }
         else
         {
-            action = new CReturnAction();
+            int rotated = (robot->getPosition().getOrientation() - rotateAction->getStartPosition().getOrientation() + 360) % 360;
+            if (rotated > 180)
+            {
+                rotated -= 360;
+            }
+            
+            action = new CConstReturnAction(rotated);
         }
     }
     
@@ -86,9 +88,9 @@ int CRotateProgramItem::size() const
 {
     return 1 + (m_valueProgramItem ? m_valueProgramItem->size() : 0);
 }
-    
 
-CRotateProgramItem* CRotateProgramItem::compile(CCompileInput& input, bool& terminated)
+
+CRotateProgramItem* CRotateProgramItem::compile(CCompileInput& input)
 {
     CRotateProgramItem* result = NULL;
 
@@ -113,8 +115,6 @@ CRotateProgramItem* CRotateProgramItem::compile(CCompileInput& input, bool& term
         }
 
         result = new CRotateProgramItem(value);
-
-        terminated = input.eatChar(';');
     }
 
     return result;

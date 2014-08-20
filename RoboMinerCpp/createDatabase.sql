@@ -377,15 +377,15 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10031, 1003, 
 insert into MiningArea (id, areaName,  orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (3,  'Gamma',   1003,       25,    25,    200,      45,         25,      1);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 2, 10, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (3, 2, 20, 3);
 
 insert into OrePrice (id, description) values (1004, 'Mining Area Delta price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10041, 1004, 1, 100);
 insert into MiningArea (id, areaName, orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (4,  'Delta',  1004,       30,    30,    250,      90,         75,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 10, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 10, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 10, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 20, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 20, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (4, 2, 20, 3);
 
 -- Lithabine
 insert into OrePrice (id, description) values (1005, 'Mining Area Epsilon price');
@@ -393,7 +393,7 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10051, 1005, 
 insert into MiningArea (id, areaName,  orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (5,  'Epsilon', 1005,       30,    30,    300,      120,        75,      2);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (5, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (5, 2, 10, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (5, 2, 20, 3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (5, 3, 10, 3);
 
 -- Test data

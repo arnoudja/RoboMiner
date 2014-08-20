@@ -27,8 +27,8 @@ namespace robotcode
         public CProgramItem
     {
     public:
-        CValueProgramItem();
-        virtual ~CValueProgramItem();
+        CValueProgramItem()                                 {}
+        virtual ~CValueProgramItem()                        {}
 
         static CValueProgramItem* compile(CCompileInput& input);
         static CValueProgramItem* compileSingleValue(CCompileInput& input);

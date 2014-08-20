@@ -32,7 +32,7 @@ class CRally
 {
 public:
     CRally(const CDatabase::MiningArea& miningArea);
-    virtual ~CRally();
+    virtual ~CRally()                                   {}
 
     void addRobot(CRobot& robot);
 

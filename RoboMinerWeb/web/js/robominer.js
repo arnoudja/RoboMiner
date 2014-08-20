@@ -59,3 +59,9 @@ function hideElements(elements) {
         elements[i].style = 'display: none';
     }
 }
+
+function htmlDecode(encodedText) {
+  var element = document.createElement('div');
+  element.innerHTML = encodedText;
+  return element.childNodes.length === 0 ? "" : element.childNodes[0].nodeValue;
+}

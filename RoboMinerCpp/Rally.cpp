@@ -44,11 +44,6 @@ m_time(0)
 }
 
 
-CRally::~CRally()
-{
-}
-
-
 void CRally::addRobot(CRobot& robot)
 {
     assert(m_robots.size() < m_robots.capacity());
@@ -140,7 +135,7 @@ void CRally::initRobotPositions()
         robot->setMaxYPos(m_ground.getSizeY() - robot->getSize() / 2 - .5);
 
         robot->getPosition().setPosition(robot->getMinXPos(), robot->getMaxYPos());
-        robot->getPosition().setOrientation(135);
+        robot->getPosition().setOrientation(315);
     }
 
     if (m_robots.size() >= 3)
@@ -154,7 +149,7 @@ void CRally::initRobotPositions()
         robot->setMaxYPos(m_ground.getSizeY() - robot->getSize() / 2 - .5);
 
         robot->getPosition().setPosition(robot->getMaxXPos(), robot->getMinYPos());
-        robot->getPosition().setOrientation(315);
+        robot->getPosition().setOrientation(135);
     }
 
     if (m_robots.size() >= 4)
@@ -238,11 +233,11 @@ void CRally::processRobotMove(CRobot& robot)
         break;
 
     case CRobot::eRotateLeft:
-        robot.setTargetRotation(-robot.getRotateSpeed() * robot.getTimeFraction());
+        robot.setTargetRotation(-robot.getRotateSpeed());
         break;
 
     case CRobot::eRotateRight:
-        robot.setTargetRotation(robot.getRotateSpeed() * robot.getTimeFraction());
+        robot.setTargetRotation(robot.getRotateSpeed());
         break;
 
     case CRobot::eMine:

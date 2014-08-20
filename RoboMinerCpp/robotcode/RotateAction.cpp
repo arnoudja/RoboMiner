@@ -26,12 +26,8 @@
 using namespace robotcode;
 
 
-CRotateAction::CRotateAction(const CValue& rotation) :
+CRotateAction::CRotateAction(const CPosition& startPosition, const CValue& rotation) :
+    m_startPosition(startPosition),
     m_rotation(rotation.getIntValue())
-{
-}
-
-
-CRotateAction::~CRotateAction()
 {
 }

@@ -20,6 +20,8 @@
 #pragma once
 
 #include "ProgramAction.h"
+#include "../Position.h"
+
 
 namespace robotcode
 {
@@ -29,13 +31,15 @@ namespace robotcode
         public CProgramAction
     {
     public:
-        CRotateAction(const CValue& rotation);
-        virtual ~CRotateAction();
+        CRotateAction(const CPosition& startPosition, const CValue& rotation);
+        virtual ~CRotateAction()                        {}
 
         int getRotation() const                         { return m_rotation; }
         void rotated(int rotation)                      { m_rotation -= rotation; }
+        const CPosition& getStartPosition() const       { return m_startPosition; }
 
     private:
-        int m_rotation;
+        CPosition   m_startPosition;
+        int         m_rotation;
     };
 }

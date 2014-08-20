@@ -33,8 +33,8 @@ namespace robotcode
     class CProgramItem
     {
     public:
-        CProgramItem();
-        virtual ~CProgramItem();
+        CProgramItem()                                          {}
+        virtual ~CProgramItem()                                 {}
 
         virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const = 0;
         virtual void processReturnValue(CProgramItemStatus* status, const CValue& value) const      { if (status) status->processReturnValue(value); }

@@ -80,8 +80,8 @@ CPosition CPosition::calculateMovePosition(double speed)
     CPosition result = *this;
 
     double orientation = getOrientation() * M_PI / 180;
-    result.m_xPos += speed * sin(orientation);
-    result.m_yPos += speed * cos(orientation);
+    result.m_xPos += speed * cos(orientation);
+    result.m_yPos += speed * sin(orientation);
 
     return result;
 }

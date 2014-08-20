@@ -27,7 +27,7 @@ function drawRobot(robot, scale)
 
     myRallyContext.beginPath();
     myRallyContext.moveTo(centerX, centerY);
-    myRallyContext.lineTo(centerX + scale * robot.size * Math.sin(orientation) / 2.0, centerY + scale * robot.size * Math.cos(orientation) / 2.0);
+    myRallyContext.lineTo(centerX + scale * robot.size * Math.cos(orientation) / 2.0, centerY + scale * robot.size * Math.sin(orientation) / 2.0);
     myRallyContext.lineWidth = 2;
     myRallyContext.strokeStyle = 'black';
     myRallyContext.stroke();

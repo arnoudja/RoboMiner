@@ -25,22 +25,11 @@
 #include "SequenceProgramItem.h"
 #include "WhileProgramItem.h"
 #include "IfProgramItem.h"
-#include "RotateProgramItem.h"
 #include "SetVariableProgramItem.h"
 #include "ValueProgramItem.h"
 
 
 using namespace robotcode;
-
-
-CProgramItem::CProgramItem()
-{
-}
-
-
-CProgramItem::~CProgramItem()
-{
-}
 
 
 CProgramItem* CProgramItem::compile(CCompileInput& input, bool& terminated)
@@ -57,11 +46,6 @@ CProgramItem* CProgramItem::compile(CCompileInput& input, bool& terminated)
         if (!result)
         {
             result = CIfProgramItem::compile(input, terminated);
-        }
-
-        if (!result)
-        {
-            result = CRotateProgramItem::compile(input, terminated);
         }
 
         if (!result)

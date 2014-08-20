@@ -25,21 +25,12 @@
 #include "VariableValueProgramItem.h"
 #include "MineProgramItem.h"
 #include "MoveProgramItem.h"
+#include "RotateProgramItem.h"
 #include "OperatorProgramItem.h"
 #include "CompileInput.h"
 
 
 using namespace robotcode;
-
-
-CValueProgramItem::CValueProgramItem()
-{
-}
-
-
-CValueProgramItem::~CValueProgramItem()
-{
-}
 
 
 CValueProgramItem* CValueProgramItem::compile(CCompileInput& input)
@@ -71,6 +62,11 @@ CValueProgramItem* CValueProgramItem::compileSingleValue(CCompileInput& input)
     if (!result)
     {
         result = CMoveProgramItem::compile(input);
+    }
+
+    if (!result)
+    {
+        result = CRotateProgramItem::compile(input);
     }
 
     if (!result)
