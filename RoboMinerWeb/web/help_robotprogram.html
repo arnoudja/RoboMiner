@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2014 Arnoud Jagerman
+
+This file is part of RoboMiner.
+
+RoboMiner is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+RoboMiner is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+    <head>
+        <title>RoboMiner - Robot programming help</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+    </head>
+    <body class="helptext">
+        <div class="helptext">
+            <h1>Robot programming help</h1>
+            <p class="helptext">A robot program tells a robot what to do when mining.
+                The program starts at the first line.
+                If the program ends before the mining session is finished or the battery is depleted, the program is restarted.
+                This process repeats until the end of the mining session.
+            </p>
+            <p class="helptext">A robot program can be changed at any time.
+                However, the changes made will only be activated for a robot when the program is applied to that robot.
+                That version of the program will then be active for the robot until a new version is applied to it.</p>
+            <p class="helptext">In other words: After changing a program, always go to the 'Robots' page, make sure the program is selected and click the apply button on the bottom.</p>
+            <h2>Statements</h2>
+            <p class="helptext">A robot program is a list of statements.
+                Statements are separated by semicolons.
+                Multiple statements can be grouped into one large statement by adding '{' and '}' around them.</p>
+            <h3>Example</h3>
+            <p class="helptext">move(2);<br>
+                while (mine());<br>
+            </p>
+            <p class="helptext">This program moves the robot forward two positions and then continues mining until there is nothing to mine at the current location.
+                Since the program is started again when the program completes, these steps are repeated until the mining session is over.</p>
+            <h2>Robot actions</h2>
+            <h3>move()</h3>
+            <p class="helptext">Moves the robot forward or backward at the maximum speed until either the desired distance is traveled or a collision occurs.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">move(&lt;value&gt;)</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Parameter:</td>
+                    <td class="helptable">double</td>
+                    <td class="helptable">The distance to travel, negative to travel backwards.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Return value:</td>
+                    <td class="helptable">double</td>
+                    <td class="helptable">The actual distance traveled.</td>
+                </tr>
+            </table>
+            <h3>rotate()</h3>
+            <p class="helptext">Rotates the robot at the maximum rotation speed until either the desired rotation is reached or a collision occurs.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">rotate(&lt;value&gt;)</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Parameter:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The size of the rotation, in degrees (360 being a full turn). Use a positive value to turn right, negative to turn left.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Return value:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The actual size of the rotation.</td>
+                </tr>
+            </table>
+            <h3>mine()</h3>
+            <p class="helptext">Try to mine minerals from the current robot location.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">mine()</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Return value:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The amount of ore mined.</td>
+                </tr>
+            </table>
+            <p class="helptext">The amount of ore mined each turn is limited by two factors:</p>
+            <ul>
+                <li>The mining unit installed in the robot. More advanced mining units can mine faster.</li>
+                <li>The ore amount available on the robot location. Higher concentrations of ore can be mined faster then lower concentrations.</li>
+            </ul>
+            <h2>Flow control</h2>
+            <h3>if - else</h3>
+            <p class="helptext">Executes a statement only when a condition is met.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">if (&lt;condition&gt;) {&lt;statements&gt;} [ else {&lt;statements&gt;} ]</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">&lt;condition&gt;:</td>
+                    <td class="helptable">bool</td>
+                    <td class="helptable">When the condition is true, the first list of statements is executed. Otherwise, the list of statements from the else-part is executed.</td>
+                </tr>
+            </table>
+            <h3>while</h3>
+            <p class="helptext">Repeats execution of a statement for as long as a condition is met.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">while (&lt;condition&gt;) {&lt;statements&gt;}</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">&lt;condition&gt;:</td>
+                    <td class="helptable">bool</td>
+                    <td class="helptable">When the condition is met, the statements are executed and the condition is evaluated again. This process repeats until the condition is not met.</td>
+                </tr>
+            </table>
+            <p class="helptext">It is possible to replace the statements list by a semicolon.
+                In that case, only the expression itself is evaluated until it fails.
+                This can be useful when the expression contains a robot action.
+                Example: while (mine()); repeats mining until there is nothing to mine at the current location.</p>
+            <h3>do - while</h3>
+            <p class="helptext">Repeats execution of a statement for as long as a condition is met.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">do {&lt;statements&gt;} while (&lt;condition&gt;)</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">&lt;condition&gt;:</td>
+                    <td class="helptable">bool</td>
+                    <td class="helptable">After the statements are executed, the condition is evaluated. If the condition is met, the statements are executed again. This process repeats until the condition is not met.</td>
+                </tr>
+            </table>
+            <p class="helptext">The difference with 'while' is that the statements are executed at least once.</p>
+            <h2>Expressions</h2>
+            <h3>Numeric expressions</h3>
+            <table class="helptable">
+                <tr>
+                    <th class="helptable">Operator</th>
+                    <th class="helptable">Example</th>
+                    <th class="helptable">Description</th>
+                </tr>
+                <tr>
+                    <td class="helptable">+</td>
+                    <td class="helptable">&lt;value_1&gt; + &lt;value_2&gt;</td>
+                    <td class="helptable">Adds the two values.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">-</td>
+                    <td class="helptable">&lt;value_1&gt; - &lt;value_2&gt;</td>
+                    <td class="helptable">Subtract value_2 from value_1.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">*</td>
+                    <td class="helptable">&lt;value_1&gt; * &lt;value_2&gt;</td>
+                    <td class="helptable">Multiplies the two values.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">/</td>
+                    <td class="helptable">&lt;value_1&gt; / &lt;value_2&gt;</td>
+                    <td class="helptable">Divides value_1 by value_2.</td>
+                </tr>
+            </table>
+            <h3>Compare expressions</h3>
+            <table class="helptable">
+                <tr>
+                    <th class="helptable">Operator</th>
+                    <th class="helptable">Example</th>
+                    <th class="helptable">Description</th>
+                </tr>
+                <tr>
+                    <td class="helptable">&gt;</td>
+                    <td class="helptable">value_1 &gt; value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 is larger then value_2.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">&gt;=</td>
+                    <td class="helptable">value_1 &gt;= value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 is larger then or equal to value_2.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">&lt;</td>
+                    <td class="helptable">value_1 &lt; value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 is smaller then value_2.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">&lt;=</td>
+                    <td class="helptable">value_1 &lt;= value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 is smaller then or equal to value_2.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">==</td>
+                    <td class="helptable">value_1 == value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 is equal to value_2.</td>
+                </tr>
+            </table>
+            <h2>Variables</h2>
+            <p class="helptext">Variables can be used to store values. Later on in the program, the value can be changed or used in an expression.</p>
+            <p class="helptext">The first step in using a variable is to declare it. After that, its value can be changed and it can be used in expressions.</p>
+            <h3>Variable declaration</h3>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">&lt;type&gt; &lt;name&gt; = &lt;value&gt;</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Type:</td>
+                    <td class="helptable">int, double or bool.</td>
+                    <td class="helptable">int is used to store whole numbers. double is used to store real values such as 3.14. bool has two possible values: true and false.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Name:</td>
+                    <td class="helptable">A self chosen name for the variable.</td>
+                    <td class="helptable">The name can contain any number of upper and lower case characters and numbers, but is not allowed to start with a number. Also, the name may not be the same as existing commands such as 'while' and 'move'.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Value:</td>
+                    <td class="helptable">A fixed value of the right type or an expression.</td>
+                    <td class="helptable">When the value is not of the same type as the variable, the value is converted.</td>
+                </tr>
+            </table>
+            <p class="helptext">Example:</p>
+            <p class="helptext">int miningAmount = mine();</p>
+            <h3>Variable usage</h3>
+            <p class="helptext">Variables can be used instead of fixed values in expressions.</p>
+            <h3>Variable scope</h3>
+            <p class="helptext">The variable is available in the block in which it was declared and each sub-block.</p>
+        </div>
+    </body>
+</html>

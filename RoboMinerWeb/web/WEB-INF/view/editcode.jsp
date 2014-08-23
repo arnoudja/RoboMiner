@@ -17,6 +17,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 <h1>Edit code</h1>
+<button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
 <script>
     function selectOtherSource() {
         var saveData = false;
