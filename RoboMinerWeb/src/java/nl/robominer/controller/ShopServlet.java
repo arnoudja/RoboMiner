@@ -35,8 +35,11 @@ import javax.transaction.SystemException;
 import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
+import nl.robominer.entity.Tier;
+import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.RobotPartFacade;
+import nl.robominer.session.TierFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -51,6 +54,9 @@ public class ShopServlet extends RoboMinerServletBase {
     
     @EJB
     private RobotPartFacade robotPartFacade;
+    
+    @EJB
+    private TierFacade tierFacade;
     
     @EJB
     private UserAssets userAssets;
@@ -79,6 +85,7 @@ public class ShopServlet extends RoboMinerServletBase {
 
         int buyRobotPartId = getItemId(request, "buyRobotPartId");
         int selectedRobotPartTypeId = getItemId(request, "selectedRobotPartTypeId");
+        int selectedTierId = getItemId(request, "selectedTierId");
 
         if (buyRobotPartId > 0) {
             
@@ -90,15 +97,31 @@ public class ShopServlet extends RoboMinerServletBase {
             }
         }
         
-        // Add the user item
         Users user = usersFacade.findById(userId);
+        
+        // Initially select the highest tier the user has ore for
+        if (selectedTierId < 1) {
+            for (Map.Entry<Integer, UserOreAsset> userOreAssetEntry : user.getUserOreAssets().entrySet()) {
+                if (userOreAssetEntry.getValue().getAmount() > 0 && userOreAssetEntry.getKey() > selectedTierId) {
+                    selectedTierId = userOreAssetEntry.getKey();
+                }
+            }
+        }
+        
+        // Add the user item
         request.setAttribute("user", user);
         
+        // Add the robot parts
         Map< RobotPartType, List<RobotPart> > robotPartMap = robotPartFacade.findAllMapped();
         request.setAttribute("robotPartMap", robotPartMap);
         
-        // Add the previous selected part type selection
+        // Add the tier list
+        List<Tier> tierList = tierFacade.findAll();
+        request.setAttribute("tierList", tierList);
+        
+        // Add the previous selected part type and selection
         request.setAttribute("selectedRobotPartTypeId", selectedRobotPartTypeId);
+        request.setAttribute("selectedTierId", selectedTierId);
         
         request.getRequestDispatcher("/WEB-INF/view/shop.jsp").forward(request, response);
     }

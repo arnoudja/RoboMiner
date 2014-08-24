@@ -63,6 +63,11 @@ public class RobotPart implements Serializable {
 
     @Basic(optional = false)
     @NotNull
+    @Column(name = "tierId")
+    private int tierId;
+    
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "partName")
     private String partName;
@@ -144,6 +149,10 @@ public class RobotPart implements Serializable {
         return robotPartType;
     }
 
+    public int getTierId() {
+        return tierId;
+    }
+    
     public String getPartName() {
         return partName;
     }
