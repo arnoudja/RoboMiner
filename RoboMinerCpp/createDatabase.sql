@@ -130,7 +130,8 @@ create table UserRobotPartAsset
 (
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
 robotPartId INT NOT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
-amount INT NOT NULL DEFAULT 0,
+totalOwned INT NOT NULL DEFAULT 0,
+unassigned INT NOT NULL DEFAULT 0,
 PRIMARY KEY (usersId, robotPartId)
 );
 
@@ -488,7 +489,12 @@ insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
 'move(1);
 mine();', TRUE);
 
-insert into UserRobotPartAsset (usersId, robotPartId, amount) values (2, 1, 1);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 101, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 201, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 301, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 401, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 501, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 601, 1, 0);
 
 insert into Robot
 (usersId, robotName, sourceCode, programSourceId,
@@ -501,6 +507,13 @@ mine();', 1,
  101, 201, 301, 401, 501, 601,
  20, 200, 3, 100, 10, 2,
  10, 10, 10, 10);
+
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 102, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 202, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 302, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 402, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 502, 1, 0);
+insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 602, 1, 0);
 
 insert into Robot
 (usersId, robotName, sourceCode, programSourceId,

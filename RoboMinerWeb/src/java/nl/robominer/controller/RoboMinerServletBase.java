@@ -36,7 +36,7 @@ public abstract class RoboMinerServletBase extends HttpServlet {
     protected int getItemId(HttpServletRequest request, String field) {
         
         String value = request.getParameter(field);
-        return value == null ? 0 : Integer.parseInt(value);
+        return (value == null || value.isEmpty()) ? 0 : Integer.parseInt(value);
     }
 
     /**

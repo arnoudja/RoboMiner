@@ -29,11 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
+import nl.robominer.entity.RobotPart;
+import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RoboMinerCppBean;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotPartFacade;
+import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -57,6 +60,9 @@ public class LoginServlet extends RoboMinerServletBase {
     
     @EJB
     private RobotPartFacade robotPartFacade;
+    
+    @EJB
+    private UserRobotPartAssetFacade userRobotPartAssetFacade;
     
     @EJB
     private RoboMinerCppBean roboMinerCppBean;
@@ -191,11 +197,25 @@ public class LoginServlet extends RoboMinerServletBase {
         programSourceFacade.create(programSource);
         roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
         
+        // Retrieve the initial robot parts
+        RobotPart oreContainer  = robotPartFacade.find(101);
+        RobotPart miningUnit    = robotPartFacade.find(201);
+        RobotPart battery       = robotPartFacade.find(301);
+        RobotPart memoryModule  = robotPartFacade.find(401);
+        RobotPart cpu           = robotPartFacade.find(501);
+        RobotPart engine        = robotPartFacade.find(601);
+        
+        // Add the initial robot parts for the user
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), oreContainer.getId(), 1, 0));
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), miningUnit.getId(), 1, 0));
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), battery.getId(), 1, 0));
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), memoryModule.getId(), 1, 0));
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), cpu.getId(), 1, 0));
+        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), engine.getId(), 1, 0));
+
         // Create a robot for the user
         Robot robot = new Robot();
-        robot.fillDefaults(robotPartFacade.find(101), robotPartFacade.find(201),
-                           robotPartFacade.find(301), robotPartFacade.find(401),
-                           robotPartFacade.find(501), robotPartFacade.find(601));
+        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
         robot.setRobotName("Robot1");
         robot.setUser(user);
         robotFacade.create(robot);

@@ -236,23 +236,16 @@ public class RobotServlet extends RoboMinerServletBase {
         UserRobotPartAsset newContainerAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, newPartId);
         UserRobotPartAsset oldContainerAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, oldPartId);
 
-        if (newContainerAsset == null || newContainerAsset.getAmount() <= 0) {
+        if (newContainerAsset == null || newContainerAsset.getUnassigned() <= 0 ||
+            oldContainerAsset == null) {
             throw new IllegalStateException();
         }
 
-        newContainerAsset.removeOne();
+        newContainerAsset.assignOne();
+        oldContainerAsset.unassignOne();
+
         userRobotPartAssetFacade.edit(newContainerAsset);
-
-        if (oldContainerAsset == null) {
-
-            oldContainerAsset = new UserRobotPartAsset(usersId, oldPartId, 1);
-            userRobotPartAssetFacade.create(oldContainerAsset);
-        }
-        else {
-
-            oldContainerAsset.addOne();
-            userRobotPartAssetFacade.edit(oldContainerAsset);
-        }
+        userRobotPartAssetFacade.edit(oldContainerAsset);
     }
     
     /**

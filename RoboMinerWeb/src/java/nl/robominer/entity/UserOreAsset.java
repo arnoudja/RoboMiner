@@ -65,25 +65,12 @@ public class UserOreAsset implements Serializable {
     public UserOreAsset() {
     }
 
-    public UserOreAsset(UserOreAssetPK userOreAssetPK) {
-        this.userOreAssetPK = userOreAssetPK;
-    }
-
-    public UserOreAsset(UserOreAssetPK userOreAssetPK, int amount) {
-        this.userOreAssetPK = userOreAssetPK;
-        this.amount = amount;
-    }
-
     public UserOreAsset(int usersId, int oreId) {
         this.userOreAssetPK = new UserOreAssetPK(usersId, oreId);
     }
 
     public UserOreAssetPK getUserOreAssetPK() {
         return userOreAssetPK;
-    }
-
-    public void setUserOreAssetPK(UserOreAssetPK userOreAssetPK) {
-        this.userOreAssetPK = userOreAssetPK;
     }
 
     public int getAmount() {

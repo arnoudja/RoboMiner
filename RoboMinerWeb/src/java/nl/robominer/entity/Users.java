@@ -133,9 +133,14 @@ public class Users implements Serializable {
         return userRobotPartAssets;
     }
     
-    public int getRobotPartAmount(int robotPartId) {
+    public int getTotalRobotPartAmount(int robotPartId) {
         UserRobotPartAsset asset = userRobotPartAssets.get(robotPartId);
-        return asset == null ? 0 : asset.getAmount();
+        return asset == null ? 0 : asset.getTotalOwned();
+    }
+    
+    public int getUnassignedRobotPartAmount(int robotPartId) {
+        UserRobotPartAsset asset = userRobotPartAssets.get(robotPartId);
+        return asset == null ? 0 : asset.getUnassigned();
     }
     
     public boolean canAffort(OrePrice orePrice) {

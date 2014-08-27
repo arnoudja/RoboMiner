@@ -84,6 +84,7 @@ public class ShopServlet extends RoboMinerServletBase {
         }
 
         int buyRobotPartId = getItemId(request, "buyRobotPartId");
+        int sellRobotPartId = getItemId(request, "sellRobotPartId");
         int selectedRobotPartTypeId = getItemId(request, "selectedRobotPartTypeId");
         int selectedTierId = getItemId(request, "selectedTierId");
 
@@ -91,6 +92,15 @@ public class ShopServlet extends RoboMinerServletBase {
             
             try {
                 userAssets.buyRobotPart(userId, buyRobotPartId);
+            }
+            catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
+                throw new ServletException(exc);
+            }
+        }
+        else if (sellRobotPartId > 0) {
+            
+            try {
+                userAssets.sellRobotPart(userId, sellRobotPartId);
             }
             catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
                 throw new ServletException(exc);

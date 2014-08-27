@@ -30,12 +30,19 @@
     function buyItem(robotPartId, robotPartName) {
         if (confirm("Buy '" + robotPartName + "'?")) {
             document.getElementById('buyRobotPartId').value = robotPartId;
-            document.getElementById('buyRobotPartForm').submit();
+            document.getElementById('buySellRobotPartForm').submit();
+        }
+    }
+    function sellItem(robotPartId, robotPartName) {
+        if (confirm("Selling will return half the original price. Sell '" + robotPartName + "'?")) {
+            document.getElementById('sellRobotPartId').value = robotPartId;
+            document.getElementById('buySellRobotPartForm').submit();
         }
     }
 </script>
-<form id="buyRobotPartForm" action="<c:url value='shop'/>" method="post">
+<form id="buySellRobotPartForm" action="<c:url value='shop'/>" method="post">
     <input type="hidden" id="buyRobotPartId" name="buyRobotPartId" value=""/>
+    <input type="hidden" id="sellRobotPartId" name="sellRobotPartId" value=""/>
     <input type="hidden" id="selectedRobotPartTypeId" name="selectedRobotPartTypeId" value="${selectedRobotPartTypeId}"/>
     <input type="hidden" id="selectedTierId" name="selectedTierId" value="${selectedTierId}"/>
 </form>
@@ -97,10 +104,17 @@ Tier:
                         <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td>Owned:</td>
-                    <td>${user.getRobotPartAmount(robotPart.id)}</td>
-                </tr>
+                <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
+                    <tr>
+                        <td>Owned/unassigned:</td>
+                        <td colspan="2">${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
+                        <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
+                            <td>
+                                <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
+                            </td>
+                        </c:if>
+                    </tr>
+                </c:if>
                 <tr>
                     <td><p></p></td>
                 </tr>

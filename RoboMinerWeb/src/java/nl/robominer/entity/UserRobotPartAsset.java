@@ -54,8 +54,13 @@ public class UserRobotPartAsset implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "amount")
-    private int amount;
+    @Column(name = "totalOwned")
+    private int totalOwned;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "unassigned")
+    private int unassigned;
 
     @Column(name = "robotPartId", insertable = false, updatable = false)
     private int robotPartId;
@@ -67,17 +72,15 @@ public class UserRobotPartAsset implements Serializable {
     public UserRobotPartAsset() {
     }
 
-    public UserRobotPartAsset(int usersId, int robotPartId, int amount) {
+    public UserRobotPartAsset(int usersId, int robotPartId, int totalOwned, int unassigned) {
+        
         this.userRobotPartAssetPK = new UserRobotPartAssetPK(usersId, robotPartId);
-        this.amount = amount;
+        this.totalOwned           = totalOwned;
+        this.unassigned           = unassigned;
     }
 
     public UserRobotPartAssetPK getUserRobotPartAssetPK() {
         return userRobotPartAssetPK;
-    }
-
-    public void setUserRobotPartAssetPK(UserRobotPartAssetPK userRobotPartAssetPK) {
-        this.userRobotPartAssetPK = userRobotPartAssetPK;
     }
 
     public RobotPart getRobotPart() {
@@ -88,25 +91,45 @@ public class UserRobotPartAsset implements Serializable {
         return robotPartId;
     }
     
-    public int getAmount() {
-        return amount;
+    public int getTotalOwned() {
+        return totalOwned;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public int getUnassigned() {
+        return unassigned;
     }
-
-    public void removeOne() throws IllegalStateException{
+    
+    public void assignOne() throws IllegalStateException {
         
-        if (amount <= 0) {
+        if (unassigned <= 0) {
             throw new IllegalStateException();
         }
         
-        amount--;
+        unassigned--;
     }
     
-    public void addOne() {
-        amount++;
+    public void unassignOne() throws IllegalStateException {
+
+        if (unassigned >= totalOwned) {
+            throw new IllegalStateException();
+        }
+        
+        unassigned++;
+    }
+    
+    public void addOneOwned() {
+        totalOwned++;
+        unassigned++;
+    }
+    
+    public void removeOneOwned() throws IllegalStateException {
+        
+        if (totalOwned <= 0 || unassigned <= 0) {
+            throw new IllegalStateException();
+        }
+            
+        totalOwned--;
+        unassigned--;
     }
     
     @Override

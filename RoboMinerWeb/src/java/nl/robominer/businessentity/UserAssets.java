@@ -138,14 +138,49 @@ public class UserAssets {
             
             if (userRobotPartAsset == null) {
                 
-                userRobotPartAsset = new UserRobotPartAsset(userId, robotPartId, 1);
+                userRobotPartAsset = new UserRobotPartAsset(userId, robotPartId, 1, 1);
                 userRobotPartAssetFacade.create(userRobotPartAsset);
             }
             else {
                 
-                userRobotPartAsset.addOne();
+                userRobotPartAsset.addOneOwned();
                 userRobotPartAssetFacade.edit(userRobotPartAsset);
             }
+            
+            succeeded = true;
+        }
+
+        if (succeeded) {
+            transaction.commit();
+        }
+        else {
+            transaction.rollback();
+        }
+        
+        return succeeded;
+    }
+    
+    public boolean sellRobotPart(int userId, int robotPartId) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+        
+        boolean succeeded = false;
+        
+        transaction.begin();
+
+        RobotPart robotPart = robotPartFacade.find(robotPartId);
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(userId, robotPartId);
+        
+        if (robotPart != null && userRobotPartAsset != null && userRobotPartAsset.getUnassigned() > 0) {
+            
+            if (userRobotPartAsset.getTotalOwned() > 1) {
+                
+                userRobotPartAsset.removeOneOwned();
+                userRobotPartAssetFacade.edit(userRobotPartAsset);
+            }
+            else {
+                userRobotPartAssetFacade.remove(userRobotPartAsset);
+            }
+            
+            returnHalfOre(userId, robotPart.getOrePrice());
             
             succeeded = true;
         }
@@ -181,5 +216,28 @@ public class UserAssets {
         }
 
         return succeeded;
+    }
+    
+    public void returnHalfOre(int userId, OrePrice orePrice) {
+        
+        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
+        
+        for (OrePriceAmount orePriceAmount : priceList) {
+            
+            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
+            
+            if (userOreAsset == null) {
+                
+                userOreAsset = new UserOreAsset(userId, orePriceAmount.getOre().getId());
+                userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
+                
+                userOreAssetFacade.create(userOreAsset);
+            }
+            else {
+                
+                userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
+                userOreAssetFacade.edit(userOreAsset);
+            }
+        }
     }
 }
