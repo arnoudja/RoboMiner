@@ -32,7 +32,7 @@
         var availableMemory = getAvailableMemory(robotId);
         var usedMemory = getUsedMemory(robotId);
         
-        document.getElementById('memoryParameters' + robotId).value = usedMemory + '/' + availableMemory;
+        document.getElementById('memoryParameters' + robotId).innerHTML = usedMemory + '/' + availableMemory;
         document.getElementById('memoryParameters' + robotId).className = (availableMemory >= usedMemory ? 'valid' : 'invalid');
     }
     function showRobotDetails() {
@@ -73,7 +73,7 @@
     <table>
         <tr>
             <td>Robot:</td>
-            <td>
+            <td colspan="3">
                 <select id='robotId' name="robotId" class="selectiontableselect" onchange='showRobotDetails();'>
                     <c:forEach var='robot' items='${robotList}'>
                         <option value="${robot.id}" ${robot.id eq robotId ? 'selected="selected"' : ''}>${fn:escapeXml(robot.robotName)}</option>
@@ -85,14 +85,14 @@
             <tbody name="robotRow${robot.id}" style="display: none">
                 <tr>
                     <td>Name:</td>
-                    <td>
+                    <td colspan="3">
                         <input type="text" id="robotName${robot.id}" name="robotName${robot.id}" value="${fn:escapeXml(robot.robotName)}" size="40" pattern="[A-Za-z0-9_]{1,10}" required />
                     </td>
                     <td>1 to 10 characters, only letters and numbers</td>
                 </tr>
                 <tr>
                     <td>Sourcecode:</td>
-                    <td>
+                    <td colspan="3">
                         <select id="programSourceId${robot.id}" name="programSourceId${robot.id}" class="selectiontableselect" onchange="updateMemorySizes();">
                             <c:forEach var='programSource' items="${programSourceMap}">
                                 <option value="${programSource.key}" ${robot.programSourceId eq programSource.key ? 'selected="selected"' : ''}>${fn:escapeXml(programSource.value.sourceName)}</option>
@@ -102,7 +102,7 @@
                 </tr>
                 <tr>
                     <td>Ore container:</td>
-                    <td>
+                    <td colspan="3">
                         <select name="oreContainerId${robot.id}" class="selectiontableselect">
                             <option value="${robot.oreContainer.id}" selected="selected">${fn:escapeXml(robot.oreContainer.partName)}</option>
                             <c:forEach var='oreContainer' items="${oreContainerList}">
@@ -115,7 +115,7 @@
                 </tr>
                 <tr>
                     <td>Mining unit:</td>
-                    <td>
+                    <td colspan="3">
                         <select name="miningUnitId${robot.id}" class="selectiontableselect">
                             <option value="${robot.miningUnit.id}" selected="selected">${fn:escapeXml(robot.miningUnit.partName)}</option>
                             <c:forEach var='miningUnit' items="${miningUnitList}">
@@ -128,7 +128,7 @@
                 </tr>
                 <tr>
                     <td>Battery:</td>
-                    <td>
+                    <td colspan="3">
                         <select name="batteryId${robot.id}" class="selectiontableselect">
                             <option value="${robot.battery.id}" selected="selected">${fn:escapeXml(robot.battery.partName)}</option>
                             <c:forEach var='battery' items="${batteryList}">
@@ -141,7 +141,7 @@
                 </tr>
                 <tr>
                     <td>Memory module:</td>
-                    <td>
+                    <td colspan="3">
                         <select id="memoryModuleId${robot.id}" name="memoryModuleId${robot.id}" class="selectiontableselect" onchange="updateMemorySizes();">
                             <option value="${robot.memoryModule.id}" selected="selected">${fn:escapeXml(robot.memoryModule.partName)}</option>
                             <c:forEach var='memoryModule' items="${memoryModuleList}">
@@ -154,7 +154,7 @@
                 </tr>
                 <tr>
                     <td>CPU:</td>
-                    <td>
+                    <td colspan="3">
                         <select name="cpuId${robot.id}" class="selectiontableselect">
                             <option value="${robot.cpu.id}" selected="selected">${fn:escapeXml(robot.cpu.partName)}</option>
                             <c:forEach var='cpu' items="${cpuList}">
@@ -167,7 +167,7 @@
                 </tr>
                 <tr>
                     <td>Engine:</td>
-                    <td>
+                    <td colspan="3">
                         <select name="engineId${robot.id}" class="selectiontableselect">
                             <option value="${robot.engine.id}" selected="selected">${fn:escapeXml(robot.engine.partName)}</option>
                             <c:forEach var='engine' items="${engineList}">
@@ -180,63 +180,57 @@
                 </tr>
                 <tr>
                     <td>Ore capacity:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.maxOre}" size="6"/>
-                    </td>
+                    <td>${robot.maxOre}</td>
+                    <td>units</td>
                 </tr>
                 <tr>
                     <td>Mining speed:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.miningSpeed}" size="6"/>
-                    </td>
+                    <td>${robot.miningSpeed}</td>
+                    <td>upc</td>
                 </tr>
                 <tr>
                     <td>Max. cycles:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.maxTurns}" size="6"/>
-                    </td>
+                    <td>${robot.maxTurns}</td>
+                    <td>cycles</td>
                 </tr>
                 <tr>
                     <td>Memory used/available:</td>
-                    <td>
-                        <input type="text" readonly="true" id="memoryParameters${robot.id}" value="" size="6"/>
-                    </td>
+                    <td id="memoryParameters${robot.id}"></td>
                 </tr>
                 <tr>
                     <td>CPU speed:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.cpuSpeed}" size="6"/>
-                    </td>
+                    <td>${robot.cpuSpeed}</td>
+                    <td>ipc</td>
                 </tr>
                 <tr>
                     <td>Forward speed:</td>
                     <td>
-                        <input type="text" readonly="true" value="${robot.forwardSpeed}" size="6"/>
+                        <fmt:formatNumber value="${robot.forwardSpeed}" maxFractionDigits="2"/>
                     </td>
+                    <td>upc</td>
                 </tr>
                 <tr>
                     <td>Backward speed:</td>
                     <td>
-                        <input type="text" readonly="true" value="${robot.backwardSpeed}" size="6"/>
+                        <fmt:formatNumber value="${robot.backwardSpeed}" maxFractionDigits="2"/>
                     </td>
+                    <td>upc</td>
                 </tr>
                 <tr>
                     <td>Rotate speed:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.rotateSpeed}" size="6"/>
-                    </td>
+                    <td>${robot.rotateSpeed}</td>
+                    <td>dpc</td>
                 </tr>
                 <tr>
                     <td>Size:</td>
                     <td>
-                        <input type="text" readonly="true" value="${robot.robotSize}" size="6"/>
+                        <fmt:formatNumber value="${robot.robotSize}" maxFractionDigits="2"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Recharge time:</td>
-                    <td>
-                        <input type="text" readonly="true" value="${robot.rechargeTime}" size="6"/>
-                    </td>
+                    <td>${robot.rechargeTime}</td>
+                    <td>seconds</td>
                 </tr>
             </tbody>
         </c:forEach>

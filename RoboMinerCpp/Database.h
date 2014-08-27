@@ -48,34 +48,34 @@ public:
     
     struct RobotData
     {
-        int usersId;
-        int robotId;
-        int maxOre;
-        int miningSpeed;
-        int maxTurns;
-        int cpuSpeed;
-        int forwardSpeed;
-        int backwardSpeed;
-        int rotateSpeed;
-        int robotSize;
+        int     usersId;
+        int     robotId;
+        int     maxOre;
+        int     miningSpeed;
+        int     maxTurns;
+        int     cpuSpeed;
+        double  forwardSpeed;
+        double  backwardSpeed;
+        int     rotateSpeed;
+        int     robotSize;
         std::string sourceCode;
     };
     
     struct MiningRallyItem
     {
-        int miningQueueId;
-        int usersId;
-        int robotId;
-        int maxOre;
-        int miningSpeed;
-        int maxTurns;
-        int cpuSpeed;
-        int forwardSpeed;
-        int backwardSpeed;
-        int rotateSpeed;
-        int robotSize;
-        MYSQL_TIME miningEndTime;
-        int secondsLeft;
+        int         miningQueueId;
+        int         usersId;
+        int         robotId;
+        int         maxOre;
+        int         miningSpeed;
+        int         maxTurns;
+        int         cpuSpeed;
+        double      forwardSpeed;
+        double      backwardSpeed;
+        int         rotateSpeed;
+        int         robotSize;
+        MYSQL_TIME  miningEndTime;
+        int         secondsLeft;
         std::string sourceCode;
     };
     

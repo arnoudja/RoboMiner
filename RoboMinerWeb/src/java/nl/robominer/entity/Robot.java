@@ -145,12 +145,12 @@ public class Robot implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "forwardSpeed")
-    private int forwardSpeed;
+    private double forwardSpeed;
     
     @Basic(optional = false)
     @NotNull
     @Column(name = "backwardSpeed")
-    private int backwardSpeed;
+    private double backwardSpeed;
     
     @Basic(optional = false)
     @NotNull
@@ -305,19 +305,19 @@ public class Robot implements Serializable {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public int getForwardSpeed() {
+    public double getForwardSpeed() {
         return forwardSpeed;
     }
 
-    public void setForwardSpeed(int forwardSpeed) {
+    public void setForwardSpeed(double forwardSpeed) {
         this.forwardSpeed = forwardSpeed;
     }
 
-    public int getBackwardSpeed() {
+    public double getBackwardSpeed() {
         return backwardSpeed;
     }
 
-    public void setBackwardSpeed(int backwardSpeed) {
+    public void setBackwardSpeed(double backwardSpeed) {
         this.backwardSpeed = backwardSpeed;
     }
 
@@ -400,21 +400,21 @@ public class Robot implements Serializable {
                          battery.getPowerUsage() + memoryModule.getPowerUsage() + 
                          cpu.getPowerUsage() + engine.getPowerUsage();
         
-        int weight = oreContainer.getWeight() + miningUnit.getWeight() + 
-                     battery.getWeight() + memoryModule.getWeight() + 
-                     cpu.getWeight() + engine.getWeight();
+        double weight = oreContainer.getWeight() + miningUnit.getWeight() + 
+                        battery.getWeight() + memoryModule.getWeight() + 
+                        cpu.getWeight() + engine.getWeight();
         
         int volume = oreContainer.getVolume() + miningUnit.getVolume() + 
                      battery.getVolume() + memoryModule.getVolume() + 
                      cpu.getVolume() + engine.getVolume();
         
-        int forwardCapacity = oreContainer.getForwardCapacity() + miningUnit.getForwardCapacity() + 
-                              battery.getForwardCapacity() + memoryModule.getForwardCapacity() + 
-                              cpu.getForwardCapacity() + engine.getForwardCapacity();
+        double forwardCapacity = oreContainer.getForwardCapacity() + miningUnit.getForwardCapacity() + 
+                                 battery.getForwardCapacity() + memoryModule.getForwardCapacity() + 
+                                 cpu.getForwardCapacity() + engine.getForwardCapacity();
         
-        int backwardCapacity = oreContainer.getBackwardCapacity() + miningUnit.getBackwardCapacity() + 
-                               battery.getBackwardCapacity() + memoryModule.getBackwardCapacity() + 
-                               cpu.getBackwardCapacity() + engine.getBackwardCapacity();
+        double backwardCapacity = oreContainer.getBackwardCapacity() + miningUnit.getBackwardCapacity() + 
+                                  battery.getBackwardCapacity() + memoryModule.getBackwardCapacity() + 
+                                  cpu.getBackwardCapacity() + engine.getBackwardCapacity();
         
         int rotateCapacity = oreContainer.getRotateCapacity() + miningUnit.getRotateCapacity() + 
                              battery.getRotateCapacity() + memoryModule.getRotateCapacity() + 
@@ -444,7 +444,7 @@ public class Robot implements Serializable {
         
         setForwardSpeed(forwardCapacity / weight);
         setBackwardSpeed(backwardCapacity / weight);
-        setRotateSpeed(10 * rotateCapacity / weight);
+        setRotateSpeed((int)(10 * rotateCapacity / weight));
 
         setRobotSize((int) Math.pow(volume, 0.33));
     }

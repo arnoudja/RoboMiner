@@ -51,7 +51,7 @@ using namespace robotcode;
 CRobotProgram::CRobotProgram(const string& source,
                              int maxTurns, int maxOre,
                              int miningSpeed, int cpuSpeed,
-                             int forwardSpeed, int backwardSpeed, int rotateSpeed,
+                             double forwardSpeed, double backwardSpeed, int rotateSpeed,
                              int robotSize) :
     CRobot(maxTurns, maxOre,
            miningSpeed, cpuSpeed,

@@ -350,11 +350,11 @@ CDatabase::RobotData CDatabase::getRobotData(int robotId)
     bindResult[5].buffer_length = sizeof(result.cpuSpeed);
     bindResult[5].buffer = &result.cpuSpeed;
 
-    bindResult[6].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[6].buffer_type = MYSQL_TYPE_DOUBLE;
     bindResult[6].buffer_length = sizeof(result.forwardSpeed);
     bindResult[6].buffer = &result.forwardSpeed;
 
-    bindResult[7].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[7].buffer_type = MYSQL_TYPE_DOUBLE;
     bindResult[7].buffer_length = sizeof(result.backwardSpeed);
     bindResult[7].buffer = &result.backwardSpeed;
 
@@ -487,11 +487,11 @@ list<CDatabase::MiningRallyItem> CDatabase::getNextMiningRally(int miningAreaId)
     bindResult[9].buffer_length = sizeof(item.cpuSpeed);
     bindResult[9].buffer = &item.cpuSpeed;
 
-    bindResult[10].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[10].buffer_type = MYSQL_TYPE_DOUBLE;
     bindResult[10].buffer_length = sizeof(item.forwardSpeed);
     bindResult[10].buffer = &item.forwardSpeed;
 
-    bindResult[11].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[11].buffer_type = MYSQL_TYPE_DOUBLE;
     bindResult[11].buffer_length = sizeof(item.backwardSpeed);
     bindResult[11].buffer = &item.backwardSpeed;
 

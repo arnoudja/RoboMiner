@@ -125,7 +125,7 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
         {
             if (miningQueueIds[iRobot] > 0)
             {
-                for (int iOre = 0; iOre < robots[iRobot]->getOre().size(); ++iOre)
+                for (unsigned int iOre = 0; iOre < robots[iRobot]->getOre().size(); ++iOre)
                 {
                     if (robots[iRobot]->getOre()[iOre] > 0)
                     {

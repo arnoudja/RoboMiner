@@ -38,7 +38,7 @@ namespace robotcode
         CRobotProgram(const std::string& source,
                       int maxTurns, int maxOre,
                       int miningSpeed, int cpuSpeed,
-                      int forwardSpeed, int backwardSpeed, int rotateSpeed,
+                      double forwardSpeed, double backwardSpeed, int rotateSpeed,
                       int robotSize);
         virtual ~CRobotProgram();
 

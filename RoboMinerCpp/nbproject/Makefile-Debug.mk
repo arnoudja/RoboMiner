@@ -104,202 +104,202 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/robominercpp: ${OBJECTFILES}
 ${OBJECTDIR}/Animation.o: Animation.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animation.o Animation.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animation.o Animation.cpp
 
 ${OBJECTDIR}/AnimationStep.o: AnimationStep.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AnimationStep.o AnimationStep.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AnimationStep.o AnimationStep.cpp
 
 ${OBJECTDIR}/Database.o: Database.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Database.o Database.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Database.o Database.cpp
 
 ${OBJECTDIR}/Ground.o: Ground.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Ground.o Ground.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Ground.o Ground.cpp
 
 ${OBJECTDIR}/GroundChangeStep.o: GroundChangeStep.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GroundChangeStep.o GroundChangeStep.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GroundChangeStep.o GroundChangeStep.cpp
 
 ${OBJECTDIR}/GroundUnit.o: GroundUnit.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GroundUnit.o GroundUnit.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GroundUnit.o GroundUnit.cpp
 
 ${OBJECTDIR}/Position.o: Position.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Position.o Position.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Position.o Position.cpp
 
 ${OBJECTDIR}/Rally.o: Rally.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Rally.o Rally.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Rally.o Rally.cpp
 
 ${OBJECTDIR}/RoboMine.o: RoboMine.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RoboMine.o RoboMine.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RoboMine.o RoboMine.cpp
 
 ${OBJECTDIR}/Robot.o: Robot.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Robot.o Robot.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Robot.o Robot.cpp
 
 ${OBJECTDIR}/robotcode/CallAction.o: robotcode/CallAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/CallAction.o robotcode/CallAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/CallAction.o robotcode/CallAction.cpp
 
 ${OBJECTDIR}/robotcode/CompileInput.o: robotcode/CompileInput.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/CompileInput.o robotcode/CompileInput.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/CompileInput.o robotcode/CompileInput.cpp
 
 ${OBJECTDIR}/robotcode/ConstReturnAction.o: robotcode/ConstReturnAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ConstReturnAction.o robotcode/ConstReturnAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ConstReturnAction.o robotcode/ConstReturnAction.cpp
 
 ${OBJECTDIR}/robotcode/ConstValueProgramItem.o: robotcode/ConstValueProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ConstValueProgramItem.o robotcode/ConstValueProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ConstValueProgramItem.o robotcode/ConstValueProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/IfProgramItem.o: robotcode/IfProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/IfProgramItem.o robotcode/IfProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/IfProgramItem.o robotcode/IfProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/MineAction.o: robotcode/MineAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineAction.o robotcode/MineAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineAction.o robotcode/MineAction.cpp
 
 ${OBJECTDIR}/robotcode/MineProgramItem.o: robotcode/MineProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineProgramItem.o robotcode/MineProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineProgramItem.o robotcode/MineProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/MineReturnAction.o: robotcode/MineReturnAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineReturnAction.o robotcode/MineReturnAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MineReturnAction.o robotcode/MineReturnAction.cpp
 
 ${OBJECTDIR}/robotcode/MoveAction.o: robotcode/MoveAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MoveAction.o robotcode/MoveAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MoveAction.o robotcode/MoveAction.cpp
 
 ${OBJECTDIR}/robotcode/MoveProgramItem.o: robotcode/MoveProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MoveProgramItem.o robotcode/MoveProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/MoveProgramItem.o robotcode/MoveProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/OperatorProgramItem.o: robotcode/OperatorProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/OperatorProgramItem.o robotcode/OperatorProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/OperatorProgramItem.o robotcode/OperatorProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/ProgramAction.o: robotcode/ProgramAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramAction.o robotcode/ProgramAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramAction.o robotcode/ProgramAction.cpp
 
 ${OBJECTDIR}/robotcode/ProgramItem.o: robotcode/ProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramItem.o robotcode/ProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramItem.o robotcode/ProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/ProgramItemStatus.o: robotcode/ProgramItemStatus.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramItemStatus.o robotcode/ProgramItemStatus.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ProgramItemStatus.o robotcode/ProgramItemStatus.cpp
 
 ${OBJECTDIR}/robotcode/ReturnAction.o: robotcode/ReturnAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ReturnAction.o robotcode/ReturnAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ReturnAction.o robotcode/ReturnAction.cpp
 
 ${OBJECTDIR}/robotcode/RobotProgram.o: robotcode/RobotProgram.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RobotProgram.o robotcode/RobotProgram.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RobotProgram.o robotcode/RobotProgram.cpp
 
 ${OBJECTDIR}/robotcode/RotateAction.o: robotcode/RotateAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RotateAction.o robotcode/RotateAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RotateAction.o robotcode/RotateAction.cpp
 
 ${OBJECTDIR}/robotcode/RotateProgramItem.o: robotcode/RotateProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RotateProgramItem.o robotcode/RotateProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/RotateProgramItem.o robotcode/RotateProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/SequenceProgramItem.o: robotcode/SequenceProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SequenceProgramItem.o robotcode/SequenceProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SequenceProgramItem.o robotcode/SequenceProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/SetVariableAction.o: robotcode/SetVariableAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SetVariableAction.o robotcode/SetVariableAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SetVariableAction.o robotcode/SetVariableAction.cpp
 
 ${OBJECTDIR}/robotcode/SetVariableProgramItem.o: robotcode/SetVariableProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SetVariableProgramItem.o robotcode/SetVariableProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SetVariableProgramItem.o robotcode/SetVariableProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/Value.o: robotcode/Value.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/Value.o robotcode/Value.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/Value.o robotcode/Value.cpp
 
 ${OBJECTDIR}/robotcode/ValueProgramItem.o: robotcode/ValueProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ValueProgramItem.o robotcode/ValueProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ValueProgramItem.o robotcode/ValueProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/ValueReturnAction.o: robotcode/ValueReturnAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ValueReturnAction.o robotcode/ValueReturnAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ValueReturnAction.o robotcode/ValueReturnAction.cpp
 
 ${OBJECTDIR}/robotcode/Variable.o: robotcode/Variable.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/Variable.o robotcode/Variable.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/Variable.o robotcode/Variable.cpp
 
 ${OBJECTDIR}/robotcode/VariableReturnAction.o: robotcode/VariableReturnAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableReturnAction.o robotcode/VariableReturnAction.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableReturnAction.o robotcode/VariableReturnAction.cpp
 
 ${OBJECTDIR}/robotcode/VariableStorage.o: robotcode/VariableStorage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableStorage.o robotcode/VariableStorage.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableStorage.o robotcode/VariableStorage.cpp
 
 ${OBJECTDIR}/robotcode/VariableValueProgramItem.o: robotcode/VariableValueProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableValueProgramItem.o robotcode/VariableValueProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/VariableValueProgramItem.o robotcode/VariableValueProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/WhileProgramItem.o: robotcode/WhileProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/WhileProgramItem.o robotcode/WhileProgramItem.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/WhileProgramItem.o robotcode/WhileProgramItem.cpp
 
 ${OBJECTDIR}/stdafx.o: stdafx.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stdafx.o stdafx.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stdafx.o stdafx.cpp
 
 # Subprojects
 .build-subprojects:
