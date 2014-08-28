@@ -52,8 +52,6 @@ protected:
     void writeGroundData(const CGround& ground);
     void writeOreData(const std::map<int, OreData>& oreData);
 
-    std::string getRobotColor(int iRobot);
-
 private:
     typedef std::list<CAnimationStep>       TAnimationStepList;
     typedef std::vector<TAnimationStepList> TRobotSteps;

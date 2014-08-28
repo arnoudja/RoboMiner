@@ -93,6 +93,12 @@ Tier:
                         <td colspan="2">${robotPart.powerUsage}</td>
                     </tr>
                 </c:if>
+                <c:if test="${robotPart.rechargeTime gt 0}">
+                    <tr>
+                        <td>Recharge time:</td>
+                        <td colspan="2">${robotPart.rechargeTime}</td>
+                    </tr>
+                </c:if>
                 <tr>
                     <td>Ore cost:</td>
                 </tr>

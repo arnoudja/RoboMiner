@@ -243,28 +243,28 @@ insert into RobotPartType (id, typeName) values (6, 'Engine');
 insert into OrePrice (id, description) values (101, 'Standard Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1011, 101, 1, 2);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (101, 1,      'Standard Ore Container', 101,        25,          10,     30,     1);
+               values (101, 1,      'Standard Ore Container', 101,        15,          10,     30,     1);
 
 insert into OrePrice (id, description) values (102, 'Enhanced Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1021, 102, 1, 10);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (102, 1,      'Enhanced Ore Container', 102,        40,          14,     45,     2);
+               values (102, 1,      'Enhanced Ore Container', 102,        25,          14,     45,     2);
 
 insert into OrePrice (id, description) values (103, 'Cerbonium Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1031, 103, 1, 100);
 insert into RobotPart (id,  typeId, partName,                  orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (103, 1,      'Cerbonium Ore Container', 103,        60,          15,     65,     3);
+               values (103, 1,      'Cerbonium Ore Container', 103,        30,          15,     65,     3);
 
 insert into OrePrice (id, description) values (110, 'Oxaria Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1102, 110, 2, 10);
 insert into RobotPart (id,  typeId, partName,               orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (110, 1,      'Oxaria Ore Container', 110,        70,          16,     75,     4);
+               values (110, 1,      'Oxaria Ore Container', 110,        35,          16,     75,     4);
 
 insert into OrePrice (id, description) values (111, 'Enhanced Oxaria Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1111, 111, 1, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1112, 111, 2, 100);
 insert into RobotPart (id,  typeId, partName,                        orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (111, 1,      'Enhanced Oxaria Ore Container', 111,        75,          18,     80,     5);
+               values (111, 1,      'Enhanced Oxaria Ore Container', 111,        40,          18,     80,     5);
 
 -- Mining units
 insert into OrePrice (id, description) values (201, 'Standard Mining Unit price');
@@ -381,26 +381,26 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6011, 601, 1,
 insert into RobotPart (id,  typeId, partName,    orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (601, 6,      'Engine 50', 601,        50,              50,               50,             8,      4,      8);
 
-insert into OrePrice (id, description) values (602, 'Engine 100 price');
+insert into OrePrice (id, description) values (602, 'Engine 70 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6021, 602, 1, 10);
-insert into RobotPart (id,  typeId, partName,     orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
-               values (602, 6,      'Engine 100', 602,        100,             100,              100,            10,     5,      12);
+insert into RobotPart (id,  typeId, partName,    orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (602, 6,      'Engine 70', 602,        70,              70,               70,             10,     5,      12);
 
-insert into OrePrice (id, description) values (603, 'Engine 150/50 price');
+insert into OrePrice (id, description) values (603, 'Engine 100/40 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6031, 603, 1, 100);
 insert into RobotPart (id,  typeId, partName,        orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
-               values (603, 6,      'Engine 150/50', 603,        150,             50,               50,             12,     7,      15);
+               values (603, 6,      'Engine 100/40', 603,        100,             40,               40,             12,     7,      15);
 
-insert into OrePrice (id, description) values (610, 'Engine 200 price');
+insert into OrePrice (id, description) values (610, 'Engine 80 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6102, 610, 2, 10);
-insert into RobotPart (id,  typeId, partName,     orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
-               values (610, 6,      'Engine 200', 610,        200,             200,              200,            14,     8,      22);
+insert into RobotPart (id,  typeId, partName,    orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (610, 6,      'Engine 80', 610,        80,              80,               80,             14,     8,      22);
 
-insert into OrePrice (id, description) values (611, 'Engine 180E price');
+insert into OrePrice (id, description) values (611, 'Engine 75E price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6111, 611, 1, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6112, 611, 2, 100);
 insert into RobotPart (id,  typeId, partName,     orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
-               values (611, 6,      'Engine 180', 611,        180,             180,              180,            14,     9,      16);
+               values (611, 6,      'Engine 75E', 611,        75,              75,               75,             14,     9,      12);
 
 
 -- AI player

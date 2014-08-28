@@ -97,7 +97,7 @@ void CAnimation::writeRobotsData(const TRobots& robotList)
             << "C:" << stepList.begin()->getOre(2) << ","
             << "size:" << robot.getSize() << ","
             << "maxore:" << robot.getMaxOre() << ","
-            << "color:" << getRobotColor(iRobot).c_str() << ","
+            << "maxturns:" << robot.getMaxTurns() << ","
             << "locations:[";
 
         bool first = true;
@@ -229,35 +229,4 @@ void CAnimation::writeOreData(const map<int, OreData>& oreData)
     }
     
     m_output << "};" << std::endl;
-}
-
-
-string CAnimation::getRobotColor(int iRobot)
-{
-    string result;
-
-    switch (iRobot)
-    {
-    case 0:
-        result = "'green'";
-        break;
-
-    case 1:
-        result = "'blue'";
-        break;
-
-    case 2:
-        result = "'red'";
-        break;
-
-    case 3:
-        result = "'yellow'";
-        break;
-
-    default:
-        assert(false);
-        break;
-    }
-
-    return result;
 }

@@ -10,14 +10,52 @@ function smoothen(v1, v2, t, i)
 }
 
 
-function drawRobot(robot, scale)
+function robotColor(robotNr)
+{
+    switch (robotNr)
+    {
+        case 0:
+            return '#00a000';
+            
+        case 1:
+            return '#0000ff';
+            
+        case 2:
+            return '#ff0000';
+            
+        case 3:
+            return '#ffff00';
+    }
+}
+
+
+function depletedRobotColor(robotNr)
+{
+    switch (robotNr)
+    {
+        case 0:
+            return '#002000';
+            
+        case 1:
+            return '#000050';
+            
+        case 2:
+            return '#400000';
+            
+        case 3:
+            return '#404000';
+    }
+}
+
+
+function drawRobot(robot, scale, turn)
 {
     var centerX = robot.x * scale + scale / 2;
     var centerY = robot.y * scale + scale / 2;
 
     myRallyContext.beginPath();
     myRallyContext.arc(centerX, centerY, robot.size * scale / 2, 0, 2 * Math.PI, false);
-    myRallyContext.fillStyle = robot.color;
+    myRallyContext.fillStyle = turn < robot.maxturns ? robotColor(robot.robotnr) : depletedRobotColor(robot.robotnr);
     myRallyContext.fill();
     myRallyContext.lineWidth = 2;
     myRallyContext.strokeStyle = 'black';
@@ -46,7 +84,7 @@ function drawRobotOre(robot)
     
     myOreContext[i].beginPath();
     myOreContext[i].rect(0, 0, myOreCanvas[i].width, myOreCanvas[i].height);
-    myOreContext[i].fillStyle = robot.color;
+    myOreContext[i].fillStyle = robotColor(robot.robotnr);
     myOreContext[i].fill();
 
     myOreContext[i].beginPath();
@@ -226,7 +264,7 @@ function animate(scale, startTime, stepTime)
     for (i = 0; i < myRobots.robot.length; i++)
     {
         updateRobotPosition(i, time, stepTime);
-        drawRobot(myRobots.robot[i], scale);
+        drawRobot(myRobots.robot[i], scale, Math.floor(time / stepTime));
         drawRobotOre(myRobots.robot[i]);
     }
 
@@ -248,7 +286,7 @@ function runanimation()
     for (i = 0; i < myRobots.robot.length; i++)
     {
         myRobots.robot[i].updatedTo = 0;
-        drawRobot(myRobots.robot[i], scale);
+        drawRobot(myRobots.robot[i], scale, 0);
         drawRobotOre(myRobots.robot[i]);
         myCycleText.value = "0";
     }
