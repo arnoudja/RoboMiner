@@ -29,6 +29,7 @@
 #include "Database.h"
 
 #include <ctime>
+#include <iostream>
 
 
 using namespace std;
@@ -86,9 +87,17 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
         CRobotProgram* robots[4];
         int miningQueueIds[4];
         
+        time_t now = time(NULL);
+        cout << ctime(&now) << " Staring rally in area " << miningArea.miningAreaId << " for users: ";
+        
         int iRobot = 0;
         for (list<CDatabase::MiningRallyItem>::const_iterator iter = miningRallyItems.begin(); iter != miningRallyItems.end() && iRobot < 4; ++iter, ++iRobot)
         {
+            if (iRobot > 0)
+            {
+                cout << ", ";
+            }
+            cout << iter->usersId;
             robots[iRobot] = new CRobotProgram(iter->sourceCode, iter->maxTurns, iter->maxOre,
                                                iter->miningSpeed, iter->cpuSpeed,
                                                iter->forwardSpeed, iter->backwardSpeed, iter->rotateSpeed,
@@ -98,6 +107,8 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
             rally.addRobot(*robots[iRobot]);
         }
 
+        cout << std::endl;
+        
         if (iRobot < 4)
         {
             // Add AI robots
@@ -138,6 +149,9 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
         }
         
         result = true;
+        
+        now = time(NULL);
+        cout << ctime(&now) << " Finished rally " << rallyResultId << std::endl;
     }
     
     return result;

@@ -157,7 +157,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         
         MiningArea miningArea = miningAreaFacade.find(miningAreaId);
         
-        if (robot != null && miningArea != null && robotMiningQueueList.size() < 5) {
+        if (robot != null && miningArea != null && robotMiningQueueList.size() < 10) {
             
             try {
                 

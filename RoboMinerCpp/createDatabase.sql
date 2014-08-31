@@ -386,140 +386,140 @@ insert into RobotPart (id,  typeId, partName,           orePriceId, batteryCapac
 insert into OrePrice (id, description) values (302, 'Enhanced Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3021, 302, 1, 10);
 insert into RobotPart (id,  typeId, partName,           orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (302, 3,      'Enhanced Battery', 302,        3500,            10,           3,      3,      0);
+               values (302, 3,      'Enhanced Battery', 302,        4000,            10,           3,      3,      0);
 
 insert into OrePrice (id, description) values (303, 'Cerbonium Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3031, 303, 1, 100);
 insert into RobotPart (id,  typeId, partName,            orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (303, 3,      'Cerbonium Battery', 303,        5000,            15,           4,      3,      0);
+               values (303, 3,      'Cerbonium Battery', 303,        6000,            15,           4,      3,      0);
 
 insert into OrePrice (id, description) values (310, 'Oxaria Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3102, 310, 2, 10);
 insert into RobotPart (id,  typeId, partName,         orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (310, 3,      'Oxaria Battery', 310,        8000,            30,           5,      3,      0);
+               values (310, 3,      'Oxaria Battery', 310,        9500,            30,           5,      3,      0);
 
 insert into OrePrice (id, description) values (311, 'Enhanced Oxaria Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3111, 311, 1, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3112, 311, 2, 25);
 insert into RobotPart (id,  typeId, partName,                  orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (311, 3,      'Enhanced Oxaria Battery', 311,        10000,           60,           5,      3,      0);
+               values (311, 3,      'Enhanced Oxaria Battery', 311,        18000,           60,           5,      3,      0);
 
 insert into OrePrice (id, description) values (312, 'Fast Charge Oxaria Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3121, 312, 1, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3122, 312, 2, 50);
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (312, 3,      'Fast Charge Oxaria Battery', 312,        9500,            30,           5,      4,      0);
+               values (312, 3,      'Fast Charge Oxaria Battery', 312,        17000,           30,           5,      4,      0);
 
 insert into OrePrice (id, description) values (320, 'Lithabine Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3201, 320, 1, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3202, 320, 2, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3203, 320, 3, 10);
 insert into RobotPart (id,  typeId, partName,            orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (320, 3,      'Lithabine Battery', 320,        12000,           45,           6,      5,      0);
+               values (320, 3,      'Lithabine Battery', 320,        22000,           45,           6,      5,      0);
 
 insert into OrePrice (id, description) values (321, 'Enhanced Lithabine Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3211, 321, 1, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3212, 321, 2, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3213, 321, 3, 25);
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (321, 3,      'Enhanced Lithabine Battery', 321,        14000,           60,           7,      6,      0);
+               values (321, 3,      'Enhanced Lithabine Battery', 321,        25000,           60,           7,      6,      0);
 
 insert into OrePrice (id, description) values (330, 'Neudralion Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3302, 330, 2, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3303, 330, 3, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3304, 330, 4, 10);
 insert into RobotPart (id,  typeId, partName,             orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (330, 3,      'Neudralion Battery', 330,        16000,           90,           8,      7,      0);
+               values (330, 3,      'Neudralion Battery', 330,        29000,           90,           8,      7,      0);
 
 insert into OrePrice (id, description) values (331, 'Enhanced Neudralion Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3312, 331, 2, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3313, 331, 3, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3314, 331, 4, 25);
 insert into RobotPart (id,  typeId, partName,                      orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (331, 3,      'Enhanced Neudralion Battery', 331,        18000,           120,          9,      8,      0);
+               values (331, 3,      'Enhanced Neudralion Battery', 331,        32000,           120,          9,      8,      0);
 
 insert into OrePrice (id, description) values (340, 'Complatix Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3403, 340, 3, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3404, 340, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3405, 340, 5, 10);
 insert into RobotPart (id,  typeId, partName,            orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (340, 3,      'Complatix Battery', 340,        22000,           180,          10,     9,      0);
+               values (340, 3,      'Complatix Battery', 340,        39000,           180,          10,     9,      0);
 
 insert into OrePrice (id, description) values (341, 'Enhanced Complatix Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3413, 341, 3, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3414, 341, 4, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3415, 341, 5, 25);
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (341, 3,      'Enhanced Complatix Battery', 341,        25000,           240,          11,     10,      0);
+               values (341, 3,      'Enhanced Complatix Battery', 341,        45000,           240,          11,     10,      0);
 
 -- Memory modules
-insert into OrePrice (id, description) values (401, 'Memory Module 5 price');
+insert into OrePrice (id, description) values (401, 'Memory Module 8 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4011, 401, 1, 2);
 insert into RobotPart (id,  typeId, partName,          orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (401, 4,      'Memory Module 5', 401,        5,              1,      1,      1);
+               values (401, 4,      'Memory Module 8', 401,        8,              1,      1,      1);
 
-insert into OrePrice (id, description) values (402, 'Memory Module 12 price');
+insert into OrePrice (id, description) values (402, 'Memory Module 16 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4021, 402, 1, 10);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (402, 4,      'Memory Module 12', 402,        12,             1,      1,      2);
+               values (402, 4,      'Memory Module 16', 402,        16,             1,      1,      2);
 
-insert into OrePrice (id, description) values (403, 'Memory Module 19 price');
+insert into OrePrice (id, description) values (403, 'Memory Module 24 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4031, 403, 1, 100);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (403, 4,      'Memory Module 19', 403,        19,             1,      1,      3);
+               values (403, 4,      'Memory Module 24', 403,        24,             1,      1,      3);
 
-insert into OrePrice (id, description) values (410, 'Memory Module 25 price');
+insert into OrePrice (id, description) values (410, 'Memory Module 32 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4102, 410, 2, 10);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (410, 4,      'Memory Module 25', 410,        25,             1,      1,      4);
+               values (410, 4,      'Memory Module 32', 410,        32,             1,      1,      4);
 
-insert into OrePrice (id, description) values (411, 'Memory Module 32 price');
+insert into OrePrice (id, description) values (411, 'Memory Module 48 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4111, 411, 1, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4112, 411, 2, 25);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (411, 4,      'Memory Module 32', 411,        32,             1,      1,      5);
+               values (411, 4,      'Memory Module 48', 411,        48,             1,      1,      5);
 
-insert into OrePrice (id, description) values (420, 'Memory Module 40 price');
+insert into OrePrice (id, description) values (420, 'Memory Module 64 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4201, 420, 1, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4202, 420, 2, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4203, 420, 3, 10);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (420, 4,      'Memory Module 40', 420,        40,             1,      1,      6);
+               values (420, 4,      'Memory Module 64', 420,        64,             1,      1,      6);
 
-insert into OrePrice (id, description) values (421, 'Memory Module 52 price');
+insert into OrePrice (id, description) values (421, 'Memory Module 96 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4211, 421, 1, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4212, 421, 2, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4213, 421, 3, 25);
 insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (421, 4,      'Memory Module 52', 421,        52,             1,      1,      7);
+               values (421, 4,      'Memory Module 96', 421,        96,             1,      1,      7);
 
-insert into OrePrice (id, description) values (430, 'Memory Module 65 price');
+insert into OrePrice (id, description) values (430, 'Memory Module 128 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4302, 430, 2, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4303, 430, 3, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4304, 430, 4, 10);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (430, 4,      'Memory Module 65', 430,        65,             1,      1,      8);
+insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (430, 4,      'Memory Module 128', 430,        128,            1,      1,      8);
 
-insert into OrePrice (id, description) values (431, 'Memory Module 78 price');
+insert into OrePrice (id, description) values (431, 'Memory Module 196 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4312, 431, 2, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4313, 431, 3, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4314, 431, 4, 25);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (431, 4,      'Memory Module 78', 431,        78,             1,      1,      9);
+insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (431, 4,      'Memory Module 196', 431,        196,            1,      1,      9);
 
-insert into OrePrice (id, description) values (440, 'Memory Module 94 price');
+insert into OrePrice (id, description) values (440, 'Memory Module 256 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4403, 440, 3, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4404, 440, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4405, 440, 5, 10);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (440, 4,      'Memory Module 94', 440,        94,             1,      1,      10);
+insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (440, 4,      'Memory Module 256', 440,        256,            1,      1,      10);
 
-insert into OrePrice (id, description) values (441, 'Memory Module 110 price');
+insert into OrePrice (id, description) values (441, 'Memory Module 384 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4413, 441, 3, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4414, 441, 4, 150);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4415, 441, 5, 25);
 insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (441, 4,      'Memory Module 110', 441,        110,            1,      1,      11);
+               values (441, 4,      'Memory Module 384', 441,        384,            1,      1,      11);
 
 -- CPUs
 insert into OrePrice (id, description) values (501, 'CPU 1 ipc price');
@@ -667,8 +667,14 @@ values (1, 1, 'AI-1', 'move(1.5); while (mine());',
 insert into Robot (id, usersId, robotName, sourceCode,
  rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
 values (2, 1, 'AI-2', 'if (move(1.5) >= 1) { while (mine()); } else { move(-1); rotate(20); }',
- 0,            50,     2,           200,      2,        2,            2,             25,          3);
+ 0,            50,     2,           300,      2,        2,            2,             25,          3);
 
+insert into Robot (id, usersId, robotName,
+ sourceCode,
+ rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
+values (3, 1, 'AI-3', 
+'int rot = 0; while (true) { if (rot) { if (rot <= 90) { rotate(rot); } rot = rot - 10; } if (move(1.5) < 1) { move(-1); rotate(24); } while (mine()) { rot = 100; } }',
+ 0,            50,     2,           500,      5,        2,            2,             25,          3);
 
 -- Mining areas
 
@@ -676,88 +682,88 @@ values (2, 1, 'AI-2', 'if (move(1.5) >= 1) { while (mine()); } else { move(-1); 
 insert into OrePrice (id, description) values (1001, 'Mining Area Cerbonium-1 price');
 insert into MiningArea (id, areaName,        orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (1001, 'Cerbonium-1', 1001,       20,    20,    150,      30,         25,      1);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1001, 1, 50, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1001, 1, 40, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1001, 1, 20, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1001, 1, 20, 4);
 
 insert into OrePrice (id, description) values (1002, 'Mining Area Cerbonium-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10021, 1002, 1, 5);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10021, 1002, 1, 2);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1002, 'Cerbonium-2', 1002,       20,    20,    200,      30,         0,       1);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 40, 2);
+                values (1002, 'Cerbonium-2', 1002,       25,    25,    200,      30,         0,       1);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 3);
 
 -- Oxaria
 insert into OrePrice (id, description) values (1101, 'Mining Area Oxaria-1 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11011, 1101, 1, 25);
 insert into MiningArea (id,   areaName,   orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1101, 'Oxaria-1', 1101,       25,    25,    200,      45,         25,      1);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 10, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 10, 3);
+                values (1101, 'Oxaria-1', 1101,       30,    30,    250,      45,         25,      2);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 1, 20, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 10, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 5,  4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 5,  4);
 
 insert into OrePrice (id, description) values (1102, 'Mining Area Oxaria-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11021, 1102, 1, 100);
 insert into MiningArea (id,   areaName,   orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1102, 'Oxaria-2', 1102,       30,    30,    250,      90,         50,      2);
+                values (1102, 'Oxaria-2', 1102,       35,    35,    300,      90,         50,      2);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 1, 20, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 20, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
 
 -- Lithabine
 insert into OrePrice (id, description) values (1201, 'Mining Area Lithabine-1 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12011, 1201, 2, 25);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1201, 'Lithabine-1', 1201,       30,    30,    300,      120,        25,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 2, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 10, 3);
+                values (1201, 'Lithabine-1', 1201,       40,    40,    350,      120,        25,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 1, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 2, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 4);
 
 insert into OrePrice (id, description) values (1202, 'Mining Area Lithabine-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 2, 25);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1202, 'Lithabine-2', 1202,       35,    35,    300,      120,        50,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 10, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 10, 3);
+                values (1202, 'Lithabine-2', 1202,       45,    45,    400,      120,        50,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
 
 -- Neudralion
 insert into OrePrice (id, description) values (1301, 'Mining Area Neudralion-1 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13011, 1301, 3, 25);
 insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1301, 'Neudralion-1', 1301,       40,    40,    400,      300,        25,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 2, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 3, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 10, 3);
+                values (1301, 'Neudralion-1', 1301,       50,    50,    450,      300,        25,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 2, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 3, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 5, 5);
 
 insert into OrePrice (id, description) values (1302, 'Mining Area Neudralion-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13021, 1302, 3, 25);
 insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1302, 'Neudralion-2', 1302,       45,    45,    500,     420,        50,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 2, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 3, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 10, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 10, 3);
+                values (1302, 'Neudralion-2', 1302,       55,    55,    500,     420,        50,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 2, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 3, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
 
 -- Complatix
 insert into OrePrice (id, description) values (1401, 'Mining Area Complatix-1 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14011, 1401, 4, 25);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1401, 'Complatix-1', 1401,       50,    50,    600,      900,        25,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 3, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 4, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 10, 3);
+                values (1401, 'Complatix-1', 1401,       60,    60,    600,      900,        25,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 3, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 4, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 5, 5);
 
 insert into OrePrice (id, description) values (1402, 'Mining Area Complatix-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14021, 1402, 4, 25);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1402, 'Complatix-2', 1402,       55,    55,    800,      3600,       50,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 3, 50, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 4, 20, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 10, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 10, 3);
+                values (1402, 'Complatix-2', 1402,       65,    65,    700,      3600,       50,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 3, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 4, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
 
 -- Calculate the tier levels
 update RobotPart set tierId = (select max(OrePriceAmount.oreId) from OrePriceAmount where OrePriceAmount.orePriceId = RobotPart.orePriceId);
@@ -771,6 +777,11 @@ values
 
 insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
                    values (1,  2,       'Default',
+'move(1);
+mine();', TRUE);
+
+insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
+                   values (2,  2,       'Test',
 '{
    int i = 1;
    while (true)
@@ -785,9 +796,29 @@ insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
 }', TRUE);
 
 insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
-                   values (2,  2,       'Test',
-'move(1);
-mine();', TRUE);
+                   values (3,  2,       'Test-2',
+'int rot = 0;
+
+while (true)
+{
+    if (rot)
+    {
+        if (rot <= 90)
+        {
+            rotate(rot);
+        }
+        rot = rot - 10;
+    }
+    if (move(1.5) < 1)
+    {
+        move(-1);
+        rotate(14);
+    }
+    while (mine())
+    {
+        rot = 100;
+    }
+}', TRUE);
 
 insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 101, 1, 0);
 insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 201, 1, 0);
@@ -826,3 +857,9 @@ mine();', 1,
  102, 202, 302, 402, 502, 602,
  20, 200, 3, 100, 20, 2,
  10, 10, 10, 10);
+
+insert into UserOreAsset (usersId, oreId, amount) values (2, 1, 9999);
+insert into UserOreAsset (usersId, oreId, amount) values (2, 2, 9999);
+insert into UserOreAsset (usersId, oreId, amount) values (2, 3, 9999);
+insert into UserOreAsset (usersId, oreId, amount) values (2, 4, 9999);
+insert into UserOreAsset (usersId, oreId, amount) values (2, 5, 9999);

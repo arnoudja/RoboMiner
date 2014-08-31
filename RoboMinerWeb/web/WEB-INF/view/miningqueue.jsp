@@ -32,7 +32,7 @@
     function addMiningQueueItem() {
         var robotId = parseInt(document.getElementById('robotId').value);
         
-        if (robotQueueSize(robotId) >= 5) {
+        if (robotQueueSize(robotId) >= 10) {
             alert('Maximum queue size reached for this robot.');
         }
         else {
