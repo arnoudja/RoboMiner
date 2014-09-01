@@ -142,7 +142,12 @@ CWhileProgramItem* CWhileProgramItem::compile(CCompileInput& input, bool& termin
                 throw error.str();
             }
 
-            body = CProgramItem::compile(input, terminated);
+            terminated = input.eatChar(';');
+
+            if (!terminated)
+            {
+                body = CProgramItem::compile(input, terminated);
+            }
 
             result = new CWhileProgramItem(condition, body);
         }

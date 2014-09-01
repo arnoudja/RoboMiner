@@ -97,6 +97,12 @@ public:
                 result = (m_leftValue.getDoubleValue() == m_rightValue.getDoubleValue());
                 break;
 
+            case COperatorProgramItem::eAnd:
+            case COperatorProgramItem::eOr:
+            case COperatorProgramItem::eNot:
+                result = calculateBoolResult(operatorType);
+                break;
+
             default:
                 result = .0;
                 break;
@@ -155,6 +161,12 @@ public:
                 result = (m_leftValue.getIntValue() == m_rightValue.getIntValue());
                 break;
 
+            case COperatorProgramItem::eAnd:
+            case COperatorProgramItem::eOr:
+            case COperatorProgramItem::eNot:
+                result = calculateBoolResult(operatorType);
+                break;
+
             default:
                 result = 0;
                 break;
@@ -211,6 +223,18 @@ public:
 
             case COperatorProgramItem::eEqual:
                 result = (m_leftValue.getBoolValue() == m_rightValue.getBoolValue());
+                break;
+
+            case COperatorProgramItem::eAnd:
+                result = (m_leftValue.getBoolValue() && m_rightValue.getBoolValue());
+                break;
+
+            case COperatorProgramItem::eOr:
+                result = (m_leftValue.getBoolValue() || m_rightValue.getBoolValue());
+                break;
+
+            case COperatorProgramItem::eNot:
+                result = !(m_rightValue.getBoolValue());
                 break;
 
             default:
@@ -272,15 +296,26 @@ CProgramAction* COperatorProgramItem::getNextAction(const CRobot* robot, CProgra
 
     if (!status)
     {
-        status = new COperatorStatus();
-        action = new CCallAction(m_leftValueProgramItem);
+        COperatorStatus* currentStatus = new COperatorStatus();
+        
+        if (m_leftValueProgramItem)
+        {
+            action = new CCallAction(m_leftValueProgramItem);
+        }
+        else
+        {
+            currentStatus->setGotLeft();
+            action = new CCallAction(m_rightValueProgramItem);
+        }
+        
+        status = currentStatus;
     }
     else
     {
         COperatorStatus* currentStatus = dynamic_cast<COperatorStatus*>(status);
         assert(currentStatus);
 
-        if (!currentStatus->hasGotLeft())
+        if (!currentStatus->hasGotLeft() && m_rightValueProgramItem)
         {
             currentStatus->setGotLeft();
             action = new CCallAction(m_rightValueProgramItem);
@@ -363,6 +398,14 @@ CValueProgramItem* COperatorProgramItem::compile(CCompileInput& input)
             {
                 nextOperator = eSmaller;
             }
+            else if (input.eatSequence("&&"))
+            {
+                nextOperator = eAnd;
+            }
+            else if (input.eatSequence("||"))
+            {
+                nextOperator = eOr;
+            }
 
             if (nextOperator == eUndefinedOperator)
             {
@@ -428,6 +471,19 @@ CValueProgramItem* COperatorProgramItem::compileSingleValue(CCompileInput& input
             throw error.str();
         }
     }
+    else if (input.eatChar('!'))
+    {
+        CValueProgramItem* value = compileSingleValue(input);
+
+        if (!value)
+        {
+            stringstream error;
+            error << "Syntax error at line " << input.getCurrentLine() << ". expression expected";
+            throw error.str();
+        }
+
+        result = new COperatorProgramItem(eNot, NULL, value);
+    }
     else
     {
         result = CValueProgramItem::compileSingleValue(input);
@@ -443,13 +499,17 @@ int COperatorProgramItem::operatorPriority(EOperatorType operatorType)
 
     switch (operatorType)
     {
-    case eAddition:
-    case eSubtraction:
-        result = 2;
+    case eNot:
+        result = 5;
         break;
 
     case eMultiply:
     case eDivision:
+        result = 4;
+        break;
+
+    case eAddition:
+    case eSubtraction:
         result = 3;
         break;
 
@@ -458,9 +518,14 @@ int COperatorProgramItem::operatorPriority(EOperatorType operatorType)
     case eLargerEqual:
     case eSmallerEqual:
     case eEqual:
-        result = 1;
+        result = 2;
         break;
 
+    case eAnd:
+    case eOr:
+        result = 1;
+        break;
+            
     default:
         result = 0;
         break;

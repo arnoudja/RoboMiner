@@ -214,6 +214,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <td class="helptable">The result is true if and only if value_1 is equal to value_2.</td>
                 </tr>
             </table>
+            <h3>Binary expressions</h3>
+            <table class="helptable">
+                <tr>
+                    <th class="helptable">Operator</th>
+                    <th class="helptable">Example</th>
+                    <th class="helptable">Description</th>
+                </tr>
+                <tr>
+                    <td class="helptable">&amp;&amp;</td>
+                    <td class="helptable">value_1 &amp;&amp; value_2</td>
+                    <td class="helptable">The result is true if and only if both value_1 and value_2 are true.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">||</td>
+                    <td class="helptable">value_1 || value_2</td>
+                    <td class="helptable">The result is true if and only if value_1 and/or value_2 is true.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">!</td>
+                    <td class="helptable">!value</td>
+                    <td class="helptable">The result is true if and only if value is false.</td>
+                </tr>
+            </table>
             <h2>Variables</h2>
             <p class="helptext">Variables can be used to store values. Later on in the program, the value can be changed or used in an expression.</p>
             <p class="helptext">The first step in using a variable is to declare it. After that, its value can be changed and it can be used in expressions.</p>
@@ -242,6 +265,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </table>
             <p class="helptext">Example:</p>
             <p class="helptext">int miningAmount = mine();</p>
+            <h3>Variable assignment</h3>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">&lt;name&gt; = &lt;value&gt;</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Name:</td>
+                    <td class="helptable">The name of an existing variable.</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Value:</td>
+                    <td class="helptable">A fixed value of the right type or an expression.</td>
+                    <td class="helptable">When the value is not of the same type as the variable, the value is converted.</td>
+                </tr>
+            </table>
+            <p class="helptext">Example:</p>
+            <p class="helptext">miningAmount = mine();</p>
             <h3>Variable usage</h3>
             <p class="helptext">Variables can be used instead of fixed values in expressions.</p>
             <h3>Variable scope</h3>

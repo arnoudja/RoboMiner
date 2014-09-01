@@ -39,6 +39,9 @@ namespace robotcode
             eLargerEqual,
             eSmallerEqual,
             eEqual,
+            eAnd,
+            eOr,
+            eNot,
             eUndefinedOperator
         };
 

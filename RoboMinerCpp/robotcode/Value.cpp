@@ -51,11 +51,6 @@ CValue::CValue(double value) :
 }
 
 
-CValue::~CValue()
-{
-}
-
-
 double CValue::getDoubleValue() const
 {
     double result = .0;

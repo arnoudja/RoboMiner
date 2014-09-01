@@ -36,7 +36,7 @@ namespace robotcode
         CValue(bool value);
         CValue(int value);
         CValue(double value);
-        virtual ~CValue();
+        virtual ~CValue()                       {}
 
         EValueType  getValueType() const        { return m_valueType; }
         double      getDoubleValue() const;
