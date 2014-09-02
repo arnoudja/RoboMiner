@@ -32,7 +32,7 @@ namespace robotcode
     {
     public:
         CCompileInput(const std::string& source);
-        virtual ~CCompileInput();
+        virtual ~CCompileInput()                        {}
 
         int getCurrentLine() const                      { return m_currentLine; }
 

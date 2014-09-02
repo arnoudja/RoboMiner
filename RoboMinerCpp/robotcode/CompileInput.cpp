@@ -28,15 +28,10 @@ using namespace robotcode;
 
 
 CCompileInput::CCompileInput(const std::string& source) :
-    m_sourceStream("{" + source + "}", ios_base::in),
+    m_sourceStream("{" + source + "\n}", ios_base::in),
     m_currentLine(1)
 {
     extractNextWord();
-}
-
-
-CCompileInput::~CCompileInput()
-{
 }
 
 
@@ -302,6 +297,26 @@ void CCompileInput::skipWhitespace()
         case '\n':
             skip = true;
             ++m_currentLine;
+            break;
+
+        case '/':
+            // Treat '//' as comment till the end of line
+            m_sourceStream.get();
+            if (m_sourceStream.peek() == '/')
+            {
+                while (!m_sourceStream.eof() && m_sourceStream.peek() != '\n')
+                {
+                    m_sourceStream.get();
+                }
+
+                ++m_currentLine;
+                skip = true;
+            }
+            else
+            {
+                m_sourceStream.putback('/');
+                skip = false;
+            }
             break;
         }
 
