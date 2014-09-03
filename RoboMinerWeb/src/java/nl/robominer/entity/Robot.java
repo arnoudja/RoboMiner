@@ -50,7 +50,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r"),
     @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id"),
     @NamedQuery(name = "Robot.findByIdAndUser", query = "SELECT r FROM Robot r WHERE r.id = :id AND r.user.id = :usersId"),
-    @NamedQuery(name = "Robot.findByUsersId", query = "SELECT r FROM Robot r WHERE r.user.id = :usersId")})
+    @NamedQuery(name = "Robot.findByUsersId", query = "SELECT r FROM Robot r WHERE r.user.id = :usersId"),
+    @NamedQuery(name = "Robot.findByProgramAndUser", query = "SELECT r FROM Robot r WHERE r.programSourceId = :programSourceId AND r.user.id = :usersId")})
 public class Robot implements Serializable {
 
     private static final long serialVersionUID = 1L;

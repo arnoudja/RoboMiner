@@ -60,8 +60,15 @@
 </form>
 <input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
 <textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
-<c:if test="${not empty programSource.errorDescription}">
-    <script>
-        alert(htmlDecode("${fn:escapeXml(programSource.errorDescription)}"));
-    </script>
-</c:if>
+<c:choose>
+    <c:when test="${not empty programSource.errorDescription}">
+        <script>
+            alert(htmlDecode("${fn:escapeXml(programSource.errorDescription)}"));
+        </script>
+    </c:when>
+    <c:when test="${not empty errorMessage}">
+        <script>
+            alert(htmlDecode("${fn:escapeXml(errorMessage)}"));
+        </script>
+    </c:when>
+</c:choose>

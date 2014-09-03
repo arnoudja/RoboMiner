@@ -218,6 +218,7 @@ public class LoginServlet extends RoboMinerServletBase {
         robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
         robot.setRobotName("Robot1");
         robot.setUser(user);
+        robot.setProgramSourceId(programSource.getId());
         robotFacade.create(robot);
     }
 

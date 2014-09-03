@@ -26,9 +26,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.ProgramSource;
+import nl.robominer.entity.Robot;
+import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RoboMinerCppBean;
+import nl.robominer.session.RobotFacade;
 
 /**
  *
@@ -39,6 +43,12 @@ public class EditCodeServlet extends RoboMinerServletBase {
 
     @EJB
     private ProgramSourceFacade programSourceFacade;
+    
+    @EJB
+    private RobotFacade robotFacade;
+    
+    @EJB
+    private MiningQueueFacade miningQueueFacade;
     
     @EJB
     private RoboMinerCppBean roboMinerCppBean;
@@ -66,7 +76,10 @@ public class EditCodeServlet extends RoboMinerServletBase {
         if (sourceName != null && sourceCode != null) {
             
             if (programSourceId > 0) {
-                updateProgramSource(userId, programSourceId, sourceName, sourceCode);
+                String errorMessage = updateProgramSource(userId, programSourceId, sourceName, sourceCode);
+                if (!errorMessage.isEmpty()) {
+                    request.setAttribute("errorMessage", errorMessage);
+                }
             }
             else {
                 
@@ -112,10 +125,12 @@ public class EditCodeServlet extends RoboMinerServletBase {
         request.getRequestDispatcher("/WEB-INF/view/editcode.jsp").forward(request, response);
     }
 
-    private void updateProgramSource(int userId, int programSourceId, String sourceName, String sourceCode) {
+    private String updateProgramSource(int userId, int programSourceId, String sourceName, String sourceCode) {
         
         ProgramSource programSource = programSourceFacade.find(programSourceId);
         
+        StringBuilder errorMessage = new StringBuilder();
+            
         if (programSource != null && programSource.getUsersId() == userId) {
 
             programSource.setSourceName(sourceName);
@@ -124,7 +139,41 @@ public class EditCodeServlet extends RoboMinerServletBase {
 
             programSourceFacade.edit(programSource);
             roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
+
+            // Reload the verified version
+            programSource = programSourceFacade.findByIdAndUser(programSourceId, userId);
+
+            if (programSource.getVerified()) {
+
+                List<Robot> robotList = robotFacade.findByProgramAndUser(programSourceId, userId);
+
+                for (Robot robot : robotList) {
+
+                    List<MiningQueue> miningQueue = miningQueueFacade.findWaitingByRobotId(robot.getId());
+
+                    if (miningQueue.isEmpty() && robot.getMemorySize() >= programSource.getCompiledSize()) {
+
+                        robot.setSourceCode(programSource.getSourceCode());
+                        robotFacade.edit(robot);
+                    }
+                    else {
+
+                        errorMessage.append("Unable to apply the code to robot ").append(robot.getRobotName()).append(": ");
+
+                        if (robot.getMemorySize() < programSource.getCompiledSize()) {
+                            errorMessage.append("Not enough memory.");
+                        }
+                        else {
+                            errorMessage.append("The robot is busy.");
+                        }
+
+                        errorMessage.append("\\n");
+                    }
+                }
+            }
         }
+        
+        return errorMessage.toString();
     }
     
     private int addProgramSource(int userId, String sourceName, String sourceCode) {

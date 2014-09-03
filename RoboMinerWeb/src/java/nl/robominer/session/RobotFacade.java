@@ -57,9 +57,17 @@ public class RobotFacade extends AbstractFacade<Robot> {
     }
     
     public List<Robot> findByUsersId(int usersId) {
+
         Query query = getEntityManager().createNamedQuery("Robot.findByUsersId", Robot.class);
         query.setParameter("usersId", usersId);
         return query.getResultList();
     }
     
+    public List<Robot> findByProgramAndUser(int programSourceId, int usersId) {
+        
+        Query query = getEntityManager().createNamedQuery("Robot.findByProgramAndUser", Robot.class);
+        query.setParameter("programSourceId", programSourceId);
+        query.setParameter("usersId", usersId);
+        return query.getResultList();
+    }
 }
