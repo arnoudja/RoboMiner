@@ -130,3 +130,47 @@ bool CValue::getBoolValue() const
 
     return result;
 }
+
+
+void CValue::incrementValue()
+{
+    switch (m_valueType)
+    {
+    case eBoolValue:
+        m_boolValue = !m_boolValue;
+        break;
+
+    case eIntValue:
+        ++m_intValue;
+        break;
+
+    case eDoubleValue:
+        m_doubleValue += 1.0;
+        break;
+
+    default:
+        break;
+    }
+}
+
+
+void CValue::decrementValue()
+{
+    switch (m_valueType)
+    {
+    case eBoolValue:
+        m_boolValue = !m_boolValue;
+        break;
+
+    case eIntValue:
+        --m_intValue;
+        break;
+
+    case eDoubleValue:
+        m_doubleValue -= 1.0;
+        break;
+
+    default:
+        break;
+    }
+}

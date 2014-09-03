@@ -31,11 +31,6 @@ CVariableStorage::CVariableStorage() :
 }
 
 
-CVariableStorage::~CVariableStorage()
-{
-}
-
-
 void CVariableStorage::setScopeDepth(int depth)
 {
     m_currentScopeLevel = depth;
@@ -49,9 +44,25 @@ void CVariableStorage::setScopeDepth(int depth)
 }
 
 
-const CVariable* CVariableStorage::getVariable(const string& variableName) const
+CVariable* CVariableStorage::getVariable(const string& variableName)
 {
-    return const_cast<CVariableStorage*>(this)->findVariable(variableName);
+    CVariable* result = NULL;
+    int        scopeLevel = -1;
+
+    for (TScopedVariables::iterator scopeIter = m_variables.begin(); scopeIter != m_variables.end(); ++scopeIter)
+    {
+        TVariables::iterator iter = scopeIter->second.find(variableName);
+
+        if (iter != scopeIter->second.end())
+        {
+            if (scopeLevel < scopeIter->first)
+            {
+                result = &(iter->second);
+            }
+        }
+    }
+
+    return result;
 }
 
 
@@ -63,7 +74,7 @@ void CVariableStorage::addVariable(const string& variableName, CValue::EValueTyp
 
 void CVariableStorage::updateValue(const std::string& variableName, const CValue& value)
 {
-    CVariable* variable = findVariable(variableName);
+    CVariable* variable = getVariable(variableName);
 
     if (variable)
     {
@@ -93,28 +104,6 @@ list<string> CVariableStorage::getVariableList() const
         for (TVariables::const_iterator variableIter = scopeIter->second.begin(); variableIter != scopeIter->second.end(); ++variableIter)
         {
             result.push_back(variableIter->first);
-        }
-    }
-
-    return result;
-}
-
-
-CVariable* CVariableStorage::findVariable(const string& variableName)
-{
-    CVariable* result = NULL;
-    int        scopeLevel = -1;
-
-    for (TScopedVariables::iterator scopeIter = m_variables.begin(); scopeIter != m_variables.end(); ++scopeIter)
-    {
-        TVariables::iterator iter = scopeIter->second.find(variableName);
-
-        if (iter != scopeIter->second.end())
-        {
-            if (scopeLevel < scopeIter->first)
-            {
-                result = &(iter->second);
-            }
         }
     }
 

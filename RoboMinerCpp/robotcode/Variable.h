@@ -30,10 +30,13 @@ namespace robotcode
     public:
         CVariable();
         CVariable(const std::string& name, CValue::EValueType variableType, const CValue& value);
-        virtual ~CVariable();
+        virtual ~CVariable()                            {}
 
-        const CValue& getValue() const      { return m_value; }
+        const CValue& getValue() const                  { return m_value; }
         void setValue(const CValue& value);
+
+        void incrementValue()                           { m_value.incrementValue(); }
+        void decrementValue()                           { m_value.decrementValue(); }
 
     private:
         std::string         m_variableName;

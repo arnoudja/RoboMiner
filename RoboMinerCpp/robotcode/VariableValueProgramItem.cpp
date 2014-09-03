@@ -28,26 +28,32 @@ using namespace std;
 using namespace robotcode;
 
 
-CVariableValueProgramItem::CVariableValueProgramItem(const string& variableName) :
-    m_variableName(variableName)
-{
-}
-
-
-CVariableValueProgramItem::~CVariableValueProgramItem()
+CVariableValueProgramItem::CVariableValueProgramItem(const string& variableName, EVariableOperator variableOperator) :
+    m_variableName(variableName),
+    m_variableOperator(variableOperator)
 {
 }
 
 
 CProgramAction* CVariableValueProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
+    CProgramAction* action = NULL;
+
     if (!status)
     {
         status = new CProgramItemStatus();
-    }
 
-    CVariableReturnAction* action = new CVariableReturnAction(m_variableName);
-    status->adoptProgramAction(action);
+        if (m_variableOperator == eNone)
+        {
+            action = new CVariableReturnAction(m_variableName);
+            status->adoptProgramAction(action);
+        }
+    }
+    else
+    {
+        action = new CVariableReturnAction(m_variableName, m_variableOperator);
+        status->adoptProgramAction(action);
+    }
 
     return action;
 }
@@ -57,14 +63,49 @@ CVariableValueProgramItem* CVariableValueProgramItem::compile(CCompileInput& inp
 {
     CVariableValueProgramItem* result = NULL;
 
+    EVariableOperator variableOperator = eNone;
+
+    if (input.eatSequence("++"))
+    {
+        variableOperator = ePreIncrement;
+    }
+    else if (input.eatSequence("--"))
+    {
+        variableOperator = ePreDecrement;
+    }
+
+    string variableName;
     list<string> variableNames = input.getVariableStorage().getVariableList();
 
     for (list<string>::const_iterator iter = variableNames.begin(); !result && iter != variableNames.end(); ++iter)
     {
         if (input.useNextWord(*iter))
         {
-            result = new CVariableValueProgramItem(*iter);
+            variableName = *iter;
         }
+    }
+
+    if (!variableName.empty() && variableOperator == eNone)
+    {
+        if (input.eatSequence("++"))
+        {
+            variableOperator = ePostIncrement;
+        }
+        else if (input.eatSequence("--"))
+        {
+            variableOperator = ePostDecrement;
+        }
+    }
+
+    if (!variableName.empty())
+    {
+        result = new CVariableValueProgramItem(variableName, variableOperator);
+    }
+    else if (variableOperator != eNone)
+    {
+        stringstream error;
+        error << "Syntax error at line " << input.getCurrentLine() << ". Variable expected";
+        throw error.str();
     }
 
     return result;

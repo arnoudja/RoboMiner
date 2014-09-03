@@ -32,7 +32,7 @@ namespace robotcode
     public:
         virtual ~CValueReturnAction()                                   {}
 
-        virtual CValue getValue(const CRobotProgram& robot) const = 0;
+        virtual CValue getValue(CRobotProgram& robot) const = 0;
 
     protected:
         CValueReturnAction()                                            {}

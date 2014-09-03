@@ -20,6 +20,7 @@
 #pragma once
 
 #include "ValueReturnAction.h"
+#include "VariableValueProgramItem.h"
 
 #include <string>
 
@@ -29,12 +30,14 @@ namespace robotcode
         public CValueReturnAction
     {
     public:
-        CVariableReturnAction(const std::string& variableName);
-        virtual ~CVariableReturnAction();
+        CVariableReturnAction(const std::string& variableName,
+                              CVariableValueProgramItem::EVariableOperator variableOperator = CVariableValueProgramItem::eNone);
+        virtual ~CVariableReturnAction()                            {}
 
-        virtual CValue getValue(const CRobotProgram& robot) const;
+        virtual CValue getValue(CRobotProgram& robot) const;
 
     private:
-        std::string m_variableName;
+        std::string                                     m_variableName;
+        CVariableValueProgramItem::EVariableOperator    m_variableOperator;
     };
 }

@@ -43,6 +43,9 @@ namespace robotcode
         int         getIntValue() const;
         bool        getBoolValue() const;
 
+        void        incrementValue();
+        void        decrementValue();
+
     private:
         EValueType  m_valueType;
         bool        m_boolValue;

@@ -31,6 +31,6 @@ namespace robotcode
         CMineReturnAction();
         virtual ~CMineReturnAction();
 
-        virtual CValue getValue(const CRobotProgram& robot) const           { return robot.getLastMined(); }
+        virtual CValue getValue(CRobotProgram& robot) const     { return robot.getLastMined(); }
     };
 }

@@ -39,11 +39,6 @@ CVariable::CVariable(const string& name, CValue::EValueType variableType, const 
 }
 
 
-CVariable::~CVariable()
-{
-}
-
-
 void CVariable::setValue(const CValue& value)
 {
     switch (m_variableType)

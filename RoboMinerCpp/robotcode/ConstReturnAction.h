@@ -30,7 +30,7 @@ namespace robotcode
         CConstReturnAction(const CValue& value);
         virtual ~CConstReturnAction();
 
-        virtual CValue getValue(const CRobotProgram& robot) const       { return m_value; }
+        virtual CValue getValue(CRobotProgram& robot) const     { return m_value; }
 
     private:
         CValue  m_value;

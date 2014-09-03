@@ -44,7 +44,7 @@ namespace robotcode
 
         virtual EAction getNextAction();
 
-        const CVariableStorage& getVariableStorage() const      { return m_variableStorage; }
+        CVariableStorage& getVariableStorage()          { return m_variableStorage; }
 
     private:
         CProgramItem* m_program;

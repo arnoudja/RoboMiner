@@ -29,16 +29,25 @@ namespace robotcode
         public CValueProgramItem
     {
     public:
-        CVariableValueProgramItem(const std::string& variableName);
-        virtual ~CVariableValueProgramItem();
+        enum EVariableOperator {
+            eNone,
+            ePreIncrement,
+            ePreDecrement,
+            ePostIncrement,
+            ePostDecrement
+        };
+
+        CVariableValueProgramItem(const std::string& variableName, EVariableOperator variableOperator);
+        virtual ~CVariableValueProgramItem()                    {}
 
         virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
-        virtual int size() const                { return 1; }
+        virtual int size() const                                { return (m_variableOperator == eNone) ? 1 : 2; }
 
         static CVariableValueProgramItem* compile(CCompileInput& input);
 
     private:
-        std::string m_variableName;
+        std::string         m_variableName;
+        EVariableOperator   m_variableOperator;
     };
 }

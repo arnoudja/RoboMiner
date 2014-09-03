@@ -32,12 +32,12 @@ namespace robotcode
     {
     public:
         CVariableStorage();
-        virtual ~CVariableStorage();
+        virtual ~CVariableStorage()                 {}
 
         void setScopeDepth(int depth);
         int getScopeDepth() const                   { return m_currentScopeLevel; }
 
-        const CVariable* getVariable(const std::string& variableName) const;
+        CVariable* getVariable(const std::string& variableName);
         void addVariable(const std::string& variableName, CValue::EValueType variableType, const CValue& value = CValue());
         void updateValue(const std::string& variableName, const CValue& value);
 
@@ -46,8 +46,6 @@ namespace robotcode
         std::list<std::string> getVariableList() const;
 
     private:
-        CVariable* findVariable(const std::string& variableName);
-
         typedef std::map<std::string, CVariable>    TVariables;
         typedef std::map<int, TVariables>           TScopedVariables;
 

@@ -31,19 +31,52 @@ using namespace std;
 using namespace robotcode;
 
 
-CVariableReturnAction::CVariableReturnAction(const string& variableName) :
-    m_variableName(variableName)
+CVariableReturnAction::CVariableReturnAction(const string& variableName,
+                                             CVariableValueProgramItem::EVariableOperator variableOperator) :
+    m_variableName(variableName),
+    m_variableOperator(variableOperator)
 {
 }
 
 
-CVariableReturnAction::~CVariableReturnAction()
+CValue CVariableReturnAction::getValue(CRobotProgram& robot) const
 {
-}
+    CValue result;
 
+    CVariable* variable = robot.getVariableStorage().getVariable(m_variableName);
+    if (variable)
+    {
+        switch (m_variableOperator)
+        {
+        case CVariableValueProgramItem::eNone:
+            result = variable->getValue();
+            break;
 
-CValue CVariableReturnAction::getValue(const CRobotProgram& robot) const
-{
-    const CVariable* variable = robot.getVariableStorage().getVariable(m_variableName);
-    return variable ? variable->getValue() : CValue();
+        case CVariableValueProgramItem::ePreIncrement:
+            variable->incrementValue();
+            result = variable->getValue();
+            break;
+
+        case CVariableValueProgramItem::ePreDecrement:
+            variable->decrementValue();
+            result = variable->getValue();
+            break;
+
+        case CVariableValueProgramItem::ePostIncrement:
+            result = variable->getValue();
+            variable->incrementValue();
+            break;
+
+        case CVariableValueProgramItem::ePostDecrement:
+            result = variable->getValue();
+            variable->decrementValue();
+            break;
+
+        default:
+            assert(false);
+            break;
+        }
+    }
+
+    return result;
 }
