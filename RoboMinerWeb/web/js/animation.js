@@ -268,9 +268,12 @@ function animate(scale, startTime, stepTime)
         drawRobotOre(myRobots.robot[i]);
     }
 
-    requestAnimFrame(function() {
-                        animate(scale, startTime, stepTime);
-                    } );
+    if (time <= totalTime)
+    {
+        requestAnimFrame(function() {
+                            animate(scale, startTime, stepTime);
+                        } );
+    }
 }
 
 
