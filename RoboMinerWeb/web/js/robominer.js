@@ -41,27 +41,27 @@ function formatTimeLeft(seconds)
 }
 
 function showPart(itemId) {
-    document.getElementById(itemId).style = '';
+    document.getElementById(itemId).style.display = 'inherit';
 }
 
 function hidePart(itemId) {
-    document.getElementById(itemId).style = 'display: none';
+    document.getElementById(itemId).style.display = 'none';
 }
 
 function showElements(elements) {
     for (var i = 0; i < elements.length; i++) {
-        elements[i].style = '';
+        elements[i].style.display = 'inherit';
     }
 }
 
 function hideElements(elements) {
     for (var i = 0; i < elements.length; i++) {
-        elements[i].style = 'display: none';
+        elements[i].style.display = 'none';
     }
 }
 
 function htmlDecode(encodedText) {
-  var element = document.createElement('div');
-  element.innerHTML = encodedText;
-  return element.childNodes.length === 0 ? "" : element.childNodes[0].nodeValue;
+    var element = document.createElement('div');
+    element.innerHTML = encodedText;
+    return element.childNodes.length === 0 ? "" : element.childNodes[0].nodeValue;
 }
