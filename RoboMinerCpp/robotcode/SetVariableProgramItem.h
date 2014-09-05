@@ -33,7 +33,7 @@ namespace robotcode
     public:
         CSetVariableProgramItem(const std::string& variableName, CValueProgramItem* valueProgramItem);
         CSetVariableProgramItem(const std::string& variableName, CValue::EValueType variableCreateType, CValueProgramItem* valueProgramItem);
-        virtual ~CSetVariableProgramItem();
+        virtual ~CSetVariableProgramItem()                              {}
 
         virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 

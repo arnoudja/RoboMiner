@@ -51,11 +51,6 @@ m_valueProgramItem(valueProgramItem)
 }
 
 
-CSetVariableProgramItem::~CSetVariableProgramItem()
-{
-}
-
-
 CProgramAction* CSetVariableProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
@@ -175,21 +170,21 @@ CSetVariableProgramItem* CSetVariableProgramItem::compileVariableAssignment(CCom
         {
             if (!input.eatChar('='))
             {
-                stringstream error;
-                error << "Syntax error at line " << input.getCurrentLine() << ". '=' expected";
-                throw error.str();
+                input.returnNextWord(*iter);
             }
-
-            CValueProgramItem* valueProgramItem = CValueProgramItem::compile(input);
-
-            if (!valueProgramItem)
+            else
             {
-                stringstream error;
-                error << "Syntax error at line " << input.getCurrentLine() << ". Expression expected";
-                throw error.str();
-            }
+                CValueProgramItem* valueProgramItem = CValueProgramItem::compile(input);
 
-            result = new CSetVariableProgramItem(*iter, valueProgramItem);
+                if (!valueProgramItem)
+                {
+                    stringstream error;
+                    error << "Syntax error at line " << input.getCurrentLine() << ". Expression expected";
+                    throw error.str();
+                }
+
+                result = new CSetVariableProgramItem(*iter, valueProgramItem);
+            }
         }
     }
 

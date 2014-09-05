@@ -27,7 +27,7 @@ using namespace std;
 using namespace robotcode;
 
 
-CCompileInput::CCompileInput(const std::string& source) :
+CCompileInput::CCompileInput(const string& source) :
     m_sourceStream("{" + source + "\n}", ios_base::in),
     m_currentLine(1)
 {
@@ -35,7 +35,7 @@ CCompileInput::CCompileInput(const std::string& source) :
 }
 
 
-bool CCompileInput::useNextWord(const std::string& word)
+bool CCompileInput::useNextWord(const string& word)
 {
     bool result = false;
 
@@ -56,6 +56,14 @@ string CCompileInput::useNextWord()
     m_nextWord.clear();
 
     return result;
+}
+
+
+void CCompileInput::returnNextWord(const string& word)
+{
+    assert(m_nextWord.empty());
+    
+    m_nextWord = word;
 }
 
 
@@ -92,7 +100,7 @@ bool CCompileInput::eatChar(int nextChar, bool repeatedly)
 }
 
 
-bool CCompileInput::eatSequence(const std::string& sequence)
+bool CCompileInput::eatSequence(const string& sequence)
 {
     bool result = false;
 

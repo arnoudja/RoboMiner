@@ -38,6 +38,7 @@ namespace robotcode
 
         bool useNextWord(const std::string& word);
         std::string useNextWord();
+        void returnNextWord(const std::string& word);
 
         const std::string& getNextWord();
         bool eatChar(int nextChar, bool repeatedly = false);

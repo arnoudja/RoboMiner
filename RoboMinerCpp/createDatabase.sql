@@ -408,7 +408,7 @@ insert into OrePrice (id, description) values (312, 'Fast Charge Oxaria Battery 
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3121, 312, 1, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3122, 312, 2, 50);
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (312, 3,      'Fast Charge Oxaria Battery', 312,        17000,           30,           5,      4,      0);
+               values (312, 3,      'Fast Charge Oxaria Battery', 312,        17000,           40,           5,      4,      0);
 
 insert into OrePrice (id, description) values (320, 'Lithabine Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3201, 320, 1, 200);
