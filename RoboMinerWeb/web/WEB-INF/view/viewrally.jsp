@@ -105,7 +105,7 @@
         context.fillStyle = 'red';
         context.fill();
         document.getElementById('oreLegendAName').innerHTML = getOreName(myOreTypes.A.id);
-        document.getElementById('oreLegendA').style = '';
+        document.getElementById('oreLegendA').style.display = 'inherit';
     }
 
     if (typeof myOreTypes.B !== 'undefined') {
@@ -116,7 +116,7 @@
         context.fillStyle = 'green';
         context.fill();
         document.getElementById('oreLegendBName').innerHTML = getOreName(myOreTypes.B.id);
-        document.getElementById('oreLegendB').style = '';
+        document.getElementById('oreLegendB').style.display = 'inherit';
     }
 
     if (typeof myOreTypes.C !== 'undefined') {
@@ -127,7 +127,7 @@
         context.fillStyle = 'blue';
         context.fill();
         document.getElementById('oreLegendCName').innerHTML = getOreName(myOreTypes.C.id);
-        document.getElementById('oreLegendC').style = '';
+        document.getElementById('oreLegendC').style.display = 'inherit';
     }
 
     runanimation();
