@@ -49,7 +49,7 @@
     <input type="hidden" name="programSourceId" value="${programSourceId}"/>
     <input type="hidden" id="nextProgramSourceId" name="nextProgramSourceId" value="${programSourceId}"/>
     <input id="sourceName" type="text" name="sourceName" value="${fn:escapeXml(programSource.sourceName)}" size="80"/><br/>
-    <textarea id='sourceCode' name='sourceCode' rows='25' cols='120' >${fn:escapeXml(programSource.sourceCode)}</textarea><br/>
+    <textarea id='sourceCode' name='sourceCode' rows='25' cols='120' onkeydown="return processTab(event, this);">${fn:escapeXml(programSource.sourceCode)}</textarea><br/>
     <c:if test="${not empty programSource.errorDescription}">
         <input type="text" value="${fn:escapeXml(programSource.errorDescription)}" readonly="true" size="80"/><br/>
     </c:if>

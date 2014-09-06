@@ -65,3 +65,72 @@ function htmlDecode(encodedText) {
     element.innerHTML = encodedText;
     return element.childNodes.length === 0 ? "" : element.childNodes[0].nodeValue;
 }
+
+function processTab(event, element) {
+
+    if (event.keyCode === 9) {
+
+        var value = element.value;
+        var start = element.selectionStart;
+        var end = element.selectionEnd;
+
+        var linestart = start;
+        while (linestart > 0 && value[linestart - 1] !== '\n') --linestart;
+
+        if (start === end) {
+
+            var spaces = 4 - (start - linestart) % 4;
+
+            for (i = 0; i < spaces; ++i) {
+                value = value.substring(0, start) + ' ' + value.substring(end);
+                ++start;
+                ++end;
+            }
+
+            element.value = value;
+            element.selectionStart = element.selectionEnd = start;
+        }
+        else {
+
+            if (!event.shiftKey) {
+
+                for (i = end - 1; i >= linestart; --i) {
+                    if (value[i - 1] === '\n') {
+                        value = value.substring(0, i) + "    " + value.substring(i);
+                        end += 4;
+                    }
+                }
+
+                if (start > linestart) {
+                    start += 4;
+                }
+            }
+            else {
+
+                for (i = end - 1; i >= linestart; --i) {
+                    if (value[i - 1] === '\n') {
+                        for (j = 0; j < 4; ++j) {
+                            if (value[i] === ' ') {
+                                
+                                value = value.substring(0, i) + value.substring(i + 1);
+                                --end;
+
+                                if (i < start) {
+                                    --start;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            element.value = value;
+            element.selectionStart = start;
+            element.selectionEnd = end;
+        }
+        
+        return false;
+    }
+    
+    return true;
+}
