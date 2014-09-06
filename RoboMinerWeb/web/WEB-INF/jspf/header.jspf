@@ -32,6 +32,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <div id="main">
         <c:if test="${not fn:endsWith(pageContext.request.getServletPath(), 'login.jsp') and not fn:endsWith(pageContext.request.getServletPath(), 'logoff.jsp')}">
             <header>
+                <nav style="float: right; margin-right: 10px;">
+                    <ul class="menubar">
+                        <li class="menuitem" onclick="window.location.replace('<c:url value='logoff'/>');"><p class="menuitemtext">Logoff</p></li>
+                    </ul>
+                </nav>
                 <nav>
                     <ul class="menubar">
                         <li class="menuitem" onclick="window.location.replace('<c:url value='editCode'/>');"><p class="menuitemtext">Edit code</p></li>
@@ -39,7 +44,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <li class="menuitem" onclick="window.location.replace('<c:url value='miningQueue'/>');"><p class="menuitemtext">Mining queue</p></li>
                         <li class="menuitem" onclick="window.location.replace('<c:url value='miningResults'/>');"><p class="menuitemtext">Mining results</p></li>
                         <li class="menuitem" onclick="window.location.replace('<c:url value='shop'/>');"><p class="menuitemtext">Shop</p></li>
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='logoff'/>');"><p class="menuitemtext">Logoff</p></li>
                     </ul>
                 </nav>
             </header>
