@@ -70,17 +70,12 @@
     <c:forEach var='programSource' items="${programSourceMap}">
         <input type="hidden" id="programSize${programSource.key}" value="${programSource.value.compiledSize}"/>
     </c:forEach>
+    <select id='robotId' name="robotId" onchange='showRobotDetails();'>
+        <c:forEach var='robot' items='${robotList}'>
+            <option value="${robot.id}" ${robot.id eq robotId ? 'selected="selected"' : ''}>${fn:escapeXml(robot.robotName)}</option>
+        </c:forEach>
+    </select>
     <table>
-        <tr>
-            <td>Robot:</td>
-            <td colspan="3">
-                <select id='robotId' name="robotId" class="selectiontableselect" onchange='showRobotDetails();'>
-                    <c:forEach var='robot' items='${robotList}'>
-                        <option value="${robot.id}" ${robot.id eq robotId ? 'selected="selected"' : ''}>${fn:escapeXml(robot.robotName)}</option>
-                    </c:forEach>
-                </select>
-            </td>
-        </tr>
         <c:forEach var='robot' items='${robotList}'>
             <tbody name="robotRow${robot.id}" style="display: none">
                 <tr>
