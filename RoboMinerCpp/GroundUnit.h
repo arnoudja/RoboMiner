@@ -28,11 +28,12 @@ public:
     typedef std::vector<int>    TOreAmount;
 
     CGroundUnit();
-    virtual ~CGroundUnit();
+    virtual ~CGroundUnit()                  {}
 
     int getOre(int type) const              { return m_oreAmount[type];  }
     const TOreAmount& getOre() const        { return m_oreAmount; }
     bool hasOre() const;
+    int nrOreTypes() const;
 
     void addOre(int type, int amount)       { m_oreAmount[type] += amount; }
     void removeOre(int type, int amount)    { assert(amount >= 0 && amount <= m_oreAmount[type]); m_oreAmount[type] -= amount; }

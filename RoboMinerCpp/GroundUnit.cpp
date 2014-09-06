@@ -31,11 +31,6 @@ CGroundUnit::CGroundUnit()
 }
 
 
-CGroundUnit::~CGroundUnit()
-{
-}
-
-
 bool CGroundUnit::hasOre() const
 {
     bool result = false;
@@ -45,6 +40,22 @@ bool CGroundUnit::hasOre() const
         if (m_oreAmount[i] > 0)
         {
             result = true;
+        }
+    }
+
+    return result;
+}
+
+
+int CGroundUnit::nrOreTypes() const
+{
+    int result = 0;
+
+    for (int i = 0; i < 10; ++i)
+    {
+        if (m_oreAmount[i] > 0)
+        {
+            ++result;
         }
     }
 

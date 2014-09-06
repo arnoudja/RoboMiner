@@ -54,11 +54,6 @@ CRobot::CRobot(int maxTurns, int maxOre,
 }
 
 
-CRobot::~CRobot()
-{
-}
-
-
 void CRobot::prepareForAction()
 {
     setDestination(getPosition());
@@ -110,13 +105,19 @@ void CRobot::setTargetMining(const CGroundUnit& groundUnit)
 {
     m_lastMined = 0;
 
-    int freeSpace = m_maxOre - getTotalOre();
-    
+    int totalAllowed = std::min(m_miningSpeed, m_maxOre - getTotalOre());
+
+    int oreTypes = groundUnit.nrOreTypes();
     for (int i = 0; i < 10; ++i)
     {
-        int target = std::min(m_miningSpeed, std::min(freeSpace, (groundUnit.getOre(i) + 9) / 10));
+        if (groundUnit.getOre(i) > 0)
+        {
+            int maxAllowed = std::min(totalAllowed, ((totalAllowed - 1) / oreTypes) + 1);
+            int available = (groundUnit.getOre(i) - 1) / 2 + 1;
 
-        m_targetMining[i] = target;
-        freeSpace -= target;
+            m_targetMining[i] = std::min(available, maxAllowed);
+            totalAllowed -= m_targetMining[i];
+            --oreTypes;
+        }
     }
 }

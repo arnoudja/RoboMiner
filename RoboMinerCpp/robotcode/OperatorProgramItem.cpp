@@ -77,6 +77,10 @@ public:
                 result = m_leftValue.getDoubleValue() / m_rightValue.getDoubleValue();
                 break;
 
+            case COperatorProgramItem::eMod:
+                result = m_leftValue.getIntValue() % m_rightValue.getIntValue();
+                break;
+
             case COperatorProgramItem::eLarger:
                 result = (m_leftValue.getDoubleValue() > m_rightValue.getDoubleValue());
                 break;
@@ -141,6 +145,10 @@ public:
                 result = m_leftValue.getIntValue() / m_rightValue.getIntValue();
                 break;
 
+            case COperatorProgramItem::eMod:
+                result = m_leftValue.getIntValue() % m_rightValue.getIntValue();
+                break;
+
             case COperatorProgramItem::eLarger:
                 result = (m_leftValue.getIntValue() > m_rightValue.getIntValue());
                 break;
@@ -203,6 +211,10 @@ public:
 
             case COperatorProgramItem::eDivision:
                 result = m_leftValue.getBoolValue() && m_rightValue.getBoolValue();
+                break;
+
+            case COperatorProgramItem::eMod:
+                result = false;
                 break;
 
             case COperatorProgramItem::eLarger:
@@ -378,6 +390,10 @@ CValueProgramItem* COperatorProgramItem::compile(CCompileInput& input)
             {
                 nextOperator = eDivision;
             }
+            else if (input.eatChar('%'))
+            {
+                nextOperator = eMod;
+            }
             else if (input.eatSequence(">="))
             {
                 nextOperator = eLargerEqual;
@@ -505,6 +521,7 @@ int COperatorProgramItem::operatorPriority(EOperatorType operatorType)
 
     case eMultiply:
     case eDivision:
+    case eMod:
         result = 4;
         break;
 

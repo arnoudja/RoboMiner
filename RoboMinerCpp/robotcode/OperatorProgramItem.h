@@ -34,6 +34,7 @@ namespace robotcode
             eSubtraction,
             eMultiply,
             eDivision,
+            eMod,
             eLarger,
             eSmaller,
             eLargerEqual,

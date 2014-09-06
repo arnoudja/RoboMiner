@@ -63,7 +63,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <tr>
                     <td class="helptable">Return value:</td>
                     <td class="helptable">double</td>
-                    <td class="helptable">The actual distance traveled.</td>
+                    <td class="helptable">The actual distance traveled, always positive or zero.</td>
                 </tr>
             </table>
             <h3>rotate()</h3>
@@ -101,8 +101,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </table>
             <p class="helptext">The amount of ore mined each turn is limited by two factors:</p>
             <ul>
-                <li>The mining unit installed in the robot. More advanced mining units can mine faster.</li>
-                <li>The ore amount available on the robot location. Higher concentrations of ore can be mined faster then lower concentrations.</li>
+                <li>The mining unit installed in the robot. The total amount of ore mined in one cycle can never exceed the mining speed of the mining unit.</li>
+                <li>The ore amount available on the robot location. For each type of ore, the amount of ore mined in one cycle can never exceed half the amount of ore available, rounded up.</li>
             </ul>
             <h2>Flow control</h2>
             <h3>if - else</h3>
@@ -179,6 +179,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <td class="helptable">/</td>
                     <td class="helptable">&lt;value_1&gt; / &lt;value_2&gt;</td>
                     <td class="helptable">Divides value_1 by value_2.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">%</td>
+                    <td class="helptable">&lt;value_1&gt; % &lt;value_2&gt;</td>
+                    <td class="helptable">Calculates the remainder when dividing value_1 by value_2.</td>
                 </tr>
             </table>
             <h3>Compare expressions</h3>

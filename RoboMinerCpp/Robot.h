@@ -47,7 +47,7 @@ public:
            int miningSpeed, int cpuSpeed,
            double forwardSpeed, double backwardSpeed, int rotateSpeed,
            int robotSize);
-    virtual ~CRobot();
+    virtual ~CRobot()                                           {}
 
     virtual EAction getNextAction() = 0;
 
