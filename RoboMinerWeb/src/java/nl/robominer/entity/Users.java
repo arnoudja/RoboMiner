@@ -89,6 +89,10 @@ public class Users implements Serializable {
     @MapKey(name="robotPartId")
     private Map<Integer, UserRobotPartAsset> userRobotPartAssets;
 
+    @OneToMany
+    @JoinColumn(name = "Robot.usersId")
+    private List<Robot> robots;
+    
     public Users() {
     }
 
@@ -141,6 +145,10 @@ public class Users implements Serializable {
     public int getUnassignedRobotPartAmount(int robotPartId) {
         UserRobotPartAsset asset = userRobotPartAssets.get(robotPartId);
         return asset == null ? 0 : asset.getUnassigned();
+    }
+    
+    public List<Robot> getRobots() {
+        return robots;
     }
     
     public boolean canAffort(OrePrice orePrice) {

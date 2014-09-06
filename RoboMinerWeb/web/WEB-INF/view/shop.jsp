@@ -67,36 +67,88 @@ Tier:
                 <tr>
                     <td>Part name:</td>
                     <td colspan="2">${fn:escapeXml(robotPart.partName)}</td>
-                    <c:if test="${user.canAffort(robotPart.orePrice)}">
-                        <td>
-                            <button onclick="buyItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Buy</button>
-                        </td>
-                    </c:if>
+                    <td>
+                        <c:if test="${user.canAffort(robotPart.orePrice) && user.robots.size() gt user.getTotalRobotPartAmount(robotPart.id)}">
+                                <button onclick="buyItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Buy</button>
+                        </c:if>
+                    </td>
                 </tr>
-                <c:choose>
-                    <c:when test="${robotPartType.key.id eq 1}">
-                        <tr>
-                            <td>Ore capacity:</td>
-                            <td colspan="2">${robotPart.oreCapacity}</td>
-                        </tr>
-                    </c:when>
-                    <c:when test="${robotPartType.key.id eq 3}">
-                        <tr>
-                            <td>Battery capacity:</td>
-                            <td colspan="2">${robotPart.batteryCapacity}</td>
-                        </tr>
-                    </c:when>
-                </c:choose>
+                <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
+                    <tr>
+                        <td>Owned/unassigned:</td>
+                        <td colspan="2">${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
+                        <td>
+                            <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
+                                <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.oreCapacity gt 0}">
+                    <tr>
+                        <td>Ore capacity:</td>
+                        <td>${robotPart.oreCapacity}</td>
+                        <td>units</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.miningCapacity gt 0}">
+                    <tr>
+                        <td>Mining capacity:</td>
+                        <td>${robotPart.miningCapacity}</td>
+                        <td>upc</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.batteryCapacity gt 0}">
+                    <tr>
+                        <td>Battery capacity:</td>
+                        <td colspan="2">${robotPart.batteryCapacity}</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.memoryCapacity gt 0}">
+                    <tr>
+                        <td>Memory size:</td>
+                        <td colspan="2">${robotPart.memoryCapacity}</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.cpuCapacity gt 0}">
+                    <tr>
+                        <td>CPU speed:</td>
+                        <td>${robotPart.cpuCapacity}</td>
+                        <td>ipc</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.forwardCapacity gt 0}">
+                    <tr>
+                        <td>Engine power:</td>
+                        <td>${robotPart.forwardCapacity}/${robotPart.backwardCapacity}/${robotPart.rotateCapacity}</td>
+                        <td>forward/backward/rotate</td>
+                        <td></td>
+                    </tr>
+                </c:if>
                 <c:if test="${robotPart.powerUsage gt 0}">
                     <tr>
                         <td>Power consumption:</td>
                         <td colspan="2">${robotPart.powerUsage}</td>
+                        <td></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.rechargeTime gt 0}">
                     <tr>
                         <td>Recharge time:</td>
                         <td colspan="2">${robotPart.rechargeTime}</td>
+                        <td></td>
+                    </tr>
+                </c:if>
+                <c:if test="${robotPart.weight gt 0}">
+                    <tr>
+                        <td>Weight:</td>
+                        <td colspan="2">${robotPart.weight}</td>
+                        <td></td>
                     </tr>
                 </c:if>
                 <tr>
@@ -110,17 +162,6 @@ Tier:
                         <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
                     </tr>
                 </c:forEach>
-                <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
-                    <tr>
-                        <td>Owned/unassigned:</td>
-                        <td colspan="2">${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
-                        <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
-                            <td>
-                                <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
-                            </td>
-                        </c:if>
-                    </tr>
-                </c:if>
                 <tr>
                     <td><p></p></td>
                 </tr>
