@@ -23,7 +23,7 @@
         hideElements(document.getElementsByName('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId));
         var robotPartTypeId = document.getElementById('robotPartTypeId').value;
         var tierId = document.getElementById('tierId').value;
-        showElements(document.getElementsByName('robotPartTypeRow' + robotPartTypeId + '_' + tierId));
+        updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + robotPartTypeId + '_' + tierId), 'table-row-group');
         document.getElementById('selectedRobotPartTypeId').value = robotPartTypeId;
         document.getElementById('selectedTierId').value = tierId;
     }
@@ -60,14 +60,14 @@ Tier:
     </c:forEach>
 </select>
 <h2>Items:</h2>
-<table>
+<table class="shop">
     <c:forEach var="robotPartType" items="${robotPartMap}">
         <c:forEach var="robotPart" items="${robotPartType.value}">
-            <tbody name="robotPartTypeRow${robotPartType.key.id}_${robotPart.tierId}" style="display: none">
+            <tbody class="shop" name="robotPartTypeRow${robotPartType.key.id}_${robotPart.tierId}">
                 <tr>
-                    <td>Part name:</td>
-                    <td colspan="2">${fn:escapeXml(robotPart.partName)}</td>
-                    <td>
+                    <td class="shopFirstRow">Part name:</td>
+                    <td class="shopPartName" colspan="3">${fn:escapeXml(robotPart.partName)}</td>
+                    <td class="shopFirstRow">
                         <c:if test="${user.canAffort(robotPart.orePrice) && user.robots.size() gt user.getTotalRobotPartAmount(robotPart.id)}">
                                 <button onclick="buyItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Buy</button>
                         </c:if>
@@ -75,9 +75,10 @@ Tier:
                 </tr>
                 <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
                     <tr>
-                        <td>Owned/unassigned:</td>
-                        <td colspan="2">${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
-                        <td>
+                        <td class="shopImportant">Owned:</td>
+                        <td class="shop">${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
+                        <td class="shop" colspan="2">total/unused</td>
+                        <td class="shop">
                             <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
                                 <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
                             </c:if>
@@ -86,84 +87,85 @@ Tier:
                 </c:if>
                 <c:if test="${robotPart.oreCapacity gt 0}">
                     <tr>
-                        <td>Ore capacity:</td>
-                        <td>${robotPart.oreCapacity}</td>
-                        <td>units</td>
-                        <td></td>
+                        <td class="shop">Ore capacity:</td>
+                        <td class="shop">${robotPart.oreCapacity}</td>
+                        <td class="shop">units</td>
+                        <td class="shop" colspan="2"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.miningCapacity gt 0}">
                     <tr>
-                        <td>Mining capacity:</td>
-                        <td>${robotPart.miningCapacity}</td>
-                        <td>upc</td>
-                        <td></td>
+                        <td class="shop">Mining capacity:</td>
+                        <td class="shop">${robotPart.miningCapacity}</td>
+                        <td class="shop">upc</td>
+                        <td class="shop" colspan="2"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.batteryCapacity gt 0}">
                     <tr>
-                        <td>Battery capacity:</td>
-                        <td colspan="2">${robotPart.batteryCapacity}</td>
-                        <td></td>
+                        <td class="shop">Battery capacity:</td>
+                        <td class="shop">${robotPart.batteryCapacity}</td>
+                        <td class="shop" colspan="3"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.memoryCapacity gt 0}">
                     <tr>
-                        <td>Memory size:</td>
-                        <td colspan="2">${robotPart.memoryCapacity}</td>
-                        <td></td>
+                        <td class="shop">Memory size:</td>
+                        <td class="shop">${robotPart.memoryCapacity}</td>
+                        <td class="shop" colspan="3"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.cpuCapacity gt 0}">
                     <tr>
-                        <td>CPU speed:</td>
-                        <td>${robotPart.cpuCapacity}</td>
-                        <td>ipc</td>
-                        <td></td>
+                        <td class="shop">CPU speed:</td>
+                        <td class="shop">${robotPart.cpuCapacity}</td>
+                        <td class="shop">ipc</td>
+                        <td class="shop" colspan="2"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.forwardCapacity gt 0}">
                     <tr>
-                        <td>Engine power:</td>
-                        <td>${robotPart.forwardCapacity}/${robotPart.backwardCapacity}/${robotPart.rotateCapacity}</td>
-                        <td>forward/backward/rotate</td>
-                        <td></td>
+                        <td class="shop">Engine power:</td>
+                        <td class="shop">${robotPart.forwardCapacity}/${robotPart.backwardCapacity}/${robotPart.rotateCapacity}</td>
+                        <td class="shop" colspan="2">fwd/bkwd/rot</td>
+                        <td class="shop"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.powerUsage gt 0}">
                     <tr>
-                        <td>Power consumption:</td>
-                        <td colspan="2">${robotPart.powerUsage}</td>
-                        <td></td>
+                        <td class="shop">Power consumption:</td>
+                        <td class="shop">${robotPart.powerUsage}</td>
+                        <td class="shop" colspan="3"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.rechargeTime gt 0}">
                     <tr>
-                        <td>Recharge time:</td>
-                        <td colspan="2">${robotPart.rechargeTime}</td>
-                        <td></td>
+                        <td class="shop">Recharge time:</td>
+                        <td class="shop">${robotPart.rechargeTime}</td>
+                        <td class="shop">seconds</td>
+                        <td class="shop" colspan="2"></td>
                     </tr>
                 </c:if>
                 <c:if test="${robotPart.weight gt 0}">
                     <tr>
-                        <td>Weight:</td>
-                        <td colspan="2">${robotPart.weight}</td>
-                        <td></td>
+                        <td class="shop">Weight:</td>
+                        <td class="shop">${robotPart.weight}</td>
+                        <td class="shop" colspan="3"></td>
                     </tr>
                 </c:if>
                 <tr>
-                    <td>Ore cost:</td>
+                    <td class="shop" colspan="5">Ore cost:</td>
                 </tr>
                 <c:forEach var="orePrice" items="${robotPart.orePrice.orePriceAmountList}">
                     <tr>
-                        <td></td>
-                        <td>${fn:escapeXml(orePrice.ore.oreName)}:</td>
-                        <td>${orePrice.amount}</td>
-                        <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
+                        <td class="shop"></td>
+                        <td class="shop" colspan="2">${fn:escapeXml(orePrice.ore.oreName)}:</td>
+                        <td class="shop">${orePrice.amount}</td>
+                        <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'shopSufficientBalance' : 'shopInsufficientBalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td><p></p></td>
+                <tr class="shopLastRow">
+                    <td colspan="5"></td>
                 </tr>
             </tbody>
         </c:forEach>

@@ -60,6 +60,12 @@ function hideElements(elements) {
     }
 }
 
+function updateDisplayStyle(elements, value) {
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = value;
+    }
+}
+
 function htmlDecode(encodedText) {
     var element = document.createElement('div');
     element.innerHTML = encodedText;

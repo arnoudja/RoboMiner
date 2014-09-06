@@ -122,17 +122,67 @@ button.helpbutton {
 }
 
 
+
+/******************************************************
+ * Shop
+ ******************************************************/
+
+table.shop {
+    border-collapse: collapse;
+    background: #ddd;
+}
+
+tbody.shop {
+    display: none;
+    border: 2px solid #aaa;
+    background: #ddd;
+    border-collapse: collapse;
+}
+
+td.shop, td.shopImportant, td.shopFirstRow, td.shopPartName, td.shopSufficientBalance, td.shopInsufficientBalance {
+    padding-bottom: 1px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+td.shopFirstRow, td.shopPartName {
+    padding-top: 7px;
+}
+
+td.shop, td.shopImportant, td.shopSufficientBalance, td.shopInsufficientBalance {
+    padding-top: 1px;
+}
+
+td.shopImportant, td.shopPartName {
+    font-weight: bold;
+}
+
+td.shopSufficientBalance {
+    color: green;
+}
+
+td.shopInsufficientBalance {
+    color: red;
+}
+
+tr.shopLastRow {
+    height: 6px;
+}
+
+
+/******************************************************
+ * Help pages
+ ******************************************************/
+
 body.helptext {
     background: #eee;
 }
-
 
 div.helptext {
     text-align: left;
     margin: 20px;
     background: #eee;
 }
-
 
 p.helptext {
     max-width: 600px;
@@ -144,7 +194,6 @@ table.helptable {
     margin-left: 0;
 }
 
-
 th.helptable {
     border: 1px solid #aaa;
     background: #bbb;
@@ -154,7 +203,6 @@ th.helptable {
     padding-left: 5px;
     padding-right: 15px;
 }
-
 
 td.helptable {
     border: 1px solid #aaa;
