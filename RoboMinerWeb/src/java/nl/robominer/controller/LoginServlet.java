@@ -142,7 +142,7 @@ public class LoginServlet extends RoboMinerServletBase {
         String newpassword      = request.getParameter("newpassword");
         String confirmpassword  = request.getParameter("confirmpassword");
         
-        if (newusername != null && newusername.matches("[A-Za-z0-9]{6,30}") &&
+        if (newusername != null && newusername.matches("[A-Za-z0-9]{3,30}") &&
             email != null && email.matches(".+@.+") &&
             newpassword != null && newpassword.length() >= 8 &&
             confirmpassword != null && confirmpassword.equals(newpassword)) {

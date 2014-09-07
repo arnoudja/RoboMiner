@@ -16,27 +16,19 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
-<script>
-    function checkSignupForm(form) {
-        if (form.newpassword.value !== form.confirmpassword.value) {
-            alert("Passwords don't match");
-            form.newpassword.focus();
-            return false;
-        }
-        
-        return true;
-    }
-</script>
+
+<script src='js/login.js'></script>
+
 <header>
     <nav>
         <ul class="menubar">
-            <li class="menuitem" onclick="showPart('loginForm'); hidePart('signupForm');"><p class="menuitemtext">Login</p></li>
-            <li class="menuitem" onclick="showPart('signupForm'); hidePart('loginForm');"><p class="menuitemtext">Sign up</p></li>
+            <li class="menuitem" onclick="showLoginForm();"><p class="menuitemtext">Login</p></li>
+            <li class="menuitem" onclick="showSignupForm();"><p class="menuitemtext">Sign up</p></li>
         </ul>
     </nav>
 </header>
 <div id="interface">               
-    <form id="loginForm" action="<c:url value='Login'/>" method="post" ${empty errorMessage ? '' : 'style="display: none;"'}>
+    <form id="loginForm" action="<c:url value='Login'/>" method="post">
         <h1>Login</h1>
         <table>
             <tr>
@@ -48,7 +40,7 @@
                 <td><input type="password" name="password" size="40" value="" required placeholder="Please enter your password" ${empty loginName ? '' : 'autofocus="autofocus"'} /></td>
             </tr>
             <tr>
-                <td/>
+                <td></td>
                 <td>
                     <input type="checkbox" name="remember" value="remember" ${empty loginName ? '' : 'checked'}/>Remember login name
                 </td>
@@ -56,9 +48,9 @@
         </table>
         <input type='submit' value='Log in'/>
         <br>
-        <p>No account yet? <a href="#" onclick="showPart('signupForm'); hidePart('loginForm');">Sign up</a> for free.</p>
+        <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
     </form>
-    <form id="signupForm" action="<c:url value='Login'/>" method="post" ${empty errorMessage ? 'style="display: none;"' : ''} onsubmit="return checkSignupForm(this);">
+    <form id="signupForm" action="<c:url value='Login'/>" method="post" onsubmit="return checkSignupForm(this);">
         <h1>Sign up</h1>
         <c:if test="${not empty errorMessage}">
             <p class="error">${fn:escapeXml(errorMessage)}</p>
@@ -66,12 +58,13 @@
         <table>
             <tr>
                 <td>Username:</td>
-                <td><input type="text" name="newusername" size="40" pattern="[A-Za-z0-9]{6,30}" value="${fn:escapeXml(newusername)}" required placeholder="Choose your in-game name"/></td>
-                <td>6 to 30 characters, only letters and numbers</td>
+                <td><input type="text" name="newusername" size="40" pattern="[A-Za-z0-9]{3,30}" value="${fn:escapeXml(newusername)}" required placeholder="Choose your in-game name"/></td>
+                <td>3 to 30 characters, only letters and numbers</td>
             </tr>
             <tr>
                 <td>e-mail address:</td>
                 <td><input type="email" name="email" size="40" value="${fn:escapeXml(email)}" required placeholder="Enter your e-mail address"/></td>
+                <td></td>
             </tr>
             <tr>
                 <td>Password:</td>
@@ -79,8 +72,21 @@
                 <td>At least 8 characters</td>
             </tr>
             <tr>
-                <td>Confirm password:</td><td><input type="password" name="confirmpassword" size="40" required placeholder="Confirm your password"/></td>
+                <td>Confirm password:</td>
+                <td><input type="password" name="confirmpassword" size="40" required placeholder="Confirm your password"/></td>
+                <td></td>
             </tr>
         </table>
         <input type="submit" value="Sign up"/>
     </form>
+
+<script>
+    <c:choose>
+        <c:when test="${empty errorMessage}">
+            showLoginForm();
+        </c:when>
+        <c:otherwise>
+            showSignupForm();
+        </c:otherwise>
+    </c:choose>
+</script>
