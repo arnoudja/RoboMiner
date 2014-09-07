@@ -1,3 +1,10 @@
+function openUrl(url) {
+    try {
+        window.location.replace(url);
+    }
+    catch (e) {}
+}
+
 function countdownTimer(seconds, updateFunction, completedFunction)
 {
     var startTime = new Date().getTime();

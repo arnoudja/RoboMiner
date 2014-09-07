@@ -19,14 +19,20 @@
 <h1>Edit code</h1>
 <button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
 <script>
+    function hasUnsavedChanges() {
+        return (document.getElementById('sourceCode').value !== document.getElementById('sourceCodeOrig').value ||
+                document.getElementById('sourceName').value !== document.getElementById('sourceNameOrig').value);
+    }
+
     function selectOtherSource() {
         var saveData = false;
-        if (document.getElementById('sourceCode').value !== document.getElementById('sourceCodeOrig').value ||
-            document.getElementById('sourceName').value !== document.getElementById('sourceNameOrig').value) {
+        if (hasUnsavedChanges()) {
             if (confirm("Save changes?")) {
                 saveData = true;
             }
         }
+
+        window.onbeforeunload = function() {};
 
         if (saveData) {
             document.getElementById('nextProgramSourceId').value = document.getElementById('programSourceId').value;
@@ -36,6 +42,22 @@
             document.getElementById('changeProgramSourceForm').submit();
         }
     }
+
+    function submitData() {
+        window.onbeforeunload = function() {};
+        document.getElementById('editCodeForm').submit();
+    }
+
+    function confirmLooseChanges() {
+        
+        if (hasUnsavedChanges()) {
+            alert("You have unsaved changes");
+            return "Unsaved changes will be lost";
+        }
+    }
+
+    window.onbeforeunload = confirmLooseChanges;
+
 </script>
 <form id="changeProgramSourceForm" action="<c:url value='editCode'/>" method="post">
     <select id="programSourceId" name="nextProgramSourceId" onchange="selectOtherSource();">
@@ -56,7 +78,7 @@
     <c:if test="${programSource.compiledSize ge 0}">
         Compiled size: <input type="text" value="${programSource.compiledSize}" readonly="true" size="6"/><br/>
     </c:if>
-    <input type='submit' value='SUBMIT'/>
+    <button onclick="submitData();">Save</button>
 </form>
 <input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
 <textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>

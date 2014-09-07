@@ -34,16 +34,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <header>
                 <nav style="float: right; margin-right: 10px;">
                     <ul class="menubar">
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='logoff'/>');"><p class="menuitemtext">Logoff</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='logoff'/>');"><p class="menuitemtext">Logoff</p></li>
                     </ul>
                 </nav>
                 <nav>
                     <ul class="menubar">
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='editCode'/>');"><p class="menuitemtext">Edit code</p></li>
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='robot'/>');"><p class="menuitemtext">Robots</p></li>
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='miningQueue'/>');"><p class="menuitemtext">Mining queue</p></li>
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='miningResults'/>');"><p class="menuitemtext">Mining results</p></li>
-                        <li class="menuitem" onclick="window.location.replace('<c:url value='shop'/>');"><p class="menuitemtext">Shop</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='editCode'/>');"><p class="menuitemtext">Edit code</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='robot'/>');"><p class="menuitemtext">Robots</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='miningQueue'/>');"><p class="menuitemtext">Mining queue</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='miningResults'/>');"><p class="menuitemtext">Mining results</p></li>
+                        <li class="menuitem" onclick="openUrl('<c:url value='shop'/>');"><p class="menuitemtext">Shop</p></li>
                     </ul>
                 </nav>
             </header>
