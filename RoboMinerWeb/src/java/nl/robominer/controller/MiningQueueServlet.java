@@ -37,7 +37,6 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import nl.robominer.businessentity.MiningQueueItem;
 import nl.robominer.businessentity.MiningQueueItem.EMiningQueueItemStatus;
-import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
@@ -66,9 +65,6 @@ public class MiningQueueServlet extends RoboMinerServletBase {
     @EJB
     private MiningAreaFacade miningAreaFacade;
     
-    @EJB
-    private UserAssets userAssets;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -84,12 +80,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
         int userId = (int) request.getSession().getAttribute("userId");
 
-        try {
-            userAssets.updateUserAssets(userId);
-        }
-        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-            throw new ServletException(exc);
-        }
+        processAssets(request);
 
         int robotId = getItemId(request, "robotId");
         int miningAreaId = getItemId(request, "miningAreaId");
@@ -161,7 +152,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
             
             try {
                 
-                if (userAssets.payMiningCosts(userId, miningArea)) {
+                if (getUserAssets().payMiningCosts(userId, miningArea)) {
 
                     MiningQueue miningQueue = new MiningQueue();
                     miningQueue.setMiningArea(miningArea);

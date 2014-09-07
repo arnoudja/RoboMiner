@@ -19,6 +19,8 @@
 
 <script src='js/shop.js'></script>
 
+<rm:userassets oreassetlist='${oreAssetList}' />
+
 <h1>Shop</h1>
 
 Category:

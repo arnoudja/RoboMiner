@@ -32,7 +32,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
 import nl.robominer.entity.Tier;
@@ -58,9 +57,6 @@ public class ShopServlet extends RoboMinerServletBase {
     @EJB
     private TierFacade tierFacade;
     
-    @EJB
-    private UserAssets userAssets;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -76,12 +72,7 @@ public class ShopServlet extends RoboMinerServletBase {
         
         int userId = (int) request.getSession().getAttribute("userId");
 
-        try {
-            userAssets.updateUserAssets(userId);
-        }
-        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-            throw new ServletException(exc);
-        }
+        processAssets(request);
 
         int buyRobotPartId = getItemId(request, "buyRobotPartId");
         int sellRobotPartId = getItemId(request, "sellRobotPartId");
@@ -91,7 +82,7 @@ public class ShopServlet extends RoboMinerServletBase {
         if (buyRobotPartId > 0) {
             
             try {
-                userAssets.buyRobotPart(userId, buyRobotPartId);
+                getUserAssets().buyRobotPart(userId, buyRobotPartId);
             }
             catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
                 throw new ServletException(exc);
@@ -100,7 +91,7 @@ public class ShopServlet extends RoboMinerServletBase {
         else if (sellRobotPartId > 0) {
             
             try {
-                userAssets.sellRobotPart(userId, sellRobotPartId);
+                getUserAssets().sellRobotPart(userId, sellRobotPartId);
             }
             catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
                 throw new ServletException(exc);

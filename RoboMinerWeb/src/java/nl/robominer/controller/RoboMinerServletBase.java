@@ -20,18 +20,38 @@
 package nl.robominer.controller;
 
 import java.io.IOException;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import nl.robominer.businessentity.UserAssets;
+import nl.robominer.entity.UserOreAsset;
+import nl.robominer.session.UserOreAssetFacade;
 
 /**
  *
  * @author Arnoud Jagerman
  */
 public abstract class RoboMinerServletBase extends HttpServlet {
-    
+
+    @EJB
+    private UserAssets userAssets;
+
+    @EJB
+    private UserOreAssetFacade userOreAssetFacade;
+
     abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+    protected UserAssets getUserAssets() {
+        return userAssets;
+    }
 
     protected int getItemId(HttpServletRequest request, String field) {
         
@@ -39,6 +59,22 @@ public abstract class RoboMinerServletBase extends HttpServlet {
         return (value == null || value.isEmpty()) ? 0 : Integer.parseInt(value);
     }
 
+    protected void processAssets(HttpServletRequest request) throws ServletException {
+        
+        int userId = (int) request.getSession().getAttribute("userId");
+
+        try {
+            userAssets.updateUserAssets(userId);
+        }
+        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
+            throw new ServletException(exc);
+        }
+
+        // Add the list of ore assets
+        List<UserOreAsset> userOreAssetList = userOreAssetFacade.findByUsersId(userId);
+        request.setAttribute("oreAssetList", userOreAssetList);
+    }
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *

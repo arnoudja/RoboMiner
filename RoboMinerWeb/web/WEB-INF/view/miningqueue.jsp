@@ -16,6 +16,9 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
+
+<rm:userassets oreassetlist='${oreAssetList}' />
+
 <h1>Mining Queue</h1>
 <script>
     function robotQueueSize(robotId) {

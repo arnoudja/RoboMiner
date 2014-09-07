@@ -205,6 +205,27 @@ tr.shopLastRow {
 
 
 /******************************************************
+ * Ore assets
+ ******************************************************/
+
+table.oreassets {
+    border-collapse: collapse;
+    background: #ddd;
+    float: right;
+    margin: 20px;
+    caption-side: top;
+}
+
+th.oreassets, td.oreassets {
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #bbb;
+}
+
+
+/******************************************************
  * Help pages
  ******************************************************/
 

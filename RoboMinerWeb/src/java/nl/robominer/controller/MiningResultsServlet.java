@@ -32,12 +32,10 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.OreFacade;
-import nl.robominer.session.UserOreAssetFacade;
 
 /**
  *
@@ -50,13 +48,7 @@ public class MiningResultsServlet extends RoboMinerServletBase {
     private MiningQueueFacade miningQueueFacade;
     
     @EJB
-    private UserOreAssetFacade userOreAssetFacade;
-    
-    @EJB
     private OreFacade oreFacade;
-    
-    @EJB
-    private UserAssets userAssets;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -82,16 +74,7 @@ public class MiningResultsServlet extends RoboMinerServletBase {
 
         if (miningResult == null) {
 
-            try {
-                userAssets.updateUserAssets(userId);
-            }
-            catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-                throw new ServletException(exc);
-            }
-            
-            // Add the list of ore assets
-            List<UserOreAsset> userOreAssetList = userOreAssetFacade.findByUsersId(userId);
-            request.setAttribute("oreAssetList", userOreAssetList);
+            processAssets(request);
         
             // Add the list of mining queue items
             List<MiningQueue> miningResultsList = miningQueueFacade.findResultsByUsersId(userId);

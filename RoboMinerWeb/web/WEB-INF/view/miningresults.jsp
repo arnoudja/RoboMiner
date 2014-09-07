@@ -19,19 +19,7 @@
 
 <script src='js/miningresults.js'></script>
 
-<h1>Ore assets</h1>
-<table>
-    <tr>
-        <th>Ore</th>
-        <th>Amount</th>
-    </tr>
-    <c:forEach var='oreAsset' items='${oreAssetList}'>
-        <tr>
-            <td>${fn:escapeXml(oreAsset.ore.oreName)}</td>
-            <td>${oreAsset.amount}</td>
-        </tr>
-    </c:forEach>
-</table>
+<rm:userassets oreassetlist='${oreAssetList}' />
 
 <h1>Mining Results</h1>
 <table class="miningresults">
