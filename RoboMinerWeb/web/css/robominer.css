@@ -122,6 +122,40 @@ button.helpbutton {
 }
 
 
+/******************************************************
+ * Mining results
+ ******************************************************/
+
+table.miningresults {
+    border-collapse: collapse;
+    background: #ddd;
+    margin-bottom: 10px;
+}
+
+tr.miningresultsheader {
+    border: 2px solid #aaa;
+    background: #ddd;
+    border-collapse: collapse;
+}
+
+tr.miningresultsdetails {
+    display: none;
+}
+
+tbody.miningresults {
+    border: 2px solid #aaa;
+    background: #ddd;
+    border-collapse: collapse;
+}
+
+td.miningresults, th.miningresults {
+    border: 1px solid #ccc;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
 
 /******************************************************
  * Shop

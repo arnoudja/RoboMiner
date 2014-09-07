@@ -118,10 +118,6 @@ public class MiningQueue implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public MiningArea getMiningArea() {
         return miningArea;
     }
@@ -141,11 +137,11 @@ public class MiningQueue implements Serializable {
     public RallyResult getRallyResult() {
         return rallyResult;
     }
-            
+
     public int getPlayerNumber() {
         return playerNumber;
     }
-    
+
     public Date getCreationTime() {
         return creationTime;
     }
@@ -164,6 +160,36 @@ public class MiningQueue implements Serializable {
 
     public List<MiningOreResult> getMiningOreResults() {
         return miningOreResults;
+    }
+
+    public int getTotalOreMined() {
+        int result = 0;
+        
+        for (MiningOreResult miningOreResult : miningOreResults) {
+            result += miningOreResult.getAmount();
+        }
+        
+        return result;
+    }
+    
+    public int getTotalTax() {
+        int result = 0;
+
+        for (MiningOreResult miningOreResult : miningOreResults) {
+            result += miningOreResult.getTax();
+        }
+        
+        return result;
+    }
+    
+    public int getTotalReward() {
+        int result = 0;
+
+        for (MiningOreResult miningOreResult : miningOreResults) {
+            result += miningOreResult.getReward();
+        }
+        
+        return result;
     }
     
     @Override

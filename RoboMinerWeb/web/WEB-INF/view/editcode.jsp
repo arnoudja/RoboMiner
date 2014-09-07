@@ -16,49 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
-<h1>Edit code</h1>
+
+<script src='js/editcode.js'></script>
+
 <button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
-<script>
-    function hasUnsavedChanges() {
-        return (document.getElementById('sourceCode').value !== document.getElementById('sourceCodeOrig').value ||
-                document.getElementById('sourceName').value !== document.getElementById('sourceNameOrig').value);
-    }
+<h1>Edit code</h1>
 
-    function selectOtherSource() {
-        var saveData = false;
-        if (hasUnsavedChanges()) {
-            if (confirm("Save changes?")) {
-                saveData = true;
-            }
-        }
-
-        window.onbeforeunload = function() {};
-
-        if (saveData) {
-            document.getElementById('nextProgramSourceId').value = document.getElementById('programSourceId').value;
-            document.getElementById('editCodeForm').submit();
-        }
-        else {
-            document.getElementById('changeProgramSourceForm').submit();
-        }
-    }
-
-    function submitData() {
-        window.onbeforeunload = function() {};
-        document.getElementById('editCodeForm').submit();
-    }
-
-    function confirmLooseChanges() {
-        
-        if (hasUnsavedChanges()) {
-            alert("You have unsaved changes");
-            return "Unsaved changes will be lost";
-        }
-    }
-
-    window.onbeforeunload = confirmLooseChanges;
-
-</script>
 <form id="changeProgramSourceForm" action="<c:url value='editCode'/>" method="post">
     <select id="programSourceId" name="nextProgramSourceId" onchange="selectOtherSource();">
         <c:forEach var='programSourceItem' items='${programSourceList}'>
@@ -67,6 +30,7 @@
         <option value='-1' ${programSourceId le 0 ? 'selected="selected"' : ''}>New program</option>
     </select>
 </form>
+
 <form id='editCodeForm' action="<c:url value='editCode'/>" method="post">
     <input type="hidden" name="programSourceId" value="${programSourceId}"/>
     <input type="hidden" id="nextProgramSourceId" name="nextProgramSourceId" value="${programSourceId}"/>
@@ -80,8 +44,7 @@
     </c:if>
     <button onclick="submitData();">Save</button>
 </form>
-<input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
-<textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
+
 <c:choose>
     <c:when test="${not empty programSource.errorDescription}">
         <script>
@@ -94,3 +57,8 @@
         </script>
     </c:when>
 </c:choose>
+
+<input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
+<textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
+
+<script>window.onbeforeunload = confirmLooseChanges;</script>

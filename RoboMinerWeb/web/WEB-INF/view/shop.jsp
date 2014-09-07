@@ -16,37 +16,11 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
-<script>
-    function showRobotParts() {
-        var prevRobotPartTypeId = document.getElementById('selectedRobotPartTypeId').value;
-        var prevTierId = document.getElementById('selectedTierId').value;
-        hideElements(document.getElementsByName('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId));
-        var robotPartTypeId = document.getElementById('robotPartTypeId').value;
-        var tierId = document.getElementById('tierId').value;
-        updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + robotPartTypeId + '_' + tierId), 'table-row-group');
-        document.getElementById('selectedRobotPartTypeId').value = robotPartTypeId;
-        document.getElementById('selectedTierId').value = tierId;
-    }
-    function buyItem(robotPartId, robotPartName) {
-        if (confirm("Buy '" + robotPartName + "'?")) {
-            document.getElementById('buyRobotPartId').value = robotPartId;
-            document.getElementById('buySellRobotPartForm').submit();
-        }
-    }
-    function sellItem(robotPartId, robotPartName) {
-        if (confirm("Selling will return half the original price. Sell '" + robotPartName + "'?")) {
-            document.getElementById('sellRobotPartId').value = robotPartId;
-            document.getElementById('buySellRobotPartForm').submit();
-        }
-    }
-</script>
-<form id="buySellRobotPartForm" action="<c:url value='shop'/>" method="post">
-    <input type="hidden" id="buyRobotPartId" name="buyRobotPartId" value=""/>
-    <input type="hidden" id="sellRobotPartId" name="sellRobotPartId" value=""/>
-    <input type="hidden" id="selectedRobotPartTypeId" name="selectedRobotPartTypeId" value="${selectedRobotPartTypeId}"/>
-    <input type="hidden" id="selectedTierId" name="selectedTierId" value="${selectedTierId}"/>
-</form>
+
+<script src='js/shop.js'></script>
+
 <h1>Shop</h1>
+
 Category:
 <select id="robotPartTypeId" onchange="showRobotParts();">
     <c:forEach var="robotPartType" items="${robotPartMap}">
@@ -59,6 +33,7 @@ Tier:
         <option value="${tier.id}" ${tier.id eq selectedTierId ? 'selected="selected"' : ''}>${fn:escapeXml(tier.tierName)}</option>
     </c:forEach>
 </select>
+
 <h2>Items:</h2>
 <table class="shop">
     <c:forEach var="robotPartType" items="${robotPartMap}">
@@ -171,6 +146,12 @@ Tier:
         </c:forEach>
     </c:forEach>
 </table>
-<script>
-    showRobotParts();
-</script>
+
+<form id="buySellRobotPartForm" action="<c:url value='shop'/>" method="post">
+    <input type="hidden" id="buyRobotPartId" name="buyRobotPartId" value=""/>
+    <input type="hidden" id="sellRobotPartId" name="sellRobotPartId" value=""/>
+    <input type="hidden" id="selectedRobotPartTypeId" name="selectedRobotPartTypeId" value="${selectedRobotPartTypeId}"/>
+    <input type="hidden" id="selectedTierId" name="selectedTierId" value="${selectedTierId}"/>
+</form>
+
+<script>showRobotParts();</script>
