@@ -24,6 +24,15 @@ function openUrl(url) {
     catch (e) {}
 }
 
+function openUrlConfirm(url, message) {
+    if (confirm(message)) {
+        try {
+            window.location.replace(url);
+        }
+        catch (e) {}
+    }
+}
+
 function countdownTimer(seconds, updateFunction, completedFunction)
 {
     var startTime = new Date().getTime();

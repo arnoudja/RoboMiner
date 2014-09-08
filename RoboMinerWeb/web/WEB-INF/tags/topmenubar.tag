@@ -23,7 +23,7 @@
 <header>
     <nav style="float: right; margin-right: 10px;">
         <ul class="menubar">
-            <li class="menuitem" onclick="openUrl('<c:url value='logoff'/>');"><p class="menuitemtext">Logoff</p></li>
+            <li class="menuitem" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');"><p class="menuitemtext">Logoff</p></li>
         </ul>
     </nav>
     <nav>
