@@ -1,4 +1,4 @@
-<%--
+<!--
  Copyright (C) 2014 Arnoud Jagerman
 
  This file is part of RoboMiner.
@@ -15,11 +15,18 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
---%>
-            </div>
-            <footer>
-                <p>RoboMiner</p>
-            </footer>
-        </div>
+-->
+
+<%@ tag description="The page header, including body declaration" pageEncoding="UTF-8"%>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <title>RoboMiner</title>
+    </head>
+    <body>
+        <jsp:doBody/>
     </body>
 </html>

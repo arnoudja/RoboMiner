@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%--
  Copyright (C) 2014 Arnoud Jagerman
 
@@ -18,23 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ tag description="The bar at the bottom of the page" pageEncoding="UTF-8"%>
 
-<rm:robominerheader>
-    <div id="main">
-        <header>
-            <nav>
-                <ul class="menubar">
-                </ul>
-            </nav>
-        </header>
-        <div id="interface">
-            <h1>Logoff</h1>
-            <p>Logged off successful</p>
-            <p><a href="<c:url value='login'/>">Login</a> again</p>
-        </div>
-        <rm:pagefooter/>
-    </div>
-</rm:robominerheader>
+<footer>
+    <p>RoboMiner</p>
+</footer>
