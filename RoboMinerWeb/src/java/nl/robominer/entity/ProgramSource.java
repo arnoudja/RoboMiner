@@ -144,7 +144,7 @@ public class ProgramSource implements Serializable {
     }
 
     public void fillDefaults() {
-        setSourceName("New program");
+
         setVerified(true);
         setCompiledSize(-1);
         setErrorDescription("");

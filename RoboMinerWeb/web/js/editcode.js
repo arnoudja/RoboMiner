@@ -49,7 +49,6 @@ function submitData() {
 function confirmLooseChanges() {
 
     if (hasUnsavedChanges()) {
-        alert("You have unsaved changes");
         return "Unsaved changes will be lost";
     }
 }

@@ -78,6 +78,7 @@
                     <td>
                         <input type="button" value="remove" onclick="removeMiningQueueItems();"/>
                     </td>
+                    <td colspan="4"></td>
                 </tr>
             </table>
             <h1>Add to Mining Queue</h1>
@@ -102,22 +103,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <td/>
+                    <td></td>
                     <td>
                         <c:forEach var='miningArea' items='${miningAreaList}'>
                             <span id='miningAreaDetails${miningArea.id}' style='display: none;'>
                                 <table>
                                     <tr>
                                         <td>Tax rate:</td>
-                                        <td colspan="2">${miningArea.taxRate}%</td>
+                                        <td colspan="3">${miningArea.taxRate}%</td>
                                     </tr>
                                     <c:if test="${fn:length(miningArea.orePrice.orePriceAmountList) gt 0}">
                                         <tr>
-                                            <td colspan="3">Core costs:</td>
+                                            <td colspan="4">Core costs:</td>
                                         </tr>
                                         <c:forEach var="orePriceAmount" items="${miningArea.orePrice.orePriceAmountList}">
                                             <tr>
-                                                <td/>
+                                                <td></td>
                                                 <td>${fn:escapeXml(orePriceAmount.ore.oreName)}:</td>
                                                 <td>${orePriceAmount.amount}</td>
                                                 <td class="${user.getUserOreAmount(orePriceAmount.ore.id) ge orePriceAmount.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePriceAmount.ore.id)})</td>
@@ -126,30 +127,31 @@
                                     </c:if>
                                     <tr>
                                         <td>Mining time:</td>
-                                        <td colspan="2">${miningArea.miningTime} seconds</td>
+                                        <td colspan="3">${miningArea.miningTime} seconds</td>
                                     </tr>
                                     <tr>
                                         <td>Mining cycles:</td>
-                                        <td colspan="2">${miningArea.maxMoves}</td>
+                                        <td colspan="3">${miningArea.maxMoves}</td>
                                     </tr>
                                     <tr>
                                         <td>Area size:</td>
-                                        <td colspan="2">${miningArea.sizeX} x ${miningArea.sizeY}</td>
+                                        <td colspan="3">${miningArea.sizeX} x ${miningArea.sizeY}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">Available ore:</td>
+                                        <td colspan="4">Available ore:</td>
                                     </tr>
                                     <c:forEach var='miningAreaOreSupply' items="${miningArea.miningAreaOreSupply}">
                                         <tr>
-                                            <td/>
+                                            <td></td>
                                             <td>${fn:escapeXml(miningAreaOreSupply.ore.oreName)}:</td>
-                                            <td>${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
+                                            <td colspan="2">${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
                                         </tr>
                                     </c:forEach>
                                 </table>
                             </span>
                         </c:forEach>
                     </td>
+                    <td></td>
                 </tr>
             </table>
         </form>

@@ -24,14 +24,19 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
+
+    <script src='js/editcode.js'></script>
+    <script>window.onbeforeunload = confirmLooseChanges;</script>
+
+    <input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
+    <textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
+
     <rm:defaultpage currentform="editCode">
 
-        <script src='js/editcode.js'></script>
-
         <button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
-        <h1>Edit code</h1>
 
         <form id="changeProgramSourceForm" action="<c:url value='editCode'/>" method="post">
+            Edit code:
             <select id="programSourceId" name="nextProgramSourceId" onchange="selectOtherSource();">
                 <c:forEach var='programSourceItem' items='${programSourceList}'>
                     <option value="${programSourceItem.id}" ${programSourceItem.id eq programSourceId ? 'selected="selected"' : ''}>${fn:escapeXml(programSourceItem.sourceName)}</option>
@@ -40,37 +45,45 @@
             </select>
         </form>
 
+        <br>
+
         <form id='editCodeForm' action="<c:url value='editCode'/>" method="post">
-            <input type="hidden" name="programSourceId" value="${programSourceId}"/>
             <input type="hidden" id="nextProgramSourceId" name="nextProgramSourceId" value="${programSourceId}"/>
-            <input id="sourceName" type="text" name="sourceName" value="${fn:escapeXml(programSource.sourceName)}" size="80"/><br/>
-            <textarea id='sourceCode' name='sourceCode' rows='25' cols='120' onkeydown="return processTab(event, this);">${fn:escapeXml(programSource.sourceCode)}</textarea><br/>
+            <input type="hidden" name="programSourceId" value="${programSourceId}"/>
+
+            Program name:<br>
+            <input id="sourceName" type="text" name="sourceName" value="${fn:escapeXml(programSource.sourceName)}" size="40" placeholder="Please choose a name for your program" required />
+            <br>
+            <br>
+
+            Code:<br>
+            <textarea id='sourceCode' name='sourceCode' rows='25' cols='100' onkeydown="return processTab(event, this);">${fn:escapeXml(programSource.sourceCode)}</textarea>
+            <br>
+
             <c:if test="${not empty programSource.errorDescription}">
-                <input type="text" value="${fn:escapeXml(programSource.errorDescription)}" readonly="true" size="80"/><br/>
+                <p class="error">${fn:escapeXml(programSource.errorDescription)}</p>
             </c:if>
+
             <c:if test="${programSource.compiledSize ge 0}">
-                Compiled size: <input type="text" value="${programSource.compiledSize}" readonly="true" size="6"/><br/>
+                <p>Compiled size: ${programSource.compiledSize}</p>
             </c:if>
+
             <button onclick="submitData();">Save</button>
         </form>
 
-        <c:choose>
-            <c:when test="${not empty programSource.errorDescription}">
-                <script>
-                    alert(htmlDecode("${fn:escapeXml(programSource.errorDescription)}"));
-                </script>
-            </c:when>
-            <c:when test="${not empty errorMessage}">
-                <script>
-                    alert(htmlDecode("${fn:escapeXml(errorMessage)}"));
-                </script>
-            </c:when>
-        </c:choose>
-
-        <input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
-        <textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
-
-        <script>window.onbeforeunload = confirmLooseChanges;</script>
-
     </rm:defaultpage>
+
+    <c:choose>
+        <c:when test="${not empty programSource.errorDescription}">
+            <script>
+                alert(htmlDecode("${fn:escapeXml(programSource.errorDescription)}"));
+            </script>
+        </c:when>
+        <c:when test="${not empty errorMessage}">
+            <script>
+                alert(htmlDecode("${fn:escapeXml(errorMessage)}"));
+            </script>
+        </c:when>
+    </c:choose>
+
 </rm:robominerheader>
