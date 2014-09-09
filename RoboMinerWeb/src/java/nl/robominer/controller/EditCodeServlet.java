@@ -41,6 +41,8 @@ import nl.robominer.session.RobotFacade;
 @WebServlet(name = "EditCodeServlet", urlPatterns = {"/editCode"})
 public class EditCodeServlet extends RoboMinerServletBase {
 
+    private static final String SESSION_PROGRAM_SOURCE_ID = "editCode_programSourceId";
+    
     @EJB
     private ProgramSourceFacade programSourceFacade;
     
@@ -96,14 +98,19 @@ public class EditCodeServlet extends RoboMinerServletBase {
         List<ProgramSource> programSourceList = programSourceFacade.findByUsersId(userId);
         request.setAttribute("programSourceList", programSourceList);
 
-        // When the page is opened for the first time, open the first program on the list
-        if (nextProgramSourceId == 0 && !programSourceList.isEmpty()) {
-            
-            nextProgramSourceId = programSourceList.get(0).getId();
+        // When the page is opened, select the program from the session or open the first program on the list
+        if (nextProgramSourceId == 0) {
+
+            if (request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID) != null) {
+                nextProgramSourceId = (int)request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID);
+            }
+            else if (!programSourceList.isEmpty()) {
+                nextProgramSourceId = programSourceList.get(0).getId();
+            }
         }
-        
+
         ProgramSource programSource = null;
-        
+
         if (nextProgramSourceId > 0) {
             programSource = programSourceFacade.findByIdAndUser(nextProgramSourceId, userId);
         }
@@ -117,10 +124,13 @@ public class EditCodeServlet extends RoboMinerServletBase {
             programSource.fillDefaults();
             programSource.setUsersId(userId);
         }
-        
+
         // Add the data of the currently selected source
         request.setAttribute("programSourceId", nextProgramSourceId);
         request.setAttribute("programSource", programSource);
+
+        // Save the selected program id in the session
+        request.getSession().setAttribute(SESSION_PROGRAM_SOURCE_ID, nextProgramSourceId);
 
         request.getRequestDispatcher("/WEB-INF/view/editcode.jsp").forward(request, response);
     }

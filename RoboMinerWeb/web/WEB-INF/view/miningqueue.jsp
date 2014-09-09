@@ -37,6 +37,8 @@
             <input type='hidden' id='miningAreaAddId' name='miningAreaAddId' value='' />
             <input type='hidden' id='submitType' name='submitType' value='' />
 
+            <c:set var="canremove" value="false"/>
+            
             <table class="miningqueue">
                 <caption>Mining queues</caption>
                 <tr>
@@ -44,7 +46,7 @@
                         <th class="miningqueue">${robot.robotName}</th>
                         <th class="miningqueue">Area</th>
                         <th class="miningqueue">Status</th>
-                        <th class="miningqueue">ETC</th>
+                        <th class="miningqueuetime">ETC</th>
                     </c:forEach>
                 </tr>
                 <c:if test="${largestQueueSize gt 0}">
@@ -63,6 +65,7 @@
                                                     </c:if>
                                                 </c:forEach>
                                                 <input type="checkbox" name="selectedQueueItemId" value="${miningQueueId}" ${ischecked ? 'checked' : ''}/>
+                                                <c:set var="canremove" value="true"/>
                                             </c:if>
                                         </td>
                                         <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
@@ -117,10 +120,11 @@
             <c:if test="${not empty errorMessage}">
                 <p class="error">${errorMessage}</p>
             </c:if>
-            
-            <br>
 
-            <input type="button" value="Remove selected" onclick="removeMiningQueueItems();"/>
+            <c:if test="${canremove}">
+                <br>
+                <input type="button" value="Remove selected" onclick="removeMiningQueueItems();"/>
+            </c:if>
 
             <h1>Mining area info</h1>
             <table>

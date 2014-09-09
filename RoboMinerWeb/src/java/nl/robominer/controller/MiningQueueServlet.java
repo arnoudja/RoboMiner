@@ -53,6 +53,9 @@ import nl.robominer.session.UsersFacade;
 @WebServlet(name = "MiningQueueServlet", urlPatterns = {"/miningQueue"})
 public class MiningQueueServlet extends RoboMinerServletBase {
 
+    private static final String SESSION_INFO_MINING_AREA_ID = "miningQueue_infoMiningAreaId";
+    private static final String SESSION_ROBOT_MINING_AREA_ID = "miningQueue_robotMiningAreaId";
+    
     @EJB
     private UsersFacade usersFacade;
     
@@ -126,10 +129,11 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);
 
-        // Select first mining area from the lists when none selected yet
+        // Restore the session selection or select first mining area from the lists when none selected yet
         if (miningAreaId <= 0) {
-            if ((int)request.getSession().getAttribute("infoMiningAreaId") > 0) {
-                miningAreaId = (int)request.getSession().getAttribute("infoMiningAreaId");
+
+            if (request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID) != null) {
+                miningAreaId = (int)request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID);
             }
             else if (!miningAreaList.isEmpty()) {
                 miningAreaId = miningAreaList.get(0).getId();
@@ -137,20 +141,23 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
 
         // Determine the selected mining area for each robot
-        Map<Integer, Integer> sessionRobotMiningAreaId = (Map<Integer, Integer>)request.getSession().getAttribute("robotMiningAreaId");
+        Map<Integer, Integer> sessionRobotMiningAreaId = (Map<Integer, Integer>)request.getSession().getAttribute(SESSION_ROBOT_MINING_AREA_ID);
         Map<Integer, Integer> robotMiningAreaId = new HashMap<>();
+
         for (Robot robot : robotList) {
+
             int selectedMiningAreaId = getItemId(request, "miningArea" + robot.getId());
-            
+
             if (selectedMiningAreaId <= 0) {
-                if (sessionRobotMiningAreaId != null && sessionRobotMiningAreaId.get(robot.getId()) > 0) {
+
+                if (sessionRobotMiningAreaId != null && sessionRobotMiningAreaId.get(robot.getId()) != null) {
                     selectedMiningAreaId = sessionRobotMiningAreaId.get(robot.getId());
                 }
                 else if (!miningAreaList.isEmpty()) {
                     selectedMiningAreaId = miningAreaList.get(0).getId();
                 }
             }
-            
+
             robotMiningAreaId.put(robot.getId(), selectedMiningAreaId);
         }
 
@@ -165,8 +172,8 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
 
         // Store the selections in the session
-        request.getSession().setAttribute("robotMiningAreaId", robotMiningAreaId);
-        request.getSession().setAttribute("infoMiningAreaId", miningAreaId);
+        request.getSession().setAttribute(SESSION_ROBOT_MINING_AREA_ID, robotMiningAreaId);
+        request.getSession().setAttribute(SESSION_INFO_MINING_AREA_ID, miningAreaId);
 
         request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
     }

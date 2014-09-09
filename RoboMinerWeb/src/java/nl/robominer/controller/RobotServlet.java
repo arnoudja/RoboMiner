@@ -52,6 +52,8 @@ import nl.robominer.session.UserRobotPartAssetFacade;
 @WebServlet(name = "RobotServlet", urlPatterns = {"/robot"})
 public class RobotServlet extends RoboMinerServletBase {
 
+    private final static String SESSION_ROBOT_ID = "robot_robotId";
+
     @Resource
     UserTransaction transaction;
     
@@ -88,7 +90,16 @@ public class RobotServlet extends RoboMinerServletBase {
         int robotId = getItemId(request, "robotId");
         
         if (robotId > 0) {
+
             updateRobot(request, robotId, userId);
+            request.getSession().setAttribute(SESSION_ROBOT_ID, robotId);
+        }
+        else if (request.getSession().getAttribute(SESSION_ROBOT_ID) != null) {
+            robotId = (int)request.getSession().getAttribute("robot_robotId");
+        }
+
+        // Add the selected robot
+        if (robotId > 0) {
             request.setAttribute("robotId", robotId);
         }
         

@@ -152,7 +152,7 @@ table.miningqueue {
     caption-side: top;
 }
 
-td.miningqueue, th.miningqueue, td.miningqueuecheckbox, td.miningqueuetime {
+td.miningqueue, th.miningqueue, td.miningqueuecheckbox, td.miningqueuetime, th.miningqueuetime {
     border: 1px solid #aaa;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -160,7 +160,7 @@ td.miningqueue, th.miningqueue, td.miningqueuecheckbox, td.miningqueuetime {
     padding-right: 7px;
 }
 
-td.miningqueuetime {
+td.miningqueuetime, th.miningqueuetime {
     text-align: right;
 }
 

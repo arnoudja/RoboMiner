@@ -48,6 +48,8 @@ import nl.robominer.session.UsersFacade;
 @WebServlet(name = "ShopServlet", urlPatterns = {"/shop"})
 public class ShopServlet extends RoboMinerServletBase {
 
+    private static final String SESSION_CATEGORY_ID = "shop_categoryId";
+    
     @EJB
     private UsersFacade usersFacade;
     
@@ -97,9 +99,13 @@ public class ShopServlet extends RoboMinerServletBase {
                 throw new ServletException(exc);
             }
         }
-        
+
+        if (selectedRobotPartTypeId <= 0 && request.getSession().getAttribute(SESSION_CATEGORY_ID) != null) {
+            selectedRobotPartTypeId = (int)request.getSession().getAttribute(SESSION_CATEGORY_ID);
+        }
+
         Users user = usersFacade.findById(userId);
-        
+
         // Initially select the highest tier the user has ore for
         if (selectedTierId < 1) {
             for (Map.Entry<Integer, UserOreAsset> userOreAssetEntry : user.getUserOreAssets().entrySet()) {
@@ -123,6 +129,9 @@ public class ShopServlet extends RoboMinerServletBase {
         // Add the previous selected part type and selection
         request.setAttribute("selectedRobotPartTypeId", selectedRobotPartTypeId);
         request.setAttribute("selectedTierId", selectedTierId);
+        
+        // Store the selected category in the session
+        request.getSession().setAttribute(SESSION_CATEGORY_ID, selectedRobotPartTypeId);
         
         request.getRequestDispatcher("/WEB-INF/view/shop.jsp").forward(request, response);
     }
