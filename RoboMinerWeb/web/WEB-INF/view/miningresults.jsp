@@ -71,14 +71,12 @@
                     <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
                         <td class="miningresults"></td>
                         <td class="miningresults">Queued:</td>
-                        <td class="miningresults"><fmt:formatDate value="${miningResult.creationTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
-                        <td class="miningresults" colspan="5"></td>
+                        <td class="miningresults" colspan="6"><fmt:formatDate value="${miningResult.creationTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
                     </tr>
                     <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
                         <td class="miningresults"></td>
                         <td class="miningresults">Mining end:</td>
-                        <td class="miningresults"><fmt:formatDate value="${miningResult.miningEndTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
-                        <td class="miningresults" colspan="5"></td>
+                        <td class="miningresults" colspan="6"><fmt:formatDate value="${miningResult.miningEndTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
                     </tr>
                 </tbody>
             </c:forEach>

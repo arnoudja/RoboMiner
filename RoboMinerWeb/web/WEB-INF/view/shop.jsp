@@ -24,29 +24,40 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <rm:defaultpage currentform="shop">
 
-        <script src='js/shop.js'></script>
+    <script src='js/shop.js'></script>
+
+    <rm:defaultpage currentform="shop">
 
         <rm:userassets oreassetlist='${oreAssetList}' />
 
-        <h1>Shop</h1>
+        <table>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <select id="robotPartTypeId" class="tableitem" onchange="showRobotParts();">
+                        <c:forEach var="robotPartType" items="${robotPartMap}">
+                            <option value="${robotPartType.key.id}" ${robotPartType.key.id eq selectedRobotPartTypeId ? 'selected' : ''}>${fn:escapeXml(robotPartType.key.typeName)}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Tier:</td>
+                <td>
+                    <select id="tierId" class="tableitem" onchange="showRobotParts();">
+                        <c:forEach var="tier" items="${tierList}">
+                            <option value="${tier.id}" ${tier.id eq selectedTierId ? 'selected' : ''}>${fn:escapeXml(tier.tierName)}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+        </table>
 
-        Category:
-        <select id="robotPartTypeId" onchange="showRobotParts();">
-            <c:forEach var="robotPartType" items="${robotPartMap}">
-                <option value="${robotPartType.key.id}" ${robotPartType.key.id eq selectedRobotPartTypeId ? 'selected="selected"' : ''}>${fn:escapeXml(robotPartType.key.typeName)}</option>
-            </c:forEach>
-        </select>
-        Tier:
-        <select id="tierId" onchange="showRobotParts();">
-            <c:forEach var="tier" items="${tierList}">
-                <option value="${tier.id}" ${tier.id eq selectedTierId ? 'selected="selected"' : ''}>${fn:escapeXml(tier.tierName)}</option>
-            </c:forEach>
-        </select>
-
-        <h2>Items:</h2>
+        <br><br>
+        
         <table class="shop">
+            <caption>Shop items</caption>
             <c:forEach var="robotPartType" items="${robotPartMap}">
                 <c:forEach var="robotPart" items="${robotPartType.value}">
                     <tbody class="shop" name="robotPartTypeRow${robotPartType.key.id}_${robotPart.tierId}">
