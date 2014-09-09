@@ -31,21 +31,20 @@
 
         <rm:userassets oreassetlist='${oreAssetList}' />
 
-        <h1>Mining queues</h1>
-
         <form id='miningqueueform' action="<c:url value='miningQueue'/>" method="post">
 
             <input type='hidden' id='robotId' name='robotId' value='' />
             <input type='hidden' id='miningAreaAddId' name='miningAreaAddId' value='' />
             <input type='hidden' id='submitType' name='submitType' value='' />
 
-            <table>
+            <table class="miningqueue">
+                <caption>Mining queues</caption>
                 <tr>
                     <c:forEach var='robot' items="${robotList}">
-                        <th>${robot.robotName}</th>
-                        <th>Area</th>
-                        <th>Status</th>
-                        <th>ETC</th>
+                        <th class="miningqueue">${robot.robotName}</th>
+                        <th class="miningqueue">Area</th>
+                        <th class="miningqueue">Status</th>
+                        <th class="miningqueue">ETC</th>
                     </c:forEach>
                 </tr>
                 <c:if test="${largestQueueSize gt 0}">
@@ -54,7 +53,7 @@
                             <c:forEach var='robot' items="${robotList}">
                                 <c:choose>
                                     <c:when test="${robotMiningQueueMap.get(robot.id).size() gt rownr}">
-                                        <td class="checkbox">
+                                        <td class="miningqueuecheckbox">
                                             <c:if test="${rownr gt 0}">
                                                 <c:set var="miningQueueId" value="${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}" />
                                                 <c:set var="ischecked" value="false" />
@@ -66,21 +65,24 @@
                                                 <input type="checkbox" name="selectedQueueItemId" value="${miningQueueId}" ${ischecked ? 'checked' : ''}/>
                                             </c:if>
                                         </td>
-                                        <td>${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
-                                        <td>${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).itemStatus.description)}</td>
-                                        <td id="timeLeft${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}"/>
+                                        <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
+                                        <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).itemStatus.description)}</td>
+                                        <td class="miningqueue" id="timeLeft${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}"/>
                                         <script>
                                             countdownTimer(${robotMiningQueueMap.get(robot.id).get(rownr).timeLeft} + 1,
                                                 function(secondsLeft) {
                                                     document.getElementById('timeLeft' + ${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
                                                 },
                                                 function() {
-                                                    document.getElementById("addqueueform").submit();
+                                                    document.getElementById("miningqueueform").submit();
                                                 });
                                         </script>
                                     </c:when>
                                     <c:otherwise>
-                                        <td colspan="4"></td>
+                                        <td class="miningqueue"></td>
+                                        <td class="miningqueue"></td>
+                                        <td class="miningqueue"></td>
+                                        <td class="miningqueue"></td>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
@@ -91,21 +93,21 @@
                     <c:forEach var='robot' items="${robotList}">
                         <c:choose>
                             <c:when test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
-                                <td></td>
-                                <td>
+                                <td class="miningqueue"></td>
+                                <td class="miningqueue">
                                     <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem">
                                         <c:forEach var='miningArea' items='${miningAreaList}'>
                                             <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
                                         </c:forEach>
                                     </select>
                                 </td>
-                                <td>
+                                <td class="miningqueue">
                                     <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
                                 </td>
-                                <td></td>
+                                <td class="miningqueue"></td>
                             </c:when>
                             <c:otherwise>
-                                <td colspan="4"></td>
+                                <td class="miningqueue" colspan="4"></td>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
