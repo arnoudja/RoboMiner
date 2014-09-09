@@ -24,7 +24,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <div id="main">
+    <div class="main">
 
         <script src='js/login.js'></script>
 
@@ -36,7 +36,7 @@
                 </ul>
             </nav>
         </header>
-        <div id="interface">               
+        <div class="interface">               
             <form id="loginForm" action="<c:url value='Login'/>" method="post">
                 <h1>Login</h1>
                 <table>

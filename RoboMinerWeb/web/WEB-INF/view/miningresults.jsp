@@ -25,7 +25,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <rm:defaultpage>
+    <rm:defaultpage currentform="miningResults">
 
         <script src='js/miningresults.js'></script>
 

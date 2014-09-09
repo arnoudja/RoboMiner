@@ -24,7 +24,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <rm:defaultpage>
+    <rm:defaultpage currentform="editCode">
 
         <script src='js/editcode.js'></script>
 

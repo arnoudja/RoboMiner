@@ -24,7 +24,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <rm:defaultpage>
+    <rm:defaultpage currentform="viewRally">
 
         <script src='js/animation.js'></script>
         <div style="position: relative; min-height: 650px; width: 1100px; margin: 0 auto; margin-top: 10px;">

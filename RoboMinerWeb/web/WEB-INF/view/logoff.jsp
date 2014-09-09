@@ -23,14 +23,14 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <div id="main">
+    <div class="main">
         <header>
             <nav>
                 <ul class="menubar">
                 </ul>
             </nav>
         </header>
-        <div id="interface">
+        <div class="interface">
             <h1>Logoff</h1>
             <p>Logged off successful</p>
             <p><a href="<c:url value='login'/>">Login</a> again</p>

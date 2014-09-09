@@ -17,22 +17,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 
-<%@ tag description="The top part of the page containing the menu bar" pageEncoding="UTF-8"%>
+<%@ tag description="The top part of the page containing the menu bar" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="currentform" required="true" %>
 
 <header>
     <nav style="float: right; margin-right: 10px;">
         <ul class="menubar">
-            <li class="menuitem" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');"><p class="menuitemtext">Logoff</p></li>
+            <li class="${(currentform == 'logoff') ? 'menuitemselected' : 'menuitem'}" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');">Logoff</li>
         </ul>
     </nav>
     <nav>
         <ul class="menubar">
-            <li class="menuitem" onclick="openUrl('<c:url value='editCode'/>');"><p class="menuitemtext">Edit code</p></li>
-            <li class="menuitem" onclick="openUrl('<c:url value='robot'/>');"><p class="menuitemtext">Robots</p></li>
-            <li class="menuitem" onclick="openUrl('<c:url value='miningQueue'/>');"><p class="menuitemtext">Mining queue</p></li>
-            <li class="menuitem" onclick="openUrl('<c:url value='miningResults'/>');"><p class="menuitemtext">Mining results</p></li>
-            <li class="menuitem" onclick="openUrl('<c:url value='shop'/>');"><p class="menuitemtext">Shop</p></li>
+            <li class="${(currentform == 'editCode')      ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='editCode'/>');">Edit code</li>
+            <li class="${(currentform == 'robot')         ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='robot'/>');">Robots</li>
+            <li class="${(currentform == 'miningQueue')   ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='miningQueue'/>');">Mining queue</li>
+            <li class="${(currentform == 'miningResults') ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='miningResults'/>');">Mining results</li>
+            <li class="${(currentform == 'shop')          ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='shop'/>');">Shop</li>
         </ul>
     </nav>
 </header>

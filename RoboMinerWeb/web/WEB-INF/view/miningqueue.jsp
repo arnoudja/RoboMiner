@@ -24,7 +24,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <rm:robominerheader>
-    <rm:defaultpage>
+    <rm:defaultpage currentform="miningQueue">
 
         <script src='js/miningqueue.js'></script>
 
@@ -84,14 +84,14 @@
             <table>
                 <tr>
                     <td>
-                        <select id="robotId" name="robotId" class="selectiontableselect">
+                        <select id="robotId" name="robotId" class="tableitem">
                             <c:forEach var='robot' items='${robotList}'>
                                 <option value="${robot.id}" ${robot.id eq robotId ? 'selected="selected"' : ''}>${fn:escapeXml(robot.robotName)}</option>
                             </c:forEach>
                         </select>
                     </td>
                     <td>
-                        <select id='miningAreaId' name="miningAreaId" class="selectiontableselect" onchange='showMiningAreaDetails();'>
+                        <select id='miningAreaId' name="miningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
                             <c:forEach var='miningArea' items='${miningAreaList}'>
                                 <option value="${miningArea.id}" ${miningArea.id eq miningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
                             </c:forEach>
