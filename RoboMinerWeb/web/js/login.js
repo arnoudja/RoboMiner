@@ -20,11 +20,15 @@
 function showLoginForm() {
     document.getElementById('signupForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'inherit';
+    document.getElementById('loginmenuitem').className = 'menuitemselected';
+    document.getElementById('signupmenuitem').className = 'menuitem';
 }
 
 function showSignupForm() {
     document.getElementById('signupForm').style.display = 'inherit';
     document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('loginmenuitem').className = 'menuitem';
+    document.getElementById('signupmenuitem').className = 'menuitemselected';
 }
 
 function checkSignupForm(form) {

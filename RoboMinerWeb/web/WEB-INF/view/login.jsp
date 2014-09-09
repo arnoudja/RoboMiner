@@ -31,8 +31,8 @@
         <header>
             <nav>
                 <ul class="menubar">
-                    <li class="menuitem" onclick="showLoginForm();"><p class="menuitemtext">Login</p></li>
-                    <li class="menuitem" onclick="showSignupForm();"><p class="menuitemtext">Sign up</p></li>
+                    <li id="loginmenuitem" class="menuitem" onclick="showLoginForm();">Login</li>
+                    <li id="signupmenuitem" class="menuitem" onclick="showSignupForm();">Sign up</li>
                 </ul>
             </nav>
         </header>

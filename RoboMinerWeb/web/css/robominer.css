@@ -111,6 +111,11 @@ select.tableitem {
  * Menu bar
  ******************************************************/
 
+nav.logoff {
+    float: right;
+    margin-right: 10px;
+}
+
 ul.menubar {
     display: inline-block;
 }

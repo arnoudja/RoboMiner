@@ -22,9 +22,9 @@
 <%@ attribute name="currentform" required="true" %>
 
 <header>
-    <nav style="float: right; margin-right: 10px;">
+    <nav class="logoff">
         <ul class="menubar">
-            <li class="${(currentform == 'logoff') ? 'menuitemselected' : 'menuitem'}" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');">Logoff</li>
+            <li class="menuitem" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');">Logoff</li>
         </ul>
     </nav>
     <nav>

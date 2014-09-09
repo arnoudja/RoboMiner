@@ -25,13 +25,18 @@
 <rm:robominerheader>
     <div class="main">
         <header>
+            <nav class="logoff">
+                <ul class="menubar">
+                    <li class="menuitemselected">Logoff</li>
+                </ul>
+            </nav>
             <nav>
                 <ul class="menubar">
+                    <li class="menuitem" onclick="openUrl('<c:url value='login'/>');">Login</li>
                 </ul>
             </nav>
         </header>
         <div class="interface">
-            <h1>Logoff</h1>
             <p>Logged off successful</p>
             <p><a href="<c:url value='login'/>">Login</a> again</p>
         </div>
