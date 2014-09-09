@@ -49,8 +49,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MiningQueue.findAll", query = "SELECT m FROM MiningQueue m"),
     @NamedQuery(name = "MiningQueue.findById", query = "SELECT m FROM MiningQueue m WHERE m.id = :id"),
-    @NamedQuery(name = "MiningQueue.findWaitingByUsersId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.user.id = :usersId"),
-    @NamedQuery(name = "MiningQueue.findWaitingByRobotId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.id = :robotId"),
+    @NamedQuery(name = "MiningQueue.findWaitingByUsersId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.user.id = :usersId ORDER BY m.id"),
+    @NamedQuery(name = "MiningQueue.findWaitingByRobotId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.id = :robotId ORDER BY m.id"),
     @NamedQuery(name = "MiningQueue.findResultsByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId ORDER BY m.id DESC"),
     @NamedQuery(name = "MiningQueue.findClaimableByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId and m.claimed = false"),
     @NamedQuery(name = "MiningQueue.findByRallyAndUsersId", query = "SELECT m FROM MiningQueue m WHERE m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")})

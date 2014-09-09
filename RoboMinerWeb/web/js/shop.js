@@ -21,7 +21,7 @@ function showRobotParts() {
 
     var prevRobotPartTypeId = document.getElementById('selectedRobotPartTypeId').value;
     var prevTierId = document.getElementById('selectedTierId').value;
-    hideElements(document.getElementsByName('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId));
+    updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId), 'none');
     var robotPartTypeId = document.getElementById('robotPartTypeId').value;
     var tierId = document.getElementById('tierId').value;
     updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + robotPartTypeId + '_' + tierId), 'table-row-group');

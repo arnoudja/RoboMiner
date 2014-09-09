@@ -18,29 +18,25 @@
  */
 
 
-function addMiningQueueItem() {
-    var robotId = parseInt(document.getElementById('robotId').value);
+function addMiningQueueItem(robotId, miningAreaIdName) {
 
-    if (robotQueueSize(robotId) >= 10) {
-        alert('Maximum queue size reached for this robot.');
-    }
-    else {
-        document.getElementById("submitType").value = "add";
-        document.getElementById("addqueueform").submit();
-    }
+    document.getElementById("robotId").value = robotId;
+    document.getElementById("miningAreaAddId").value = document.getElementById(miningAreaIdName).value;
+    document.getElementById("submitType").value = "add";
+    document.getElementById("miningqueueform").submit();
 }
 
 function removeMiningQueueItems() {
     if (confirm("Paid fees will be lost. Remove selected items?")) {
         document.getElementById("submitType").value = "remove";
-        document.getElementById("addqueueform").submit();
+        document.getElementById("miningqueueform").submit();
     }
 }
 
 function showMiningAreaDetails() {
     var prevId = document.getElementById('prevMiningAreaId').value;
-    hidePart('miningAreaDetails' + prevId);
+    document.getElementById('miningAreaDetails' + prevId).style.display = 'none';
     var newId = document.getElementById('miningAreaId').value;
-    showPart('miningAreaDetails' + newId);
+    document.getElementById('miningAreaDetails' + newId).style.display = 'table-row-group';
     document.getElementById('prevMiningAreaId').value = newId;
 }

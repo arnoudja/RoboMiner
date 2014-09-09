@@ -82,17 +82,18 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
         processAssets(request);
 
-        int robotId = getItemId(request, "robotId");
-        int miningAreaId = getItemId(request, "miningAreaId");
+        String errorMessage = null;
+        
         String submitType = request.getParameter("submitType");
         String[] selectedQueueItems = request.getParameterValues("selectedQueueItemId");
-        
+        int miningAreaId = getItemId(request, "miningAreaId");
+
         if (submitType != null) {
             switch (submitType) {
                 case "add":
-                    addMiningQueueItem(userId, robotId, miningAreaId);
+                    errorMessage = addMiningQueueItem(userId, getItemId(request, "robotId"), getItemId(request, "miningAreaAddId"));
                     break;
-                    
+
                 case "remove":
                     if (selectedQueueItems != null) {
                         removeMiningQueueItems(userId, selectedQueueItems);
@@ -100,44 +101,64 @@ public class MiningQueueServlet extends RoboMinerServletBase {
                     break;
             }
         }
-        
+
         // Add the user item
         Users user = usersFacade.findById(userId);
         request.setAttribute("user", user);
-        
-        // Add the list of mining queue items
-        List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
-        request.setAttribute("miningQueueList", miningQueueList);
-        
-        // Add the map of queue sizes
-        Map<Integer, Integer> miningQueueSizes = getQueueSizes(miningQueueList);
-        request.setAttribute("miningQueueSizes", miningQueueSizes);
-        
+
         // Add the list of robots
         List<Robot> robotList = robotFacade.findByUsersId(userId);
         request.setAttribute("robotList", robotList);
-        
+
+        // Add the map of mining queue items per robot id
+        int largestQueueSize = 0;
+        Map<Integer, List<MiningQueueItem> > robotMiningQueueMap = new HashMap<>();
+        for (Robot robot : robotList) {
+            List<MiningQueueItem> robotQueueList = getQueueInfo(miningQueueFacade.findWaitingByRobotId(robot.getId()), selectedQueueItems);
+            robotMiningQueueMap.put(robot.getId(), robotQueueList);
+            largestQueueSize = Math.max(largestQueueSize, robotQueueList.size());
+        }
+        request.setAttribute("robotMiningQueueMap", robotMiningQueueMap);
+        request.setAttribute("largestQueueSize", largestQueueSize);
+        request.setAttribute("maxQueueSize", 10);
+
         // Add the list of mining areas
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);
-        
-        // Select first ones from the lists when none selected yet
+
+        // Select first mining area from the lists when none selected yet
         if (miningAreaId <= 0 && !miningAreaList.isEmpty()) {
             miningAreaId = miningAreaList.get(0).getId();
         }
-        
-        if (robotId <= 0 && !robotList.isEmpty()) {
-            robotId = robotList.get(0).getId();
+
+        // Determine the selected mining area for each robot
+        Map<Integer, Integer> robotMiningAreaId = new HashMap<>();
+        for (Robot robot : robotList) {
+            int selectedMiningAreaId = getItemId(request, "miningArea" + robot.getId());
+            
+            if (selectedMiningAreaId <= 0) {
+                selectedMiningAreaId = miningAreaList.get(0).getId();
+            }
+            
+            robotMiningAreaId.put(robot.getId(), selectedMiningAreaId);
         }
-        
+
         // Add the previous selected ids
-        request.setAttribute("robotId", robotId);
         request.setAttribute("miningAreaId", miningAreaId);
+        request.setAttribute("selectedQueueItems", selectedQueueItems);
+        request.setAttribute("robotMiningAreaId", robotMiningAreaId);
+
+        // Add the error message
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+        }
         
         request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
     }
 
-    private void addMiningQueueItem(int userId, int robotId, int miningAreaId) throws ServletException {
+    private String addMiningQueueItem(int userId, int robotId, int miningAreaId) throws ServletException {
+        
+        String errorMessage = null;
         
         List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robotId);
         Robot robot = robotFacade.find(robotId);
@@ -148,7 +169,17 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         
         MiningArea miningArea = miningAreaFacade.find(miningAreaId);
         
-        if (robot != null && miningArea != null && robotMiningQueueList.size() < 10) {
+        if (robot == null) {
+            errorMessage = "Unknown robot";
+        }
+        else if (miningArea == null) {
+            errorMessage = "Unknown mining area";
+        }
+        else if (robotMiningQueueList.size() >= 10)
+        {
+            errorMessage = "Unable to add to the mining queue: The mining queue is full.";
+        }
+        else {
             
             try {
                 
@@ -160,11 +191,16 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
                     miningQueueFacade.create(miningQueue);
                 }
+                else {
+                    errorMessage = "Unable to add to the mining queue: You do not have enough funds to pay the mining costs.";
+                }
             }
             catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
                 throw new ServletException(exc);
             }
         }
+        
+        return errorMessage;
     }
     
     private void removeMiningQueueItems(int userId, String[] selectedQueueItems) {

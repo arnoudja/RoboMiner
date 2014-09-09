@@ -75,26 +75,6 @@ function formatTimeLeft(seconds)
     return result;
 }
 
-function showPart(itemId) {
-    document.getElementById(itemId).style.display = 'inherit';
-}
-
-function hidePart(itemId) {
-    document.getElementById(itemId).style.display = 'none';
-}
-
-function showElements(elements) {
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'inherit';
-    }
-}
-
-function hideElements(elements) {
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'none';
-    }
-}
-
 function updateDisplayStyle(elements, value) {
     for (var i = 0; i < elements.length; i++) {
         elements[i].style.display = value;
