@@ -127,17 +127,28 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         request.setAttribute("miningAreaList", miningAreaList);
 
         // Select first mining area from the lists when none selected yet
-        if (miningAreaId <= 0 && !miningAreaList.isEmpty()) {
-            miningAreaId = miningAreaList.get(0).getId();
+        if (miningAreaId <= 0) {
+            if ((int)request.getSession().getAttribute("infoMiningAreaId") > 0) {
+                miningAreaId = (int)request.getSession().getAttribute("infoMiningAreaId");
+            }
+            else if (!miningAreaList.isEmpty()) {
+                miningAreaId = miningAreaList.get(0).getId();
+            }
         }
 
         // Determine the selected mining area for each robot
+        Map<Integer, Integer> sessionRobotMiningAreaId = (Map<Integer, Integer>)request.getSession().getAttribute("robotMiningAreaId");
         Map<Integer, Integer> robotMiningAreaId = new HashMap<>();
         for (Robot robot : robotList) {
             int selectedMiningAreaId = getItemId(request, "miningArea" + robot.getId());
             
             if (selectedMiningAreaId <= 0) {
-                selectedMiningAreaId = miningAreaList.get(0).getId();
+                if (sessionRobotMiningAreaId != null && sessionRobotMiningAreaId.get(robot.getId()) > 0) {
+                    selectedMiningAreaId = sessionRobotMiningAreaId.get(robot.getId());
+                }
+                else if (!miningAreaList.isEmpty()) {
+                    selectedMiningAreaId = miningAreaList.get(0).getId();
+                }
             }
             
             robotMiningAreaId.put(robot.getId(), selectedMiningAreaId);
@@ -152,7 +163,11 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
         }
-        
+
+        // Store the selections in the session
+        request.getSession().setAttribute("robotMiningAreaId", robotMiningAreaId);
+        request.getSession().setAttribute("infoMiningAreaId", miningAreaId);
+
         request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
     }
 

@@ -152,12 +152,16 @@ table.miningqueue {
     caption-side: top;
 }
 
-td.miningqueue, th.miningqueue, td.miningqueuecheckbox {
+td.miningqueue, th.miningqueue, td.miningqueuecheckbox, td.miningqueuetime {
     border: 1px solid #aaa;
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 7px;
     padding-right: 7px;
+}
+
+td.miningqueuetime {
+    text-align: right;
 }
 
 td.miningqueuecheckbox {
@@ -207,6 +211,7 @@ td.miningresults, th.miningresults {
 
 table.shop {
     border-collapse: collapse;
+    border: 2px solid #aaa;
     background: #ddd;
 }
 

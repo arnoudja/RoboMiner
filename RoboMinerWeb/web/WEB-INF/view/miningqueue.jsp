@@ -67,7 +67,7 @@
                                         </td>
                                         <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
                                         <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).itemStatus.description)}</td>
-                                        <td class="miningqueue" id="timeLeft${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}"/>
+                                        <td class="miningqueuetime" id="timeLeft${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}"/>
                                         <script>
                                             countdownTimer(${robotMiningQueueMap.get(robot.id).get(rownr).timeLeft} + 1,
                                                 function(secondsLeft) {
