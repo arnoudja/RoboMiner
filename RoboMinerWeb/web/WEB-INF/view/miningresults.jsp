@@ -31,8 +31,8 @@
 
         <rm:userassets oreassetlist='${oreAssetList}' />
 
-        <h1>Mining Results</h1>
         <table class="miningresults">
+            <caption>Mining results</caption>
             <tr class="miningresultsheader">
                 <th class="miningresults" colspan="4"></th>
                 <th class="miningresults">Amount</th>
@@ -78,12 +78,6 @@
                         <td class="miningresults"></td>
                         <td class="miningresults">Mining end:</td>
                         <td class="miningresults"><fmt:formatDate value="${miningResult.miningEndTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
-                        <td class="miningresults" colspan="5"></td>
-                    </tr>
-                    <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
-                        <td class="miningresults"></td>
-                        <td class="miningresults">id:</td>
-                        <td class="miningresults">${miningResult.id}</td>
                         <td class="miningresults" colspan="5"></td>
                     </tr>
                 </tbody>
