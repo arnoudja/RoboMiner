@@ -206,6 +206,31 @@ td.miningresults, th.miningresults {
 
 
 /******************************************************
+ * Statistics
+ ******************************************************/
+
+table.statistics {
+    float: left;
+    border-collapse: collapse;
+    border: 2px solid #aaa;
+    background: #ddd;
+    caption-side: top;
+    margin: 10px;
+}
+
+td.statistics, th.statistics {
+    border: 1px solid #aaa;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+h2.statistics {
+    margin-left: 10px;
+}
+
+/******************************************************
  * Shop
  ******************************************************/
 

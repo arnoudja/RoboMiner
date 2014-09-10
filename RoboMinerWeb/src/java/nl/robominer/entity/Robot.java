@@ -21,6 +21,7 @@ package nl.robominer.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -175,6 +177,10 @@ public class Robot implements Serializable {
     @NotNull
     @Column(name = "totalMiningRuns")
     private int totalMiningRuns;
+
+    @OneToMany
+    @JoinColumn(name = "RobotLifetimeResult.robotId")
+    private List<RobotLifetimeResult> robotLifetimeResultList;
 
     public Robot() {
     }
@@ -369,6 +375,10 @@ public class Robot implements Serializable {
 
     public void increateTotalMiningRuns() {
         ++totalMiningRuns;
+    }
+
+    public List<RobotLifetimeResult> getRobotLifetimeResultList() {
+        return robotLifetimeResultList;
     }
 
     @Override

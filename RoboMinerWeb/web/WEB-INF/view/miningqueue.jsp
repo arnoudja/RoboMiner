@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%--
  Copyright (C) 2014 Arnoud Jagerman
 
@@ -23,6 +22,8 @@
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
+<!DOCTYPE html>
+
 <rm:robominerheader>
 
     <script src='js/miningqueue.js'></script>
@@ -43,7 +44,7 @@
                 <caption>Mining queues</caption>
                 <tr>
                     <c:forEach var='robot' items="${robotList}">
-                        <th class="miningqueue">${robot.robotName}</th>
+                        <th class="miningqueue">${fn:escapeXml(robot.robotName)}</th>
                         <th class="miningqueue">Area</th>
                         <th class="miningqueue">Status</th>
                         <th class="miningqueuetime">ETC</th>

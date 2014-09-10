@@ -30,11 +30,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import nl.robominer.businessentity.MiningQueueItem;
 import nl.robominer.businessentity.MiningQueueItem.EMiningQueueItemStatus;
 import nl.robominer.entity.MiningArea;
@@ -55,19 +50,19 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
     private static final String SESSION_INFO_MINING_AREA_ID = "miningQueue_infoMiningAreaId";
     private static final String SESSION_ROBOT_MINING_AREA_ID = "miningQueue_robotMiningAreaId";
-    
+
     @EJB
     private UsersFacade usersFacade;
-    
+
     @EJB
     private MiningQueueFacade miningQueueFacade;
-    
+
     @EJB
     private RobotFacade robotFacade;
-    
+
     @EJB
     private MiningAreaFacade miningAreaFacade;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -24,6 +24,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -58,6 +60,10 @@ public class RobotLifetimeResult implements Serializable {
     @Column(name = "tax")
     private int tax;
 
+    @ManyToOne
+    @JoinColumn(name = "oreId", insertable = false, updatable = false)
+    private Ore ore;
+
     public RobotLifetimeResult() {
     }
 
@@ -85,6 +91,10 @@ public class RobotLifetimeResult implements Serializable {
 
     public void increaseTax(int tax) {
         this.tax += tax;
+    }
+
+    public Ore getOre() {
+        return ore;
     }
 
     @Override

@@ -57,7 +57,7 @@ public class UserOreAsset implements Serializable {
 
     @Column(name = "oreId", insertable = false, updatable = false)
     private int oreId;
-    
+
     @ManyToOne
     @JoinColumn(name = "oreId", insertable = false, updatable = false)
     private Ore ore;

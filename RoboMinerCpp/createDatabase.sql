@@ -21,8 +21,6 @@ use RoboMiner;
 
 SET storage_engine=InnoDB;
 
-drop table if exists RobotLastRunsResult;
-drop table if exists RobotLastRuns;
 drop table if exists RobotDailyResult;
 drop table if exists RobotDailyRuns;
 drop table if exists RobotLifetimeResult;
@@ -250,25 +248,6 @@ miningDay DATE NOT NULL,
 amount INT NOT NULL,
 tax INT NOT NULL,
 PRIMARY KEY (robotId, oreId, miningDay)
-);
-
-
-create table RobotLastRuns
-(
-robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
-miningQueueId INT NOT NULL,
-PRIMARY KEY (robotId, miningQueueId)
-);
-
-
-create table RobotLastRunsResult
-(
-robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
-miningQueueId INT NOT NULL,
-oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
-amount INT NOT NULL,
-tax INT NOT NULL,
-PRIMARY KEY (robotId, miningQueueId, oreId)
 );
 
 
