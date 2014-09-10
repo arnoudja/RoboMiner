@@ -158,7 +158,7 @@
                                 <td class="shop"></td>
                                 <td class="shop" colspan="2">${fn:escapeXml(orePrice.ore.oreName)}:</td>
                                 <td class="shop">${orePrice.amount}</td>
-                                <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'sufficientBalance' : 'insufficientBalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
+                                <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'shopSufficientBalance' : 'shopInsufficientBalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
                             </tr>
                         </c:forEach>
                         <tr class="shopLastRow">

@@ -94,7 +94,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         if (submitType != null) {
             switch (submitType) {
                 case "add":
-                    errorMessage = addMiningQueueItem(userId, getItemId(request, "robotId"), getItemId(request, "miningAreaAddId"));
+                    errorMessage = addMiningQueueItem(request, userId, getItemId(request, "robotId"), getItemId(request, "miningAreaAddId"));
                     break;
 
                 case "remove":
@@ -178,19 +178,19 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
     }
 
-    private String addMiningQueueItem(int userId, int robotId, int miningAreaId) throws ServletException {
-        
+    private String addMiningQueueItem(HttpServletRequest request, int userId, int robotId, int miningAreaId) throws ServletException {
+
         String errorMessage = null;
-        
+
         List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robotId);
         Robot robot = robotFacade.find(robotId);
 
         if (robot.getUser().getId() != userId) {
             robot = null;
         }
-        
+
         MiningArea miningArea = miningAreaFacade.find(miningAreaId);
-        
+
         if (robot == null) {
             errorMessage = "Unknown robot";
         }
@@ -202,26 +202,20 @@ public class MiningQueueServlet extends RoboMinerServletBase {
             errorMessage = "Unable to add to the mining queue: The mining queue is full.";
         }
         else {
-            
-            try {
-                
-                if (getUserAssets().payMiningCosts(userId, miningArea)) {
 
-                    MiningQueue miningQueue = new MiningQueue();
-                    miningQueue.setMiningArea(miningArea);
-                    miningQueue.setRobot(robot);
+            if (payMiningCosts(request, userId, miningArea)) {
 
-                    miningQueueFacade.create(miningQueue);
-                }
-                else {
-                    errorMessage = "Unable to add to the mining queue: You do not have enough funds to pay the mining costs.";
-                }
+                MiningQueue miningQueue = new MiningQueue();
+                miningQueue.setMiningArea(miningArea);
+                miningQueue.setRobot(robot);
+
+                miningQueueFacade.create(miningQueue);
             }
-            catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-                throw new ServletException(exc);
+            else {
+                errorMessage = "Unable to add to the mining queue: You do not have enough funds to pay the mining costs.";
             }
         }
-        
+
         return errorMessage;
     }
     

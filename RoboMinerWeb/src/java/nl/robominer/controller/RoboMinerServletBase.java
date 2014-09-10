@@ -32,6 +32,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import nl.robominer.businessentity.UserAssets;
+import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.session.UserOreAssetFacade;
 
@@ -48,10 +49,6 @@ public abstract class RoboMinerServletBase extends HttpServlet {
     private UserOreAssetFacade userOreAssetFacade;
 
     abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-
-    protected UserAssets getUserAssets() {
-        return userAssets;
-    }
 
     protected int getItemId(HttpServletRequest request, String field) {
         
@@ -70,7 +67,69 @@ public abstract class RoboMinerServletBase extends HttpServlet {
             throw new ServletException(exc);
         }
 
-        // Add the list of ore assets
+        updateOreAssetsList(request, userId);
+    }
+
+    protected boolean payMiningCosts(HttpServletRequest request, int userId, MiningArea miningArea) throws ServletException {
+
+        boolean result = false;
+
+        try {
+
+            if (userAssets.payMiningCosts(userId, miningArea)) {
+
+                result = true;
+
+                updateOreAssetsList(request, userId);
+            }
+        }
+        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
+            throw new ServletException(exc);
+        }
+
+        return result;
+    }
+
+    protected boolean buyRobotPart(HttpServletRequest request, int userId, int robotPartId) throws ServletException {
+        
+        boolean result = false;
+        
+        try {
+
+            if (userAssets.buyRobotPart(userId, robotPartId)) {
+                result = true;
+            }
+
+            updateOreAssetsList(request, userId);
+        }
+        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
+            throw new ServletException(exc);
+        }
+
+        return result;
+    }
+
+    protected boolean sellRobotPart(HttpServletRequest request, int userId, int robotPartId) throws ServletException {
+
+        boolean result = false;
+
+        try {
+
+            if (userAssets.sellRobotPart(userId, robotPartId)) {
+                result = true;
+            }
+
+            updateOreAssetsList(request, userId);
+        }
+        catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
+            throw new ServletException(exc);
+        }
+
+        return result;
+    }
+
+    private void updateOreAssetsList(HttpServletRequest request, int userId) {
+
         List<UserOreAsset> userOreAssetList = userOreAssetFacade.findByUsersId(userId);
         request.setAttribute("oreAssetList", userOreAssetList);
     }

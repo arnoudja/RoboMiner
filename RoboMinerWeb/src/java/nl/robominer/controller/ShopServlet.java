@@ -82,22 +82,10 @@ public class ShopServlet extends RoboMinerServletBase {
         int selectedTierId = getItemId(request, "selectedTierId");
 
         if (buyRobotPartId > 0) {
-            
-            try {
-                getUserAssets().buyRobotPart(userId, buyRobotPartId);
-            }
-            catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-                throw new ServletException(exc);
-            }
+            buyRobotPart(request, userId, buyRobotPartId);
         }
         else if (sellRobotPartId > 0) {
-            
-            try {
-                getUserAssets().sellRobotPart(userId, sellRobotPartId);
-            }
-            catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException exc) {
-                throw new ServletException(exc);
-            }
+            sellRobotPart(request, userId, sellRobotPartId);
         }
 
         if (selectedRobotPartTypeId <= 0 && request.getSession().getAttribute(SESSION_CATEGORY_ID) != null) {

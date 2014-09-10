@@ -244,6 +244,14 @@ tr.shopLastRow {
     height: 6px;
 }
 
+td.shopSufficientBalance {
+    color: green;
+}
+
+td.shopInsufficientBalance {
+    color: red;
+}
+
 
 /******************************************************
  * Ore assets
