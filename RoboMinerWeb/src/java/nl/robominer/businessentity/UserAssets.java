@@ -19,6 +19,7 @@
 
 package nl.robominer.businessentity;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -37,11 +38,15 @@ import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
 import nl.robominer.entity.Robot;
+import nl.robominer.entity.RobotDailyResult;
+import nl.robominer.entity.RobotDailyRuns;
 import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.session.MiningQueueFacade;
+import nl.robominer.session.RobotDailyResultFacade;
+import nl.robominer.session.RobotDailyRunsFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
@@ -69,6 +74,12 @@ public class UserAssets {
     private RobotLifetimeResultFacade robotLifetimeResultFacade;
 
     @EJB
+    private RobotDailyRunsFacade robotDailyRunsFacade;
+
+    @EJB
+    private RobotDailyResultFacade robotDailyResultFacade;
+
+    @EJB
     private UserOreAssetFacade userOreAssetFacade;
     
     @EJB
@@ -85,11 +96,14 @@ public class UserAssets {
 
         for (MiningQueue miningQueue : claimableMiningQueues) {
 
-            int robotId = miningQueue.getRobot().getId();
-            
+            int  robotId   = miningQueue.getRobot().getId();
+            Date miningDay = miningQueue.getMiningEndTime();
+
             Robot robot = robotFacade.findByIdAndUser(robotId, userId);
             robot.increateTotalMiningRuns();
             robotFacade.edit(robot);
+
+            updateRobotDailyRuns(robotId, miningQueue.getMiningEndTime());
 
             List<MiningOreResult> miningOreResultList = miningQueue.getMiningOreResults();
 
@@ -104,6 +118,7 @@ public class UserAssets {
                 int reward = miningOreResult.getReward();
 
                 updateRobotLifetimeResults(robotId, oreId, amount, tax);
+                updateRobotDailyResult(robotId, oreId, miningDay, amount, tax);
 
                 updateUserOreAssets(userId, oreId, reward);
             }
@@ -128,7 +143,40 @@ public class UserAssets {
             robotLifetimeResultFacade.edit(robotLifetimeResult);
         }
     }
-    
+
+    private void updateRobotDailyRuns(int robotId, Date miningDay) {
+
+        RobotDailyRuns robotDailyRuns = robotDailyRunsFacade.findByRobotIdAndMiningDay(robotId, miningDay);
+
+        if (robotDailyRuns == null) {
+
+            robotDailyRuns = new RobotDailyRuns(robotId, miningDay, 1);
+            robotDailyRunsFacade.create(robotDailyRuns);
+        }
+        else {
+
+            robotDailyRuns.increaseTotalMiningRuns();
+            robotDailyRunsFacade.edit(robotDailyRuns);
+        }
+    }
+
+    private void updateRobotDailyResult(int robotId, int oreId, Date miningDay, int amount, int tax) {
+
+        RobotDailyResult robotDailyResult = robotDailyResultFacade.findByPK(robotId, oreId, miningDay);
+
+        if (robotDailyResult == null) {
+
+            robotDailyResult = new RobotDailyResult(robotId, oreId, miningDay, amount, tax);
+            robotDailyResultFacade.create(robotDailyResult);
+        }
+        else {
+
+            robotDailyResult.increaseAmount(amount);
+            robotDailyResult.increaseTax(tax);
+            robotDailyResultFacade.edit(robotDailyResult);
+        }
+    }
+
     private void updateUserOreAssets(int userId, int oreId, int reward) {
         
         UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);

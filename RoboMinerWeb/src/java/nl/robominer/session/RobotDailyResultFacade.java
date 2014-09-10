@@ -19,18 +19,20 @@
 
 package nl.robominer.session;
 
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import nl.robominer.entity.RobotLifetimeResult;
+import nl.robominer.entity.RobotDailyResult;
 
 /**
  *
  * @author Arnoud Jagerman
  */
 @Stateless
-public class RobotLifetimeResultFacade extends AbstractFacade<RobotLifetimeResult> {
+public class RobotDailyResultFacade extends AbstractFacade<RobotDailyResult> {
+
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
@@ -39,16 +41,17 @@ public class RobotLifetimeResultFacade extends AbstractFacade<RobotLifetimeResul
         return em;
     }
 
-    public RobotLifetimeResultFacade() {
-        super(RobotLifetimeResult.class);
+    public RobotDailyResultFacade() {
+        super(RobotDailyResult.class);
     }
 
-    public RobotLifetimeResult findByRobotAndOreId(int robotId, int oreId) {
+    public RobotDailyResult findByPK(int robotId, int oreId, Date miningDay) {
         try {
-            Query query = getEntityManager().createNamedQuery("RobotLifetimeResult.findByRobotAndOreId", RobotLifetimeResult.class);
+            Query query = getEntityManager().createNamedQuery("RobotDailyResult.findByPK", RobotDailyResult.class);
             query.setParameter("robotId", robotId);
             query.setParameter("oreId", oreId);
-            return (RobotLifetimeResult)query.getSingleResult();
+            query.setParameter("miningDay", miningDay);
+            return (RobotDailyResult)query.getSingleResult();
         }
         catch (javax.persistence.NoResultException exc) {
             return null;
