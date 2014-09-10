@@ -21,6 +21,11 @@ use RoboMiner;
 
 SET storage_engine=InnoDB;
 
+drop table if exists RobotLastRunsResult;
+drop table if exists RobotLastRuns;
+drop table if exists RobotDailyResult;
+drop table if exists RobotDailyRuns;
+drop table if exists RobotLifetimeResult;
 drop table if exists MiningOreResult;
 drop table if exists MiningQueue;
 drop table if exists RallyResult;
@@ -160,7 +165,8 @@ backwardSpeed DOUBLE NOT NULL,
 rotateSpeed INT NOT NULL,
 robotSize INT NOT NULL,
 rechargeEndTime TIMESTAMP NOT NULL DEFAULT NOW(),
-miningEndTime TIMESTAMP NULL
+miningEndTime TIMESTAMP NULL,
+totalMiningRuns INT NOT NULL DEFAULT 0
 );
 
 
@@ -214,6 +220,55 @@ miningQueueId INT NOT NULL REFERENCES MiningQueue (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
 PRIMARY KEY (miningQueueId, oreId)
+);
+
+
+create table RobotLifetimeResult
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
+amount INT NOT NULL,
+tax INT NOT NULL,
+PRIMARY KEY (robotId, oreId)
+);
+
+
+create table RobotDailyRuns
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+miningDay DATE NOT NULL,
+totalMiningRuns INT NOT NULL DEFAULT 0,
+PRIMARY KEY (robotId, miningDay)
+);
+
+
+create table RobotDailyResult
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
+miningDay DATE NOT NULL,
+amount INT NOT NULL,
+tax INT NOT NULL,
+PRIMARY KEY (robotId, oreId, miningDay)
+);
+
+
+create table RobotLastRuns
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+miningQueueId INT NOT NULL,
+PRIMARY KEY (robotId, miningQueueId)
+);
+
+
+create table RobotLastRunsResult
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+miningQueueId INT NOT NULL,
+oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
+amount INT NOT NULL,
+tax INT NOT NULL,
+PRIMARY KEY (robotId, miningQueueId, oreId)
 );
 
 

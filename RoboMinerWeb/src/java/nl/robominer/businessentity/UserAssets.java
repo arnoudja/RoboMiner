@@ -36,10 +36,14 @@ import nl.robominer.entity.MiningOreResult;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
+import nl.robominer.entity.Robot;
+import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.session.MiningQueueFacade;
+import nl.robominer.session.RobotFacade;
+import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.UserOreAssetFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
@@ -59,6 +63,12 @@ public class UserAssets {
     private MiningQueueFacade miningQueueFacade;
     
     @EJB
+    private RobotFacade robotFacade;
+
+    @EJB
+    private RobotLifetimeResultFacade robotLifetimeResultFacade;
+
+    @EJB
     private UserOreAssetFacade userOreAssetFacade;
     
     @EJB
@@ -68,12 +78,18 @@ public class UserAssets {
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
     
     public void updateUserAssets(int userId) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {
-        
+
         transaction.begin();
 
         List<MiningQueue> claimableMiningQueues = miningQueueFacade.findClaimableByUsersId(userId);
 
         for (MiningQueue miningQueue : claimableMiningQueues) {
+
+            int robotId = miningQueue.getRobot().getId();
+            
+            Robot robot = robotFacade.findByIdAndUser(robotId, userId);
+            robot.increateTotalMiningRuns();
+            robotFacade.edit(robot);
 
             List<MiningOreResult> miningOreResultList = miningQueue.getMiningOreResults();
 
@@ -82,28 +98,54 @@ public class UserAssets {
 
             for (MiningOreResult miningOreResult : miningOreResultList) {
 
-                int oreId = miningOreResult.getOre().getId();
+                int oreId  = miningOreResult.getOre().getId();
+                int amount = miningOreResult.getAmount();
+                int tax    = miningOreResult.getTax();
                 int reward = miningOreResult.getReward();
 
-                UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);
+                updateRobotLifetimeResults(robotId, oreId, amount, tax);
 
-                if (userOreAsset == null) {
-
-                    userOreAsset = new UserOreAsset(userId, oreId);
-                    userOreAsset.setAmount(reward);
-
-                    userOreAssetFacade.create(userOreAsset);
-                }
-                else {
-
-                    userOreAsset.increaseAmount(reward);
-
-                    userOreAssetFacade.edit(userOreAsset);
-                }
+                updateUserOreAssets(userId, oreId, reward);
             }
         }
 
         transaction.commit();
+    }
+
+    private void updateRobotLifetimeResults(int robotId, int oreId, int amount, int tax) {
+
+        RobotLifetimeResult robotLifetimeResult = robotLifetimeResultFacade.findByRobotAndOreId(robotId, oreId);
+
+        if (robotLifetimeResult == null) {
+
+            robotLifetimeResult = new RobotLifetimeResult(robotId, oreId, amount, tax);
+            robotLifetimeResultFacade.create(robotLifetimeResult);
+        }
+        else {
+
+            robotLifetimeResult.increaseAmount(amount);
+            robotLifetimeResult.increaseTax(tax);
+            robotLifetimeResultFacade.edit(robotLifetimeResult);
+        }
+    }
+    
+    private void updateUserOreAssets(int userId, int oreId, int reward) {
+        
+        UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);
+
+        if (userOreAsset == null) {
+
+            userOreAsset = new UserOreAsset(userId, oreId);
+            userOreAsset.setAmount(reward);
+
+            userOreAssetFacade.create(userOreAsset);
+        }
+        else {
+
+            userOreAsset.increaseAmount(reward);
+
+            userOreAssetFacade.edit(userOreAsset);
+        }
     }
 
     public boolean payMiningCosts(int userId, MiningArea miningArea) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {

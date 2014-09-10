@@ -171,6 +171,11 @@ public class Robot implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date miningEndTime;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "totalMiningRuns")
+    private int totalMiningRuns;
+
     public Robot() {
     }
 
@@ -354,6 +359,18 @@ public class Robot implements Serializable {
         this.miningEndTime = miningEndTime;
     }
 
+    public int getTotalMiningRuns() {
+        return totalMiningRuns;
+    }
+
+    public void setTotalMiningRuns(int totalMiningRuns) {
+        this.totalMiningRuns = totalMiningRuns;
+    }
+
+    public void increateTotalMiningRuns() {
+        ++totalMiningRuns;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -375,10 +392,10 @@ public class Robot implements Serializable {
     public String toString() {
         return "nl.robominer.entity.Robot[ id=" + id + " ]";
     }
-    
+
     public void fillDefaults(RobotPart oreContainer, RobotPart miningUnit, RobotPart battery,
                              RobotPart memoryModule, RobotPart cpu, RobotPart engine) {
-        
+
         setRobotName("NewRobot");
         setSourceCode("move(1);\nmine();");
         setOreContainer(oreContainer);
@@ -387,7 +404,9 @@ public class Robot implements Serializable {
         setMemoryModule(memoryModule);
         setCpu(cpu);
         setEngine(engine);
-        
+
+        setTotalMiningRuns(0);
+
         updateParameters();
     }
 
