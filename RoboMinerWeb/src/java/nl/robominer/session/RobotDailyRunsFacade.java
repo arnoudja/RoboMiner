@@ -20,6 +20,7 @@
 package nl.robominer.session;
 
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,6 +56,15 @@ public class RobotDailyRunsFacade extends AbstractFacade<RobotDailyRuns> {
         catch (javax.persistence.NoResultException exc) {
             return null;
         }
+    }
+
+    public List<RobotDailyRuns> findByRobotIdAndMiningDayRange(int robotId, Date firstMiningDay, Date lastMiningDay) {
+
+        Query query = getEntityManager().createNamedQuery("RobotDailyRuns.findByRobotIdAndMiningDayRange", RobotDailyRuns.class);
+        query.setParameter("robotId", robotId);
+        query.setParameter("firstMiningDay", firstMiningDay);
+        query.setParameter("lastMiningDay", lastMiningDay);
+        return query.getResultList();
     }
 
 }

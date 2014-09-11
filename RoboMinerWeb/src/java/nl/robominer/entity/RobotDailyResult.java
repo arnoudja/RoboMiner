@@ -25,6 +25,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -40,6 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RobotDailyResult.findByRobotId", query = "SELECT r FROM RobotDailyResult r WHERE r.robotDailyResultPK.robotId = :robotId"),
+    @NamedQuery(name = "RobotDailyResult.findByRobotIdAndMiningDayRange", query = "SELECT r FROM RobotDailyResult r WHERE r.robotDailyResultPK.robotId = :robotId AND r.robotDailyResultPK.miningDay >= :firstMiningDay AND r.robotDailyResultPK.miningDay <= :lastMiningDay"),
     @NamedQuery(name = "RobotDailyResult.findByPK", query = "SELECT r FROM RobotDailyResult r WHERE r.robotDailyResultPK.robotId = :robotId AND r.robotDailyResultPK.oreId = :oreId AND r.robotDailyResultPK.miningDay = :miningDay")})
 public class RobotDailyResult implements Serializable {
 
@@ -57,6 +60,10 @@ public class RobotDailyResult implements Serializable {
     @NotNull
     @Column(name = "tax")
     private int tax;
+
+    @ManyToOne
+    @JoinColumn(name = "oreId", insertable = false, updatable = false)
+    private Ore ore;
 
     public RobotDailyResult() {
     }
@@ -85,6 +92,10 @@ public class RobotDailyResult implements Serializable {
 
     public void increaseTax(int tax) {
         this.tax += tax;
+    }
+
+    public Ore getOre() {
+        return ore;
     }
 
     @Override

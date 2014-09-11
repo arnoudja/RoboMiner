@@ -38,7 +38,7 @@ import nl.robominer.session.OreFacade;
 @WebServlet(name = "MiningResultsServlet", urlPatterns = {"/miningResults"})
 public class MiningResultsServlet extends RoboMinerServletBase {
 
-    private static final int MAX_RESULTS = 25;
+    private static final int MAX_RESULTS = 20;
 
     @EJB
     private MiningQueueFacade miningQueueFacade;

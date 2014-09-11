@@ -99,7 +99,7 @@
                             <c:when test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
                                 <td class="miningqueue"></td>
                                 <td class="miningqueue">
-                                    <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem">
+                                    <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
                                         <c:forEach var='miningArea' items='${miningAreaList}'>
                                             <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
                                         </c:forEach>

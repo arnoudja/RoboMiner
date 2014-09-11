@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RobotDailyRuns.findByRobotId", query = "SELECT r FROM RobotDailyRuns r WHERE r.robotDailyRunsPK.robotId = :robotId"),
-    @NamedQuery(name = "RobotDailyRuns.findByRobotIdAndMiningDay", query = "SELECT r FROM RobotDailyRuns r WHERE r.robotDailyRunsPK.robotId = :robotId AND r.robotDailyRunsPK.miningDay = :miningDay")})
+    @NamedQuery(name = "RobotDailyRuns.findByRobotIdAndMiningDay", query = "SELECT r FROM RobotDailyRuns r WHERE r.robotDailyRunsPK.robotId = :robotId AND r.robotDailyRunsPK.miningDay = :miningDay"),
+    @NamedQuery(name = "RobotDailyRuns.findByRobotIdAndMiningDayRange", query = "SELECT r FROM RobotDailyRuns r WHERE r.robotDailyRunsPK.robotId = :robotId AND r.robotDailyRunsPK.miningDay >= :firstMiningDay AND r.robotDailyRunsPK.miningDay <= :lastMiningDay")})
 public class RobotDailyRuns implements Serializable {
 
     private static final long serialVersionUID = 1L;

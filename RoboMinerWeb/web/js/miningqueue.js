@@ -40,3 +40,8 @@ function showMiningAreaDetails() {
     document.getElementById('miningAreaDetails' + newId).style.display = 'table-row-group';
     document.getElementById('prevMiningAreaId').value = newId;
 }
+
+function selectMiningAreaDetails(miningAreaId) {
+    document.getElementById('miningAreaId').value = miningAreaId;
+    showMiningAreaDetails();
+}

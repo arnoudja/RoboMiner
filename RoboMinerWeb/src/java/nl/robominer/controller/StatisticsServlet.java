@@ -20,6 +20,8 @@
 package nl.robominer.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,11 @@ import nl.robominer.businessentity.RobotStatistics;
 import nl.robominer.entity.MiningOreResult;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
+import nl.robominer.entity.RobotDailyResult;
+import nl.robominer.entity.RobotDailyRuns;
 import nl.robominer.session.MiningQueueFacade;
+import nl.robominer.session.RobotDailyResultFacade;
+import nl.robominer.session.RobotDailyRunsFacade;
 import nl.robominer.session.RobotFacade;
 
 /**
@@ -49,6 +55,12 @@ public class StatisticsServlet extends RoboMinerServletBase {
 
     @EJB
     private MiningQueueFacade miningQueueFacade;
+
+    @EJB
+    private RobotDailyRunsFacade robotDailyRunsFacade;
+
+    @EJB
+    private RobotDailyResultFacade robotDailyResultFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,6 +84,30 @@ public class StatisticsServlet extends RoboMinerServletBase {
         request.setAttribute("robotList", robotList);
 
         // Calculate the last results totals
+        addLastResultsTotals(request, robotList);
+
+        // Add the results for today
+        Date now = new Date();
+        addDayRangeTotals(request, robotList, now, now, "robotTodayStatisticsMap");
+
+        // Add the results for yesterday
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.DATE, -1);
+        Date yesterday = new Date(calendar.getTimeInMillis());
+        addDayRangeTotals(request, robotList, yesterday, yesterday, "robotYesterdayStatisticsMap");
+
+        // Add the results of last 7 days
+        calendar.setTime(yesterday);
+        calendar.add(Calendar.DATE, -6);
+        Date lastWeek = new Date(calendar.getTimeInMillis());
+        addDayRangeTotals(request, robotList, lastWeek, yesterday, "robotLastWeekStatisticsMap");
+
+        request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
+    }
+
+    private void addLastResultsTotals(HttpServletRequest request, List<Robot> robotList) {
+
         Map<Integer, RobotStatistics> robotStatisticsMap = new HashMap<>();
 
         for (Robot robot : robotList) {
@@ -94,9 +130,37 @@ public class StatisticsServlet extends RoboMinerServletBase {
             
             robotStatisticsMap.put(robot.getId(), robotStatistics);
         }
-        request.setAttribute("robotStatisticsMap", robotStatisticsMap);
+        request.setAttribute("robotLastRunsStatisticsMap", robotStatisticsMap);
+    }
 
-        request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
+    private void addDayRangeTotals(HttpServletRequest request, List<Robot> robotList, Date firstDay, Date lastDay, String attributeName) {
+
+        Map<Integer, RobotStatistics> robotStatisticsMap = new HashMap<>();
+
+        for (Robot robot : robotList) {
+
+            List<RobotDailyRuns> robotDailyRunsList = robotDailyRunsFacade.findByRobotIdAndMiningDayRange(robot.getId(), firstDay, lastDay);
+
+            int totalRuns = 0;
+            for (RobotDailyRuns robotDailyRuns : robotDailyRunsList) {
+                totalRuns += robotDailyRuns.getTotalMiningRuns();
+            }
+
+            RobotStatistics robotStatistics = new RobotStatistics();
+
+            robotStatistics.setRuns(totalRuns);
+
+            List<RobotDailyResult> robotDailyResultList = robotDailyResultFacade.findByRobotIdAndMiningDayRange(robot.getId(), firstDay, lastDay);
+
+            for (RobotDailyResult robotDailyResult : robotDailyResultList) {
+
+                robotStatistics.addOre(robotDailyResult.getOre(), robotDailyResult.getAmount(), robotDailyResult.getTax());
+            }
+
+            robotStatisticsMap.put(robot.getId(), robotStatistics);
+        }
+
+        request.setAttribute(attributeName, robotStatisticsMap);
     }
 
     /**
