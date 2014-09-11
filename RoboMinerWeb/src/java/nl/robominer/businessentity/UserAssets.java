@@ -44,6 +44,7 @@ import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
+import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotDailyResultFacade;
 import nl.robominer.session.RobotDailyRunsFacade;
@@ -66,7 +67,10 @@ public class UserAssets {
     
     @EJB
     private MiningQueueFacade miningQueueFacade;
-    
+
+    @EJB
+    private MiningOreResultFacade miningOreResultFacade;
+
     @EJB
     private RobotFacade robotFacade;
 
@@ -81,13 +85,13 @@ public class UserAssets {
 
     @EJB
     private UserOreAssetFacade userOreAssetFacade;
-    
+
     @EJB
     private RobotPartFacade robotPartFacade;
-    
+
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
-    
+
     public void updateUserAssets(int userId) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {
 
         transaction.begin();
@@ -111,6 +115,9 @@ public class UserAssets {
             miningQueueFacade.edit(miningQueue);
 
             for (MiningOreResult miningOreResult : miningOreResultList) {
+
+                miningOreResult.calculateTax();
+                miningOreResultFacade.edit(miningOreResult);
 
                 int oreId  = miningOreResult.getOre().getId();
                 int amount = miningOreResult.getAmount();

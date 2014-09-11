@@ -217,6 +217,7 @@ create table MiningOreResult
 miningQueueId INT NOT NULL REFERENCES MiningQueue (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
+tax INT NULL,
 PRIMARY KEY (miningQueueId, oreId)
 );
 

@@ -50,12 +50,16 @@ public class MiningOreResult implements Serializable {
     
     @EmbeddedId
     protected MiningOreResultPK miningOreResultPK;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "amount")
     private int amount;
-    
+
+    @Basic(optional = true)
+    @Column(name = "tax")
+    private int tax;
+
     @ManyToOne
     @JoinColumn(name = "miningQueueId", insertable = false, updatable = false)
     private MiningQueue miningQueue;
@@ -99,13 +103,17 @@ public class MiningOreResult implements Serializable {
     public MiningQueue getMiningQueue() {
         return miningQueue;
     }
-    
-    public int getTax() {
-        return (int)Math.floor(amount * miningQueue.getMiningArea().getTaxRate() / 100);
+
+    public void calculateTax() {
+        tax = (int)Math.floor(amount * miningQueue.getMiningArea().getTaxRate() / 100);
     }
-    
+
+    public int getTax() {
+        return tax;
+    }
+
     public int getReward() {
-        return amount - getTax();
+        return amount - tax;
     }
     
     @Override
