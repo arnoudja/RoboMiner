@@ -21,6 +21,8 @@ use RoboMiner;
 
 SET storage_engine=InnoDB;
 
+drop view if exists TopRobotsView;
+
 drop table if exists RobotDailyResult;
 drop table if exists RobotDailyRuns;
 drop table if exists RobotLifetimeResult;
@@ -250,6 +252,24 @@ amount INT NOT NULL,
 tax INT NOT NULL,
 PRIMARY KEY (robotId, oreId, miningDay)
 );
+
+
+create view TopRobotsView
+as
+select Robot.id as robotId,
+       Robot.robotName as robotName,
+       Users.username as username,
+       count(distinct MiningQueue.id) as totalRuns,
+       sum(MiningOreResult.amount) as totalAmount,
+       sum(MiningOreResult.amount) / count(distinct MiningQueue.id) as orePerRun
+from Robot
+inner join Users
+on Users.id = Robot.usersId
+left outer join MiningQueue
+on MiningQueue.robotId = Robot.id and MiningQueue.claimed = true
+left outer join MiningOreResult
+on MiningOreResult.miningQueueId = MiningQueue.id
+group by Robot.id;
 
 
 -- The ore type names

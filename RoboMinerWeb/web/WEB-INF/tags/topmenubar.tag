@@ -35,6 +35,7 @@
             <li class="${(currentform == 'miningResults') ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='miningResults'/>');">Mining results</li>
             <li class="${(currentform == 'statistics')    ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='statistics'/>');">Statistics</li>
             <li class="${(currentform == 'shop')          ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='shop'/>');">Shop</li>
+            <li class="${(currentform == 'leaderboard')   ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='leaderboard'/>');">Leaderboard</li>
         </ul>
     </nav>
 </header>

@@ -35,7 +35,7 @@
             document.getElementById('lastweek').style.display = (statisticsType === 'lastweek') ? 'inherit' : 'none';
         }
     </script>
-    
+
     <rm:defaultpage currentform="statistics">
 
         <rm:userassets oreassetlist='${oreAssetList}' />
