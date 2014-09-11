@@ -78,7 +78,13 @@ public:
         int         secondsLeft;
         std::string sourceCode;
     };
-    
+
+    struct OldMiningQueueItem
+    {
+        int miningQueueId;
+        int rallyResultId;
+    };
+
 public:
     CDatabase();
     ~CDatabase();
@@ -97,7 +103,13 @@ public:
     void updateMiningQueue(int miningQueueId, int playerNumber, int rallyResultId, MYSQL_TIME miningEndTime);
     void addMiningOreResult(int miningQueueId, int oreId, int amount);
     void updateRobot(int robotId, MYSQL_TIME miningEndTime);
-    
+
+    void removeOldMiningQueueItems(int robotId);
+    std::list<OldMiningQueueItem> findOldMiningQueueItems(int robotId);
+    void removeMiningQueueEntry(int miningQueueId);
+    bool rallyResultInUse(int rallyResultId);
+    void removeRallyResultEntry(int rallyResultId);
+
 private:
     MYSQL   m_mysql;
     MYSQL*  m_connection;

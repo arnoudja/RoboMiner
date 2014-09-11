@@ -508,7 +508,7 @@ list<CDatabase::MiningRallyItem> CDatabase::getNextMiningRally(int miningAreaId)
     
     status = mysql_stmt_store_result(statement);
     assert(status == 0);
-    
+
     while (mysql_stmt_fetch(statement) == 0)
     {
         if (!isNull && !isError)
@@ -576,6 +576,7 @@ void CDatabase::updateMiningRally(const list<MiningRallyItem>& miningRallyItems,
     {
         updateRobot(iter->robotId, iter->miningEndTime);
         updateMiningQueue(iter->miningQueueId, playerNumber, rallyResultId, iter->miningEndTime);
+        removeOldMiningQueueItems(iter->robotId);
     }
 }
 
@@ -686,3 +687,184 @@ void CDatabase::updateRobot(int robotId, MYSQL_TIME miningEndTime)
 
     mysql_stmt_close(statement);
 }
+
+
+void CDatabase::removeOldMiningQueueItems(int robotId)
+{
+    list<OldMiningQueueItem> idList = findOldMiningQueueItems(robotId);
+    
+    for (list<OldMiningQueueItem>::const_iterator iter = idList.begin(); iter != idList.end(); ++iter)
+    {
+        removeMiningQueueEntry(iter->miningQueueId);
+        
+        if (!rallyResultInUse(iter->rallyResultId))
+        {
+            removeRallyResultEntry(iter->rallyResultId);
+        }
+    }
+}
+
+
+list<CDatabase::OldMiningQueueItem> CDatabase::findOldMiningQueueItems(int robotId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT id, rallyResultId "
+                 "FROM MiningQueue "
+                 "WHERE robotId = ? "
+                 "AND claimed = true "
+                 "ORDER BY MiningQueue.id DESC "
+                 "LIMIT 100, 100000 ");
+
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(robotId);
+    bind[0].buffer = &robotId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    MYSQL_BIND bindResult[2];
+    memset(bindResult, 0, sizeof(bindResult));
+
+    OldMiningQueueItem miningQueueItem;
+
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(miningQueueItem.miningQueueId);
+    bindResult[0].buffer = &miningQueueItem.miningQueueId;
+    bindResult[1].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[1].buffer_length = sizeof(miningQueueItem.rallyResultId);
+    bindResult[1].buffer = &miningQueueItem.rallyResultId;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    list<OldMiningQueueItem> result;
+
+    while (mysql_stmt_fetch(statement) == 0)
+    {
+        result.push_back(miningQueueItem);
+    }
+
+    mysql_stmt_close(statement);
+    
+    return result;
+}
+
+
+void CDatabase::removeMiningQueueEntry(int miningQueueId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("DELETE "
+                 "FROM MiningQueue "
+                 "WHERE id = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(miningQueueId);
+    bind[0].buffer = &miningQueueId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);    
+}
+
+
+bool CDatabase::rallyResultInUse(int rallyResultId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT id "
+                 "FROM MiningQueue "
+                 "WHERE rallyResultId = ? ");
+
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(rallyResultId);
+    bind[0].buffer = &rallyResultId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    MYSQL_BIND bindResult[1];
+    memset(bindResult, 0, sizeof(bindResult));
+
+    int miningQueueId;
+
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(miningQueueId);
+    bindResult[0].buffer = &miningQueueId;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    bool result = false;
+
+    while (mysql_stmt_fetch(statement) == 0)
+    {
+        result = true;
+    }
+
+    mysql_stmt_close(statement);
+    
+    return result;
+}
+
+
+void CDatabase::removeRallyResultEntry(int rallyResultId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("DELETE "
+                 "FROM RallyResult "
+                 "WHERE id = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(rallyResultId);
+    bind[0].buffer = &rallyResultId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);    
+}
+
