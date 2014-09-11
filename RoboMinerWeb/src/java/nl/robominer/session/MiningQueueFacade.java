@@ -55,13 +55,21 @@ public class MiningQueueFacade extends AbstractFacade<MiningQueue> {
         query.setParameter("robotId", robotId);
         return query.getResultList();
     }
-    
-    public List<MiningQueue> findResultsByUsersId(int usersId) {
+
+    public List<MiningQueue> findResultsByUsersId(int usersId, int maxSize) {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findResultsByUsersId", MiningQueue.class);
         query.setParameter("usersId", usersId);
+        query.setMaxResults(maxSize);
         return query.getResultList();
     }
-    
+
+    public List<MiningQueue> findResultsByRobotId(int robotId, int maxSize) {
+        Query query = getEntityManager().createNamedQuery("MiningQueue.findResultsByRobotId", MiningQueue.class);
+        query.setParameter("robotId", robotId);
+        query.setMaxResults(maxSize);
+        return query.getResultList();
+    }
+
     public List<MiningQueue> findClaimableByUsersId(int usersId) {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findClaimableByUsersId", MiningQueue.class);
         query.setParameter("usersId", usersId);

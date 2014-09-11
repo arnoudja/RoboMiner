@@ -27,13 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import nl.robominer.entity.MiningQueue;
-import nl.robominer.entity.UserOreAsset;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.OreFacade;
 
@@ -44,12 +38,14 @@ import nl.robominer.session.OreFacade;
 @WebServlet(name = "MiningResultsServlet", urlPatterns = {"/miningResults"})
 public class MiningResultsServlet extends RoboMinerServletBase {
 
+    private static final int MAX_RESULTS = 25;
+
     @EJB
     private MiningQueueFacade miningQueueFacade;
-    
+
     @EJB
     private OreFacade oreFacade;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,7 +73,7 @@ public class MiningResultsServlet extends RoboMinerServletBase {
             processAssets(request);
         
             // Add the list of mining queue items
-            List<MiningQueue> miningResultsList = miningQueueFacade.findResultsByUsersId(userId);
+            List<MiningQueue> miningResultsList = miningQueueFacade.findResultsByUsersId(userId, MAX_RESULTS);
             request.setAttribute("miningResultsList", miningResultsList);
 
             request.getRequestDispatcher("/WEB-INF/view/miningresults.jsp").forward(request, response);

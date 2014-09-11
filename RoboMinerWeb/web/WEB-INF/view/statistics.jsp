@@ -26,52 +26,108 @@
 <!DOCTYPE html>
 <rm:robominerheader>
 
+    <script>
+        function showStatisticsType(statisticsType) {
+            document.getElementById('totalStatistics').style.display = (statisticsType === 'totalStatistics') ? 'inherit' : 'none';
+            document.getElementById('lastRuns').style.display = (statisticsType === 'lastRuns') ? 'inherit' : 'none';
+        }
+    </script>
+    
     <rm:defaultpage currentform="statistics">
 
         <rm:userassets oreassetlist='${oreAssetList}' />
 
-        <h2 class="statistics">Total</h2>
+        <select class="statistics" onchange="showStatisticsType(this.value);">
+            <option value="totalStatistics" selected>Total</option>
+            <option value="lastRuns">Last runs</option>
+        </select>
         
-        <c:forEach var="robot" items="${robotList}">
-            <table class="statistics">
-                <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
-                <tr>
-                    <th class="statistics">Ore</th>
-                    <th class="statistics">Amount</th>
-                    <th class="statistics">Tax</th>
-                    <th class="statistics">Reward</th>
-                    <th class="statistics">Average amount per run</th>
-                </tr>
-                <c:set var="totalAmount" value="0"/>
-                <c:set var="totalTax" value="0"/>
-                <c:forEach var="robotLifetimeResult" items="${robot.robotLifetimeResultList}">
-                    <c:set var="totalAmount" value="${totalAmount + robotLifetimeResult.amount}"/>
-                    <c:set var="totalTax" value="${totalTax + robotLifetimeResult.tax}"/>
+        <div id="totalStatistics">
+            <c:forEach var="robot" items="${robotList}">
+                <table class="statistics">
+                    <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
                     <tr>
-                        <td class="statistics">${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
-                        <td class="statistics">${robotLifetimeResult.amount}</td>
-                        <td class="statistics">${robotLifetimeResult.tax}</td>
-                        <td class="statistics">${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
+                        <th class="statistics">Ore</th>
+                        <th class="statistics">Amount</th>
+                        <th class="statistics">Tax</th>
+                        <th class="statistics">Reward</th>
+                        <th class="statistics">Average amount per run</th>
+                    </tr>
+                    <c:set var="totalAmount" value="0"/>
+                    <c:set var="totalTax" value="0"/>
+                    <c:forEach var="robotLifetimeResult" items="${robot.robotLifetimeResultList}">
+                        <c:set var="totalAmount" value="${totalAmount + robotLifetimeResult.amount}"/>
+                        <c:set var="totalTax" value="${totalTax + robotLifetimeResult.tax}"/>
+                        <tr>
+                            <td class="statistics">${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
+                            <td class="statistics">${robotLifetimeResult.amount}</td>
+                            <td class="statistics">${robotLifetimeResult.tax}</td>
+                            <td class="statistics">${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
+                            <td class="statistics">
+                                <c:if test="${robot.totalMiningRuns gt 0}">
+                                    <fmt:formatNumber value="${robotLifetimeResult.amount / robot.totalMiningRuns}" maxFractionDigits="2"/>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                        <td class="statistics">Total</td>
+                        <td class="statistics">${totalAmount}</td>
+                        <td class="statistics">${totalTax}</td>
+                        <td class="statistics">${totalAmount - totalTax}</td>
                         <td class="statistics">
                             <c:if test="${robot.totalMiningRuns gt 0}">
-                                <fmt:formatNumber value="${robotLifetimeResult.amount / robot.totalMiningRuns}" maxFractionDigits="2"/>
+                                <fmt:formatNumber value="${totalAmount / robot.totalMiningRuns}" maxFractionDigits="2"/>
                             </c:if>
                         </td>
                     </tr>
-                </c:forEach>
-                <tr>
-                    <td class="statistics">Total</td>
-                    <td class="statistics">${totalAmount}</td>
-                    <td class="statistics">${totalTax}</td>
-                    <td class="statistics">${totalAmount - totalTax}</td>
-                    <td class="statistics">
-                        <c:if test="${robot.totalMiningRuns gt 0}">
-                            <fmt:formatNumber value="${totalAmount / robot.totalMiningRuns}" maxFractionDigits="2"/>
-                        </c:if>
-                    </td>
-                </tr>
-            </table>
-        </c:forEach>
+                </table>
+            </c:forEach>
+        </div>
+
+        <div id="lastRuns" style="display: none;">
+            <c:forEach var="robot" items="${robotList}">
+                <c:set var="robotStatistics" value="${robotStatisticsMap.get(robot.id)}"/>
+                <table class="statistics">
+                    <caption>${fn:escapeXml(robot.robotName)}: ${robotStatistics.runs} runs</caption>
+                    <tr>
+                        <th class="statistics">Ore</th>
+                        <th class="statistics">Amount</th>
+                        <th class="statistics">Tax</th>
+                        <th class="statistics">Reward</th>
+                        <th class="statistics">Average amount per run</th>
+                    </tr>
+                    <c:set var="totalAmount" value="0"/>
+                    <c:set var="totalTax" value="0"/>
+                    <c:forEach var="oreAmountEntry" items="${robotStatistics.oreAmountMap.entrySet()}">
+                        <c:set var="totalAmount" value="${totalAmount + oreAmountEntry.value.amount}"/>
+                        <c:set var="totalTax" value="${totalTax + oreAmountEntry.value.tax}"/>
+                        <tr>
+                            <td class="statistics">${fn:escapeXml(oreAmountEntry.key.oreName)}</td>
+                            <td class="statistics">${oreAmountEntry.value.amount}</td>
+                            <td class="statistics">${oreAmountEntry.value.tax}</td>
+                            <td class="statistics">${oreAmountEntry.value.amount - oreAmountEntry.value.tax}</td>
+                            <td class="statistics">
+                                <c:if test="${robotStatistics.runs gt 0}">
+                                    <fmt:formatNumber value="${oreAmountEntry.value.amount / robotStatistics.runs}" maxFractionDigits="2"/>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                        <td class="statistics">Total</td>
+                        <td class="statistics">${totalAmount}</td>
+                        <td class="statistics">${totalTax}</td>
+                        <td class="statistics">${totalAmount - totalTax}</td>
+                        <td class="statistics">
+                            <c:if test="${robotStatistics.runs gt 0}">
+                                <fmt:formatNumber value="${totalAmount / robotStatistics.runs}" maxFractionDigits="2"/>
+                            </c:if>
+                        </td>
+                    </tr>
+                </table>
+            </c:forEach>
+        </div>
 
     </rm:defaultpage>
 </rm:robominerheader>

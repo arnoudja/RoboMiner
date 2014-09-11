@@ -20,13 +20,19 @@
 package nl.robominer.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nl.robominer.businessentity.RobotStatistics;
+import nl.robominer.entity.MiningOreResult;
+import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
+import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotFacade;
 
 /**
@@ -36,8 +42,13 @@ import nl.robominer.session.RobotFacade;
 @WebServlet(name = "StatisticsServlet", urlPatterns = {"/statistics"})
 public class StatisticsServlet extends RoboMinerServletBase {
 
+    private static final int LAST_RESULT_COUNT = 100;
+
     @EJB
     private RobotFacade robotFacade;
+
+    @EJB
+    private MiningQueueFacade miningQueueFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,6 +59,7 @@ public class StatisticsServlet extends RoboMinerServletBase {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -58,6 +70,31 @@ public class StatisticsServlet extends RoboMinerServletBase {
         // Add the list of robots
         List<Robot> robotList = robotFacade.findByUsersId(userId);
         request.setAttribute("robotList", robotList);
+
+        // Calculate the last results totals
+        Map<Integer, RobotStatistics> robotStatisticsMap = new HashMap<>();
+
+        for (Robot robot : robotList) {
+
+            List<MiningQueue> robotResults = miningQueueFacade.findResultsByRobotId(robot.getId(), LAST_RESULT_COUNT);
+
+            RobotStatistics robotStatistics = new RobotStatistics();
+
+            robotStatistics.setRuns(robotResults.size());
+
+            for (MiningQueue miningQueue : robotResults) {
+
+                List<MiningOreResult> miningOreResultList = miningQueue.getMiningOreResults();
+
+                for (MiningOreResult miningOreResult : miningOreResultList) {
+
+                    robotStatistics.addOre(miningOreResult.getOre(), miningOreResult.getAmount(), miningOreResult.getTax());
+                }
+            }
+            
+            robotStatisticsMap.put(robot.getId(), robotStatistics);
+        }
+        request.setAttribute("robotStatisticsMap", robotStatisticsMap);
 
         request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
     }

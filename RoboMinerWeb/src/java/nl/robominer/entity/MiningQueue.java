@@ -51,24 +51,25 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MiningQueue.findById", query = "SELECT m FROM MiningQueue m WHERE m.id = :id"),
     @NamedQuery(name = "MiningQueue.findWaitingByUsersId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.user.id = :usersId ORDER BY m.id"),
     @NamedQuery(name = "MiningQueue.findWaitingByRobotId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.id = :robotId ORDER BY m.id"),
-    @NamedQuery(name = "MiningQueue.findResultsByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId ORDER BY m.id DESC"),
+    @NamedQuery(name = "MiningQueue.findResultsByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.robot.user.id = :usersId ORDER BY m.id DESC"),
+    @NamedQuery(name = "MiningQueue.findResultsByRobotId", query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.robot.id = :robotId ORDER BY m.id DESC"),
     @NamedQuery(name = "MiningQueue.findClaimableByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId and m.claimed = false"),
-    @NamedQuery(name = "MiningQueue.findByRallyAndUsersId", query = "SELECT m FROM MiningQueue m WHERE m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")})
+    @NamedQuery(name = "MiningQueue.findByRallyAndUsersId", query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")})
 public class MiningQueue implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "miningAreaId")
     private MiningArea miningArea;
-    
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "robotId")
@@ -81,7 +82,7 @@ public class MiningQueue implements Serializable {
     @Basic(optional = true)
     @Column(name = "playerNumber")
     private int playerNumber;
-    
+
     @Basic(optional = true)
     @Column(name = "creationTime", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)

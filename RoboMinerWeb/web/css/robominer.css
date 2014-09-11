@@ -209,6 +209,10 @@ td.miningresults, th.miningresults {
  * Statistics
  ******************************************************/
 
+select.statistics {
+    margin: 10px;
+}
+
 table.statistics {
     float: left;
     border-collapse: collapse;
