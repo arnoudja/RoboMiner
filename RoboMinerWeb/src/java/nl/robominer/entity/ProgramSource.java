@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProgramSource.findAll", query = "SELECT p FROM ProgramSource p"),
     @NamedQuery(name = "ProgramSource.findById", query = "SELECT p FROM ProgramSource p WHERE p.id = :id"),
     @NamedQuery(name = "ProgramSource.findByIdAndUser", query = "SELECT p FROM ProgramSource p WHERE p.id = :id AND p.usersId = :usersId"),
-    @NamedQuery(name = "ProgramSource.findByUsersId", query = "SELECT p FROM ProgramSource p WHERE p.usersId = :usersId")})
+    @NamedQuery(name = "ProgramSource.findByUsersId", query = "SELECT p FROM ProgramSource p WHERE p.usersId = :usersId ORDER BY p.id")})
 public class ProgramSource implements Serializable {
     
     private static final long serialVersionUID = 1L;

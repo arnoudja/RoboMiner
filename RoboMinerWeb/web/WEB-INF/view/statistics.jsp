@@ -53,11 +53,11 @@
                 <table class="statistics">
                     <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
                     <tr>
-                        <th class="statistics">Ore</th>
-                        <th class="statistics">Amount</th>
-                        <th class="statistics">Tax</th>
-                        <th class="statistics">Reward</th>
-                        <th class="statistics">Average amount per run</th>
+                        <th>Ore</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Reward</th>
+                        <th>Average amount per run</th>
                     </tr>
                     <c:set var="totalAmount" value="0"/>
                     <c:set var="totalTax" value="0"/>
@@ -65,11 +65,11 @@
                         <c:set var="totalAmount" value="${totalAmount + robotLifetimeResult.amount}"/>
                         <c:set var="totalTax" value="${totalTax + robotLifetimeResult.tax}"/>
                         <tr>
-                            <td class="statistics">${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
-                            <td class="statistics">${robotLifetimeResult.amount}</td>
-                            <td class="statistics">${robotLifetimeResult.tax}</td>
-                            <td class="statistics">${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
-                            <td class="statistics">
+                            <td>${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
+                            <td>${robotLifetimeResult.amount}</td>
+                            <td>${robotLifetimeResult.tax}</td>
+                            <td>${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
+                            <td>
                                 <c:if test="${robot.totalMiningRuns gt 0}">
                                     <fmt:formatNumber value="${robotLifetimeResult.amount / robot.totalMiningRuns}" maxFractionDigits="2"/>
                                 </c:if>
@@ -77,11 +77,11 @@
                         </tr>
                     </c:forEach>
                     <tr>
-                        <td class="statistics">Total</td>
-                        <td class="statistics">${totalAmount}</td>
-                        <td class="statistics">${totalTax}</td>
-                        <td class="statistics">${totalAmount - totalTax}</td>
-                        <td class="statistics">
+                        <td>Total</td>
+                        <td>${totalAmount}</td>
+                        <td>${totalTax}</td>
+                        <td>${totalAmount - totalTax}</td>
+                        <td>
                             <c:if test="${robot.totalMiningRuns gt 0}">
                                 <fmt:formatNumber value="${totalAmount / robot.totalMiningRuns}" maxFractionDigits="2"/>
                             </c:if>

@@ -58,26 +58,13 @@ public class ProgramSourceFacade extends AbstractFacade<ProgramSource> {
             return null;
         }
     }
-    
+
     public List<ProgramSource> findByUsersId(int usersId) {
 
         Query query = getEntityManager().createNamedQuery("ProgramSource.findByUsersId", ProgramSource.class);
         query.setParameter("usersId", usersId);
         
         return query.getResultList();
-    }
-    
-    public Map<Integer, ProgramSource> findMapByUsersId(int usersId) {
-        
-        List<ProgramSource> programSourceList = findByUsersId(usersId);
-        
-        Map<Integer, ProgramSource> programSourceMap = new HashMap<>();
-        
-        for (ProgramSource programSource : programSourceList) {
-            programSourceMap.put(programSource.getId(), programSource);
-        }
-        
-        return programSourceMap;
     }
 
 }

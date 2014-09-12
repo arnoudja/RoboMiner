@@ -27,11 +27,11 @@
 <table class="statistics">
     <caption>${fn:escapeXml(robotName)}: ${robotStatistics.runs} runs</caption>
     <tr>
-        <th class="statistics">Ore</th>
-        <th class="statistics">Amount</th>
-        <th class="statistics">Tax</th>
-        <th class="statistics">Reward</th>
-        <th class="statistics">Average amount per run</th>
+        <th>Ore</th>
+        <th>Amount</th>
+        <th>Tax</th>
+        <th>Reward</th>
+        <th>Average amount per run</th>
     </tr>
     <c:set var="totalAmount" value="0"/>
     <c:set var="totalTax" value="0"/>
@@ -39,11 +39,11 @@
         <c:set var="totalAmount" value="${totalAmount + oreAmountEntry.value.amount}"/>
         <c:set var="totalTax" value="${totalTax + oreAmountEntry.value.tax}"/>
         <tr>
-            <td class="statistics">${fn:escapeXml(oreAmountEntry.key.oreName)}</td>
-            <td class="statistics">${oreAmountEntry.value.amount}</td>
-            <td class="statistics">${oreAmountEntry.value.tax}</td>
-            <td class="statistics">${oreAmountEntry.value.amount - oreAmountEntry.value.tax}</td>
-            <td class="statistics">
+            <td>${fn:escapeXml(oreAmountEntry.key.oreName)}</td>
+            <td>${oreAmountEntry.value.amount}</td>
+            <td>${oreAmountEntry.value.tax}</td>
+            <td>${oreAmountEntry.value.amount - oreAmountEntry.value.tax}</td>
+            <td>
                 <c:if test="${robotStatistics.runs gt 0}">
                     <fmt:formatNumber value="${oreAmountEntry.value.amount / robotStatistics.runs}" maxFractionDigits="2"/>
                 </c:if>
@@ -51,11 +51,11 @@
         </tr>
     </c:forEach>
     <tr>
-        <td class="statistics">Total</td>
-        <td class="statistics">${totalAmount}</td>
-        <td class="statistics">${totalTax}</td>
-        <td class="statistics">${totalAmount - totalTax}</td>
-        <td class="statistics">
+        <td>Total</td>
+        <td>${totalAmount}</td>
+        <td>${totalTax}</td>
+        <td>${totalAmount - totalTax}</td>
+        <td>
             <c:if test="${robotStatistics.runs gt 0}">
                 <fmt:formatNumber value="${totalAmount / robotStatistics.runs}" maxFractionDigits="2"/>
             </c:if>

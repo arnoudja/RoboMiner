@@ -40,13 +40,13 @@
 
             <c:set var="canremove" value="false"/>
             
-            <table class="miningqueue">
+            <table>
                 <caption>Mining queues</caption>
                 <tr>
                     <c:forEach var='robot' items="${robotList}">
-                        <th class="miningqueue">${fn:escapeXml(robot.robotName)}</th>
-                        <th class="miningqueue">Area</th>
-                        <th class="miningqueue">Status</th>
+                        <th>${fn:escapeXml(robot.robotName)}</th>
+                        <th>Area</th>
+                        <th>Status</th>
                         <th class="miningqueuetime">ETC</th>
                     </c:forEach>
                 </tr>
@@ -69,8 +69,8 @@
                                                 <c:set var="canremove" value="true"/>
                                             </c:if>
                                         </td>
-                                        <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
-                                        <td class="miningqueue">${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).itemStatus.description)}</td>
+                                        <td>${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.miningArea.areaName)}</td>
+                                        <td>${fn:escapeXml(robotMiningQueueMap.get(robot.id).get(rownr).itemStatus.description)}</td>
                                         <td class="miningqueuetime" id="timeLeft${robotMiningQueueMap.get(robot.id).get(rownr).miningQueue.id}"/>
                                         <script>
                                             countdownTimer(${robotMiningQueueMap.get(robot.id).get(rownr).timeLeft} + 1,
@@ -83,10 +83,10 @@
                                         </script>
                                     </c:when>
                                     <c:otherwise>
-                                        <td class="miningqueue"></td>
-                                        <td class="miningqueue"></td>
-                                        <td class="miningqueue"></td>
-                                        <td class="miningqueue"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
@@ -97,21 +97,21 @@
                     <c:forEach var='robot' items="${robotList}">
                         <c:choose>
                             <c:when test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
-                                <td class="miningqueue"></td>
-                                <td class="miningqueue">
+                                <td></td>
+                                <td>
                                     <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
                                         <c:forEach var='miningArea' items='${miningAreaList}'>
                                             <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
                                         </c:forEach>
                                     </select>
                                 </td>
-                                <td class="miningqueue">
+                                <td>
                                     <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
                                 </td>
-                                <td class="miningqueue"></td>
+                                <td></td>
                             </c:when>
                             <c:otherwise>
-                                <td class="miningqueue" colspan="4"></td>
+                                <td colspan="4"></td>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>

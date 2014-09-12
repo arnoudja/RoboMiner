@@ -157,12 +157,6 @@ li.menuitem:hover {
  * Mining queue
  ******************************************************/
 
-table.miningqueue {
-}
-
-td.miningqueue, th.miningqueue, td.miningqueuecheckbox, td.miningqueuetime, th.miningqueuetime {
-}
-
 td.miningqueuetime, th.miningqueuetime {
     text-align: right;
 }
@@ -171,12 +165,10 @@ td.miningqueuecheckbox {
     text-align: center;
 }
 
+
 /******************************************************
  * Mining results
  ******************************************************/
-
-table.miningresults {
-}
 
 tr.miningresultsheader {
     border: 2px solid #aaa;
@@ -194,9 +186,6 @@ tbody.miningresults {
     border-collapse: collapse;
 }
 
-td.miningresults, th.miningresults {
-}
-
 
 /******************************************************
  * Statistics
@@ -211,19 +200,14 @@ table.statistics {
     margin: 10px;
 }
 
-td.statistics, th.statistics {
-}
-
 h2.statistics {
     margin-left: 10px;
 }
 
+
 /******************************************************
  * Shop
  ******************************************************/
-
-table.shop {
-}
 
 tbody.shop {
     display: none;
@@ -232,30 +216,12 @@ tbody.shop {
     border-collapse: collapse;
 }
 
-td.shop, td.shopImportant, td.shopFirstRow, td.shopPartName, td.shopSufficientBalance, td.shopInsufficientBalance {
-}
-
 td.shopFirstRow, td.shopPartName {
     padding-top: 7px;
 }
 
-td.shop, td.shopImportant, td.shopSufficientBalance, td.shopInsufficientBalance {
-}
-
 td.shopImportant, td.shopPartName {
     font-weight: bold;
-}
-
-tr.shopLastRow {
-    height: 6px;
-}
-
-td.shopSufficientBalance {
-    color: green;
-}
-
-td.shopInsufficientBalance {
-    color: red;
 }
 
 

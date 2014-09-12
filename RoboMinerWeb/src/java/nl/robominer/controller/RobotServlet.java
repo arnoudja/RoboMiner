@@ -108,8 +108,8 @@ public class RobotServlet extends RoboMinerServletBase {
         request.setAttribute("robotList", robotList);
         
         // Add the list of program sources
-        Map<Integer, ProgramSource> programSourceMap = programSourceFacade.findMapByUsersId(userId);
-        request.setAttribute("programSourceMap", programSourceMap);
+        List<ProgramSource> programSourceList = programSourceFacade.findByUsersId(userId);
+        request.setAttribute("programSourceList", programSourceList);
 
         // Add the list of ore containers
         List<UserRobotPartAsset> oreContainerList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 1);

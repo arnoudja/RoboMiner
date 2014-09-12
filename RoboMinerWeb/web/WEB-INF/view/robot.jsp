@@ -33,8 +33,8 @@
     <c:forEach var="memoryModule" items="${memoryModuleMap}">
         <input type="hidden" id="memoryModuleSize${memoryModule.key}" value="${memoryModule.value.memoryCapacity}"/>
     </c:forEach>
-    <c:forEach var='programSource' items="${programSourceMap}">
-        <input type="hidden" id="programSize${programSource.key}" value="${programSource.value.compiledSize}"/>
+    <c:forEach var='programSource' items="${programSourceList}">
+        <input type="hidden" id="programSize${programSource.id}" value="${programSource.compiledSize}"/>
     </c:forEach>
 
     <rm:defaultpage currentform="robot">
@@ -66,8 +66,8 @@
                             <td>Sourcecode:</td>
                             <td colspan="3">
                                 <select id="programSourceId${robot.id}" name="programSourceId${robot.id}" class="tableitem" onchange="updateMemorySizes();">
-                                    <c:forEach var='programSource' items="${programSourceMap}">
-                                        <option value="${programSource.key}" ${robot.programSourceId eq programSource.key ? 'selected="selected"' : ''}>${fn:escapeXml(programSource.value.sourceName)}</option>
+                                    <c:forEach var='programSource' items="${programSourceList}">
+                                        <option value="${programSource.id}" ${robot.programSourceId eq programSource.id ? 'selected="selected"' : ''}>${fn:escapeXml(programSource.sourceName)}</option>
                                     </c:forEach>
                                 </select>
                             </td>
