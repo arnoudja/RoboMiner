@@ -19,19 +19,19 @@
 
 package nl.robominer.session;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import nl.robominer.entity.UserOreAsset;
+import nl.robominer.entity.MiningAreaLifetimeResult;
 
 /**
  *
  * @author Arnoud Jagerman
  */
 @Stateless
-public class UserOreAssetFacade extends AbstractFacade<UserOreAsset> {
+public class MiningAreaLifetimeResultFacade extends AbstractFacade<MiningAreaLifetimeResult> {
+
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
@@ -40,26 +40,20 @@ public class UserOreAssetFacade extends AbstractFacade<UserOreAsset> {
         return em;
     }
 
-    public UserOreAssetFacade() {
-        super(UserOreAsset.class);
+    public MiningAreaLifetimeResultFacade() {
+        super(MiningAreaLifetimeResult.class);
     }
 
-    public UserOreAsset findByUserAndOreId(int usersId, int oreId) {
+    public MiningAreaLifetimeResult findByPK(int miningAreaId, int oreId) {
         try {
-            Query query = getEntityManager().createNamedQuery("UserOreAsset.findByUserAndOreId", UserOreAsset.class);
-            query.setParameter("usersId", usersId);
+            Query query = getEntityManager().createNamedQuery("MiningAreaLifetimeResult.findByPK", MiningAreaLifetimeResult.class);
+            query.setParameter("miningAreaId", miningAreaId);
             query.setParameter("oreId", oreId);
-            return (UserOreAsset)query.getSingleResult();
+            return (MiningAreaLifetimeResult)query.getSingleResult();
         }
         catch (javax.persistence.NoResultException exc) {
             return null;
         }
     }
 
-    public List<UserOreAsset> findByUsersId(int usersId) {
-        Query query = getEntityManager().createNamedQuery("UserOreAsset.findByUsersId", UserOreAsset.class);
-        query.setParameter("usersId", usersId);
-        return query.getResultList();
-    }
-    
 }

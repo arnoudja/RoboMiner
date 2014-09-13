@@ -19,6 +19,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
@@ -180,6 +181,27 @@
                                 <td colspan="2">${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
                             </tr>
                         </c:forEach>
+                        <tr>
+                            <td colspan="4">Historic yield:</td>
+                        </tr>
+                        <c:set var="totalPercentage" value="0.0"/>
+                        <c:forEach var="miningAreaLifetimeResult" items="${miningArea.miningAreaLifetimeResultList}">
+                            <c:set var="totalPercentage" value="${totalPercentage + miningAreaLifetimeResult.percentage}"/>
+                            <tr>
+                                <td></td>
+                                <td>${fn:escapeXml(miningAreaLifetimeResult.ore.oreName)}:</td>
+                                <td colspan="2">
+                                    <fmt:formatNumber value="${miningAreaLifetimeResult.percentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <tr>
+                            <td></td>
+                            <td>Total:</td>
+                            <td colspan="2">
+                                <fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                            </td>
+                        </tr>
                     </tbody>
                 </c:forEach>
             </table>

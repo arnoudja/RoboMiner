@@ -20,7 +20,9 @@
 package nl.robominer.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -92,16 +94,20 @@ public class MiningArea implements Serializable {
     @NotNull
     @Column(name = "taxRate")
     private int taxRate;
-    
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "aiRobotId")
     private Robot aiRobot;
-    
+
     @OneToMany
     @JoinColumn(name = "MiningAreaOreSupply.miningAreaId")
-    private List<MiningAreaOreSupply> miningAreaOreSupply;
-    
+    private List<MiningAreaOreSupply> miningAreaOreSupplyList;
+
+    @OneToMany
+    @JoinColumn(name = "MiningAreaLifetimeResult.miningAreaId")
+    private List<MiningAreaLifetimeResult> miningAreaLifetimeResultList;
+
     public MiningArea() {
     }
 
@@ -140,9 +146,36 @@ public class MiningArea implements Serializable {
     public Robot getAiRobot() {
         return aiRobot;
     }
-    
+
     public List<MiningAreaOreSupply> getMiningAreaOreSupply() {
-        return miningAreaOreSupply;
+        return miningAreaOreSupplyList;
+    }
+
+    public List<Ore> getMiningAreaOreTypes() {
+        
+        List<Ore> result = new ArrayList<>();
+
+        for (MiningAreaOreSupply miningAreaOreSupply : miningAreaOreSupplyList) {
+
+            boolean present = false;
+            
+            for (Ore ore : result) {
+                
+                if (Objects.equals(ore.getId(), miningAreaOreSupply.getOre().getId())) {
+                    present = true;
+                }
+            }
+            
+            if (!present) {
+                result.add(miningAreaOreSupply.getOre());
+            }
+        }
+        
+        return result;
+    }
+
+    public List<MiningAreaLifetimeResult> getMiningAreaLifetimeResultList() {
+        return miningAreaLifetimeResultList;
     }
 
     @Override

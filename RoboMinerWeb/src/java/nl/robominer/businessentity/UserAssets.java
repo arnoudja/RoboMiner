@@ -21,6 +21,7 @@ package nl.robominer.businessentity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,8 +34,10 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import nl.robominer.entity.MiningArea;
+import nl.robominer.entity.MiningAreaLifetimeResult;
 import nl.robominer.entity.MiningOreResult;
 import nl.robominer.entity.MiningQueue;
+import nl.robominer.entity.Ore;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
 import nl.robominer.entity.Robot;
@@ -44,6 +47,7 @@ import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
+import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotDailyResultFacade;
@@ -70,6 +74,9 @@ public class UserAssets {
 
     @EJB
     private MiningOreResultFacade miningOreResultFacade;
+
+    @EJB
+    private MiningAreaLifetimeResultFacade miningAreaLifetimeResultFacade;
 
     @EJB
     private RobotFacade robotFacade;
@@ -129,6 +136,8 @@ public class UserAssets {
 
                 updateUserOreAssets(userId, oreId, reward);
             }
+
+            updateMiningAreaLifetimeResults(miningQueue.getMiningArea(), miningOreResultList, robot.getMaxOre());
         }
 
         transaction.commit();
@@ -148,6 +157,37 @@ public class UserAssets {
             robotLifetimeResult.increaseAmount(amount);
             robotLifetimeResult.increaseTax(tax);
             robotLifetimeResultFacade.edit(robotLifetimeResult);
+        }
+    }
+
+    private void updateMiningAreaLifetimeResults(MiningArea miningArea, List<MiningOreResult> miningOreResultList, int containerSize) {
+
+        List<Ore> oreList = miningArea.getMiningAreaOreTypes();
+
+        for (Ore ore : oreList) {
+
+            int amount = 0;
+            
+            for (MiningOreResult miningOreResult : miningOreResultList) {
+                
+                if (Objects.equals(miningOreResult.getOre().getId(), ore.getId())) {
+                    amount = miningOreResult.getAmount();
+                }
+            }
+
+            MiningAreaLifetimeResult miningAreaLifetimeResult = miningAreaLifetimeResultFacade.findByPK(miningArea.getId(), ore.getId());
+
+            if (miningAreaLifetimeResult == null) {
+
+                miningAreaLifetimeResult = new MiningAreaLifetimeResult(miningArea.getId(), ore.getId(), amount, containerSize);
+                miningAreaLifetimeResultFacade.create(miningAreaLifetimeResult);
+            }
+            else {
+
+                miningAreaLifetimeResult.increaseTotalAmount(amount);
+                miningAreaLifetimeResult.increaseTotalContainerSize(containerSize);
+                miningAreaLifetimeResultFacade.edit(miningAreaLifetimeResult);
+            }
         }
     }
 

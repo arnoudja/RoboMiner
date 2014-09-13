@@ -29,6 +29,7 @@ drop table if exists RobotLifetimeResult;
 drop table if exists MiningOreResult;
 drop table if exists MiningQueue;
 drop table if exists RallyResult;
+drop table if exists MiningAreaLifetimeResult;
 drop table if exists MiningAreaOreSupply;
 drop table if exists MiningArea;
 drop table if exists Robot;
@@ -191,6 +192,16 @@ miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 supply INT NOT NULL,
 radius INT NOT NULL
+);
+
+
+create table MiningAreaLifetimeResult
+(
+miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
+oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
+totalAmount BIGINT NOT NULL,
+totalContainerSize BIGINT NOT NULL,
+PRIMARY KEY (miningAreaId, oreId)
 );
 
 
