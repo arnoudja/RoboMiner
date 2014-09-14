@@ -41,19 +41,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Ore")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ore.findAll", query = "SELECT o FROM Ore o"),
-    @NamedQuery(name = "Ore.findById", query = "SELECT o FROM Ore o WHERE o.id = :id"),
-    @NamedQuery(name = "Ore.findByOreName", query = "SELECT o FROM Ore o WHERE o.oreName = :oreName")})
+    @NamedQuery(name = "Ore.findAll", query = "SELECT o FROM Ore o ORDER BY o.id"),
+    @NamedQuery(name = "Ore.findById", query = "SELECT o FROM Ore o WHERE o.id = :id")})
 public class Ore implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)

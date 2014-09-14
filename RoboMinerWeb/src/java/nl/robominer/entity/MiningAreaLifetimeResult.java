@@ -94,7 +94,7 @@ public class MiningAreaLifetimeResult implements Serializable {
     }
 
     public double getPercentage() {
-        return (totalAmount * 100.0 / totalContainerSize);
+        return (totalContainerSize > 0 ? (totalAmount * 100.0 / totalContainerSize) : .0);
     }
 
     @Override

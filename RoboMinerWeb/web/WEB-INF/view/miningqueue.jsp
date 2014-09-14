@@ -129,6 +129,8 @@
             </c:if>
 
             <h1>Mining area info</h1>
+            <input type="button" value="Overview" onclick="openUrl('<c:url value='miningAreaOverview'/>');"/>
+
             <table>
                 <tr>
                     <th>Mining area:</th>

@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "MiningArea")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MiningArea.findAll", query = "SELECT m FROM MiningArea m"),
+    @NamedQuery(name = "MiningArea.findAll", query = "SELECT m FROM MiningArea m ORDER BY m.id"),
     @NamedQuery(name = "MiningArea.findById", query = "SELECT m FROM MiningArea m WHERE m.id = :id")})
 public class MiningArea implements Serializable {
 
@@ -176,6 +176,18 @@ public class MiningArea implements Serializable {
 
     public List<MiningAreaLifetimeResult> getMiningAreaLifetimeResultList() {
         return miningAreaLifetimeResultList;
+    }
+
+    public MiningAreaLifetimeResult getMiningAreaLifetimeResult(int oreId) {
+        MiningAreaLifetimeResult result = new MiningAreaLifetimeResult(id, oreId, 0, 0);
+
+        for (MiningAreaLifetimeResult miningAreaLifetimeResult : miningAreaLifetimeResultList) {
+            if (miningAreaLifetimeResult.getOre().getId() == oreId) {
+                result = miningAreaLifetimeResult;
+            }
+        }
+
+        return result;
     }
 
     @Override
