@@ -213,17 +213,17 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
         return errorMessage;
     }
-    
+
     private void removeMiningQueueItems(int userId, String[] selectedQueueItems) {
         List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
-        
+
         for (MiningQueueItem item : miningQueueList) {
             if (item.isSelected() && item.getItemStatus() == EMiningQueueItemStatus.QUEUED) {
                 miningQueueFacade.remove(item.getMiningQueue());
             }
         }
     }
-    
+
     private List<MiningQueueItem> getQueueInfo(List<MiningQueue> miningQueueList, String[] selectedItems) {
         
         List<MiningQueueItem> result = new LinkedList<>();
