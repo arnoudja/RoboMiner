@@ -80,8 +80,6 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
     if (!miningRallyItems.empty() &&
         (miningRallyItems.size() >= 4 || miningRallyItems.front().secondsLeft < 10))
     {
-        srand((unsigned int)time(NULL));
-        
         CRally rally(miningArea);
 
         CRobotProgram* robots[4];
@@ -176,6 +174,8 @@ bool processMiningQueues(CDatabase& database, const list<CDatabase::MiningArea>&
 
 int main(int argc, char* argv[])
 {
+    srand((unsigned int)time(NULL));
+
     string command(argc > 1 ? argv[1] : "");
     
     if (command.compare("verify") == 0)
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
         CDatabase database;
 
         list<CDatabase::MiningArea> miningAreas = database.getMiningAreas();
-        
+
         while (true)
         {
             if (!processMiningQueues(database, miningAreas))
