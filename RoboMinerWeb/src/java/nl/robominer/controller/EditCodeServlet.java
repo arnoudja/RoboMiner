@@ -42,7 +42,7 @@ import nl.robominer.session.RobotFacade;
 public class EditCodeServlet extends RoboMinerServletBase {
 
     private static final String SESSION_PROGRAM_SOURCE_ID = "editCode_programSourceId";
-    
+
     @EJB
     private ProgramSourceFacade programSourceFacade;
     

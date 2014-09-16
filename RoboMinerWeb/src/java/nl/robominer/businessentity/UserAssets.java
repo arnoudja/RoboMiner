@@ -260,30 +260,19 @@ public class UserAssets {
 
         return succeeded;
     }
-    
+
     public boolean buyRobotPart(int userId, int robotPartId) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-        
+
         boolean succeeded = false;
-        
+
         transaction.begin();
 
         RobotPart robotPart = robotPartFacade.find(robotPartId);
-        
+
         if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice())) {
-            
-            UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(userId, robotPartId);
-            
-            if (userRobotPartAsset == null) {
-                
-                userRobotPartAsset = new UserRobotPartAsset(userId, robotPartId, 1, 1);
-                userRobotPartAssetFacade.create(userRobotPartAsset);
-            }
-            else {
-                
-                userRobotPartAsset.addOneOwned();
-                userRobotPartAssetFacade.edit(userRobotPartAsset);
-            }
-            
+
+            addRobotPart(userId, robotPartId, false);
+
             succeeded = true;
         }
 
@@ -296,7 +285,23 @@ public class UserAssets {
         
         return succeeded;
     }
-    
+
+    public void addRobotPart(int usersId, int robotPartId, boolean assigned) {
+
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, robotPartId);
+
+        if (userRobotPartAsset == null) {
+
+            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1, assigned ? 0 : 1);
+            userRobotPartAssetFacade.create(userRobotPartAsset);
+        }
+        else {
+
+            userRobotPartAsset.addOneOwned(assigned);
+            userRobotPartAssetFacade.edit(userRobotPartAsset);
+        }
+    }
+
     public boolean sellRobotPart(int userId, int robotPartId) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
         
         boolean succeeded = false;

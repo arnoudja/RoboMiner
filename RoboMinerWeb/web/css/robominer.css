@@ -115,6 +115,10 @@ td.invalid {
     color: red;
 }
 
+td.important {
+    font-weight: bold;
+}
+
 select.tableitem {
     width: 100%;
 }
@@ -188,6 +192,15 @@ tbody.miningresults {
 
 
 /******************************************************
+ * Achievements
+ ******************************************************/
+
+tbody.achievements {
+    border: 2px solid #aaa;
+}
+
+
+/******************************************************
  * Statistics
  ******************************************************/
 
@@ -220,7 +233,7 @@ td.shopFirstRow, td.shopPartName {
     padding-top: 7px;
 }
 
-td.shopImportant, td.shopPartName {
+td.shopPartName {
     font-weight: bold;
 }
 

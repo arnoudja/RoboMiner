@@ -33,6 +33,7 @@
             <li class="${(currentform == 'robot')         ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='robot'/>');">Robots</li>
             <li class="${(currentform == 'miningQueue')   ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='miningQueue'/>');">Mining queue</li>
             <li class="${(currentform == 'miningResults') ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='miningResults'/>');">Mining results</li>
+            <li class="${(currentform == 'achievements')  ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='achievements'/>');">Achievements</li>
             <li class="${(currentform == 'statistics')    ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='statistics'/>');">Statistics</li>
             <li class="${(currentform == 'shop')          ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='shop'/>');">Shop</li>
             <li class="${(currentform == 'leaderboard')   ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='leaderboard'/>');">Leaderboard</li>

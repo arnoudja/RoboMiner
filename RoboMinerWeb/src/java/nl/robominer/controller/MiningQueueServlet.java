@@ -118,7 +118,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
         request.setAttribute("robotMiningQueueMap", robotMiningQueueMap);
         request.setAttribute("largestQueueSize", largestQueueSize);
-        request.setAttribute("maxQueueSize", 10);
+        request.setAttribute("maxQueueSize", user.getMiningQueueSize());
 
         // Add the list of mining areas
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
@@ -192,7 +192,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         else if (miningArea == null) {
             errorMessage = "Unknown mining area";
         }
-        else if (robotMiningQueueList.size() >= 10)
+        else if (robotMiningQueueList.size() >= robot.getUser().getMiningQueueSize())
         {
             errorMessage = "Unable to add to the mining queue: The mining queue is full.";
         }

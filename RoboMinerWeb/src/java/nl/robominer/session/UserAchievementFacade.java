@@ -24,14 +24,15 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import nl.robominer.entity.UserOreAsset;
+import nl.robominer.entity.UserAchievement;
 
 /**
  *
  * @author Arnoud Jagerman
  */
 @Stateless
-public class UserOreAssetFacade extends AbstractFacade<UserOreAsset> {
+public class UserAchievementFacade extends AbstractFacade<UserAchievement> {
+
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
@@ -40,26 +41,25 @@ public class UserOreAssetFacade extends AbstractFacade<UserOreAsset> {
         return em;
     }
 
-    public UserOreAssetFacade() {
-        super(UserOreAsset.class);
+    public UserAchievementFacade() {
+        super(UserAchievement.class);
     }
 
-    public UserOreAsset findByUserAndOreId(int usersId, int oreId) {
+    public List<UserAchievement> findUnclaimedByUsersId(int usersId) {
+        Query query = getEntityManager().createNamedQuery("UserAchievement.findUnclaimedByUsersId", UserAchievement.class);
+        query.setParameter("usersId", usersId);
+        return query.getResultList();
+    }
+
+    public UserAchievement findByUsersAndAchievementId(int usersId, int achievementId) {
         try {
-            Query query = getEntityManager().createNamedQuery("UserOreAsset.findByUserAndOreId", UserOreAsset.class);
+            Query query = getEntityManager().createNamedQuery("UserAchievement.findByUsersAndAchievementId", UserAchievement.class);
             query.setParameter("usersId", usersId);
-            query.setParameter("oreId", oreId);
-            return (UserOreAsset)query.getSingleResult();
+            query.setParameter("achievementId", achievementId);
+            return (UserAchievement)query.getSingleResult();
         }
         catch (javax.persistence.NoResultException exc) {
             return null;
         }
     }
-
-    public List<UserOreAsset> findByUsersId(int usersId) {
-        Query query = getEntityManager().createNamedQuery("UserOreAsset.findByUsersId", UserOreAsset.class);
-        query.setParameter("usersId", usersId);
-        return query.getResultList();
-    }
-
 }

@@ -116,12 +116,16 @@ public class UserRobotPartAsset implements Serializable {
         
         unassigned++;
     }
-    
-    public void addOneOwned() {
+
+    public void addOneOwned(boolean assigned) {
+
         totalOwned++;
-        unassigned++;
+
+        if (!assigned) {
+            unassigned++;
+        }
     }
-    
+
     public void removeOneOwned() throws IllegalStateException {
         
         if (totalOwned <= 0 || unassigned <= 0) {

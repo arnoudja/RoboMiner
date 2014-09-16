@@ -79,6 +79,16 @@ public class Users implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "achievementPoints")
+    private int achievementPoints;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "miningQueueSize")
+    private int miningQueueSize;
+
     @OneToMany
     @JoinColumn(name = "UserOreAsset.usersId")
     @MapKey(name="oreId")
@@ -92,7 +102,11 @@ public class Users implements Serializable {
     @OneToMany
     @JoinColumn(name = "Robot.usersId")
     private List<Robot> robots;
-    
+
+    @OneToMany
+    @JoinColumn(name = "ProgramSource.usersId")
+    private List<ProgramSource> programSourceList;
+
     public Users() {
     }
 
@@ -124,6 +138,22 @@ public class Users implements Serializable {
         this.password = password;
     }
 
+    public int getAchievementPoints() {
+        return achievementPoints;
+    }
+
+    public void increaseAchievementPoints(int achievementPoints) {
+        this.achievementPoints += achievementPoints;
+    }
+
+    public int getMiningQueueSize() {
+        return miningQueueSize;
+    }
+
+    public void increaseMiningQueueSize(int miningQueueIncrement) {
+        this.miningQueueSize += miningQueueIncrement;
+    }
+
     public Map<Integer, UserOreAsset> getUserOreAssets() {
         return userOreAssets;
     }
@@ -150,7 +180,11 @@ public class Users implements Serializable {
     public List<Robot> getRobots() {
         return robots;
     }
-    
+
+    public List<ProgramSource> getProgramSourceList() {
+        return programSourceList;
+    }
+
     public boolean canAffort(OrePrice orePrice) {
         
         boolean result = true;

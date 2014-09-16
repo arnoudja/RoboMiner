@@ -57,10 +57,10 @@ public class LoginServlet extends RoboMinerServletBase {
     
     @EJB
     private RobotFacade robotFacade;
-    
+
     @EJB
     private RobotPartFacade robotPartFacade;
-    
+
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
     
@@ -131,17 +131,17 @@ public class LoginServlet extends RoboMinerServletBase {
         
         return result;
     }
-    
+
     private boolean createNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        
+
         boolean result = false;
         String errorMessage = null;
-        
+
         String newusername      = request.getParameter("newusername");
         String email            = request.getParameter("email");
         String newpassword      = request.getParameter("newpassword");
         String confirmpassword  = request.getParameter("confirmpassword");
-        
+
         if (newusername != null && newusername.matches("[A-Za-z0-9]{3,30}") &&
             email != null && email.matches(".+@.+") &&
             newpassword != null && newpassword.length() >= 8 &&
@@ -186,9 +186,9 @@ public class LoginServlet extends RoboMinerServletBase {
             
         return result;
     }
-    
+
     private void addNewUserData(Users user) {
-        
+
         // Create a new program for the user
         ProgramSource programSource = new ProgramSource();
         programSource.fillDefaults();
@@ -196,7 +196,7 @@ public class LoginServlet extends RoboMinerServletBase {
         programSource.setUsersId(user.getId());
         programSourceFacade.create(programSource);
         roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
-        
+
         // Retrieve the initial robot parts
         RobotPart oreContainer  = robotPartFacade.find(101);
         RobotPart miningUnit    = robotPartFacade.find(201);
@@ -204,7 +204,7 @@ public class LoginServlet extends RoboMinerServletBase {
         RobotPart memoryModule  = robotPartFacade.find(401);
         RobotPart cpu           = robotPartFacade.find(501);
         RobotPart engine        = robotPartFacade.find(601);
-        
+
         // Add the initial robot parts for the user
         userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), oreContainer.getId(), 1, 0));
         userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), miningUnit.getId(), 1, 0));

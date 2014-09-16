@@ -72,7 +72,7 @@
                         </tr>
                         <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
                             <tr>
-                                <td class="shopImportant">Owned:</td>
+                                <td class="important">Owned:</td>
                                 <td>${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
                                 <td colspan="2">total/unused</td>
                                 <td>
