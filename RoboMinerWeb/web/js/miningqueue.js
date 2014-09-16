@@ -26,8 +26,11 @@ function addMiningQueueItem(robotId, miningAreaIdName) {
     document.getElementById("miningqueueform").submit();
 }
 
-function removeMiningQueueItems() {
+function removeMiningQueueItems(robotId) {
+
     if (confirm("Paid fees will be lost. Remove selected items?")) {
+
+        document.getElementById("robotId").value = robotId;
         document.getElementById("submitType").value = "remove";
         document.getElementById("miningqueueform").submit();
     }

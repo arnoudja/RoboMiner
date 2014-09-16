@@ -81,20 +81,21 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         processAssets(request);
 
         String errorMessage = null;
-        
+
         String submitType = request.getParameter("submitType");
         String[] selectedQueueItems = request.getParameterValues("selectedQueueItemId");
         int miningAreaId = getItemId(request, "miningAreaId");
+        int robotId = getItemId(request, "robotId");
 
         if (submitType != null) {
             switch (submitType) {
                 case "add":
-                    errorMessage = addMiningQueueItem(request, userId, getItemId(request, "robotId"), getItemId(request, "miningAreaAddId"));
+                    errorMessage = addMiningQueueItem(request, userId, robotId, getItemId(request, "miningAreaAddId"));
                     break;
 
                 case "remove":
                     if (selectedQueueItems != null) {
-                        removeMiningQueueItems(userId, selectedQueueItems);
+                        removeMiningQueueItems(userId, robotId, selectedQueueItems);
                     }
                     break;
             }
@@ -214,11 +215,11 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         return errorMessage;
     }
 
-    private void removeMiningQueueItems(int userId, String[] selectedQueueItems) {
+    private void removeMiningQueueItems(int userId, int robotId, String[] selectedQueueItems) {
         List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
 
         for (MiningQueueItem item : miningQueueList) {
-            if (item.isSelected() && item.getItemStatus() == EMiningQueueItemStatus.QUEUED) {
+            if (item.isSelected() && item.getMiningQueue().getRobot().getId() == robotId && item.getItemStatus() == EMiningQueueItemStatus.QUEUED) {
                 miningQueueFacade.remove(item.getMiningQueue());
             }
         }

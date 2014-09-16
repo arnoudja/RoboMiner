@@ -161,6 +161,10 @@ li.menuitem:hover {
  * Mining queue
  ******************************************************/
 
+table.miningqueue {
+    float: left;
+}
+
 td.miningqueuetime, th.miningqueuetime {
     text-align: right;
 }
@@ -169,6 +173,9 @@ td.miningqueuecheckbox {
     text-align: center;
 }
 
+div.miningqueue {
+    clear: left;
+}
 
 /******************************************************
  * Mining results
