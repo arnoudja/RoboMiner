@@ -42,24 +42,39 @@ import nl.robominer.session.RobotFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
- *
+ * Servlet for handling mining queue requests.
+ * 
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "MiningQueueServlet", urlPatterns = {"/miningQueue"})
 public class MiningQueueServlet extends RoboMinerServletBase {
 
-    private static final String SESSION_INFO_MINING_AREA_ID = "miningQueue_infoMiningAreaId";
+    private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/miningqueue.jsp";
+
+    private static final String SESSION_INFO_MINING_AREA_ID  = "miningQueue_infoMiningAreaId";
     private static final String SESSION_ROBOT_MINING_AREA_ID = "miningQueue_robotMiningAreaId";
 
+    /**
+     * Bean to handle the database actions for the user information.
+     */
     @EJB
     private UsersFacade usersFacade;
 
+    /**
+     * Bean to handle the database actions for the mining queue items.
+     */
     @EJB
     private MiningQueueFacade miningQueueFacade;
 
+    /**
+     * Bean to handle the database actions for the robots.
+     */
     @EJB
     private RobotFacade robotFacade;
 
+    /**
+     * Bean to handle the database actions for the mining areas.
+     */
     @EJB
     private MiningAreaFacade miningAreaFacade;
 
@@ -76,21 +91,25 @@ public class MiningQueueServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int userId = (int) request.getSession().getAttribute("userId");
+        int userId = getUserId(request);
 
         processAssets(request);
 
         String errorMessage = null;
 
-        String submitType = request.getParameter("submitType");
+        // Retrieve the form information.
+        String submitType           = request.getParameter("submitType");
         String[] selectedQueueItems = request.getParameterValues("selectedQueueItemId");
-        int miningAreaId = getItemId(request, "miningAreaId");
-        int robotId = getItemId(request, "robotId");
+        int miningAreaId            = getItemId(request, "miningAreaId");
+        int miningAreaAddId         = getItemId(request, "miningAreaAddId");
+        int robotId                 = getItemId(request, "robotId");
 
         if (submitType != null) {
+
+            // Process the request.
             switch (submitType) {
                 case "add":
-                    errorMessage = addMiningQueueItem(request, userId, robotId, getItemId(request, "miningAreaAddId"));
+                    errorMessage = addMiningQueueItem(request, userId, robotId, miningAreaAddId);
                     break;
 
                 case "remove":
@@ -118,7 +137,6 @@ public class MiningQueueServlet extends RoboMinerServletBase {
             largestQueueSize = Math.max(largestQueueSize, robotQueueList.size());
         }
         request.setAttribute("robotMiningQueueMap", robotMiningQueueMap);
-        request.setAttribute("largestQueueSize", largestQueueSize);
         request.setAttribute("maxQueueSize", user.getMiningQueueSize());
 
         // Add the list of mining areas
@@ -171,7 +189,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         request.getSession().setAttribute(SESSION_ROBOT_MINING_AREA_ID, robotMiningAreaId);
         request.getSession().setAttribute(SESSION_INFO_MINING_AREA_ID, miningAreaId);
 
-        request.getRequestDispatcher("/WEB-INF/view/miningqueue.jsp").forward(request, response);
+        request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
     private String addMiningQueueItem(HttpServletRequest request, int userId, int robotId, int miningAreaId) throws ServletException {

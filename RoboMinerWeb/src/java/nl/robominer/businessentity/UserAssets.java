@@ -67,36 +67,69 @@ import nl.robominer.session.UserRobotPartAssetFacade;
 @TransactionManagement( TransactionManagementType.BEAN )
 public class UserAssets {
 
+    /**
+     * Database transactions resource.
+     */
     @Resource
     UserTransaction transaction;
-    
+
+    /**
+     * Bean to handle the database actions for the mining queue elements.
+     */
     @EJB
     private MiningQueueFacade miningQueueFacade;
 
+    /**
+     * Bean to handle the database actions for the mining ore results.
+     */
     @EJB
     private MiningOreResultFacade miningOreResultFacade;
 
+    /**
+     * Bean to handle the database actions for the mining area mining totals.
+     */
     @EJB
     private MiningAreaLifetimeResultFacade miningAreaLifetimeResultFacade;
 
+    /**
+     * Bean to handle the database actions for the robots.
+     */
     @EJB
     private RobotFacade robotFacade;
 
+    /**
+     * Bean to handle the database actions for the robot mining totals.
+     */
     @EJB
     private RobotLifetimeResultFacade robotLifetimeResultFacade;
 
+    /**
+     * Bean to handle the database actions for the robot mining run totals.
+     */
     @EJB
     private RobotDailyRunsFacade robotDailyRunsFacade;
 
+    /**
+     * Bean to handle the database actions for the robot daily mining totals.
+     */
     @EJB
     private RobotDailyResultFacade robotDailyResultFacade;
 
+    /**
+     * Bean to handle the database actions for the user ore assets.
+     */
     @EJB
     private UserOreAssetFacade userOreAssetFacade;
 
+    /**
+     * Bean to handle the database actions for the robot parts.
+     */
     @EJB
     private RobotPartFacade robotPartFacade;
 
+    /**
+     * Bean to handle the database actions for the user robot part assets.
+     */
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
 
@@ -154,6 +187,220 @@ public class UserAssets {
         }
 
         transaction.commit();
+    }
+
+    /**
+     * If possible, subtract the mining costs for the specified mining area from
+     * the user assets of the specified user and return true. If not possible,
+     * return false.
+     * 
+     * @param userId The user to subtract the mining costs for.
+     * @param miningArea The mining area to subtract the mining costs for.
+     * @return true if the mining costs are subtracted successfully, false if
+     * the assets of the user aren't sufficient.
+     * 
+     * @throws NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws SystemException When an unexpected database transaction problem occurred.
+     * @throws IllegalStateException When an unexpected database transaction problem occurred.
+     * @throws HeuristicMixedException When an unexpected database transaction problem occurred.
+     * @throws RollbackException When an unexpected database transaction problem occurred.
+     * @throws SecurityException When an unexpected database transaction problem occurred.
+     * @throws HeuristicRollbackException When an unexpected database transaction problem occurred.
+     */
+    public boolean payMiningCosts(int userId, MiningArea miningArea)
+            throws NotSupportedException, SystemException, IllegalStateException,
+                   HeuristicMixedException, RollbackException, SecurityException,
+                   HeuristicRollbackException {
+
+        boolean succeeded = false;
+
+        transaction.begin();
+
+        if (miningArea != null && payOreCosts(userId, miningArea.getOrePrice())) {
+
+            succeeded = true;
+            transaction.commit();
+        }
+        else {
+            transaction.rollback();
+        }
+
+        return succeeded;
+    }
+
+    /**
+     * If possible, subtract the costs of a robot part from the user assets, add
+     * the robot part to the user assets and return true. If the user doesn't
+     * have sufficient assets to pay for the transaction, return false.
+     * 
+     * @param userId The id of the user to buy the robot part for.
+     * @param robotPartId The id of the robot part to buy.
+     * @return true if successful, false if the user doesn't have enough assets.
+     * 
+     * @throws NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws SystemException When an unexpected database transaction problem occurred.
+     * @throws RollbackException When an unexpected database transaction problem occurred.
+     * @throws HeuristicMixedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicRollbackException When an unexpected database transaction problem occurred.
+     */
+    public boolean buyRobotPart(int userId, int robotPartId)
+            throws NotSupportedException, SystemException, RollbackException,
+                   HeuristicMixedException, HeuristicRollbackException {
+
+        boolean succeeded = false;
+
+        transaction.begin();
+
+        RobotPart robotPart = robotPartFacade.find(robotPartId);
+
+        if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice())) {
+
+            addRobotPart(userId, robotPartId, false);
+
+            succeeded = true;
+        }
+
+        if (succeeded) {
+            transaction.commit();
+        }
+        else {
+            transaction.rollback();
+        }
+
+        return succeeded;
+    }
+
+    /**
+     * For the specified user, if possible, subtract the price of the specified
+     * robot part from the assets, add the robot part to the assets and return
+     * true. When the user doesn't have sufficient assets for the transaction,
+     * return false.
+     *
+     * @param userId The id of the user to buy the robot part for.
+     * @param robotPartId The id of the robot part to buy.
+     * @return true when successful, false when the user doesn't have enough
+     * assets.
+     * 
+     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     */
+    public boolean sellRobotPart(int userId, int robotPartId)
+            throws NotSupportedException, SystemException, RollbackException,
+                   HeuristicMixedException, HeuristicRollbackException {
+
+        boolean succeeded = false;
+
+        transaction.begin();
+
+        RobotPart robotPart = robotPartFacade.find(robotPartId);
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(userId, robotPartId);
+
+        if (robotPart != null && userRobotPartAsset != null && userRobotPartAsset.getUnassigned() > 0) {
+
+            if (userRobotPartAsset.getTotalOwned() > 1) {
+
+                userRobotPartAsset.removeOneOwned();
+                userRobotPartAssetFacade.edit(userRobotPartAsset);
+            }
+            else {
+                userRobotPartAssetFacade.remove(userRobotPartAsset);
+            }
+
+            returnHalfOre(userId, robotPart.getOrePrice());
+
+            succeeded = true;
+        }
+
+        if (succeeded) {
+            transaction.commit();
+        }
+        else {
+            transaction.rollback();
+        }
+
+        return succeeded;
+    }
+
+    public void addRobotPart(int usersId, int robotPartId, boolean assigned) {
+
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, robotPartId);
+
+        if (userRobotPartAsset == null) {
+
+            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1, assigned ? 0 : 1);
+            userRobotPartAssetFacade.create(userRobotPartAsset);
+        }
+        else {
+
+            userRobotPartAsset.addOneOwned(assigned);
+            userRobotPartAssetFacade.edit(userRobotPartAsset);
+        }
+    }
+
+    /**
+     * If possible, subtract the specified ore amount from the assets of the
+     * specified user and return true. When the assets of the specified user
+     * aren't sufficient, return false.
+     * 
+     * @param userId The user to subtract the assets for.
+     * @param orePrice The amounts of ore to subtract.
+     * @return true when successful, false when the user doesn't have enough
+     * assets.
+     */
+    private boolean payOreCosts(int userId, OrePrice orePrice) {
+
+        boolean succeeded = true;
+
+        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
+
+        for (OrePriceAmount orePriceAmount : priceList) {
+
+            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
+
+            if (succeeded && userOreAsset != null && userOreAsset.getAmount() >= orePriceAmount.getAmount()) {
+
+                userOreAsset.decreaseAmount(orePriceAmount.getAmount());
+                userOreAssetFacade.edit(userOreAsset);
+            }
+            else {
+                succeeded = false;
+            }
+        }
+
+        return succeeded;
+    }
+
+    /**
+     * Add half the ore price to the user assets of the specified user. Used
+     * when a user sells a robot-part back to the system.
+     * 
+     * @param userId The id of the user to add the assets for.
+     * @param orePrice The original price of the item.
+     */
+    private void returnHalfOre(int userId, OrePrice orePrice) {
+
+        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
+
+        for (OrePriceAmount orePriceAmount : priceList) {
+
+            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
+
+            if (userOreAsset == null) {
+
+                userOreAsset = new UserOreAsset(userId, orePriceAmount.getOre().getId());
+                userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
+
+                userOreAssetFacade.create(userOreAsset);
+            }
+            else {
+
+                userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
+                userOreAssetFacade.edit(userOreAsset);
+            }
+        }
     }
 
     /**
@@ -270,6 +517,14 @@ public class UserAssets {
         }
     }
 
+    /**
+     * Add the specified amount of ore of the specified type to the user-assets
+     * of the specified user.
+     * 
+     * @param userId The user to add the ore assets for.
+     * @param oreId The ore type to add.
+     * @param reward The amount of ore to add.
+     */
     private void updateUserOreAssets(int userId, int oreId, int reward) {
         
         UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);
@@ -286,146 +541,6 @@ public class UserAssets {
             userOreAsset.increaseAmount(reward);
 
             userOreAssetFacade.edit(userOreAsset);
-        }
-    }
-
-    public boolean payMiningCosts(int userId, MiningArea miningArea) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {
-        
-        boolean succeeded = false;
-
-        transaction.begin();
-
-        if (miningArea != null && payOreCosts(userId, miningArea.getOrePrice())) {
-
-            succeeded = true;
-            transaction.commit();
-        }
-        else {
-            transaction.rollback();
-        }
-
-        return succeeded;
-    }
-
-    public boolean buyRobotPart(int userId, int robotPartId) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-
-        boolean succeeded = false;
-
-        transaction.begin();
-
-        RobotPart robotPart = robotPartFacade.find(robotPartId);
-
-        if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice())) {
-
-            addRobotPart(userId, robotPartId, false);
-
-            succeeded = true;
-        }
-
-        if (succeeded) {
-            transaction.commit();
-        }
-        else {
-            transaction.rollback();
-        }
-        
-        return succeeded;
-    }
-
-    public void addRobotPart(int usersId, int robotPartId, boolean assigned) {
-
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, robotPartId);
-
-        if (userRobotPartAsset == null) {
-
-            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1, assigned ? 0 : 1);
-            userRobotPartAssetFacade.create(userRobotPartAsset);
-        }
-        else {
-
-            userRobotPartAsset.addOneOwned(assigned);
-            userRobotPartAssetFacade.edit(userRobotPartAsset);
-        }
-    }
-
-    public boolean sellRobotPart(int userId, int robotPartId) throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-        
-        boolean succeeded = false;
-        
-        transaction.begin();
-
-        RobotPart robotPart = robotPartFacade.find(robotPartId);
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(userId, robotPartId);
-        
-        if (robotPart != null && userRobotPartAsset != null && userRobotPartAsset.getUnassigned() > 0) {
-            
-            if (userRobotPartAsset.getTotalOwned() > 1) {
-                
-                userRobotPartAsset.removeOneOwned();
-                userRobotPartAssetFacade.edit(userRobotPartAsset);
-            }
-            else {
-                userRobotPartAssetFacade.remove(userRobotPartAsset);
-            }
-            
-            returnHalfOre(userId, robotPart.getOrePrice());
-            
-            succeeded = true;
-        }
-
-        if (succeeded) {
-            transaction.commit();
-        }
-        else {
-            transaction.rollback();
-        }
-        
-        return succeeded;
-    }
-    
-    public boolean payOreCosts(int userId, OrePrice orePrice) {
-        
-        boolean succeeded = true;
-
-        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
-        
-        for (OrePriceAmount orePriceAmount : priceList) {
-            
-            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
-
-            if (succeeded && userOreAsset != null && userOreAsset.getAmount() >= orePriceAmount.getAmount()) {
-
-                userOreAsset.decreaseAmount(orePriceAmount.getAmount());
-                userOreAssetFacade.edit(userOreAsset);
-            }
-            else {
-                succeeded = false;
-            }
-        }
-
-        return succeeded;
-    }
-    
-    public void returnHalfOre(int userId, OrePrice orePrice) {
-        
-        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
-        
-        for (OrePriceAmount orePriceAmount : priceList) {
-            
-            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
-            
-            if (userOreAsset == null) {
-                
-                userOreAsset = new UserOreAsset(userId, orePriceAmount.getOre().getId());
-                userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
-                
-                userOreAssetFacade.create(userOreAsset);
-            }
-            else {
-                
-                userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
-                userOreAssetFacade.edit(userOreAsset);
-            }
         }
     }
 }
