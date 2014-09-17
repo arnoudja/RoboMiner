@@ -27,11 +27,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
 import nl.robominer.entity.Tier;
@@ -72,7 +67,7 @@ public class ShopServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        int userId = (int) request.getSession().getAttribute("userId");
+        int userId = getUserId(request);
 
         processAssets(request);
 
@@ -82,10 +77,10 @@ public class ShopServlet extends RoboMinerServletBase {
         int selectedTierId = getItemId(request, "selectedTierId");
 
         if (buyRobotPartId > 0) {
-            buyRobotPart(request, userId, buyRobotPartId);
+            buyRobotPart(request, buyRobotPartId);
         }
         else if (sellRobotPartId > 0) {
-            sellRobotPart(request, userId, sellRobotPartId);
+            sellRobotPart(request, sellRobotPartId);
         }
 
         if (selectedRobotPartTypeId <= 0 && request.getSession().getAttribute(SESSION_CATEGORY_ID) != null) {

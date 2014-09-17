@@ -37,28 +37,84 @@ import nl.robominer.entity.UserOreAsset;
 import nl.robominer.session.UserOreAssetFacade;
 
 /**
- *
+ * Base class for the RoboMiner servlets.
+ * 
  * @author Arnoud Jagerman
  */
 public abstract class RoboMinerServletBase extends HttpServlet {
 
+    /**
+     * The name used to store the user-id value in the session.
+     */
+    private static final String SESSION_USER_ID = "userId";
+
+    /**
+     * Bean to handle the user-assets transactions.
+     */
     @EJB
     private UserAssets userAssets;
 
+    /**
+     * Bean to handle access to the ore-assets information for the logged-in
+     * user in the database.
+     */
     @EJB
     private UserOreAssetFacade userOreAssetFacade;
 
+    /**
+     * Handles the HTTP <code>GET</code> and <code>POST</code> methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
+    /**
+     * Retrieve the user-id for the currently logged-in user.
+     *
+     * @param request The servlet request.
+     * @return The user-id for the currently logged-in user.
+     */
+    protected int getUserId(HttpServletRequest request) {
+        return (int)request.getSession().getAttribute(SESSION_USER_ID);
+    }
+
+    /**
+     * Update the user-id for the currently logged-in user.
+     *
+     * @param request The servlet request.
+     * @param userId The user-id for the currently logged-in user.
+     */
+    protected void setUserId(HttpServletRequest request, int userId) {
+        request.getSession().setAttribute(SESSION_USER_ID, userId);
+    }
+
+    /**
+     * Retrieve the id-value of a form-field, or 0 if not present.
+     *
+     * @param request The servlet request.
+     * @param field The name of the form-field to retrieve the value for.
+     * @return The id-value of the form-field specified, or 0 if not found.
+     */
     protected int getItemId(HttpServletRequest request, String field) {
-        
+
         String value = request.getParameter(field);
         return (value == null || value.isEmpty()) ? 0 : Integer.parseInt(value);
     }
 
+    /**
+     * Process all claimable mining results for the logged-in user and add the
+     * ore-assets information for the user to the request.
+     *
+     * @param request The servlet request.
+     * @throws ServletException when a problem occurred during the processing of
+     * the claimable mining results.
+     */
     protected void processAssets(HttpServletRequest request) throws ServletException {
-        
-        int userId = (int) request.getSession().getAttribute("userId");
+
+        int userId = getUserId(request);
 
         try {
             userAssets.updateUserAssets(userId);
@@ -70,9 +126,23 @@ public abstract class RoboMinerServletBase extends HttpServlet {
         updateOreAssetsList(request, userId);
     }
 
-    protected boolean payMiningCosts(HttpServletRequest request, int userId, MiningArea miningArea) throws ServletException {
+    /**
+     * If possible, subtracts the mining costs for the specified mining area
+     * from the user-assets, updates the ore-assets information in the request
+     * and returns true. Otherwise, returns false.
+     *
+     * @param request The servlet request.
+     * @param miningArea The mining area to pay the mining costs for.
+     * @throws ServletException when an unexpected problem occurred during the
+     * subtracting of the mining costs.
+     * @return true when the mining costs are subtracted successful, false when
+     * the ore assets for the logged-in user aren't sufficient.
+     */
+    protected boolean payMiningCosts(HttpServletRequest request, MiningArea miningArea) throws ServletException {
 
         boolean result = false;
+
+        int userId = getUserId(request);
 
         try {
 
@@ -90,10 +160,25 @@ public abstract class RoboMinerServletBase extends HttpServlet {
         return result;
     }
 
-    protected boolean buyRobotPart(HttpServletRequest request, int userId, int robotPartId) throws ServletException {
-        
+    /**
+     * If possible, subtracts the robot part costs for the specified robot part
+     * from the user-assets, adds the robot part to the user assets, updates
+     * the ore-assets information in the request and returns true. Otherwise,
+     * returns false.
+     *
+     * @param request The servlet request.
+     * @param robotPartId The id of the robot part to buy.
+     * @throws ServletException when an unexpected problem occurred during the
+     * buy process.
+     * @return true when the transaction succeeded, false when the ore assets
+     * for the logged-in user aren't sufficient.
+     */
+    protected boolean buyRobotPart(HttpServletRequest request, int robotPartId) throws ServletException {
+
         boolean result = false;
-        
+
+        int userId = getUserId(request);
+
         try {
 
             if (userAssets.buyRobotPart(userId, robotPartId)) {
@@ -109,9 +194,24 @@ public abstract class RoboMinerServletBase extends HttpServlet {
         return result;
     }
 
-    protected boolean sellRobotPart(HttpServletRequest request, int userId, int robotPartId) throws ServletException {
+    /**
+     * If possible, subtracts the specified robot part from the user assets,
+     * adds the return-ore-price for the specified robot part to the user ore
+     * assets, updates the ore-assets information in the request and returns
+     * true. Otherwise, returns false.
+     *
+     * @param request The servlet request.
+     * @param robotPartId The id of the robot part to sell.
+     * @throws ServletException when an unexpected problem occurred during the
+     * sell process.
+     * @return true when the transaction succeeded, false when the robot part
+     * assets for the logged-in user aren't sufficient.
+     */
+    protected boolean sellRobotPart(HttpServletRequest request, int robotPartId) throws ServletException {
 
         boolean result = false;
+
+        int userId = getUserId(request);
 
         try {
 
@@ -128,12 +228,18 @@ public abstract class RoboMinerServletBase extends HttpServlet {
         return result;
     }
 
+    /**
+     * Updates the ore-assets information for the specified user in the request.
+     *
+     * @param request The servlet request.
+     * @param userId The id of the user to update the ore-assets information for.
+     */    
     private void updateOreAssetsList(HttpServletRequest request, int userId) {
 
         List<UserOreAsset> userOreAssetList = userOreAssetFacade.findByUsersId(userId);
         request.setAttribute("oreAssetList", userOreAssetList);
     }
-    
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

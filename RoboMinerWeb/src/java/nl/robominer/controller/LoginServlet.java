@@ -30,12 +30,14 @@ import javax.servlet.http.HttpServletResponse;
 import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotPart;
+import nl.robominer.entity.UserAchievement;
 import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RoboMinerCppBean;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotPartFacade;
+import nl.robominer.session.UserAchievementFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
@@ -66,7 +68,10 @@ public class LoginServlet extends RoboMinerServletBase {
     
     @EJB
     private RoboMinerCppBean roboMinerCppBean;
-    
+
+    @EJB
+    private UserAchievementFacade userAchievementFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -79,9 +84,9 @@ public class LoginServlet extends RoboMinerServletBase {
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         if (loginUser(request, response)) {
-            
+
             response.sendRedirect("miningQueue");
         }
         else if (!createNewUser(request, response)) {
@@ -103,13 +108,13 @@ public class LoginServlet extends RoboMinerServletBase {
     }
 
     private boolean loginUser(HttpServletRequest request, HttpServletResponse response) {
-        
+
         boolean result = false;
-        
+
         String loginName = request.getParameter("loginName");
         String password  = request.getParameter("password");
         String remember  = request.getParameter("remember");
-        
+
         Users user = usersFacade.findByUsernameOrEmail(loginName);
 
         if (user != null && BCrypt.checkpw(password, user.getPassword())) {
@@ -124,11 +129,12 @@ public class LoginServlet extends RoboMinerServletBase {
             }
 
             response.addCookie(rememberCookie);
-            
-            request.getSession().setAttribute("userId", user.getId());
+
+            setUserId(request, user.getId());
+
             result = true;
         }
-        
+
         return result;
     }
 
@@ -158,15 +164,17 @@ public class LoginServlet extends RoboMinerServletBase {
                 newuser.setUsername(newusername);
                 newuser.setEmail(email);
                 newuser.setPassword(BCrypt.hashpw(newpassword, BCrypt.gensalt()));
+                newuser.setMiningQueueSize(1);
 
                 try {
                     usersFacade.create(newuser);
 
                     addNewUserData(newuser);
 
-                    request.getSession().setAttribute("userId", newuser.getId());
+                    setUserId(request, newuser.getId());
+
                     result = true;
-                    
+
                     response.sendRedirect("miningQueue");
                 }
                 catch (javax.ejb.EJBException exc) {
@@ -220,6 +228,10 @@ public class LoginServlet extends RoboMinerServletBase {
         robot.setUser(user);
         robot.setProgramSourceId(programSource.getId());
         robotFacade.create(robot);
+
+        // Add the first achievement
+        UserAchievement userAchievement = new UserAchievement(user.getId(), 1);
+        userAchievementFacade.create(userAchievement);
     }
 
     /**

@@ -199,7 +199,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
         else {
 
-            if (payMiningCosts(request, userId, miningArea)) {
+            if (payMiningCosts(request, miningArea)) {
 
                 MiningQueue miningQueue = new MiningQueue();
                 miningQueue.setMiningArea(miningArea);

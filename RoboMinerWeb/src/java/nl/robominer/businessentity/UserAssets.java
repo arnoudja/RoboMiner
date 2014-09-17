@@ -59,6 +59,7 @@ import nl.robominer.session.UserOreAssetFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
 
 /**
+ * Bean to handle the user-assets transactions.
  *
  * @author Arnoud Jagerman
  */
@@ -99,6 +100,18 @@ public class UserAssets {
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
 
+    /**
+     * Process all claimable mining results for the specified user.
+     * 
+     * @param userId The id of the user to process the claimable mining results for.
+     * @throws NotSupportedException When a problem occurs with the database transaction.
+     * @throws SystemException When a problem occurs with the database transaction.
+     * @throws IllegalStateException When a problem occurs with the database transaction.
+     * @throws HeuristicMixedException When a problem occurs with the database transaction.
+     * @throws RollbackException When a problem occurs with the database transaction.
+     * @throws SecurityException When a problem occurs with the database transaction.
+     * @throws HeuristicRollbackException When a problem occurs with the database transaction.
+     */
     public void updateUserAssets(int userId) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {
 
         transaction.begin();
@@ -143,6 +156,14 @@ public class UserAssets {
         transaction.commit();
     }
 
+    /**
+     * Update the mining totals for the specified robot.
+     * 
+     * @param robotId The id of the robot to update the mining totals for.
+     * @param oreId The ore id mined.
+     * @param amount The amount of ore mined for the specified ore.
+     * @param tax The amount of ore payed as tax for the specified ore.
+     */
     private void updateRobotLifetimeResults(int robotId, int oreId, int amount, int tax) {
 
         RobotLifetimeResult robotLifetimeResult = robotLifetimeResultFacade.findByRobotAndOreId(robotId, oreId);
@@ -160,6 +181,14 @@ public class UserAssets {
         }
     }
 
+    /**
+     * Update the mining totals for the specified mining area.
+     * 
+     * @param miningArea The mining area to update the totals for.
+     * @param miningOreResultList The list of ore mined.
+     * @param containerSize The size of the container of the robot responsible
+     * for the mining.
+     */
     private void updateMiningAreaLifetimeResults(MiningArea miningArea, List<MiningOreResult> miningOreResultList, int containerSize) {
 
         List<Ore> oreList = miningArea.getMiningAreaOreTypes();
@@ -167,9 +196,9 @@ public class UserAssets {
         for (Ore ore : oreList) {
 
             int amount = 0;
-            
+
             for (MiningOreResult miningOreResult : miningOreResultList) {
-                
+
                 if (Objects.equals(miningOreResult.getOre().getId(), ore.getId())) {
                     amount = miningOreResult.getAmount();
                 }
@@ -191,6 +220,13 @@ public class UserAssets {
         }
     }
 
+    /**
+     * Update the number of mining runs the specified robot did on the specified
+     * day.
+     * 
+     * @param robotId The id of the robot doing the mining run.
+     * @param miningDay The day the mining took place.
+     */
     private void updateRobotDailyRuns(int robotId, Date miningDay) {
 
         RobotDailyRuns robotDailyRuns = robotDailyRunsFacade.findByRobotIdAndMiningDay(robotId, miningDay);
@@ -207,6 +243,16 @@ public class UserAssets {
         }
     }
 
+    /**
+     * Update the daily ore mining totals for the specified robot, ore and
+     * mining day.
+     * 
+     * @param robotId The id of the robot to update the mining totals for.
+     * @param oreId The id of the ore mined.
+     * @param miningDay The day the mining run took place.
+     * @param amount The amount of ore mined for the specified ore type.
+     * @param tax The amount of tax payed for the specified ore type.
+     */
     private void updateRobotDailyResult(int robotId, int oreId, Date miningDay, int amount, int tax) {
 
         RobotDailyResult robotDailyResult = robotDailyResultFacade.findByPK(robotId, oreId, miningDay);

@@ -150,6 +150,10 @@ public class Users implements Serializable {
         return miningQueueSize;
     }
 
+    public void setMiningQueueSize(int miningQueueSize) {
+        this.miningQueueSize = miningQueueSize;
+    }
+
     public void increaseMiningQueueSize(int miningQueueIncrement) {
         this.miningQueueSize += miningQueueIncrement;
     }
