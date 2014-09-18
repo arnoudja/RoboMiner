@@ -32,7 +32,7 @@
         <rm:userassets oreassetlist='${oreAssetList}' />
 
         <c:forEach var="robot" items="${robotList}">
-            <table>
+            <table class="miningresults">
                 <caption>${fn:escapeXml(robot.robotName)}</caption>
                 <tr class="miningresultsheader">
                     <th colspan="3"></th>

@@ -181,6 +181,10 @@ div.miningqueue {
  * Mining results
  ******************************************************/
 
+table.miningresults {
+    float: left;
+}
+
 tr.miningresultsheader {
     border: 2px solid #aaa;
     background: #ddd;
@@ -248,6 +252,12 @@ td.shopPartName {
 /******************************************************
  * Ore assets
  ******************************************************/
+
+div.oreassets {
+    float: right;
+    background: #fff;
+    min-height: 50vh;
+}
 
 table.oreassets {
     float: right;

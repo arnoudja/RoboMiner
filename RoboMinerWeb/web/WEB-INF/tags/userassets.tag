@@ -22,16 +22,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ attribute name="oreassetlist" required="true" type="java.util.List<nl.robominer.entity.UserOreAsset>"%>
 
-<table class="oreassets">
-    <caption>Assets</caption>
-    <tr>
-        <th class="oreassets">Ore</th>
-        <th class="oreassets">Amount</th>
-    </tr>
-    <c:forEach var='oreAsset' items='${oreassetlist}'>
+<div class="oreassets">
+    <table class="oreassets">
+        <caption>Assets</caption>
         <tr>
-            <td class="oreassets">${fn:escapeXml(oreAsset.ore.oreName)}</td>
-            <td class="oreassets">${oreAsset.amount}</td>
+            <th class="oreassets">Ore</th>
+            <th class="oreassets">Amount</th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach var='oreAsset' items='${oreassetlist}'>
+            <tr>
+                <td class="oreassets">${fn:escapeXml(oreAsset.ore.oreName)}</td>
+                <td class="oreassets">${oreAsset.amount}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
