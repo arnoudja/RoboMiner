@@ -31,29 +31,55 @@ import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
 import nl.robominer.entity.Tier;
 import nl.robominer.entity.UserOreAsset;
+import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.TierFacade;
+import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
+ * Servlet for handling shop requests.
  *
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "ShopServlet", urlPatterns = {"/shop"})
 public class ShopServlet extends RoboMinerServletBase {
 
+    /**
+     * The javascript view used for displaying the shop page.
+     */
+    private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/shop.jsp";
+
+    /**
+     * The session attribute id for storing the selected category.
+     */
     private static final String SESSION_CATEGORY_ID = "shop_categoryId";
-    
+
+    /**
+     * Bean to handle the database actions for the user information.
+     */
     @EJB
     private UsersFacade usersFacade;
-    
+
+    /**
+     * Bean to handle the database actions for the robot parts.
+     */
     @EJB
     private RobotPartFacade robotPartFacade;
-    
+
+    /**
+     * Bean to handle the database actions for the tiers.
+     */
     @EJB
     private TierFacade tierFacade;
-    
+
+    /**
+     * Bean to handle the database actions for the user robot part assets.
+     */
+    @EJB
+    private UserRobotPartAssetFacade userRobotPartAssetFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -66,16 +92,18 @@ public class ShopServlet extends RoboMinerServletBase {
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int userId = getUserId(request);
 
         processAssets(request);
 
-        int buyRobotPartId = getItemId(request, "buyRobotPartId");
-        int sellRobotPartId = getItemId(request, "sellRobotPartId");
+        // Retrieve the form values
+        int buyRobotPartId          = getItemId(request, "buyRobotPartId");
+        int sellRobotPartId         = getItemId(request, "sellRobotPartId");
         int selectedRobotPartTypeId = getItemId(request, "selectedRobotPartTypeId");
-        int selectedTierId = getItemId(request, "selectedTierId");
+        int selectedTierId          = getItemId(request, "selectedTierId");
 
+        // Process the buy or sell request
         if (buyRobotPartId > 0) {
             buyRobotPart(request, buyRobotPartId);
         }
@@ -97,26 +125,30 @@ public class ShopServlet extends RoboMinerServletBase {
                 }
             }
         }
-        
+
         // Add the user item
         request.setAttribute("user", user);
-        
+
         // Add the robot parts
         Map< RobotPartType, List<RobotPart> > robotPartMap = robotPartFacade.findAllMapped();
         request.setAttribute("robotPartMap", robotPartMap);
-        
+
         // Add the tier list
         List<Tier> tierList = tierFacade.findAll();
         request.setAttribute("tierList", tierList);
-        
+
+        // Add the user robot part assets
+        List<UserRobotPartAsset> userRobotPartAssetList = userRobotPartAssetFacade.findByUsersId(userId);
+        request.setAttribute("userRobotPartAssetList", userRobotPartAssetList);
+
         // Add the previous selected part type and selection
         request.setAttribute("selectedRobotPartTypeId", selectedRobotPartTypeId);
         request.setAttribute("selectedTierId", selectedTierId);
-        
+
         // Store the selected category in the session
         request.getSession().setAttribute(SESSION_CATEGORY_ID, selectedRobotPartTypeId);
-        
-        request.getRequestDispatcher("/WEB-INF/view/shop.jsp").forward(request, response);
+
+        request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
     /**

@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UserRobotPartAsset.findAll", query = "SELECT u FROM UserRobotPartAsset u"),
-    @NamedQuery(name = "UserRobotPartAsset.findByUsersId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId"),
+    @NamedQuery(name = "UserRobotPartAsset.findByUsersId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId ORDER BY u.robotPart.robotPartType.id, u.robotPart.tierId"),
     @NamedQuery(name = "UserRobotPartAsset.findByUsersIdAndPartType", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId AND u.robotPart.robotPartType.id = :robotPartTypeId"),
     @NamedQuery(name = "UserRobotPartAsset.findByRobotPartId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.robotPartId = :robotPartId"),
     @NamedQuery(name = "UserRobotPartAsset.findByUsersIdAndRobotPartId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId AND u.userRobotPartAssetPK.robotPartId = :robotPartId")})
@@ -64,7 +64,7 @@ public class UserRobotPartAsset implements Serializable {
 
     @Column(name = "robotPartId", insertable = false, updatable = false)
     private int robotPartId;
-    
+
     @ManyToOne
     @JoinColumn(name = "robotPartId", insertable = false, updatable = false)
     private RobotPart robotPart;

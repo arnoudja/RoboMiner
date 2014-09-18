@@ -48,7 +48,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Tier:</td>
+                    <td>Quality:</td>
                     <td>
                         <select id="tierId" class="tableitem" onchange="showRobotParts();">
                             <c:forEach var="tier" items="${tierList}">
@@ -58,9 +58,6 @@
                     </td>
                 </tr>
             </table>
-
-            <br><br>
-
             <table>
                 <caption>Shop items</caption>
                 <c:forEach var="robotPartType" items="${robotPartMap}">
@@ -170,6 +167,29 @@
                             </c:forEach>
                         </tbody>
                     </c:forEach>
+                </c:forEach>
+            </table>
+            <table>
+                <caption>Owned items</caption>
+                <tr>
+                    <th>Item name</th>
+                    <th>Quality</th>
+                    <th>Amount</th>
+                    <th>Unassigned</th>
+                    <th></th>
+                </tr>
+                <c:forEach var="userRobotPartAsset" items="${userRobotPartAssetList}">
+                    <tr>
+                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
+                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.tierName)}</td>
+                        <td>${userRobotPartAsset.totalOwned}</td>
+                        <td>${euserRobotPartAsset.unassigned}</td>
+                        <td>
+                            <c:if test="${userRobotPartAsset.unassigned gt 0}">
+                                <button onclick="sellItem(${userRobotPartAsset.robotPart.id}, '${fn:escapeXml(userRobotPartAsset.robotPart.partName)}');">Sell</button>
+                            </c:if>
+                        </td>
+                    </tr>
                 </c:forEach>
             </table>
 

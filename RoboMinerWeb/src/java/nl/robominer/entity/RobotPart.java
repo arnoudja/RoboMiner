@@ -136,8 +136,11 @@ public class RobotPart implements Serializable {
     @NotNull
     @Column(name = "powerUsage")
     private int powerUsage;
-    
-    
+
+    @ManyToOne
+    @JoinColumn(name = "tierId", insertable = false, updatable = false)
+    private Tier tier;
+
     public RobotPart() {
     }
 
@@ -208,8 +211,11 @@ public class RobotPart implements Serializable {
     public int getPowerUsage() {
         return powerUsage;
     }
-    
-    
+
+    public Tier getTier() {
+        return tier;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
