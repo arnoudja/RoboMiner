@@ -59,6 +59,9 @@ div.interface {
     padding-bottom: 60px; /* height of the footer */
 }
 
+p.clear {
+    clear: both;
+}
 
 /******************************************************
  * Generic layout
@@ -255,7 +258,6 @@ td.shopPartName {
 
 div.oreassets {
     float: right;
-    background: #fff;
     min-height: 50vh;
 }
 

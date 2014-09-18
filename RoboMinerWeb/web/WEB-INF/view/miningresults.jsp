@@ -82,5 +82,6 @@
                 </c:forEach>
             </table>
         </c:forEach>
+        <p class="clear"></p>
     </rm:defaultpage>
 </rm:robominerheader>
