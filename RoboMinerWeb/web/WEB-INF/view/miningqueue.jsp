@@ -74,13 +74,24 @@
                                 <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
                                 <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" ></td>
                                 <script>
-                                    countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                        function(secondsLeft) {
-                                            document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                        },
-                                        function() {
-                                            document.getElementById("miningqueueform").submit();
-                                        });
+                                    <c:choose>
+                                        <c:when test="${rownr eq 0}">
+                                            countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                                function(secondsLeft) {
+                                                    document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                                },
+                                                function() {
+                                                    document.getElementById("miningqueueform").submit();
+                                                });
+                                        </c:when>
+                                        <c:otherwise>
+                                            countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                                function(secondsLeft) {
+                                                    document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                                },
+                                                function() {});
+                                        </c:otherwise>
+                                    </c:choose>
                                 </script>
                             </tr>
                             <c:set var="rownr" value="${rownr + 1}"/>
