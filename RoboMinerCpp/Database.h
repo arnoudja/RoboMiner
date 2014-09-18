@@ -60,7 +60,7 @@ public:
         int     robotSize;
         std::string sourceCode;
     };
-    
+
     struct MiningRallyItem
     {
         int         miningQueueId;
@@ -85,6 +85,28 @@ public:
         int rallyResultId;
     };
 
+    struct PoolData
+    {
+        int poolId;
+        int miningAreaId;
+        int requiredRuns;
+    };
+
+    struct PoolRallyItem
+    {
+        int         poolItemId;
+        int         runsDone;
+        int         maxOre;
+        int         miningSpeed;
+        int         maxTurns;
+        int         cpuSpeed;
+        double      forwardSpeed;
+        double      backwardSpeed;
+        int         rotateSpeed;
+        int         robotSize;
+        std::string sourceCode;
+    };
+
 public:
     CDatabase();
     ~CDatabase();
@@ -93,6 +115,7 @@ public:
     void updateError(int id, const std::string& errorDescription);
     void setValidSource(int id, int compiledSize);
 
+    MiningArea getMiningArea(int miningAreaId);
     std::list<MiningArea> getMiningAreas();
     std::list<MiningAreaOreSupply> getMiningAreaOreSupply(int miningAreaId);
     RobotData getRobotData(int robotId);
@@ -109,6 +132,11 @@ public:
     void removeMiningQueueEntry(int miningQueueId);
     bool rallyResultInUse(int rallyResultId);
     void removeRallyResultEntry(int rallyResultId);
+
+    PoolData getPoolData(int poolId);
+    std::list<PoolRallyItem> getNextPoolRally(int poolId);
+    void updatePoolItem(int poolItemId, int score);
+    void updatePoolItemMiningTotals(int poolItemId, int oreId, int amount);
 
 private:
     MYSQL   m_mysql;

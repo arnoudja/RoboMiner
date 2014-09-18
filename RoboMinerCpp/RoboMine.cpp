@@ -61,9 +61,9 @@ void verifyCode(int id)
 bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& miningArea)
 {
     list<CDatabase::MiningRallyItem> miningRallyItems;
-    
+
     miningRallyItems = database.getNextMiningRally(miningArea.miningAreaId);
-        
+
     if (miningRallyItems.size() > 4)
     {
         list<CDatabase::MiningRallyItem>::iterator iter = miningRallyItems.begin();
@@ -74,9 +74,9 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
 
         miningRallyItems.erase(iter, miningRallyItems.end());
     }
-    
+
     bool result = false;
-    
+
     if (!miningRallyItems.empty() &&
         (miningRallyItems.size() >= 4 || miningRallyItems.front().secondsLeft < 10))
     {
@@ -159,7 +159,7 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
 bool processMiningQueues(CDatabase& database, const list<CDatabase::MiningArea>& miningAreas)
 {
     bool result = false;
-    
+
     for (list<CDatabase::MiningArea>::const_iterator iter = miningAreas.begin(); iter != miningAreas.end(); ++iter)
     {
         if (processMiningQueue(database, *iter))
@@ -169,6 +169,134 @@ bool processMiningQueues(CDatabase& database, const list<CDatabase::MiningArea>&
     }
     
     return result;
+}
+
+
+void runRallies()
+{
+    CDatabase database;
+
+    list<CDatabase::MiningArea> miningAreas = database.getMiningAreas();
+
+    while (true)
+    {
+        if (!processMiningQueues(database, miningAreas))
+        {
+            sleep(5);
+        }
+    }
+}
+
+
+void runPoolRally(CDatabase& database,
+                  const list<CDatabase::PoolRallyItem>& poolRallyItemList,
+                  const CDatabase::MiningArea& miningArea)
+{
+    CRally rally(miningArea);
+
+    CRobotProgram* robots[4];
+
+    int iRobot = 0;
+    for (list<CDatabase::PoolRallyItem>::const_iterator iter = poolRallyItemList.begin(); iter != poolRallyItemList.end(); ++iter, ++iRobot)
+    {
+        robots[iRobot] = new CRobotProgram(iter->sourceCode, iter->maxTurns, iter->maxOre,
+                                           iter->miningSpeed, iter->cpuSpeed,
+                                           iter->forwardSpeed, iter->backwardSpeed, iter->rotateSpeed,
+                                           iter->robotSize);
+
+        rally.addRobot(*robots[iRobot]);
+    }
+
+    if (iRobot < 4)
+    {
+        // Add AI robots
+        CDatabase::RobotData aiRobotData = database.getRobotData(miningArea.aiRobotId);
+
+        for (; iRobot < 4; ++iRobot)
+        {
+            robots[iRobot] = new CRobotProgram(aiRobotData.sourceCode, aiRobotData.maxTurns, aiRobotData.maxOre,
+                                               aiRobotData.miningSpeed, aiRobotData.cpuSpeed,
+                                               aiRobotData.forwardSpeed, aiRobotData.backwardSpeed, aiRobotData.rotateSpeed,
+                                               aiRobotData.robotSize);
+
+            rally.addRobot(*robots[iRobot]);
+        }
+    }
+
+    rally.start();
+
+    list<CDatabase::PoolRallyItem>::const_iterator iter = poolRallyItemList.begin();
+    for (iRobot = 0; iRobot < 4; ++iRobot)
+    {
+        if (iter != poolRallyItemList.end())
+        {
+            int score = 0;
+            int factor = 1;
+            for (unsigned int iOre = 0; iOre < robots[iRobot]->getOre().size(); ++iOre)
+            {
+                if (robots[iRobot]->getOre()[iOre] > 0)
+                {
+                    score += robots[iRobot]->getOre()[iOre] * factor;
+                    database.updatePoolItemMiningTotals(iter->poolItemId, rally.getOreId(iOre), robots[iRobot]->getOre()[iOre]);
+                }
+
+                factor = factor * 10;
+            }
+
+            database.updatePoolItem(iter->poolItemId, score);
+
+            ++iter;
+        }
+
+        delete robots[iRobot];
+    }
+}
+
+
+void runPool(int poolId)
+{
+    CDatabase database;
+
+    CDatabase::PoolData poolData = database.getPoolData(poolId);
+
+    if (poolData.poolId == poolId)
+    {
+        time_t now = time(NULL);
+        cout << ctime(&now) << " Staring pool rallies in area " << poolData.miningAreaId << std::endl;;
+
+        CDatabase::MiningArea miningArea = database.getMiningArea(poolData.miningAreaId);
+
+        bool ready = false;
+
+        int ralliesDone = 0;
+
+        do
+        {
+            list<CDatabase::PoolRallyItem> poolRallyItemList = database.getNextPoolRally(poolId);
+
+            if (!poolRallyItemList.empty() && poolRallyItemList.front().runsDone < poolData.requiredRuns)
+            {
+                if (ralliesDone % 100 == 0)
+                {
+                    now = time(NULL);
+                    cout << ctime(&now) << " Progress: "
+                                        << poolRallyItemList.front().runsDone << " / " << poolData.requiredRuns
+                                        << std::endl;
+                }
+
+                runPoolRally(database, poolRallyItemList, miningArea);
+                ++ralliesDone;
+            }
+            else
+            {
+                ready = true;
+            }
+        }
+        while (!ready);
+
+        now = time(NULL);
+        cout << ctime(&now) << " Finished pool, rallies done: " << ralliesDone << std::endl;
+    }
 }
 
 
@@ -185,19 +313,16 @@ int main(int argc, char* argv[])
             verifyCode(atol(argv[2]));
         }
     }
+    else if (command.compare("runpool") == 0)
+    {
+        if (argc > 2)
+        {
+            runPool(atoi(argv[2]));
+        }
+    }
     else
     {
-        CDatabase database;
-
-        list<CDatabase::MiningArea> miningAreas = database.getMiningAreas();
-
-        while (true)
-        {
-            if (!processMiningQueues(database, miningAreas))
-            {
-                sleep(5);
-            }
-        }
+        runRallies();
     }
 
     return 0;

@@ -58,12 +58,12 @@ void CRally::start()
     {
         maxRobotTurns = std::max(maxRobotTurns, m_robots[i]->getMaxTurns());
     }
-    
+
     if (m_totalMoves > maxRobotTurns)
     {
         m_totalMoves = maxRobotTurns;
     }
-    
+
     initGround();
     initRobotPositions();
 

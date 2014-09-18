@@ -160,6 +160,80 @@ void CDatabase::setValidSource(int id, int compiledSize)
 }
 
 
+CDatabase::MiningArea CDatabase::getMiningArea(int miningAreaId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId "
+                 "FROM MiningArea "
+                 "WHERE MiningArea.id = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(miningAreaId);
+    bind[0].buffer = &miningAreaId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    MiningArea result;
+    result.miningAreaId = miningAreaId;
+
+    MYSQL_BIND bindResult[6];
+    memset(bindResult, 0, sizeof(bindResult));
+    
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(result.sizeX);
+    bindResult[0].buffer = &result.sizeX;
+    
+    bindResult[1].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[1].buffer_length = sizeof(result.sizeY);
+    bindResult[1].buffer = &result.sizeY;
+
+    bindResult[2].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[2].buffer_length = sizeof(result.maxMoves);
+    bindResult[2].buffer = &result.maxMoves;
+
+    bindResult[3].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[3].buffer_length = sizeof(result.miningTime);
+    bindResult[3].buffer = &result.miningTime;
+
+    bindResult[4].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[4].buffer_length = sizeof(result.taxRate);
+    bindResult[4].buffer = &result.taxRate;
+
+    bindResult[5].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[5].buffer_length = sizeof(result.aiRobotId);
+    bindResult[5].buffer = &result.aiRobotId;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+    
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    if (mysql_stmt_fetch(statement) == 0)
+    {
+        result.oreSupply = getMiningAreaOreSupply(result.miningAreaId);
+    }
+    else
+    {
+        result.miningAreaId = -1;
+    }
+
+    mysql_stmt_close(statement);
+
+    return result;
+}
+
+
 list<CDatabase::MiningArea> CDatabase::getMiningAreas()
 {
     MYSQL_STMT* statement = mysql_stmt_init(m_connection);
@@ -868,3 +942,243 @@ void CDatabase::removeRallyResultEntry(int rallyResultId)
     mysql_stmt_close(statement);    
 }
 
+
+CDatabase::PoolData CDatabase::getPoolData(int poolId)
+{
+    PoolData result;
+    result.poolId = poolId;
+    
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT Pool.miningAreaId, Pool.requiredRuns "
+                 "FROM Pool "
+                 "WHERE Pool.id = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(poolId);
+    bind[0].buffer = &poolId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    MYSQL_BIND bindResult[2];
+    memset(bindResult, 0, sizeof(bindResult));
+
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(result.miningAreaId);
+    bindResult[0].buffer = &result.miningAreaId;
+    
+    bindResult[1].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[1].buffer_length = sizeof(result.requiredRuns);
+    bindResult[1].buffer = &result.requiredRuns;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    if (mysql_stmt_fetch(statement) != 0)
+    {
+        result.poolId = -1;
+    }
+
+    return result;
+}
+
+
+list<CDatabase::PoolRallyItem> CDatabase::getNextPoolRally(int poolId)
+{
+    list<PoolRallyItem> result;
+
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT PoolItem.id, PoolItem.sourceCode, PoolItem.runsDone, "
+                 "Robot.maxOre, Robot.miningSpeed, Robot.maxTurns, "
+                 "Robot.cpuSpeed, "
+                 "Robot.forwardSpeed, Robot.backwardSpeed, Robot.rotateSpeed, "
+                 "Robot.robotSize "
+                 "FROM PoolItem, Robot "
+                 "WHERE PoolItem.poolId = ? "
+                 "AND Robot.id = PoolItem.robotId "
+                 "ORDER BY PoolItem.runsDone ASC, PoolItem.totalScore DESC, PoolItem.id ASC "
+                 "LIMIT 4 ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(poolId);
+    bind[0].buffer = &poolId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+    
+    PoolRallyItem item;
+    char sourceCode[cMaxSourceCodeLength];
+    unsigned long length = 0;
+    my_bool isNull;
+    my_bool isError;
+
+    MYSQL_BIND bindResult[11];
+    memset(bindResult, 0, sizeof(bindResult));
+    
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(item.poolItemId);
+    bindResult[0].buffer = &item.poolItemId;
+
+    bindResult[1].buffer_type = MYSQL_TYPE_STRING;
+    bindResult[1].buffer_length = sizeof(sourceCode);
+    bindResult[1].buffer = sourceCode;
+    bindResult[1].length = &length;
+    bindResult[1].is_null = &isNull;
+    bindResult[1].error = &isError;
+
+    bindResult[2].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[2].buffer_length = sizeof(item.runsDone);
+    bindResult[2].buffer = &item.runsDone;
+
+    bindResult[3].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[3].buffer_length = sizeof(item.maxOre);
+    bindResult[3].buffer = &item.maxOre;
+    
+    bindResult[4].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[4].buffer_length = sizeof(item.miningSpeed);
+    bindResult[4].buffer = &item.miningSpeed;
+
+    bindResult[5].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[5].buffer_length = sizeof(item.maxTurns);
+    bindResult[5].buffer = &item.maxTurns;
+    
+    bindResult[6].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[6].buffer_length = sizeof(item.cpuSpeed);
+    bindResult[6].buffer = &item.cpuSpeed;
+
+    bindResult[7].buffer_type = MYSQL_TYPE_DOUBLE;
+    bindResult[7].buffer_length = sizeof(item.forwardSpeed);
+    bindResult[7].buffer = &item.forwardSpeed;
+
+    bindResult[8].buffer_type = MYSQL_TYPE_DOUBLE;
+    bindResult[8].buffer_length = sizeof(item.backwardSpeed);
+    bindResult[8].buffer = &item.backwardSpeed;
+
+    bindResult[9].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[9].buffer_length = sizeof(item.rotateSpeed);
+    bindResult[9].buffer = &item.rotateSpeed;
+
+    bindResult[10].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[10].buffer_length = sizeof(item.robotSize);
+    bindResult[10].buffer = &item.robotSize;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+    
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    while (mysql_stmt_fetch(statement) == 0)
+    {
+        if (!isNull && !isError)
+        {
+            item.sourceCode = sourceCode;
+
+            bool sameRunsDone(true);
+            
+            if (!result.empty() && result.front().runsDone != item.runsDone)
+            {
+                sameRunsDone = false;
+            }
+
+            if (sameRunsDone)
+            {
+                result.push_back(item);
+            }
+        }
+    }
+
+    mysql_stmt_close(statement);
+
+    return result;
+}
+
+
+void CDatabase::updatePoolItem(int poolItemId, int score)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("UPDATE PoolItem "
+                 "SET totalScore = totalScore + ?, runsDone = runsDone + 1 "
+                 "WHERE id = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[2];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(score);
+    bind[0].buffer = &score;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(poolItemId);
+    bind[1].buffer = &poolItemId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);
+}
+
+
+void CDatabase::updatePoolItemMiningTotals(int poolItemId, int oreId, int amount)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("INSERT INTO PoolItemMiningTotals "
+                 "(poolItemId, oreId, totalMined) "
+                 "values "
+                 "(?, ?, ?) "
+                 "ON DUPLICATE KEY UPDATE "
+                 "totalMined = totalMined + VALUES(totalMined) ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[3];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(poolItemId);
+    bind[0].buffer = &poolItemId;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(oreId);
+    bind[1].buffer = &oreId;
+
+    bind[2].buffer_type = MYSQL_TYPE_LONG;
+    bind[2].buffer_length = sizeof(amount);
+    bind[2].buffer = &amount;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);
+}
