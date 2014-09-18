@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%--
  Copyright (C) 2014 Arnoud Jagerman
 
@@ -24,64 +23,72 @@
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
-<rm:robominerheader>
-    <rm:defaultpage currentform="miningResults">
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
         <script src='js/miningresults.js'></script>
+        <title>RoboMiner - Mining results</title>
+    </head>
+    <body>
+        <rm:defaultpage currentform="miningResults">
 
-        <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist='${oreAssetList}' />
 
-        <c:forEach var="robot" items="${robotList}">
-            <table class="miningresults">
-                <caption>${fn:escapeXml(robot.robotName)}</caption>
-                <tr class="miningresultsheader">
-                    <th colspan="3"></th>
-                    <th>Amount</th>
-                    <th>Tax</th>
-                    <th>Result</th>
-                    <th></th>
-                </tr>
-                <c:forEach var="miningResult" items="${miningResultListMap.get(robot.id)}">
-                    <tbody class="miningresults">
-                        <tr>
-                            <td><button onclick="swapShowDetails('resultDetails_${miningResult.id}', this);">+</button></td>
-                            <td>${fn:escapeXml(miningResult.miningArea.areaName)}</td>
-                            <td>
-                                <c:if test="${miningResult.miningOreResults.size() eq 1}">
-                                    ${fn:escapeXml(miningResult.miningOreResults[0].ore.oreName)}
-                                </c:if>
-                            </td>
-                            <td>${miningResult.totalOreMined}</td>
-                            <td>${miningResult.totalTax}</td>
-                            <td>${miningResult.totalReward}</td>
-                            <td><a href="<c:url value='miningResults?rallyResultId=${miningResult.rallyResult.id}'/>">View</a></td>
-                        </tr>
-                        <c:if test="${miningResult.miningOreResults.size() gt 1}">
-                            <c:forEach var='miningOreResult' items='${miningResult.miningOreResults}'>
-                                <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
-                                    <td colspan="2"></td>
-                                    <td>${fn:escapeXml(miningOreResult.ore.oreName)}</td>
-                                    <td>${miningOreResult.amount}</td>
-                                    <td>${miningOreResult.tax}</td>
-                                    <td>${miningOreResult.reward}</td>
-                                    <td></td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
-                        <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
-                            <td></td>
-                            <td>Queued:</td>
-                            <td colspan="5"><fmt:formatDate value="${miningResult.creationTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
-                        </tr>
-                        <tr class="miningresultsdetails" name="resultDetails_${miningResult.id}">
-                            <td></td>
-                            <td>Mining end:</td>
-                            <td colspan="5"><fmt:formatDate value="${miningResult.miningEndTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
-                        </tr>
-                    </tbody>
-                </c:forEach>
-            </table>
-        </c:forEach>
-        <p class="clear"></p>
-    </rm:defaultpage>
-</rm:robominerheader>
+            <c:forEach var="robot" items="${robotList}">
+                <table class="miningresults">
+                    <caption>${fn:escapeXml(robot.robotName)}</caption>
+                    <tr class="miningresultsheader">
+                        <th colspan="3"></th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Result</th>
+                        <th></th>
+                    </tr>
+                    <c:forEach var="miningResult" items="${miningResultListMap.get(robot.id)}">
+                        <tbody class="miningresults">
+                            <tr>
+                                <td><button onclick="swapShowDetails('resultDetails_${miningResult.id}', this);">+</button></td>
+                                <td>${fn:escapeXml(miningResult.miningArea.areaName)}</td>
+                                <td>
+                                    <c:if test="${miningResult.miningOreResults.size() eq 1}">
+                                        ${fn:escapeXml(miningResult.miningOreResults[0].ore.oreName)}
+                                    </c:if>
+                                </td>
+                                <td>${miningResult.totalOreMined}</td>
+                                <td>${miningResult.totalTax}</td>
+                                <td>${miningResult.totalReward}</td>
+                                <td><a href="<c:url value='miningResults?rallyResultId=${miningResult.rallyResult.id}'/>">View</a></td>
+                            </tr>
+                            <c:if test="${miningResult.miningOreResults.size() gt 1}">
+                                <c:forEach var='miningOreResult' items='${miningResult.miningOreResults}'>
+                                    <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_ore_${miningOreResult.ore.id}">
+                                        <td colspan="2"></td>
+                                        <td>${fn:escapeXml(miningOreResult.ore.oreName)}</td>
+                                        <td>${miningOreResult.amount}</td>
+                                        <td>${miningOreResult.tax}</td>
+                                        <td>${miningOreResult.reward}</td>
+                                        <td></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                            <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_queued">
+                                <td></td>
+                                <td>Queued:</td>
+                                <td colspan="5"><fmt:formatDate value="${miningResult.creationTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
+                            </tr>
+                            <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_miningend">
+                                <td></td>
+                                <td>Mining end:</td>
+                                <td colspan="5"><fmt:formatDate value="${miningResult.miningEndTime}" timeZone="UTC" pattern="yyyy-MM-dd HH:mm:ss z" /></td>
+                            </tr>
+                        </tbody>
+                    </c:forEach>
+                </table>
+            </c:forEach>
+            <p class="clear"></p>
+        </rm:defaultpage>
+    </body>
+</html>

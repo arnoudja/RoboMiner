@@ -24,26 +24,34 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<rm:robominerheader>
-    <rm:defaultpage currentform="leaderboard">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <title>RoboMiner - Leaderboard</title>
+    </head>
+    <body>
+        <rm:defaultpage currentform="leaderboard">
 
-        <table>
-            <caption>Top robots</caption>
-            <tr>
-                <th>Robot</th>
-                <th>Owner</th>
-                <th>Average ore per run</th>
-            </tr>
-            <c:forEach var="topRobot" items="${topRobotsList}">
+            <table>
+                <caption>Top robots</caption>
                 <tr>
-                    <td>${fn:escapeXml(topRobot.robotName)}</td>
-                    <td>${fn:escapeXml(topRobot.username)}</td>
-                    <td>
-                        <fmt:formatNumber value="${topRobot.orePerRun}" minFractionDigits="3" maxFractionDigits="3"/>
-                    </td>
+                    <th>Robot</th>
+                    <th>Owner</th>
+                    <th>Average ore per run</th>
                 </tr>
-            </c:forEach>
-        </table>
-        
-    </rm:defaultpage>
-</rm:robominerheader>
+                <c:forEach var="topRobot" items="${topRobotsList}">
+                    <tr>
+                        <td>${fn:escapeXml(topRobot.robotName)}</td>
+                        <td>${fn:escapeXml(topRobot.username)}</td>
+                        <td>
+                            <fmt:formatNumber value="${topRobot.orePerRun}" minFractionDigits="3" maxFractionDigits="3"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+
+        </rm:defaultpage>
+    </body>
+</html>

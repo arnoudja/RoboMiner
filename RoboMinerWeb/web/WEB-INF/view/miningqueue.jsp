@@ -24,177 +24,182 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <script src='js/miningqueue.js'></script>
+        <title>RoboMiner - Mining queue</title>
+    </head>
+    <body>
+        <rm:defaultpage currentform="miningQueue">
 
-<rm:robominerheader>
+            <rm:userassets oreassetlist='${oreAssetList}' />
 
-    <script src='js/miningqueue.js'></script>
+            <form id='miningqueueform' action="<c:url value='miningQueue'/>" method="post">
 
-    <rm:defaultpage currentform="miningQueue">
+                <input type='hidden' id='robotId' name='robotId' value='' />
+                <input type='hidden' id='miningAreaAddId' name='miningAreaAddId' value='' />
+                <input type='hidden' id='submitType' name='submitType' value='' />
 
-        <rm:userassets oreassetlist='${oreAssetList}' />
+                <c:set var="canremove" value="false"/>
 
-        <form id='miningqueueform' action="<c:url value='miningQueue'/>" method="post">
-
-            <input type='hidden' id='robotId' name='robotId' value='' />
-            <input type='hidden' id='miningAreaAddId' name='miningAreaAddId' value='' />
-            <input type='hidden' id='submitType' name='submitType' value='' />
-
-            <c:set var="canremove" value="false"/>
-
-            <c:forEach var='robot' items="${robotList}">
-                <table class="miningqueue">
-                    <caption>${fn:escapeXml(robot.robotName)}</caption>
-                    <tr>
-                        <th></th>
-                        <th>Area</th>
-                        <th>Status</th>
-                        <th class="miningqueuetime">ETC</th>
-                    </tr>
-                    <c:set var="rownr" value="0"/>
-                    <c:forEach var="miningQueueItem" items="${robotMiningQueueMap.get(robot.id)}">
+                <c:forEach var='robot' items="${robotList}">
+                    <table class="miningqueue">
+                        <caption>${fn:escapeXml(robot.robotName)}</caption>
                         <tr>
-                            <td class="miningqueuecheckbox">
-                                <c:if test="${rownr gt 0}">
-                                    <c:set var="miningQueueId" value="${miningQueueItem.miningQueue.id}" />
-                                    <c:set var="ischecked" value="false" />
-                                    <c:forEach var="selectedQueueItem" items="${selectedQueueItems}">
-                                        <c:if test="${selectedQueueItem eq miningQueueId}">
-                                            <c:set var="ischecked" value="true" />
-                                        </c:if>
-                                    </c:forEach>
-                                    <input type="checkbox" name="selectedQueueItemId" value="${miningQueueId}" ${ischecked ? 'checked' : ''}/>
-                                    <c:set var="canremove" value="true"/>
+                            <th></th>
+                            <th>Area</th>
+                            <th>Status</th>
+                            <th class="miningqueuetime">ETC</th>
+                        </tr>
+                        <c:set var="rownr" value="0"/>
+                        <c:forEach var="miningQueueItem" items="${robotMiningQueueMap.get(robot.id)}">
+                            <tr>
+                                <td class="miningqueuecheckbox">
+                                    <c:if test="${rownr gt 0}">
+                                        <c:set var="miningQueueId" value="${miningQueueItem.miningQueue.id}" />
+                                        <c:set var="ischecked" value="false" />
+                                        <c:forEach var="selectedQueueItem" items="${selectedQueueItems}">
+                                            <c:if test="${selectedQueueItem eq miningQueueId}">
+                                                <c:set var="ischecked" value="true" />
+                                            </c:if>
+                                        </c:forEach>
+                                        <input type="checkbox" name="selectedQueueItemId" value="${miningQueueId}" ${ischecked ? 'checked' : ''}/>
+                                        <c:set var="canremove" value="true"/>
+                                    </c:if>
+                                </td>
+                                <td>${fn:escapeXml(miningQueueItem.miningQueue.miningArea.areaName)}</td>
+                                <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
+                                <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" ></td>
+                                <script>
+                                    countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                        function(secondsLeft) {
+                                            document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                        },
+                                        function() {
+                                            document.getElementById("miningqueueform").submit();
+                                        });
+                                </script>
+                            </tr>
+                            <c:set var="rownr" value="${rownr + 1}"/>
+                        </c:forEach>
+                        <tr>
+                            <td>
+                                <c:if test="${robotMiningQueueMap.get(robot.id).size() gt 1}">
+                                    <input type="button" value="remove" onclick="removeMiningQueueItems(${robot.id});" />
                                 </c:if>
                             </td>
-                            <td>${fn:escapeXml(miningQueueItem.miningQueue.miningArea.areaName)}</td>
-                            <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
-                            <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" ></td>
-                            <script>
-                                countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                    function(secondsLeft) {
-                                        document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                    },
-                                    function() {
-                                        document.getElementById("miningqueueform").submit();
-                                    });
-                            </script>
+                            <td>
+                                <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
+                                    <c:forEach var='miningArea' items='${miningAreaList}'>
+                                        <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                            <td>
+                                <c:if test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
+                                    <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
+                                </c:if>
+                            </td>
+                            <td></td>
                         </tr>
-                        <c:set var="rownr" value="${rownr + 1}"/>
-                    </c:forEach>
-                    <tr>
-                        <td>
-                            <c:if test="${robotMiningQueueMap.get(robot.id).size() gt 1}">
-                                <input type="button" value="remove" onclick="removeMiningQueueItems(${robot.id});" />
-                            </c:if>
-                        </td>
-                        <td>
-                            <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
-                                <c:forEach var='miningArea' items='${miningAreaList}'>
-                                    <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
-                                </c:forEach>
-                            </select>
-                        </td>
-                        <td>
-                            <c:if test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
-                                <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
-                            </c:if>
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
-            </c:forEach>
+                    </table>
+                </c:forEach>
 
-            <div class="miningqueue">
-                <c:if test="${not empty errorMessage}">
-                    <p class="error">${errorMessage}</p>
-                </c:if>
+                <div class="miningqueue">
+                    <c:if test="${not empty errorMessage}">
+                        <p class="error">${errorMessage}</p>
+                    </c:if>
 
-                <h1>Mining area info</h1>
-                <input type="button" value="Overview" onclick="openUrl('<c:url value='miningAreaOverview'/>');"/>
+                    <h1>Mining area info</h1>
+                    <input type="button" value="Overview" onclick="openUrl('<c:url value='miningAreaOverview'/>');"/>
 
-                <table>
-                    <tr>
-                        <th>Mining area:</th>
-                        <th colspan="3">
-                            <select id='miningAreaId' name="miningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
-                                <c:forEach var='miningArea' items='${miningAreaList}'>
-                                    <option value="${miningArea.id}" ${miningArea.id eq miningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
-                                </c:forEach>
-                            </select>
-                        </th>
-                    </tr>
-                    <c:forEach var='miningArea' items='${miningAreaList}'>
-                        <tbody id='miningAreaDetails${miningArea.id}' style="display: none;">
-                            <tr>
-                                <td>Tax rate:</td>
-                                <td colspan="3">${miningArea.taxRate}%</td>
-                            </tr>
-                            <c:if test="${fn:length(miningArea.orePrice.orePriceAmountList) gt 0}">
+                    <table>
+                        <tr>
+                            <th>Mining area:</th>
+                            <th colspan="3">
+                                <select id='miningAreaId' name="miningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
+                                    <c:forEach var='miningArea' items='${miningAreaList}'>
+                                        <option value="${miningArea.id}" ${miningArea.id eq miningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
+                                    </c:forEach>
+                                </select>
+                            </th>
+                        </tr>
+                        <c:forEach var='miningArea' items='${miningAreaList}'>
+                            <tbody id='miningAreaDetails${miningArea.id}' style="display: none;">
                                 <tr>
-                                    <td colspan="4">Core costs:</td>
+                                    <td>Tax rate:</td>
+                                    <td colspan="3">${miningArea.taxRate}%</td>
                                 </tr>
-                                <c:forEach var="orePriceAmount" items="${miningArea.orePrice.orePriceAmountList}">
+                                <c:if test="${fn:length(miningArea.orePrice.orePriceAmountList) gt 0}">
+                                    <tr>
+                                        <td colspan="4">Core costs:</td>
+                                    </tr>
+                                    <c:forEach var="orePriceAmount" items="${miningArea.orePrice.orePriceAmountList}">
+                                        <tr>
+                                            <td></td>
+                                            <td>${fn:escapeXml(orePriceAmount.ore.oreName)}:</td>
+                                            <td>${orePriceAmount.amount}</td>
+                                            <td class="${user.getUserOreAmount(orePriceAmount.ore.id) ge orePriceAmount.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePriceAmount.ore.id)})</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:if>
+                                <tr>
+                                    <td>Mining time:</td>
+                                    <td colspan="3">${miningArea.miningTime} seconds</td>
+                                </tr>
+                                <tr>
+                                    <td>Mining cycles:</td>
+                                    <td colspan="3">${miningArea.maxMoves}</td>
+                                </tr>
+                                <tr>
+                                    <td>Area size:</td>
+                                    <td colspan="3">${miningArea.sizeX} x ${miningArea.sizeY}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">Available ore:</td>
+                                </tr>
+                                <c:forEach var='miningAreaOreSupply' items="${miningArea.miningAreaOreSupply}">
                                     <tr>
                                         <td></td>
-                                        <td>${fn:escapeXml(orePriceAmount.ore.oreName)}:</td>
-                                        <td>${orePriceAmount.amount}</td>
-                                        <td class="${user.getUserOreAmount(orePriceAmount.ore.id) ge orePriceAmount.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePriceAmount.ore.id)})</td>
+                                        <td>${fn:escapeXml(miningAreaOreSupply.ore.oreName)}:</td>
+                                        <td colspan="2">${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
                                     </tr>
                                 </c:forEach>
-                            </c:if>
-                            <tr>
-                                <td>Mining time:</td>
-                                <td colspan="3">${miningArea.miningTime} seconds</td>
-                            </tr>
-                            <tr>
-                                <td>Mining cycles:</td>
-                                <td colspan="3">${miningArea.maxMoves}</td>
-                            </tr>
-                            <tr>
-                                <td>Area size:</td>
-                                <td colspan="3">${miningArea.sizeX} x ${miningArea.sizeY}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Available ore:</td>
-                            </tr>
-                            <c:forEach var='miningAreaOreSupply' items="${miningArea.miningAreaOreSupply}">
                                 <tr>
-                                    <td></td>
-                                    <td>${fn:escapeXml(miningAreaOreSupply.ore.oreName)}:</td>
-                                    <td colspan="2">${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
+                                    <td colspan="4">Historic yield:</td>
                                 </tr>
-                            </c:forEach>
-                            <tr>
-                                <td colspan="4">Historic yield:</td>
-                            </tr>
-                            <c:set var="totalPercentage" value="0.0"/>
-                            <c:forEach var="miningAreaLifetimeResult" items="${miningArea.miningAreaLifetimeResultList}">
-                                <c:set var="totalPercentage" value="${totalPercentage + miningAreaLifetimeResult.percentage}"/>
+                                <c:set var="totalPercentage" value="0.0"/>
+                                <c:forEach var="miningAreaLifetimeResult" items="${miningArea.miningAreaLifetimeResultList}">
+                                    <c:set var="totalPercentage" value="${totalPercentage + miningAreaLifetimeResult.percentage}"/>
+                                    <tr>
+                                        <td></td>
+                                        <td>${fn:escapeXml(miningAreaLifetimeResult.ore.oreName)}:</td>
+                                        <td colspan="2">
+                                            <fmt:formatNumber value="${miningAreaLifetimeResult.percentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 <tr>
                                     <td></td>
-                                    <td>${fn:escapeXml(miningAreaLifetimeResult.ore.oreName)}:</td>
+                                    <td>Total:</td>
                                     <td colspan="2">
-                                        <fmt:formatNumber value="${miningAreaLifetimeResult.percentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                                        <fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%
                                     </td>
                                 </tr>
-                            </c:forEach>
-                            <tr>
-                                <td></td>
-                                <td>Total:</td>
-                                <td colspan="2">
-                                    <fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%
-                                </td>
-                            </tr>
-                        </tbody>
-                    </c:forEach>
-                </table>
-            </div>
-        </form>
+                            </tbody>
+                        </c:forEach>
+                    </table>
+                </div>
+            </form>
 
-        <input id='prevMiningAreaId' type='hidden' value="${miningAreaId}"/>
+            <input id='prevMiningAreaId' type='hidden' value="${miningAreaId}"/>
 
-    </rm:defaultpage>
+        </rm:defaultpage>
 
-    <script>showMiningAreaDetails();</script>
+        <script>showMiningAreaDetails();</script>
 
-</rm:robominerheader>
+    </body>
+</html>

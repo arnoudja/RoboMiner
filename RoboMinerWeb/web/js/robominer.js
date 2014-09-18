@@ -81,10 +81,17 @@ function updateDisplayStyle(elements, value) {
     }
 }
 
+function updateDisplayStyleIfExists(elementId, value) {
+    var updateElement = document.getElementById(elementId);
+    if (updateElement !== null) {
+        updateElement.style.display = value;
+    }
+}
+
 function htmlDecode(encodedText) {
-    var element = document.createElement('div');
-    element.innerHTML = encodedText;
-    return element.childNodes.length === 0 ? "" : element.childNodes[0].nodeValue;
+    var updateElement = document.createElement('div');
+    updateElement.innerHTML = encodedText;
+    return updateElement.childNodes.length === 0 ? "" : updateElement.childNodes[0].nodeValue;
 }
 
 function processTab(event, element) {

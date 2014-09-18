@@ -24,34 +24,41 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <title>RoboMiner - Mining area overview</title>
+    </head>
+    <body>
+        <rm:defaultpage currentform="miningAreaOverview">
 
-<rm:robominerheader>
-    <rm:defaultpage currentform="miningAreaOverview">
-
-        <table>
-            <tr>
-                <td></td>
-                <td>Total</td>
-                <c:forEach var="ore" items="${oreList}">
-                    <td>${fn:escapeXml(ore.oreName)}</td>
-                </c:forEach>
-            </tr>
-            <c:forEach var="miningArea" items="${miningAreaList}">
-                <c:if test="${miningArea.miningAreaLifetimeResultList.size() > 0}">
-                    <c:set var="totalPercentage" value="0" />
+            <table>
+                <tr>
+                    <td></td>
+                    <td>Total</td>
                     <c:forEach var="ore" items="${oreList}">
-                        <c:set var="totalPercentage" value="${totalPercentage + miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" />
+                        <td>${fn:escapeXml(ore.oreName)}</td>
                     </c:forEach>
-                    <tr>
-                        <td>${fn:escapeXml(miningArea.areaName)}</td>
-                        <td><fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                </tr>
+                <c:forEach var="miningArea" items="${miningAreaList}">
+                    <c:if test="${miningArea.miningAreaLifetimeResultList.size() > 0}">
+                        <c:set var="totalPercentage" value="0" />
                         <c:forEach var="ore" items="${oreList}">
-                            <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                            <c:set var="totalPercentage" value="${totalPercentage + miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" />
                         </c:forEach>
-                    </tr>
-                </c:if>
-            </c:forEach>
-        </table>
+                        <tr>
+                            <td>${fn:escapeXml(miningArea.areaName)}</td>
+                            <td><fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                            <c:forEach var="ore" items="${oreList}">
+                                <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                            </c:forEach>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </table>
 
-    </rm:defaultpage>
-</rm:robominerheader>
+        </rm:defaultpage>
+    </body>
+</html>

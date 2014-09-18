@@ -24,96 +24,94 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<rm:robominerheader>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <script src='js/statistics.js'></script>
+        <title>RoboMiner - Statistics</title>
+    </head>
+    <body>
+        <rm:defaultpage currentform="statistics">
 
-    <script>
-        function showStatisticsType(statisticsType) {
-            document.getElementById('totalStatistics').style.display = (statisticsType === 'totalStatistics') ? 'inherit' : 'none';
-            document.getElementById('lastRuns').style.display = (statisticsType === 'lastRuns') ? 'inherit' : 'none';
-            document.getElementById('today').style.display = (statisticsType === 'today') ? 'inherit' : 'none';
-            document.getElementById('yesterday').style.display = (statisticsType === 'yesterday') ? 'inherit' : 'none';
-            document.getElementById('lastweek').style.display = (statisticsType === 'lastweek') ? 'inherit' : 'none';
-        }
-    </script>
+            <rm:userassets oreassetlist='${oreAssetList}' />
 
-    <rm:defaultpage currentform="statistics">
+            <select class="statistics" onchange="showStatisticsType(this.value);">
+                <option value="totalStatistics" selected>Total</option>
+                <option value="lastRuns">Last runs</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="lastweek">Last 7 days</option>
+            </select>
 
-        <rm:userassets oreassetlist='${oreAssetList}' />
-
-        <select class="statistics" onchange="showStatisticsType(this.value);">
-            <option value="totalStatistics" selected>Total</option>
-            <option value="lastRuns">Last runs</option>
-            <option value="today">Today</option>
-            <option value="yesterday">Yesterday</option>
-            <option value="lastweek">Last 7 days</option>
-        </select>
-
-        <div id="totalStatistics">
-            <c:forEach var="robot" items="${robotList}">
-                <table class="statistics">
-                    <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
-                    <tr>
-                        <th>Ore</th>
-                        <th>Amount</th>
-                        <th>Tax</th>
-                        <th>Reward</th>
-                        <th>Average amount per run</th>
-                    </tr>
-                    <c:set var="totalAmount" value="0"/>
-                    <c:set var="totalTax" value="0"/>
-                    <c:forEach var="robotLifetimeResult" items="${robot.robotLifetimeResultList}">
-                        <c:set var="totalAmount" value="${totalAmount + robotLifetimeResult.amount}"/>
-                        <c:set var="totalTax" value="${totalTax + robotLifetimeResult.tax}"/>
+            <div id="totalStatistics">
+                <c:forEach var="robot" items="${robotList}">
+                    <table class="statistics">
+                        <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
                         <tr>
-                            <td>${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
-                            <td>${robotLifetimeResult.amount}</td>
-                            <td>${robotLifetimeResult.tax}</td>
-                            <td>${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
+                            <th>Ore</th>
+                            <th>Amount</th>
+                            <th>Tax</th>
+                            <th>Reward</th>
+                            <th>Average amount per run</th>
+                        </tr>
+                        <c:set var="totalAmount" value="0"/>
+                        <c:set var="totalTax" value="0"/>
+                        <c:forEach var="robotLifetimeResult" items="${robot.robotLifetimeResultList}">
+                            <c:set var="totalAmount" value="${totalAmount + robotLifetimeResult.amount}"/>
+                            <c:set var="totalTax" value="${totalTax + robotLifetimeResult.tax}"/>
+                            <tr>
+                                <td>${fn:escapeXml(robotLifetimeResult.ore.oreName)}</td>
+                                <td>${robotLifetimeResult.amount}</td>
+                                <td>${robotLifetimeResult.tax}</td>
+                                <td>${robotLifetimeResult.amount - robotLifetimeResult.tax}</td>
+                                <td>
+                                    <c:if test="${robot.totalMiningRuns gt 0}">
+                                        <fmt:formatNumber value="${robotLifetimeResult.amount / robot.totalMiningRuns}" maxFractionDigits="2"/>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <tr>
+                            <td>Total</td>
+                            <td>${totalAmount}</td>
+                            <td>${totalTax}</td>
+                            <td>${totalAmount - totalTax}</td>
                             <td>
                                 <c:if test="${robot.totalMiningRuns gt 0}">
-                                    <fmt:formatNumber value="${robotLifetimeResult.amount / robot.totalMiningRuns}" maxFractionDigits="2"/>
+                                    <fmt:formatNumber value="${totalAmount / robot.totalMiningRuns}" maxFractionDigits="2"/>
                                 </c:if>
                             </td>
                         </tr>
-                    </c:forEach>
-                    <tr>
-                        <td>Total</td>
-                        <td>${totalAmount}</td>
-                        <td>${totalTax}</td>
-                        <td>${totalAmount - totalTax}</td>
-                        <td>
-                            <c:if test="${robot.totalMiningRuns gt 0}">
-                                <fmt:formatNumber value="${totalAmount / robot.totalMiningRuns}" maxFractionDigits="2"/>
-                            </c:if>
-                        </td>
-                    </tr>
-                </table>
-            </c:forEach>
-        </div>
+                    </table>
+                </c:forEach>
+            </div>
 
-        <div id="lastRuns" style="display: none;">
-            <c:forEach var="robot" items="${robotList}">
-                <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastRunsStatisticsMap.get(robot.id)}" />
-            </c:forEach>
-        </div>
+            <div id="lastRuns" style="display: none;">
+                <c:forEach var="robot" items="${robotList}">
+                    <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastRunsStatisticsMap.get(robot.id)}" />
+                </c:forEach>
+            </div>
 
-        <div id="today" style="display: none;">
-            <c:forEach var="robot" items="${robotList}">
-                <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotTodayStatisticsMap.get(robot.id)}" />
-            </c:forEach>
-        </div>
+            <div id="today" style="display: none;">
+                <c:forEach var="robot" items="${robotList}">
+                    <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotTodayStatisticsMap.get(robot.id)}" />
+                </c:forEach>
+            </div>
 
-        <div id="yesterday" style="display: none;">
-            <c:forEach var="robot" items="${robotList}">
-                <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotYesterdayStatisticsMap.get(robot.id)}" />
-            </c:forEach>
-        </div>
+            <div id="yesterday" style="display: none;">
+                <c:forEach var="robot" items="${robotList}">
+                    <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotYesterdayStatisticsMap.get(robot.id)}" />
+                </c:forEach>
+            </div>
 
-        <div id="lastweek" style="display: none;">
-            <c:forEach var="robot" items="${robotList}">
-                <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastWeekStatisticsMap.get(robot.id)}" />
-            </c:forEach>
-        </div>
+            <div id="lastweek" style="display: none;">
+                <c:forEach var="robot" items="${robotList}">
+                    <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastWeekStatisticsMap.get(robot.id)}" />
+                </c:forEach>
+            </div>
 
-    </rm:defaultpage>
-</rm:robominerheader>
+        </rm:defaultpage>
+    </body>
+</html>

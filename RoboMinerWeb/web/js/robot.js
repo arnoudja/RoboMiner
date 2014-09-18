@@ -44,9 +44,15 @@ function updateMemorySizes() {
 function showRobotDetails() {
 
     var prevRobotId = document.getElementById('prevRobotId').value;
-    updateDisplayStyle(document.getElementsByName('robotRow' + prevRobotId), 'none');
+    var detailsElement = document.getElementById('robotDetails' + prevRobotId);
+    if (detailsElement !== null) {
+        detailsElement.style.display = 'none';
+    }
     var robotId = document.getElementById('robotId').value;
-    updateDisplayStyle(document.getElementsByName('robotRow' + robotId), 'table-row-group');
+    detailsElement = document.getElementById('robotDetails' + robotId);
+    if (detailsElement !== null) {
+        detailsElement.style.display = 'table-row-group';
+    }
     document.getElementById('prevRobotId').value = robotId;
     updateMemorySizes();
 }

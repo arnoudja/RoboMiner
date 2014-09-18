@@ -21,10 +21,14 @@ function showRobotParts() {
 
     var prevRobotPartTypeId = document.getElementById('selectedRobotPartTypeId').value;
     var prevTierId = document.getElementById('selectedTierId').value;
-    updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId), 'none');
+    for (i = 0; i < 99; ++i) {
+        updateDisplayStyleIfExists('robotPartTypeRow' + prevRobotPartTypeId + '_' + prevTierId + '_' + i, 'none');
+    }
     var robotPartTypeId = document.getElementById('robotPartTypeId').value;
     var tierId = document.getElementById('tierId').value;
-    updateDisplayStyle(document.getElementsByName('robotPartTypeRow' + robotPartTypeId + '_' + tierId), 'table-row-group');
+    for (i = 0; i < 99; ++i) {
+        updateDisplayStyleIfExists('robotPartTypeRow' + robotPartTypeId + '_' + tierId + '_' + i, 'table-row-group');
+    }
     document.getElementById('selectedRobotPartTypeId').value = robotPartTypeId;
     document.getElementById('selectedTierId').value = tierId;
 }

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%--
  Copyright (C) 2014 Arnoud Jagerman
 
@@ -22,24 +21,33 @@
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
-<rm:robominerheader>
-    <div class="main">
-        <header>
-            <nav class="logoff">
-                <ul class="menubar">
-                    <li class="menuitemselected">Logoff</li>
-                </ul>
-            </nav>
-            <nav>
-                <ul class="menubar">
-                    <li class="menuitem" onclick="openUrl('<c:url value='login'/>');">Login</li>
-                </ul>
-            </nav>
-        </header>
-        <div class="interface">
-            <p>Logged off successful</p>
-            <p><a href="<c:url value='login'/>">Login</a> again</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+        <script src='js/robominer.js'></script>
+        <title>RoboMiner - Logged off</title>
+    </head>
+    <body>
+        <div class="main">
+            <header>
+                <nav class="logoff">
+                    <ul class="menubar">
+                        <li class="menuitemselected">Logoff</li>
+                    </ul>
+                </nav>
+                <nav>
+                    <ul class="menubar">
+                        <li class="menuitem" onclick="openUrl('<c:url value='login'/>');">Login</li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="interface">
+                <p>Logged off successful</p>
+                <p><a href="<c:url value='login'/>">Login</a> again</p>
+            </div>
+            <rm:pagefooter/>
         </div>
-        <rm:pagefooter/>
-    </div>
-</rm:robominerheader>
+    </body>
+</html>
