@@ -20,11 +20,18 @@
 package nl.robominer.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nl.robominer.entity.MiningArea;
+import nl.robominer.entity.RobotMiningAreaScore;
+import nl.robominer.session.MiningAreaFacade;
+import nl.robominer.session.RobotMiningAreaScoreFacade;
 import nl.robominer.session.TopRobotsViewFacade;
 
 /**
@@ -34,28 +41,67 @@ import nl.robominer.session.TopRobotsViewFacade;
 @WebServlet(name = "LeaderboardServlet", urlPatterns = {"/leaderboard"})
 public class LeaderboardServlet extends RoboMinerServletBase {
 
-    private static final int MAX_ENTRIES = 10;
-    private static final int MIN_RUNS = 10;
+    /**
+     * The javascript view used for displaying the leaderboard page.
+     */
+    private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/leaderboard.jsp";
 
+    /**
+     * The maximum number of entries to retrieve for each score type.
+     */
+    private static final int MAX_ENTRIES = 10;
+
+    /**
+     * Ignore entries for values with less rally runs than this.
+     */
+    private static final int MIN_RUNS    = 3;
+
+    /**
+     * Bean to handle the database actions for the top robots database view.
+     */
     @EJB
     TopRobotsViewFacade topRobotsViewFacade;
+
+    /**
+     * Bean to handle the database actions for the mining areas.
+     */
+    @EJB
+    MiningAreaFacade miningAreaFacade;
+
+    /**
+     * Bean to handle the database actions for the robot mining scores.
+     */
+    @EJB
+    RobotMiningAreaScoreFacade robotMiningAreaScoreFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Add the list of top robots to the request.
         request.setAttribute("topRobotsList", topRobotsViewFacade.getTopRobots(MAX_ENTRIES, MIN_RUNS));
 
-        request.getRequestDispatcher("/WEB-INF/view/leaderboard.jsp").forward(request, response);
+        // Add the list of mining areas to the request.
+        List<MiningArea> miningAreaList = miningAreaFacade.findAll();
+        request.setAttribute("miningAreaList", miningAreaList);
+
+        // Add the mapping of mining area to the list of robot scores.
+        Map<Integer, List<RobotMiningAreaScore> > robotMiningAreaScoreMap = new HashMap<>();
+        for (MiningArea miningArea : miningAreaList) {
+            robotMiningAreaScoreMap.put(miningArea.getId(), robotMiningAreaScoreFacade.findByMiningAreaId(miningArea.getId(), MIN_RUNS, MAX_ENTRIES));
+        }
+        request.setAttribute("robotMiningAreaScoreMap", robotMiningAreaScoreMap);
+
+        request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
     /**

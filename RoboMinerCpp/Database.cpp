@@ -770,12 +770,13 @@ void CDatabase::updateRobotScore(int robotId, int miningAreaId, double score)
 
     if (getRobotScoreDatabaseValue(robotId, miningAreaId, totalRuns, previousScore))
     {
-        double newScore = (9. * previousScore + score) / 10.;
+        double newScore = (4. * previousScore + score) / 5.;
         updateRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
     }
     else
     {
-        double newScore = score / 5.;
+        // Start with a low value to avoid robots with a low number of high luck runs getting a top score.
+        double newScore = score / 2.;
         insertRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
     }
 }

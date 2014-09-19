@@ -34,6 +34,31 @@
     <body>
         <rm:defaultpage currentform="leaderboard">
 
+            <c:forEach var="miningArea" items="${miningAreaList}">
+                <c:set var="robotMiningAreaScoreList" value="${robotMiningAreaScoreMap.get(miningArea.id)}" />
+                <c:if test="${robotMiningAreaScoreList.size() gt 0}">
+                    <table>
+                        <caption>${fn:escapeXml(miningArea.areaName)}</caption>
+                        <tr>
+                            <th>Robot</th>
+                            <th>Owner</th>
+                            <th>Score</th>
+                            <th>Total runs</th>
+                        </tr>
+                        <c:forEach var="robotMiningAreaScore" items="${robotMiningAreaScoreList}">
+                            <tr>
+                                <td>${fn:escapeXml(robotMiningAreaScore.robot.robotName)}</td>
+                                <td>${fn:escapeXml(robotMiningAreaScore.robot.user.username)}</td>
+                                <td>
+                                    <fmt:formatNumber value="${robotMiningAreaScore.score}" minFractionDigits="3" maxFractionDigits="3"/>
+                                </td>
+                                <td>${robotMiningAreaScore.totalRuns}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:if>
+            </c:forEach>
+            
             <table>
                 <caption>Top robots</caption>
                 <tr>
