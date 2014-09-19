@@ -508,10 +508,10 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (11
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1101, 2, 5,  4);
 
 insert into OrePrice (id, description) values (1102, 'Mining Area Oxaria-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11021, 1102, 1, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11021, 1102, 1, 10);
 insert into MiningArea (id,   areaName,   orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1102, 'Oxaria-2', 1102,       35,    35,    300,      90,         50,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 1, 20, 4);
+                values (1102, 'Oxaria-2', 1102,       35,    35,    300,      90,         40,      2);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
@@ -528,14 +528,14 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (12
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 4);
 
 insert into OrePrice (id, description) values (1202, 'Mining Area Lithabine-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 1, 25);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12022, 1202, 2, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 1, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12022, 1202, 2, 15);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1202, 'Lithabine-2', 1202,       45,    45,    400,      120,        50,      3);
+                values (1202, 'Lithabine-2', 1202,       45,    45,    400,      120,        10,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 4, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 4, 6);
 
 -- Neudralion
 insert into OrePrice (id, description) values (1301, 'Mining Area Neudralion-1 price');
@@ -549,7 +549,9 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (13
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 5, 5);
 
 insert into OrePrice (id, description) values (1302, 'Mining Area Neudralion-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13021, 1302, 3, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13021, 1302, 1, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13022, 1302, 2, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13023, 1302, 3, 15);
 insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (1302, 'Neudralion-2', 1302,       55,    55,    500,     420,        50,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 2, 10, 6);
@@ -570,7 +572,10 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (14
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 5, 5);
 
 insert into OrePrice (id, description) values (1402, 'Mining Area Complatix-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14021, 1402, 4, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14021, 1402, 1, 30);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14022, 1402, 2, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14023, 1402, 3, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14024, 1402, 4, 15);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (1402, 'Complatix-2', 1402,       65,    65,    700,      3600,       50,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 3, 10, 6);
