@@ -23,6 +23,9 @@ SET storage_engine=InnoDB;
 
 drop view if exists TopRobotsView;
 
+drop table if exists PoolItemMiningTotals;
+drop table if exists PoolItem;
+drop table if exists Pool;
 drop table if exists UserAchievement;
 drop table if exists AchievementMiningTotalRequirement;
 drop table if exists AchievementPredecessor;
@@ -32,6 +35,7 @@ drop table if exists RobotDailyRuns;
 drop table if exists RobotLifetimeResult;
 drop table if exists MiningOreResult;
 drop table if exists MiningQueue;
+drop table if exists RobotMiningAreaScore;
 drop table if exists RallyResult;
 drop table if exists MiningAreaLifetimeResult;
 drop table if exists MiningAreaOreSupply;
@@ -218,6 +222,17 @@ resultData MEDIUMTEXT NOT NULL
 );
 
 
+create table RobotMiningAreaScore
+(
+robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
+miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
+totalRuns INT NOT NULL DEFAULT 0,
+score DOUBLE NOT NULL DEFAULT .0,
+PRIMARY KEY (robotId, miningAreaId),
+INDEX (miningAreaId, score)
+);
+
+
 create table MiningQueue
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -340,7 +355,7 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 poolId INT NOT NULL REFERENCES Pool (id) ON DELETE CASCADE,
 robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
 sourceCode TEXT NOT NULL,
-totalScore BIGINT NOT NULL DEFAULT 0,
+totalScore DOUBLE NOT NULL DEFAULT 0,
 runsDone INT NOT NULL DEFAULT 0,
 index (runsDone, totalScore, id)
 );

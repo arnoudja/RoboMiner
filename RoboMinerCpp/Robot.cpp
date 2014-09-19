@@ -23,10 +23,15 @@
 #include <algorithm>
 #include <cassert>
 
-CRobot::CRobot(int maxTurns, int maxOre,
+
+static const int MAX_ORE_TYPES = 10;
+
+
+CRobot::CRobot(int robotId, int maxTurns, int maxOre,
                int miningSpeed, int cpuSpeed,
                double forwardSpeed, double backwardSpeed, int rotateSpeed,
                int robotSize) :
+    m_robotId(robotId),
     m_maxTurns(maxTurns),
     m_maxOre(maxOre),
     m_lastMined(0),
@@ -44,9 +49,9 @@ CRobot::CRobot(int maxTurns, int maxOre,
     m_maxXPos(.0),
     m_maxYPos(.0)
 {
-    m_ore.resize(10);
-    m_targetMining.resize(10);
-    for (int i = 0; i < 10; ++i)
+    m_ore.resize(MAX_ORE_TYPES);
+    m_targetMining.resize(MAX_ORE_TYPES);
+    for (int i = 0; i < MAX_ORE_TYPES; ++i)
     {
         m_ore[i]          = 0;
         m_targetMining[i] = 0;
@@ -120,4 +125,19 @@ void CRobot::setTargetMining(const CGroundUnit& groundUnit)
             --oreTypes;
         }
     }
+}
+
+
+double CRobot::calculateScore() const
+{
+    double score  = .0;
+    double factor = 1.;
+
+    for (int i = 0; i < MAX_ORE_TYPES; ++i)
+    {
+        score += factor * m_ore[i];
+        factor *= 10.;
+    }
+    
+    return score * 10. / m_maxOre;
 }

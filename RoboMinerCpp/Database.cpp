@@ -763,6 +763,158 @@ void CDatabase::updateRobot(int robotId, MYSQL_TIME miningEndTime)
 }
 
 
+void CDatabase::updateRobotScore(int robotId, int miningAreaId, double score)
+{
+    int totalRuns = 0;
+    double previousScore = .0;
+
+    if (getRobotScoreDatabaseValue(robotId, miningAreaId, totalRuns, previousScore))
+    {
+        double newScore = (9. * previousScore + score) / 10.;
+        updateRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
+    }
+    else
+    {
+        double newScore = score / 5.;
+        insertRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
+    }
+}
+
+
+bool CDatabase::getRobotScoreDatabaseValue(int robotId, int miningAreaId, int& totalRuns, double& score)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("SELECT totalRuns, score "
+                 "FROM RobotMiningAreaScore "
+                 "WHERE robotId = ? "
+                 "AND miningAreaId = ? ");
+
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[2];
+    memset(bind, 0, sizeof(bind));
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(robotId);
+    bind[0].buffer = &robotId;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(miningAreaId);
+    bind[1].buffer = &miningAreaId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    MYSQL_BIND bindResult[2];
+    memset(bindResult, 0, sizeof(bindResult));
+
+    bindResult[0].buffer_type = MYSQL_TYPE_LONG;
+    bindResult[0].buffer_length = sizeof(totalRuns);
+    bindResult[0].buffer = &totalRuns;
+
+    bindResult[1].buffer_type = MYSQL_TYPE_DOUBLE;
+    bindResult[1].buffer_length = sizeof(score);
+    bindResult[1].buffer = &score;
+
+    status = mysql_stmt_bind_result(statement, bindResult);
+    assert(status == 0);
+
+    status = mysql_stmt_store_result(statement);
+    assert(status == 0);
+
+    bool found = false;
+
+    if (mysql_stmt_fetch(statement) == 0)
+    {
+        found = true;
+    }
+
+    mysql_stmt_close(statement);
+    
+    return found;
+}
+
+
+void CDatabase::insertRobotScoreDatabaseValue(int robotId, int miningAreaId, double score)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("INSERT INTO RobotMiningAreaScore "
+                 "(robotId, miningAreaId, totalRuns, score) "
+                 "VALUES "
+                 "(?, ?, 1, ?) ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[3];
+    memset(bind, 0, sizeof(bind));
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(robotId);
+    bind[0].buffer = &robotId;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(miningAreaId);
+    bind[1].buffer = &miningAreaId;
+
+    bind[2].buffer_type = MYSQL_TYPE_DOUBLE;
+    bind[2].buffer_length = sizeof(score);
+    bind[2].buffer = &score;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);
+}
+
+
+void CDatabase::updateRobotScoreDatabaseValue(int robotId, int miningAreaId, double score)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("UPDATE RobotMiningAreaScore "
+                 "SET score = ?, totalRuns = totalRuns + 1 "
+                 "WHERE robotId = ? "
+                 "AND miningAreaId = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[3];
+    memset(bind, 0, sizeof(bind));
+
+    bind[0].buffer_type = MYSQL_TYPE_DOUBLE;
+    bind[0].buffer_length = sizeof(score);
+    bind[0].buffer = &score;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(robotId);
+    bind[1].buffer = &robotId;
+
+    bind[2].buffer_type = MYSQL_TYPE_LONG;
+    bind[2].buffer_length = sizeof(miningAreaId);
+    bind[2].buffer = &miningAreaId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);
+}
+
+
 void CDatabase::removeOldMiningQueueItems(int robotId)
 {
     list<OldMiningQueueItem> idList = findOldMiningQueueItems(robotId);
@@ -1115,7 +1267,7 @@ list<CDatabase::PoolRallyItem> CDatabase::getNextPoolRally(int poolId)
 }
 
 
-void CDatabase::updatePoolItem(int poolItemId, int score)
+void CDatabase::updatePoolItem(int poolItemId, double score)
 {
     MYSQL_STMT* statement = mysql_stmt_init(m_connection);
     assert(statement);
@@ -1128,7 +1280,7 @@ void CDatabase::updatePoolItem(int poolItemId, int score)
 
     MYSQL_BIND bind[2];
     memset(bind, 0, sizeof(bind));
-    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_type = MYSQL_TYPE_DOUBLE;
     bind[0].buffer_length = sizeof(score);
     bind[0].buffer = &score;
 

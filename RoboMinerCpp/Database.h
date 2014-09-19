@@ -126,6 +126,7 @@ public:
     void updateMiningQueue(int miningQueueId, int playerNumber, int rallyResultId, MYSQL_TIME miningEndTime);
     void addMiningOreResult(int miningQueueId, int oreId, int amount);
     void updateRobot(int robotId, MYSQL_TIME miningEndTime);
+    void updateRobotScore(int robotId, int miningAreaId, double score);
 
     void removeOldMiningQueueItems(int robotId);
     std::list<OldMiningQueueItem> findOldMiningQueueItems(int robotId);
@@ -135,8 +136,13 @@ public:
 
     PoolData getPoolData(int poolId);
     std::list<PoolRallyItem> getNextPoolRally(int poolId);
-    void updatePoolItem(int poolItemId, int score);
+    void updatePoolItem(int poolItemId, double score);
     void updatePoolItemMiningTotals(int poolItemId, int oreId, int amount);
+
+private:
+    bool getRobotScoreDatabaseValue(int robotId, int miningAreaId, int& totalRuns, double& score);
+    void insertRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);
+    void updateRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);
 
 private:
     MYSQL   m_mysql;

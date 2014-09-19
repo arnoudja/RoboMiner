@@ -43,7 +43,7 @@ public:
     };
 
 public:
-    CRobot(int maxTurns, int maxOre,
+    CRobot(int robotId, int maxTurns, int maxOre,
            int miningSpeed, int cpuSpeed,
            double forwardSpeed, double backwardSpeed, int rotateSpeed,
            int robotSize);
@@ -53,6 +53,8 @@ public:
 
     void prepareForAction();
     void applyRotation();
+
+    int getRobotId() const                                      { return m_robotId; }
 
     CPosition& getPosition()                                    { return m_position; }
     const CPosition& getPosition() const                        { return m_position; }
@@ -109,7 +111,10 @@ public:
     void setMaxXPos(double max)                                 { m_maxXPos = max; }
     void setMaxYPos(double max)                                 { m_maxYPos = max; }
 
+    double calculateScore() const;
+
 private:
+    int                     m_robotId;
     CPosition               m_position;
     CGroundUnit::TOreAmount m_ore;
     int                     m_maxTurns;

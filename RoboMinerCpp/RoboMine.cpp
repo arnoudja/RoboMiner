@@ -96,7 +96,7 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
                 cout << ", ";
             }
             cout << iter->usersId;
-            robots[iRobot] = new CRobotProgram(iter->sourceCode, iter->maxTurns, iter->maxOre,
+            robots[iRobot] = new CRobotProgram(iter->robotId, iter->sourceCode, iter->maxTurns, iter->maxOre,
                                                iter->miningSpeed, iter->cpuSpeed,
                                                iter->forwardSpeed, iter->backwardSpeed, iter->rotateSpeed,
                                                iter->robotSize);
@@ -114,7 +114,8 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
 
             for (; iRobot < 4; ++iRobot)
             {
-                robots[iRobot] = new CRobotProgram(aiRobotData.sourceCode, aiRobotData.maxTurns, aiRobotData.maxOre,
+                robots[iRobot] = new CRobotProgram(-1,
+                                                   aiRobotData.sourceCode, aiRobotData.maxTurns, aiRobotData.maxOre,
                                                    aiRobotData.miningSpeed, aiRobotData.cpuSpeed,
                                                    aiRobotData.forwardSpeed, aiRobotData.backwardSpeed, aiRobotData.rotateSpeed,
                                                    aiRobotData.robotSize);
@@ -123,13 +124,13 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
                 rally.addRobot(*robots[iRobot]);
             }
         }
-    
+
         rally.start();
         
         int rallyResultId = database.addAnimation(rally.getAnimationData());
-        
+
         database.updateMiningRally(miningRallyItems, rallyResultId);
-        
+
         for (iRobot = 0; iRobot < 4; ++iRobot)
         {
             if (miningQueueIds[iRobot] > 0)
@@ -138,6 +139,7 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
                 {
                     if (robots[iRobot]->getOre()[iOre] > 0)
                     {
+                        database.updateRobotScore(robots[iRobot]->getRobotId(), miningArea.miningAreaId, robots[iRobot]->calculateScore());
                         database.addMiningOreResult(miningQueueIds[iRobot], rally.getOreId(iOre), robots[iRobot]->getOre()[iOre]);
                     }
                 }
@@ -199,7 +201,8 @@ void runPoolRally(CDatabase& database,
     int iRobot = 0;
     for (list<CDatabase::PoolRallyItem>::const_iterator iter = poolRallyItemList.begin(); iter != poolRallyItemList.end(); ++iter, ++iRobot)
     {
-        robots[iRobot] = new CRobotProgram(iter->sourceCode, iter->maxTurns, iter->maxOre,
+        robots[iRobot] = new CRobotProgram(-1,
+                                           iter->sourceCode, iter->maxTurns, iter->maxOre,
                                            iter->miningSpeed, iter->cpuSpeed,
                                            iter->forwardSpeed, iter->backwardSpeed, iter->rotateSpeed,
                                            iter->robotSize);
@@ -214,7 +217,8 @@ void runPoolRally(CDatabase& database,
 
         for (; iRobot < 4; ++iRobot)
         {
-            robots[iRobot] = new CRobotProgram(aiRobotData.sourceCode, aiRobotData.maxTurns, aiRobotData.maxOre,
+            robots[iRobot] = new CRobotProgram(-1,
+                                               aiRobotData.sourceCode, aiRobotData.maxTurns, aiRobotData.maxOre,
                                                aiRobotData.miningSpeed, aiRobotData.cpuSpeed,
                                                aiRobotData.forwardSpeed, aiRobotData.backwardSpeed, aiRobotData.rotateSpeed,
                                                aiRobotData.robotSize);
@@ -230,20 +234,15 @@ void runPoolRally(CDatabase& database,
     {
         if (iter != poolRallyItemList.end())
         {
-            int score = 0;
-            int factor = 1;
             for (unsigned int iOre = 0; iOre < robots[iRobot]->getOre().size(); ++iOre)
             {
                 if (robots[iRobot]->getOre()[iOre] > 0)
                 {
-                    score += robots[iRobot]->getOre()[iOre] * factor;
                     database.updatePoolItemMiningTotals(iter->poolItemId, rally.getOreId(iOre), robots[iRobot]->getOre()[iOre]);
                 }
-
-                factor = factor * 10;
             }
 
-            database.updatePoolItem(iter->poolItemId, score);
+            database.updatePoolItem(iter->poolItemId, robots[iRobot]->calculateScore());
 
             ++iter;
         }

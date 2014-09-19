@@ -48,12 +48,13 @@ using namespace std;
 using namespace robotcode;
 
 
-CRobotProgram::CRobotProgram(const string& source,
+CRobotProgram::CRobotProgram(int robotId,
+                             const string& source,
                              int maxTurns, int maxOre,
                              int miningSpeed, int cpuSpeed,
                              double forwardSpeed, double backwardSpeed, int rotateSpeed,
                              int robotSize) :
-    CRobot(maxTurns, maxOre,
+    CRobot(robotId, maxTurns, maxOre,
            miningSpeed, cpuSpeed,
            forwardSpeed, backwardSpeed, rotateSpeed,
            robotSize),

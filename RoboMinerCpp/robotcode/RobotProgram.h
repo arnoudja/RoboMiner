@@ -35,7 +35,8 @@ namespace robotcode
         public CRobot
     {
     public:
-        CRobotProgram(const std::string& source,
+        CRobotProgram(int robotId,
+                      const std::string& source,
                       int maxTurns, int maxOre,
                       int miningSpeed, int cpuSpeed,
                       double forwardSpeed, double backwardSpeed, int rotateSpeed,
