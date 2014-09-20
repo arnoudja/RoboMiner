@@ -19,6 +19,7 @@
 
 package nl.robominer.businessentity;
 
+import bcrypt.BCrypt;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import nl.robominer.entity.Achievement;
 import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.MiningAreaLifetimeResult;
 import nl.robominer.entity.MiningOreResult;
@@ -40,23 +42,29 @@ import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Ore;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
+import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotDailyResult;
 import nl.robominer.entity.RobotDailyRuns;
 import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
+import nl.robominer.entity.UserAchievement;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
+import nl.robominer.entity.Users;
 import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
+import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RobotDailyResultFacade;
 import nl.robominer.session.RobotDailyRunsFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
+import nl.robominer.session.UserAchievementFacade;
 import nl.robominer.session.UserOreAssetFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  * Bean to handle the user-assets transactions.
@@ -66,6 +74,24 @@ import nl.robominer.session.UserRobotPartAssetFacade;
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
 public class UserAssets {
+
+    /**
+     * Enumeration type used for the status of a create user attempt.
+     */
+    public enum ECreateUserResult {
+        SUCCESS,
+        USERNAME_TAKEN,
+        EMAIL_TAKEN
+    }
+
+    /**
+     * Result data type for a create user attempt.
+     */
+    public class CreateUserResultData {
+        
+        public int userId;
+        public ECreateUserResult result;
+    }
 
     /**
      * Database transactions resource.
@@ -128,10 +154,28 @@ public class UserAssets {
     private RobotPartFacade robotPartFacade;
 
     /**
+     * Bean to handle the database actions for the user data.
+     */
+    @EJB
+    private UsersFacade usersFacade;
+
+    /**
      * Bean to handle the database actions for the user robot part assets.
      */
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
+
+    /**
+     * Bean to handle the database actions for the user achievements.
+     */
+    @EJB
+    private UserAchievementFacade userAchievementFacade;
+
+    /**
+     * Bean to handle the database actions for the program sources.
+     */
+    @EJB
+    private ProgramSourceFacade programSourceFacade;
 
     /**
      * Process all claimable mining results for the specified user.
@@ -324,7 +368,199 @@ public class UserAssets {
         return succeeded;
     }
 
-    public void addRobotPart(int usersId, int robotPartId, boolean assigned) {
+    /**
+     * For the specified user, mark the specified achievement as completed,
+     * add the achievement rewards to the user assets and make the follow-up
+     * achievements available.
+     *
+     * @param usersId The id of the user to complete the achievement for.
+     * @param achievementId The id of the achievement to complete.
+     *
+     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     */
+    public void claimAchievement(int usersId, int achievementId)
+            throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+
+        transaction.begin();
+
+        UserAchievement userAchievement = userAchievementFacade.findByUsersAndAchievementId(usersId, achievementId);
+
+        if (userAchievement != null && !userAchievement.getClaimed()) {
+
+            userAchievement.setClaimed(true);
+            userAchievementFacade.edit(userAchievement);
+
+            Users user = usersFacade.findById(usersId);
+            Achievement achievement = userAchievement.getAchievement();
+
+            user.increaseAchievementPoints(achievement.getAchievementPoints());
+            user.increaseMiningQueueSize(achievement.getMiningQueueReward());
+
+            if (achievement.getRobotReward() > 0) {
+                addRobot(user);
+            }
+
+            usersFacade.edit(user);
+
+            List<Achievement> achievementSuccessorList = achievement.getAchievementSuccessorList();
+
+            for (Achievement successor : achievementSuccessorList) {
+
+                UserAchievement successorUserAchievement = new UserAchievement(usersId, successor.getId());
+                userAchievementFacade.create(successorUserAchievement);
+            }
+        }
+
+        transaction.commit();
+    }
+
+    /**
+     * Create a new user, or specify the reason why this is not possible for the
+     * specified data.
+     *
+     * @param username The requested username.
+     * @param email The e-mail address of the new user.
+     * @param password The password for the new user.
+     *
+     * @return The status of the create user attempt.
+     *
+     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     */
+    public CreateUserResultData createNewUser(String username, String email, String password)
+            throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+
+        CreateUserResultData result = new CreateUserResultData();
+
+        transaction.begin();
+
+        if (usersFacade.findByUsername(username) != null) {
+
+            result.result = ECreateUserResult.USERNAME_TAKEN;
+            transaction.rollback();
+        }
+        else if (usersFacade.findByEmail(email) != null) {
+
+            result.result = ECreateUserResult.EMAIL_TAKEN;
+            transaction.rollback();
+        }
+        else {
+
+            Users newuser = new Users();
+            newuser.setUsername(username);
+            newuser.setEmail(email);
+            newuser.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+            newuser.setMiningQueueSize(1);
+
+            usersFacade.create(newuser);
+
+            // Force a database write to make sure the usersId is available.
+            usersFacade.flush();
+
+            addNewUserData(newuser);
+
+            transaction.commit();
+
+            result.userId = newuser.getId();
+            result.result = ECreateUserResult.SUCCESS;
+        }
+
+        return result;
+    }
+
+    /**
+     * Add data for a newly created user.
+     *
+     * @param user 
+     */
+    private void addNewUserData(Users user) {
+
+        // Add the first robot to the user
+        addRobot(user);
+
+        // Add the first achievement
+        UserAchievement userAchievement = new UserAchievement(user.getId(), 1);
+        userAchievementFacade.create(userAchievement);
+    }
+
+    /**
+     * Add a new robot for the specified user.
+     *
+     * @param user The user to add the robot for.
+     */
+    private void addRobot(Users user) {
+
+        // Retrieve the initial robot parts
+        RobotPart oreContainer  = robotPartFacade.find(101);
+        RobotPart miningUnit    = robotPartFacade.find(201);
+        RobotPart battery       = robotPartFacade.find(301);
+        RobotPart memoryModule  = robotPartFacade.find(401);
+        RobotPart cpu           = robotPartFacade.find(501);
+        RobotPart engine        = robotPartFacade.find(601);
+
+        // Add the initial robot parts for the user
+        addRobotPart(user.getId(), oreContainer.getId(), true);
+        addRobotPart(user.getId(), miningUnit.getId(), true);
+        addRobotPart(user.getId(), battery.getId(), true);
+        addRobotPart(user.getId(), memoryModule.getId(), true);
+        addRobotPart(user.getId(), cpu.getId(), true);
+        addRobotPart(user.getId(), engine.getId(), true);
+
+        // Retrieve or create a suitable program
+        ProgramSource programSource = getSuitableProgramSource(user.getId(), memoryModule.getMemoryCapacity());
+
+        // Create the new robot for the user
+        Robot robot = new Robot();
+        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
+        robot.setRobotName(user.getUsername() + "_" + (user.getRobots().size() + 1));
+        robot.setUser(user);
+        robot.setProgramSourceId(programSource.getId());
+        robot.setSourceCode(programSource.getSourceCode());
+        robotFacade.create(robot);
+    }
+
+    /**
+     * Find a valid program from the specified user with a compiled size not
+     * exceeding the specified maximum. If no such program exists yet,
+     * create one.
+     *
+     * @param userId The user to retrieve or create the program for.
+     * @param maxSize The maximum compiled size of the program.
+     *
+     * @return The ProgramSource instance.
+     */
+    private ProgramSource getSuitableProgramSource(int userId, int maxSize) {
+
+        ProgramSource programSource = programSourceFacade.findSuiteableByUsersId(userId, maxSize);
+
+        if (programSource == null) {
+
+            programSource = new ProgramSource();
+            programSource.fillDefaults();
+            programSource.setSourceName("Default program");
+            programSource.setUsersId(userId);
+            programSourceFacade.create(programSource);
+        }
+
+        return programSource;
+    }
+
+    /**
+     * Add a robot part to the user assets.
+     *
+     * @param usersId The id of the user to add the robot part to.
+     * @param robotPartId The id of the robot part to add.
+     * @param assigned When true, the robot part is added as assigned to a robot,
+     *                 when false it is added as unassigned.
+     */
+    private void addRobotPart(int usersId, int robotPartId, boolean assigned) {
 
         UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, robotPartId);
 

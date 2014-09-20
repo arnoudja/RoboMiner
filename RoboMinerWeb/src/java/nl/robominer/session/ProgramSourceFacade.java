@@ -19,9 +19,7 @@
 
 package nl.robominer.session;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +32,7 @@ import nl.robominer.entity.ProgramSource;
  */
 @Stateless
 public class ProgramSourceFacade extends AbstractFacade<ProgramSource> {
+
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
@@ -65,6 +64,19 @@ public class ProgramSourceFacade extends AbstractFacade<ProgramSource> {
         query.setParameter("usersId", usersId);
         
         return query.getResultList();
+    }
+
+    public ProgramSource findSuiteableByUsersId(int usersId, int maxSize) {
+
+        try {
+            Query query = getEntityManager().createNamedQuery("ProgramSource.findSuiteableByUsersId", ProgramSource.class);
+            query.setParameter("usersId", usersId);
+            query.setParameter("maxSize", maxSize);
+            return (ProgramSource)query.getSingleResult();
+        }
+        catch (javax.persistence.NoResultException exc) {
+            return null;
+        }
     }
 
 }

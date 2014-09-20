@@ -27,18 +27,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nl.robominer.entity.ProgramSource;
-import nl.robominer.entity.Robot;
-import nl.robominer.entity.RobotPart;
-import nl.robominer.entity.UserAchievement;
-import nl.robominer.entity.UserRobotPartAsset;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.Users;
-import nl.robominer.session.ProgramSourceFacade;
-import nl.robominer.session.RoboMinerCppBean;
-import nl.robominer.session.RobotFacade;
-import nl.robominer.session.RobotPartFacade;
-import nl.robominer.session.UserAchievementFacade;
-import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -48,65 +43,73 @@ import nl.robominer.session.UsersFacade;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends RoboMinerServletBase {
 
-    private static final String rememberCookieName = "remember";
-    private static final int maxRememberCookieAge = 31 * 24 * 60 * 60;
-    
+    /**
+     * The javascript view used for displaying the leaderboard page.
+     */
+    private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/login.jsp";
+
+    /**
+     * The name of the cookie for storing the username client-side.
+     */
+    private static final String REMEMBER_USERNAME_COOKIE_NAME = "remember";
+
+    /**
+     * The maximum age of the remember-username cookie, in seconds.
+     */
+    private static final int REMEMBER_USERNAME_COOKIE_MAXAGE = 31 * 24 * 60 * 60;
+
+    /**
+     * Bean to handle the database actions for the user.
+     */
     @EJB
     private UsersFacade usersFacade;
-
-    @EJB
-    private ProgramSourceFacade programSourceFacade;
-    
-    @EJB
-    private RobotFacade robotFacade;
-
-    @EJB
-    private RobotPartFacade robotPartFacade;
-
-    @EJB
-    private UserRobotPartAssetFacade userRobotPartAssetFacade;
-    
-    @EJB
-    private RoboMinerCppBean roboMinerCppBean;
-
-    @EJB
-    private UserAchievementFacade userAchievementFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Process a login request, if found.
         if (loginUser(request, response)) {
 
             response.sendRedirect("miningQueue");
         }
+        // Process a signup request, if found.
         else if (!createNewUser(request, response)) {
 
+            // No (valid) login or signup found, initialise the login page.
             Cookie[] cookies = request.getCookies();
-            
+
             if (cookies != null) {
 
                 for (Cookie cookie : cookies) {
 
-                    if (cookie.getName().equals(rememberCookieName)) {
+                    if (cookie.getName().equals(REMEMBER_USERNAME_COOKIE_NAME)) {
                         request.setAttribute("loginName", cookie.getValue());
                     }
                 }
             }
 
-            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+            request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
         }
     }
 
+    /**
+     * Process a login attempt, if found.
+     *
+     * @param request The servlet request.
+     * @param response The servlet response.
+     *
+     * @return true when the user is logged in successful, false if not.
+     */
     private boolean loginUser(HttpServletRequest request, HttpServletResponse response) {
 
         boolean result = false;
@@ -119,13 +122,13 @@ public class LoginServlet extends RoboMinerServletBase {
 
         if (user != null && BCrypt.checkpw(password, user.getPassword())) {
 
-            Cookie rememberCookie = new Cookie(rememberCookieName, loginName);
+            Cookie rememberCookie = new Cookie(REMEMBER_USERNAME_COOKIE_NAME, loginName);
 
             if (remember == null || remember.isEmpty()) {
                 rememberCookie.setMaxAge(0);
             }
             else {
-                rememberCookie.setMaxAge(maxRememberCookieAge);
+                rememberCookie.setMaxAge(REMEMBER_USERNAME_COOKIE_MAXAGE);
             }
 
             response.addCookie(rememberCookie);
@@ -138,10 +141,21 @@ public class LoginServlet extends RoboMinerServletBase {
         return result;
     }
 
+    /**
+     * Process a create user request, if found in the request.
+     *
+     * @param request The servlet request.
+     * @param response The servlet response.
+     *
+     * @return true when a user creation attempt is done, false when not.
+     * Response handling is done if and only if true is returned.
+     *
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
+     */
     private boolean createNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         boolean result = false;
-        String errorMessage = null;
 
         String newusername      = request.getParameter("newusername");
         String email            = request.getParameter("email");
@@ -153,85 +167,41 @@ public class LoginServlet extends RoboMinerServletBase {
             newpassword != null && newpassword.length() >= 8 &&
             confirmpassword != null && confirmpassword.equals(newpassword)) {
 
-            if (usersFacade.findByUsername(newusername) != null) {
-                errorMessage = "Username already taken, please choose another one";
-            }
-            else if (usersFacade.findByEmail(email) != null) {
-                errorMessage = "You already have an account, please login using your e-mail address";
-            }
-            else {
-                Users newuser = new Users();
-                newuser.setUsername(newusername);
-                newuser.setEmail(email);
-                newuser.setPassword(BCrypt.hashpw(newpassword, BCrypt.gensalt()));
-                newuser.setMiningQueueSize(1);
+            String errorMessage = null;
 
-                try {
-                    usersFacade.create(newuser);
+            try {
+                UserAssets.CreateUserResultData createResult = getUserAssets().createNewUser(newusername, email, newpassword);
 
-                    addNewUserData(newuser);
-
-                    setUserId(request, newuser.getId());
+                if (createResult.result == UserAssets.ECreateUserResult.USERNAME_TAKEN) {
+                    errorMessage = "Username already taken, please choose another one";
+                }
+                else if (createResult.result == UserAssets.ECreateUserResult.EMAIL_TAKEN) {
+                    errorMessage = "You already have an account, please login using your e-mail address";
+                }
+                else {
+                    setUserId(request, createResult.userId);
 
                     result = true;
 
                     response.sendRedirect("miningQueue");
                 }
-                catch (javax.ejb.EJBException exc) {
-                    throw new ServletException(exc);
-                }
+            }
+            catch (NotSupportedException | SystemException | RollbackException |
+                   HeuristicMixedException | HeuristicRollbackException ex) {
+                throw new ServletException(ex);
+            }
+
+            if (!result) {
+
+                request.setAttribute("errorMessage", errorMessage);
+                request.setAttribute("newusername", newusername);
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                result = true;
             }
         }
-        
-        if (errorMessage != null) {
-            
-            request.setAttribute("errorMessage", errorMessage);
-            request.setAttribute("newusername", newusername);
-            request.setAttribute("email", email);
-            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-            result = true;
-        }
-            
+
         return result;
-    }
-
-    private void addNewUserData(Users user) {
-
-        // Create a new program for the user
-        ProgramSource programSource = new ProgramSource();
-        programSource.fillDefaults();
-        programSource.setSourceName("Program 1");
-        programSource.setUsersId(user.getId());
-        programSourceFacade.create(programSource);
-        roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
-
-        // Retrieve the initial robot parts
-        RobotPart oreContainer  = robotPartFacade.find(101);
-        RobotPart miningUnit    = robotPartFacade.find(201);
-        RobotPart battery       = robotPartFacade.find(301);
-        RobotPart memoryModule  = robotPartFacade.find(401);
-        RobotPart cpu           = robotPartFacade.find(501);
-        RobotPart engine        = robotPartFacade.find(601);
-
-        // Add the initial robot parts for the user
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), oreContainer.getId(), 1, 0));
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), miningUnit.getId(), 1, 0));
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), battery.getId(), 1, 0));
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), memoryModule.getId(), 1, 0));
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), cpu.getId(), 1, 0));
-        userRobotPartAssetFacade.create(new UserRobotPartAsset(user.getId(), engine.getId(), 1, 0));
-
-        // Create a robot for the user
-        Robot robot = new Robot();
-        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
-        robot.setRobotName("Robot1");
-        robot.setUser(user);
-        robot.setProgramSourceId(programSource.getId());
-        robotFacade.create(robot);
-
-        // Add the first achievement
-        UserAchievement userAchievement = new UserAchievement(user.getId(), 1);
-        userAchievementFacade.create(userAchievement);
     }
 
     /**

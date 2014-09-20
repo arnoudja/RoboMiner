@@ -33,7 +33,7 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import nl.robominer.businessentity.UserAchievements;
+import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.AchievementMiningTotalRequirement;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotLifetimeResult;
@@ -56,7 +56,7 @@ public class AchievementServlet extends RoboMinerServletBase {
     private RobotFacade robotFacade;
 
     @EJB
-    private UserAchievements userAchievements;
+    private UserAssets userAssets;
 
     @EJB
     private UsersFacade usersFacade;
@@ -145,7 +145,7 @@ public class AchievementServlet extends RoboMinerServletBase {
 
             if (claimable) {
                 try {
-                    userAchievements.claimAchievement(usersId, achievementId);
+                    userAssets.claimAchievement(usersId, achievementId);
                 }
                 catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException ex) {
                     throw new ServletException(ex);

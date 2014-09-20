@@ -26,7 +26,7 @@ import nl.robominer.entity.MiningQueue;
  * @author Arnoud Jagerman
  */
 public class MiningQueueItem {
-    
+
     public enum EMiningQueueItemStatus {
         MINING("Mining"),
         RECHARGING("Recharging"),

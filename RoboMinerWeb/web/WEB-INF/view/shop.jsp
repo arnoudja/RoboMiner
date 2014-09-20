@@ -183,7 +183,7 @@
                         <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
                         <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.tierName)}</td>
                         <td>${userRobotPartAsset.totalOwned}</td>
-                        <td>${euserRobotPartAsset.unassigned}</td>
+                        <td>${userRobotPartAsset.unassigned}</td>
                         <td>
                             <c:if test="${userRobotPartAsset.unassigned gt 0}">
                                 <button onclick="sellItem(${userRobotPartAsset.robotPart.id}, '${fn:escapeXml(userRobotPartAsset.robotPart.partName)}');">Sell</button>

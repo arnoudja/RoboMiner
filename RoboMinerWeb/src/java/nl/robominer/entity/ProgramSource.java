@@ -45,42 +45,43 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProgramSource.findAll", query = "SELECT p FROM ProgramSource p"),
     @NamedQuery(name = "ProgramSource.findById", query = "SELECT p FROM ProgramSource p WHERE p.id = :id"),
     @NamedQuery(name = "ProgramSource.findByIdAndUser", query = "SELECT p FROM ProgramSource p WHERE p.id = :id AND p.usersId = :usersId"),
-    @NamedQuery(name = "ProgramSource.findByUsersId", query = "SELECT p FROM ProgramSource p WHERE p.usersId = :usersId ORDER BY p.id")})
+    @NamedQuery(name = "ProgramSource.findByUsersId", query = "SELECT p FROM ProgramSource p WHERE p.usersId = :usersId ORDER BY p.id"),
+    @NamedQuery(name = "ProgramSource.findSuiteableByUsersId", query = "SELECT p FROM ProgramSource p WHERE p.usersId = :usersId AND p.compiledSize <= :maxSize AND p.verified = TRUE ORDER BY p.id")})
 public class ProgramSource implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "usersId")
     private int usersId;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "sourceName")
     private String sourceName;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "verified")
     private boolean verified;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "compiledSize")
     private int compiledSize;
-    
+
     @Size(max = 255)
     @Column(name = "errorDescription")
     private String errorDescription;
-    
+
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -146,7 +147,7 @@ public class ProgramSource implements Serializable {
     public void fillDefaults() {
 
         setVerified(true);
-        setCompiledSize(-1);
+        setCompiledSize(4);
         setErrorDescription("");
         setSourceCode("move(1);\nmine();");
     }
@@ -165,10 +166,8 @@ public class ProgramSource implements Serializable {
             return false;
         }
         ProgramSource other = (ProgramSource) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) ||
+                 (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

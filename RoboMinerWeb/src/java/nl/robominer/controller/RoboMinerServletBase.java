@@ -72,6 +72,15 @@ public abstract class RoboMinerServletBase extends HttpServlet {
     abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
     /**
+     * Retrieve the user-assets bean.
+     *
+     * @return The user-assets bean.
+     */
+    protected UserAssets getUserAssets() {
+        return userAssets;
+    }
+
+    /**
      * Retrieve the user-id for the currently logged-in user.
      *
      * @param request The servlet request.
