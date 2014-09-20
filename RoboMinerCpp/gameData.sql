@@ -234,28 +234,28 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3302, 330, 2,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3303, 330, 3, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3304, 330, 4, 15);
 insert into RobotPart (id,  typeId, partName,             orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (330, 3,      'Neudralion Battery', 330,        29000,           120,           8,      7,      0);
+               values (330, 3,      'Neudralion Battery', 330,        34000,           120,           8,      7,      0);
 
 insert into OrePrice (id, description) values (331, 'Enhanced Neudralion Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3312, 331, 2, 350);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3313, 331, 3, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3314, 331, 4, 60);
 insert into RobotPart (id,  typeId, partName,                      orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (331, 3,      'Enhanced Neudralion Battery', 331,        32000,           180,          9,      8,      0);
+               values (331, 3,      'Enhanced Neudralion Battery', 331,        42000,           180,          9,      8,      0);
 
 insert into OrePrice (id, description) values (340, 'Complatix Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3403, 340, 3, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3404, 340, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3405, 340, 5, 10);
 insert into RobotPart (id,  typeId, partName,            orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (340, 3,      'Complatix Battery', 340,        39000,           240,          10,     9,      0);
+               values (340, 3,      'Complatix Battery', 340,        56000,           240,          10,     9,      0);
 
 insert into OrePrice (id, description) values (341, 'Enhanced Complatix Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3413, 341, 3, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3414, 341, 4, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3415, 341, 5, 75);
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (341, 3,      'Enhanced Complatix Battery', 341,        45000,           300,          11,     10,      0);
+               values (341, 3,      'Enhanced Complatix Battery', 341,        72000,           300,          11,     10,      0);
 
 -- Memory modules
 insert into OrePrice (id, description) values (401, 'Memory Module 8 price');
