@@ -38,7 +38,7 @@ import nl.robominer.entity.AchievementMiningTotalRequirement;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.UserAchievement;
-import nl.robominer.session.RobotFacade;
+import nl.robominer.entity.Users;
 import nl.robominer.session.UserAchievementFacade;
 import nl.robominer.session.UsersFacade;
 
@@ -51,9 +51,6 @@ public class AchievementServlet extends RoboMinerServletBase {
 
     @EJB
     private UserAchievementFacade userAchievementFacade;
-
-    @EJB
-    private RobotFacade robotFacade;
 
     @EJB
     private UserAssets userAssets;
@@ -74,41 +71,41 @@ public class AchievementServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int usersId = (int) request.getSession().getAttribute("userId");
+        Users user = usersFacade.findById(getUserId(request));
 
         int achievementId = getItemId(request, "achievementId");
         if (achievementId > 0) {
-            claimAchievement(usersId, achievementId);
+            claimAchievement(user, achievementId);
         }
 
         // Add the user data
-        request.setAttribute("user", usersFacade.findById(usersId));
+        request.setAttribute("user", user);
 
         // Add the list of achievements to display
-        List<UserAchievement> userAchievementList = userAchievementFacade.findUnclaimedByUsersId(usersId);
+        List<UserAchievement> userAchievementList = userAchievementFacade.findUnclaimedByUsersId(user.getId());
         request.setAttribute("userAchievementList", userAchievementList);
 
         // Add the amounts of ore mined
-        request.setAttribute("totalOreMined", getTotalOreMined(usersId));
+        request.setAttribute("totalOreMined", getTotalOreMined(user));
 
         request.getRequestDispatcher("/WEB-INF/view/achievements.jsp").forward(request, response);
     }
 
-    private Map<Integer, Long> getTotalOreMined(int userId) {
-        
+    private Map<Integer, Long> getTotalOreMined(Users user) {
+
         Map<Integer, Long> result = new HashMap<>();
-        
-        List<Robot> robotList = robotFacade.findByUsersId(userId);
-        
+
+        List<Robot> robotList = user.getRobotList();
+
         for (Robot robot : robotList) {
-            
+
             List<RobotLifetimeResult> robotLifetimeResultList = robot.getRobotLifetimeResultList();
-            
+
             for (RobotLifetimeResult robotLifetimeResult : robotLifetimeResultList) {
-                
+
                 int oreId = robotLifetimeResult.getRobotLifetimeResultPK().getOreId();
                 Long oldResult = result.get(oreId);
-                
+
                 Long newResult;
                 if (oldResult == null) {
                     newResult = (long)robotLifetimeResult.getAmount();
@@ -124,14 +121,14 @@ public class AchievementServlet extends RoboMinerServletBase {
         return result;
     }
 
-    private void claimAchievement(int usersId, int achievementId) throws ServletException {
+    private void claimAchievement(Users user, int achievementId) throws ServletException {
 
-        UserAchievement userAchievement = userAchievementFacade.findByUsersAndAchievementId(usersId, achievementId);
+        UserAchievement userAchievement = userAchievementFacade.findByUsersAndAchievementId(user.getId(), achievementId);
 
         if (userAchievement != null && !userAchievement.getClaimed()) {
 
             boolean claimable = true;
-            Map<Integer, Long> totalOreMined = getTotalOreMined(usersId);
+            Map<Integer, Long> totalOreMined = getTotalOreMined(user);
 
             List<AchievementMiningTotalRequirement> achievementMiningTotalRequirementList = userAchievement.getAchievement().getAchievementMiningTotalRequirementList();
 
@@ -145,7 +142,7 @@ public class AchievementServlet extends RoboMinerServletBase {
 
             if (claimable) {
                 try {
-                    userAssets.claimAchievement(usersId, achievementId);
+                    userAssets.claimAchievement(user.getId(), achievementId);
                 }
                 catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException ex) {
                     throw new ServletException(ex);

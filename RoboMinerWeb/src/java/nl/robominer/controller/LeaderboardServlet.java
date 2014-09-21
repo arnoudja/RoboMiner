@@ -108,6 +108,7 @@ public class LeaderboardServlet extends RoboMinerServletBase {
         }
         request.setAttribute("robotMiningAreaScoreMap", robotMiningAreaScoreMap);
 
+        // Add the user account information to the request.
         request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);

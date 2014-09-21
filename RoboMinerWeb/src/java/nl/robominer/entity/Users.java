@@ -21,6 +21,7 @@ package nl.robominer.entity;
 
 import bcrypt.BCrypt;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Basic;
@@ -145,7 +146,7 @@ public class Users implements Serializable {
      */
     @OneToMany
     @JoinColumn(name = "Robot.usersId")
-    private List<Robot> robots;
+    private List<Robot> robotList;
 
     /**
      * The list of robot program sources owned by the user.
@@ -153,6 +154,10 @@ public class Users implements Serializable {
     @OneToMany
     @JoinColumn(name = "ProgramSource.usersId")
     private List<ProgramSource> programSourceList;
+
+    @OneToMany
+    @JoinColumn(name = "UserRobotPartAsset.usersId")
+    private List<UserRobotPartAsset> userRobotPartAssetList;
 
     /**
      * Default constructor.
@@ -364,8 +369,25 @@ public class Users implements Serializable {
      *
      * @return The list of robots.
      */
-    public List<Robot> getRobots() {
-        return robots;
+    public List<Robot> getRobotList() {
+        return robotList;
+    }
+
+    /**
+     * Retrieve the specified user robot.
+     *
+     * @param robotId The id of the robot to retrieve.
+     *
+     * @return The robot instance, or null if not found.
+     */
+    public Robot getRobot(int robotId) {
+        for (Robot robot : robotList) {
+            if (robot.getId() == robotId) {
+                return robot;
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -375,6 +397,51 @@ public class Users implements Serializable {
      */
     public List<ProgramSource> getProgramSourceList() {
         return programSourceList;
+    }
+
+    /**
+     * Retrieve the specified user program source.
+     *
+     * @param programSourceId The id of the user program source to retrieve.
+     *
+     * @return The program source instance, or null if not found.
+     */
+    public ProgramSource getProgramSource(int programSourceId) {
+        for (ProgramSource programSource : programSourceList) {
+            if (programSource.getId() == programSourceId) {
+                return programSource;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve the list of user robot part assets.
+     *
+     * @return The list of user robot part assets.
+     */
+    public List<UserRobotPartAsset> getUserRobotPartAssetList() {
+        return userRobotPartAssetList;
+    }
+
+    /**
+     * Retrieve the list of user robot part assets of the specified type.
+     *
+     * @param robotPartTypeId The robot part type id to filter on.
+     *
+     * @return The list of user robot part assets of the specified type.
+     */
+    public List<UserRobotPartAsset> getUserRobotPartAssetListOfType(int robotPartTypeId) {
+
+        List<UserRobotPartAsset> result = new ArrayList<>();
+        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList) {
+            if (userRobotPartAsset.getRobotPart().getRobotPartType().getId() == robotPartTypeId) {
+                result.add(userRobotPartAsset);
+            }
+        }
+
+        return result;
     }
 
     /**

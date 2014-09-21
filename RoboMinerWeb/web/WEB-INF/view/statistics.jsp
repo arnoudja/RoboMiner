@@ -46,7 +46,7 @@
             </select>
 
             <div id="totalStatistics">
-                <c:forEach var="robot" items="${robotList}">
+                <c:forEach var="robot" items="${user.robotList}">
                     <table class="statistics">
                         <caption>${fn:escapeXml(robot.robotName)}: ${robot.totalMiningRuns} runs</caption>
                         <tr>
@@ -89,25 +89,25 @@
             </div>
 
             <div id="lastRuns" style="display: none;">
-                <c:forEach var="robot" items="${robotList}">
+                <c:forEach var="robot" items="${user.robotList}">
                     <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastRunsStatisticsMap.get(robot.id)}" />
                 </c:forEach>
             </div>
 
             <div id="today" style="display: none;">
-                <c:forEach var="robot" items="${robotList}">
+                <c:forEach var="robot" items="${user.robotList}">
                     <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotTodayStatisticsMap.get(robot.id)}" />
                 </c:forEach>
             </div>
 
             <div id="yesterday" style="display: none;">
-                <c:forEach var="robot" items="${robotList}">
+                <c:forEach var="robot" items="${user.robotList}">
                     <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotYesterdayStatisticsMap.get(robot.id)}" />
                 </c:forEach>
             </div>
 
             <div id="lastweek" style="display: none;">
-                <c:forEach var="robot" items="${robotList}">
+                <c:forEach var="robot" items="${user.robotList}">
                     <rm:robotstatistics robotName="${robot.robotName}" robotStatistics="${robotLastWeekStatisticsMap.get(robot.id)}" />
                 </c:forEach>
             </div>

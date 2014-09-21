@@ -73,6 +73,8 @@ public class AccountServlet extends RoboMinerServletBase {
 
         Users user = usersFacade.findById(userId);
 
+        String currentusername = user.getUsername();
+
         if (username == null) {
             // Ignore, assuming the page is loaded for the first time.
         }
@@ -106,6 +108,7 @@ public class AccountServlet extends RoboMinerServletBase {
                 switch (usersFacade.update(user)) {
                     case eSuccess:
                         request.setAttribute("message", "Account information updated");
+                        currentusername = user.getUsername();
                         break;
 
                     case eDuplicateUsername:
@@ -119,9 +122,10 @@ public class AccountServlet extends RoboMinerServletBase {
             }
         }
 
-        // Add the current values to the request
-        request.setAttribute("username", user.getUsername());
-        request.setAttribute("email", user.getEmail());
+        request.setAttribute("user", user);
+
+        // The username in 'user' might have been changed but not saved to the database yet, so provide the database username separately
+        request.setAttribute("currentusername", currentusername);
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }

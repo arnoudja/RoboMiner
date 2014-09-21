@@ -31,9 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
+import nl.robominer.entity.Users;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.OreFacade;
-import nl.robominer.session.RobotFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -58,12 +58,6 @@ public class MiningResultsServlet extends RoboMinerServletBase {
      * The maximum number of mining results to show for each robot.
      */
     private static final int MAX_RESULTS = 10;
-
-    /**
-     * Bean to handle the database actions for the robots.
-     */
-    @EJB
-    private RobotFacade robotFacade;
 
     /**
      * Bean to handle the database actions for the mining results.
@@ -96,21 +90,19 @@ public class MiningResultsServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int userId = getUserId(request);
-
         // Retrieve the requested rally, if requested
         int rallyResultId = getItemId(request, "rallyResultId");
 
         MiningQueue miningResult = null;
 
         if (rallyResultId > 0) {
-            miningResult = miningQueueFacade.findByRallyAndUsersId(rallyResultId, userId);
+            miningResult = miningQueueFacade.findByRallyAndUsersId(rallyResultId, getUserId(request));
         }
 
         if (miningResult == null) {
 
             // No (valid) rally view requested, show the lists of rally results
-            showResultLists(request, response, userId);
+            showResultLists(request, response);
         }
         else {
 
@@ -129,23 +121,21 @@ public class MiningResultsServlet extends RoboMinerServletBase {
      * @throws ServletException if a servlet-specific error occurs.
      * @throws IOException if an I/O error occurs.
      */
-    private void showResultLists(HttpServletRequest request, HttpServletResponse response, int userId)
+    private void showResultLists(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         processAssets(request);
 
-        // Add the list of robots
-        List<Robot> robotList = robotFacade.findByUsersId(userId);
-        request.setAttribute("robotList", robotList);
+        Users user = usersFacade.findById(getUserId(request));
 
         // Add the map of robot id - mining results list
         Map< Integer, List<MiningQueue> > miningResultListMap = new HashMap<>();
-        for (Robot robot : robotList) {
+        for (Robot robot : user.getRobotList()) {
             miningResultListMap.put(robot.getId(), miningQueueFacade.findResultsByRobotId(robot.getId(), MAX_RESULTS));
         }
         request.setAttribute("miningResultListMap", miningResultListMap);
 
-        request.setAttribute("user", usersFacade.findById(getUserId(request)));
+        request.setAttribute("user", user);
 
         request.getRequestDispatcher(JAVASCRIPT_RESULTLISTS_VIEW).forward(request, response);
     }

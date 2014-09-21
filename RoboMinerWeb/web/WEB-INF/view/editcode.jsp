@@ -44,7 +44,7 @@
             <form id="changeProgramSourceForm" action="<c:url value='editCode'/>" method="post">
                 Edit code:
                 <select id="programSourceId" name="nextProgramSourceId" onchange="selectOtherSource();">
-                    <c:forEach var='programSourceItem' items='${programSourceList}'>
+                    <c:forEach var='programSourceItem' items='${user.programSourceList}'>
                         <option value="${programSourceItem.id}" ${programSourceItem.id eq programSourceId ? 'selected="selected"' : ''}>${fn:escapeXml(programSourceItem.sourceName)}</option>
                     </c:forEach>
                     <option value='-1' ${programSourceId le 0 ? 'selected="selected"' : ''}>New program</option>

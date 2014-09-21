@@ -69,7 +69,7 @@
                                 <td class="shopFirstRow">Part name:</td>
                                 <td class="shopPartName" colspan="3">${fn:escapeXml(robotPart.partName)}</td>
                                 <td class="shopFirstRow">
-                                    <c:if test="${user.canAffort(robotPart.orePrice) && user.robots.size() gt user.getTotalRobotPartAmount(robotPart.id)}">
+                                    <c:if test="${user.canAffort(robotPart.orePrice) && user.robotList.size() gt user.getTotalRobotPartAmount(robotPart.id)}">
                                             <button onclick="buyItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Buy</button>
                                     </c:if>
                                 </td>
@@ -178,7 +178,7 @@
                     <th>Unassigned</th>
                     <th></th>
                 </tr>
-                <c:forEach var="userRobotPartAsset" items="${userRobotPartAssetList}">
+                <c:forEach var="userRobotPartAsset" items="${user.userRobotPartAssetList}">
                     <tr>
                         <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
                         <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.tierName)}</td>

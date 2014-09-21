@@ -31,11 +31,9 @@ import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
 import nl.robominer.entity.Tier;
 import nl.robominer.entity.UserOreAsset;
-import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.TierFacade;
-import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -75,12 +73,6 @@ public class ShopServlet extends RoboMinerServletBase {
     private TierFacade tierFacade;
 
     /**
-     * Bean to handle the database actions for the user robot part assets.
-     */
-    @EJB
-    private UserRobotPartAssetFacade userRobotPartAssetFacade;
-
-    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -92,8 +84,6 @@ public class ShopServlet extends RoboMinerServletBase {
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int userId = getUserId(request);
 
         processAssets(request);
 
@@ -115,7 +105,7 @@ public class ShopServlet extends RoboMinerServletBase {
             selectedRobotPartTypeId = (int)request.getSession().getAttribute(SESSION_CATEGORY_ID);
         }
 
-        Users user = usersFacade.findById(userId);
+        Users user = usersFacade.findById(getUserId(request));
 
         // Initially select the highest tier the user has ore for
         if (selectedTierId < 1) {
@@ -136,10 +126,6 @@ public class ShopServlet extends RoboMinerServletBase {
         // Add the tier list
         List<Tier> tierList = tierFacade.findAll();
         request.setAttribute("tierList", tierList);
-
-        // Add the user robot part assets
-        List<UserRobotPartAsset> userRobotPartAssetList = userRobotPartAssetFacade.findByUsersId(userId);
-        request.setAttribute("userRobotPartAssetList", userRobotPartAssetList);
 
         // Add the previous selected part type and selection
         request.setAttribute("selectedRobotPartTypeId", selectedRobotPartTypeId);

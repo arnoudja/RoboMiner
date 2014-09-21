@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
+import nl.robominer.entity.Users;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RoboMinerCppBean;
@@ -72,15 +73,15 @@ public class EditCodeServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int userId = (int) request.getSession().getAttribute("userId");
-        
-        int programSourceId = getItemId(request, "programSourceId");
+        int userId = getUserId(request);
+
+        int programSourceId     = getItemId(request, "programSourceId");
         int nextProgramSourceId = getItemId(request, "nextProgramSourceId");
-        String sourceName = request.getParameter("sourceName");
-        String sourceCode = request.getParameter("sourceCode");
-        
+        String sourceName       = request.getParameter("sourceName");
+        String sourceCode       = request.getParameter("sourceCode");
+
         if (sourceName != null && sourceCode != null) {
-            
+
             if (programSourceId > 0) {
                 String errorMessage = updateProgramSource(userId, programSourceId, sourceName, sourceCode);
                 if (!errorMessage.isEmpty()) {
@@ -88,19 +89,16 @@ public class EditCodeServlet extends RoboMinerServletBase {
                 }
             }
             else {
-                
+
                 programSourceId = addProgramSource(userId, sourceName, sourceCode);
-                
+
                 if (nextProgramSourceId <= 0) {
-                    
                     nextProgramSourceId = programSourceId;
                 }
             }
         }
-        
-        // Add the list of program sources
-        List<ProgramSource> programSourceList = programSourceFacade.findByUsersId(userId);
-        request.setAttribute("programSourceList", programSourceList);
+
+        Users user = usersFacade.findById(userId);
 
         // When the page is opened, select the program from the session or open the first program on the list
         if (nextProgramSourceId == 0) {
@@ -108,8 +106,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
             if (request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID) != null) {
                 nextProgramSourceId = (int)request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID);
             }
-            else if (!programSourceList.isEmpty()) {
-                nextProgramSourceId = programSourceList.get(0).getId();
+            else if (!user.getProgramSourceList().isEmpty()) {
+                nextProgramSourceId = user.getProgramSourceList().get(0).getId();
             }
         }
 
@@ -123,13 +121,13 @@ public class EditCodeServlet extends RoboMinerServletBase {
         if (programSource == null) {
 
             nextProgramSourceId = -1;
-            
+
             programSource = new ProgramSource();
             programSource.fillDefaults();
             programSource.setUsersId(userId);
         }
 
-        request.setAttribute("user", usersFacade.findById(userId));
+        request.setAttribute("user", user);
 
         // Add the data of the currently selected source
         request.setAttribute("programSourceId", nextProgramSourceId);

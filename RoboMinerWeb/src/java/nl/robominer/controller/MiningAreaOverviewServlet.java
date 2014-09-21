@@ -61,14 +61,15 @@ public class MiningAreaOverviewServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Add the list of ore
+        // Add the list of ore to the request.
         List<Ore> oreList = oreFacade.findAll();
         request.setAttribute("oreList", oreList);
 
-        // Add the list of mining areas
+        // Add the list of mining areas to the request.
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);
 
+        // Add the user account information to the request.
         request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher("/WEB-INF/view/miningareaoverview.jsp").forward(request, response);

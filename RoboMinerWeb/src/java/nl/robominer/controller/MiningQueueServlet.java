@@ -38,7 +38,6 @@ import nl.robominer.entity.Robot;
 import nl.robominer.entity.Users;
 import nl.robominer.session.MiningAreaFacade;
 import nl.robominer.session.MiningQueueFacade;
-import nl.robominer.session.RobotFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -51,8 +50,8 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
     private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/miningqueue.jsp";
 
-    private static final String SESSION_INFO_MINING_AREA_ID  = "miningQueue_infoMiningAreaId";
-    private static final String SESSION_ROBOT_MINING_AREA_ID = "miningQueue_robotMiningAreaId";
+    private static final String SESSION_INFO_MINING_AREA_ID      = "miningQueue_infoMiningAreaId";
+    private static final String SESSION_ROBOT_MINING_AREA_ID_MAP = "miningQueue_robotMiningAreaIdMap";
 
     /**
      * Bean to handle the database actions for the user information.
@@ -67,12 +66,6 @@ public class MiningQueueServlet extends RoboMinerServletBase {
     private MiningQueueFacade miningQueueFacade;
 
     /**
-     * Bean to handle the database actions for the robots.
-     */
-    @EJB
-    private RobotFacade robotFacade;
-
-    /**
      * Bean to handle the database actions for the mining areas.
      */
     @EJB
@@ -82,16 +75,14 @@ public class MiningQueueServlet extends RoboMinerServletBase {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int userId = getUserId(request);
 
         processAssets(request);
 
@@ -100,85 +91,81 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         // Retrieve the form information.
         String submitType           = request.getParameter("submitType");
         String[] selectedQueueItems = request.getParameterValues("selectedQueueItemId");
-        int miningAreaId            = getItemId(request, "miningAreaId");
+        int infoMiningAreaId        = getItemId(request, "infoMiningAreaId");
         int miningAreaAddId         = getItemId(request, "miningAreaAddId");
         int robotId                 = getItemId(request, "robotId");
+
+        Users user = usersFacade.findById(getUserId(request));
 
         if (submitType != null) {
 
             // Process the request.
             switch (submitType) {
                 case "add":
-                    errorMessage = addMiningQueueItem(request, userId, robotId, miningAreaAddId);
+                    errorMessage = addMiningQueueItem(request, user.getRobot(robotId), miningAreaFacade.find(miningAreaAddId));
                     break;
 
                 case "remove":
                     if (selectedQueueItems != null) {
-                        removeMiningQueueItems(userId, robotId, selectedQueueItems);
+                        removeMiningQueueItems(user.getId(), robotId, selectedQueueItems);
                     }
                     break;
             }
         }
 
         // Add the user item
-        Users user = usersFacade.findById(userId);
         request.setAttribute("user", user);
-
-        // Add the list of robots
-        List<Robot> robotList = robotFacade.findByUsersId(userId);
-        request.setAttribute("robotList", robotList);
 
         // Add the map of mining queue items per robot id
         int largestQueueSize = 0;
         Map<Integer, List<MiningQueueItem> > robotMiningQueueMap = new HashMap<>();
-        for (Robot robot : robotList) {
+        for (Robot robot : user.getRobotList()) {
             List<MiningQueueItem> robotQueueList = getQueueInfo(miningQueueFacade.findWaitingByRobotId(robot.getId()), selectedQueueItems);
             robotMiningQueueMap.put(robot.getId(), robotQueueList);
             largestQueueSize = Math.max(largestQueueSize, robotQueueList.size());
         }
         request.setAttribute("robotMiningQueueMap", robotMiningQueueMap);
-        request.setAttribute("maxQueueSize", user.getMiningQueueSize());
 
         // Add the list of mining areas
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);
 
         // Restore the session selection or select first mining area from the lists when none selected yet
-        if (miningAreaId <= 0) {
+        if (infoMiningAreaId <= 0) {
 
             if (request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID) != null) {
-                miningAreaId = (int)request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID);
+                infoMiningAreaId = (int)request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID);
             }
             else if (!miningAreaList.isEmpty()) {
-                miningAreaId = miningAreaList.get(0).getId();
+                infoMiningAreaId = miningAreaList.get(0).getId();
             }
         }
 
         // Determine the selected mining area for each robot
-        Map<Integer, Integer> sessionRobotMiningAreaId = (Map<Integer, Integer>)request.getSession().getAttribute(SESSION_ROBOT_MINING_AREA_ID);
-        Map<Integer, Integer> robotMiningAreaId = new HashMap<>();
+        Map<Integer, Integer> sessionRobotMiningAreaIdMap = (Map<Integer, Integer>)request.getSession().getAttribute(SESSION_ROBOT_MINING_AREA_ID_MAP);
+        Map<Integer, Integer> robotMiningAreaIdMap = new HashMap<>();
 
-        for (Robot robot : robotList) {
+        for (Robot robot : user.getRobotList()) {
 
             int selectedMiningAreaId = getItemId(request, "miningArea" + robot.getId());
 
             if (selectedMiningAreaId <= 0) {
 
-                if (sessionRobotMiningAreaId != null && sessionRobotMiningAreaId.get(robot.getId()) != null) {
-                    selectedMiningAreaId = sessionRobotMiningAreaId.get(robot.getId());
+                if (sessionRobotMiningAreaIdMap != null && sessionRobotMiningAreaIdMap.get(robot.getId()) != null) {
+                    selectedMiningAreaId = sessionRobotMiningAreaIdMap.get(robot.getId());
                 }
                 else if (!miningAreaList.isEmpty()) {
                     selectedMiningAreaId = miningAreaList.get(0).getId();
                 }
             }
 
-            robotMiningAreaId.put(robot.getId(), selectedMiningAreaId);
+            robotMiningAreaIdMap.put(robot.getId(), selectedMiningAreaId);
         }
 
         // Add the previous selected ids
-        request.setAttribute("miningAreaId", miningAreaId);
+        request.setAttribute("infoMiningAreaId", infoMiningAreaId);
         request.setAttribute("selectedQueueItems", selectedQueueItems);
-        request.setAttribute("robotMiningAreaId", robotMiningAreaId);
+        request.setAttribute("robotMiningAreaIdMap", robotMiningAreaIdMap);
 
         // Add the error message
         if (errorMessage != null) {
@@ -186,24 +173,26 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
 
         // Store the selections in the session
-        request.getSession().setAttribute(SESSION_ROBOT_MINING_AREA_ID, robotMiningAreaId);
-        request.getSession().setAttribute(SESSION_INFO_MINING_AREA_ID, miningAreaId);
+        request.getSession().setAttribute(SESSION_ROBOT_MINING_AREA_ID_MAP, robotMiningAreaIdMap);
+        request.getSession().setAttribute(SESSION_INFO_MINING_AREA_ID, infoMiningAreaId);
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
-    private String addMiningQueueItem(HttpServletRequest request, int userId, int robotId, int miningAreaId) throws ServletException {
+    /**
+     * Add the requested mining area to the mining queue of the specified robot.
+     *
+     * @param request The servlet request.
+     * @param robot The robot to add the mining area queue item for.
+     * @param miningAreaId The mining area id to add to the queue.
+     *
+     * @return null if the item is added to the queue, else the error message.
+     *
+     * @throws ServletException if an unexpected problem occurred.
+     */
+    private String addMiningQueueItem(HttpServletRequest request, Robot robot, MiningArea miningArea) throws ServletException {
 
         String errorMessage = null;
-
-        List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robotId);
-        Robot robot = robotFacade.find(robotId);
-
-        if (robot.getUser().getId() != userId) {
-            robot = null;
-        }
-
-        MiningArea miningArea = miningAreaFacade.find(miningAreaId);
 
         if (robot == null) {
             errorMessage = "Unknown robot";
@@ -211,13 +200,17 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         else if (miningArea == null) {
             errorMessage = "Unknown mining area";
         }
-        else if (robotMiningQueueList.size() >= robot.getUser().getMiningQueueSize())
-        {
-            errorMessage = "Unable to add to the mining queue: The mining queue is full.";
-        }
         else {
 
-            if (payMiningCosts(request, miningArea)) {
+            List<MiningQueue> robotMiningQueueList = miningQueueFacade.findWaitingByRobotId(robot.getId());
+
+            if (robotMiningQueueList.size() >= robot.getUser().getMiningQueueSize()) {
+                errorMessage = "Unable to add to the mining queue: The mining queue is full.";
+            }
+            else if (!payMiningCosts(request, miningArea)) {
+                errorMessage = "Unable to add to the mining queue: You do not have enough funds to pay the mining costs.";
+            }
+            else {
 
                 MiningQueue miningQueue = new MiningQueue();
                 miningQueue.setMiningArea(miningArea);
@@ -225,15 +218,13 @@ public class MiningQueueServlet extends RoboMinerServletBase {
 
                 miningQueueFacade.create(miningQueue);
             }
-            else {
-                errorMessage = "Unable to add to the mining queue: You do not have enough funds to pay the mining costs.";
-            }
         }
 
         return errorMessage;
     }
 
     private void removeMiningQueueItems(int userId, int robotId, String[] selectedQueueItems) {
+
         List<MiningQueueItem> miningQueueList = getQueueInfo(miningQueueFacade.findWaitingByUsersId(userId), selectedQueueItems);
 
         for (MiningQueueItem item : miningQueueList) {

@@ -45,7 +45,7 @@
 
                 <c:set var="canremove" value="false"/>
 
-                <c:forEach var='robot' items="${robotList}">
+                <c:forEach var='robot' items="${user.robotList}">
                     <table class="miningqueue">
                         <caption>${fn:escapeXml(robot.robotName)}</caption>
                         <tr>
@@ -105,12 +105,12 @@
                             <td>
                                 <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
                                     <c:forEach var='miningArea' items='${miningAreaList}'>
-                                        <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaId.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
+                                        <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaIdMap.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
                                     </c:forEach>
                                 </select>
                             </td>
                             <td>
-                                <c:if test="${maxQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
+                                <c:if test="${user.miningQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
                                     <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
                                 </c:if>
                             </td>
@@ -131,9 +131,9 @@
                         <tr>
                             <th>Mining area:</th>
                             <th colspan="3">
-                                <select id='miningAreaId' name="miningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
+                                <select id='infoMiningAreaId' name="infoMiningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
                                     <c:forEach var='miningArea' items='${miningAreaList}'>
-                                        <option value="${miningArea.id}" ${miningArea.id eq miningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
+                                        <option value="${miningArea.id}" ${miningArea.id eq infoMiningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
                                     </c:forEach>
                                 </select>
                             </th>
@@ -206,7 +206,7 @@
                 </div>
             </form>
 
-            <input id='prevMiningAreaId' type='hidden' value="${miningAreaId}"/>
+            <input id='prevInfoMiningAreaId' type='hidden' value="${infoMiningAreaId}"/>
 
         </rm:defaultpage>
 

@@ -478,7 +478,7 @@ public class UserAssets {
         // Create the new robot for the user
         Robot robot = new Robot();
         robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
-        robot.setRobotName(user.getUsername() + "_" + (user.getRobots().size() + 1));
+        robot.setRobotName(user.getUsername() + "_" + (user.getRobotList().size() + 1));
         robot.setUser(user);
         robot.setProgramSourceId(programSource.getId());
         robot.setSourceCode(programSource.getSourceCode());

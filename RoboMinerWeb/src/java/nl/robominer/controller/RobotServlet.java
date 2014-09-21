@@ -21,7 +21,6 @@ package nl.robominer.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -39,8 +38,8 @@ import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserRobotPartAsset;
+import nl.robominer.entity.Users;
 import nl.robominer.session.MiningQueueFacade;
-import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
@@ -62,9 +61,6 @@ public class RobotServlet extends RoboMinerServletBase {
     private RobotFacade robotFacade;
     
     @EJB
-    private ProgramSourceFacade programSourceFacade;
-    
-    @EJB
     private RobotPartFacade robotPartFacade;
     
     @EJB
@@ -80,78 +76,43 @@ public class RobotServlet extends RoboMinerServletBase {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int userId = (int) request.getSession().getAttribute("userId");
-        
+
+        Users user = usersFacade.findById(getUserId(request));
+
         int robotId = getItemId(request, "robotId");
-        
+
         if (robotId > 0) {
 
-            updateRobot(request, robotId, userId);
+            updateRobot(request, robotId, user);
             request.getSession().setAttribute(SESSION_ROBOT_ID, robotId);
         }
         else if (request.getSession().getAttribute(SESSION_ROBOT_ID) != null) {
-            robotId = (int)request.getSession().getAttribute("robot_robotId");
+            robotId = (int)request.getSession().getAttribute(SESSION_ROBOT_ID);
         }
 
         // Add the selected robot
         if (robotId > 0) {
             request.setAttribute("robotId", robotId);
         }
-        
-        // Add the list of robots
-        List<Robot> robotList = robotFacade.findByUsersId(userId);
-        request.setAttribute("robotList", robotList);
-        
-        // Add the list of program sources
-        List<ProgramSource> programSourceList = programSourceFacade.findByUsersId(userId);
-        request.setAttribute("programSourceList", programSourceList);
 
-        // Add the list of ore containers
-        List<UserRobotPartAsset> oreContainerList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 1);
-        request.setAttribute("oreContainerList", oreContainerList);
-        
-        // Add the list of mining units
-        List<UserRobotPartAsset> miningUnitList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 2);
-        request.setAttribute("miningUnitList", miningUnitList);
-        
-        // Add the list of batteries
-        List<UserRobotPartAsset> batteryList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 3);
-        request.setAttribute("batteryList", batteryList);
-        
-        // Add the list of memory modules
-        List<UserRobotPartAsset> memoryModuleList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 4);
-        request.setAttribute("memoryModuleList", memoryModuleList);
-        
-        // Add the list of CPU's
-        List<UserRobotPartAsset> cpuList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 5);
-        request.setAttribute("cpuList", cpuList);
-        
-        // Add the list of engines
-        List<UserRobotPartAsset> engineList = userRobotPartAssetFacade.findByUsersIdAndPartType(userId, 6);
-        request.setAttribute("engineList", engineList);
-        
-        // Add the map of memory modules
-        Map<Integer, RobotPart> memoryModuleMap = robotPartFacade.findTypeMapped(4);
-        request.setAttribute("memoryModuleMap", memoryModuleMap);
-
-        request.setAttribute("user", usersFacade.findById(getUserId(request)));
+        // Add the user account information to the request.
+        request.setAttribute("user", user);
 
         request.getRequestDispatcher("/WEB-INF/view/robot.jsp").forward(request, response);
     }
 
-    private void updateRobot(HttpServletRequest request, int robotId, int usersId) {
-        
+    private void updateRobot(HttpServletRequest request, int robotId, Users user) throws ServletException {
+
         String robotName = request.getParameter("robotName" + robotId);
-        
+
         int programSourceId = getItemId(request, "programSourceId" + robotId);
         int oreContainerId  = getItemId(request, "oreContainerId" + robotId);
         int miningUnitId    = getItemId(request, "miningUnitId" + robotId);
@@ -159,28 +120,28 @@ public class RobotServlet extends RoboMinerServletBase {
         int memoryModuleId  = getItemId(request, "memoryModuleId" + robotId);
         int cpuId           = getItemId(request, "cpuId" + robotId);
         int engineId        = getItemId(request, "engineId" + robotId);
-        
-        ProgramSource programSource = programSourceFacade.findByIdAndUser(programSourceId, usersId);
-        
+
+        ProgramSource programSource = user.getProgramSource(programSourceId);
+
         RobotPart oreContainer = robotPartFacade.find(oreContainerId);
         RobotPart miningUnit   = robotPartFacade.find(miningUnitId);
         RobotPart battery      = robotPartFacade.find(batteryId);
         RobotPart memoryModule = robotPartFacade.find(memoryModuleId);
         RobotPart cpu          = robotPartFacade.find(cpuId);
         RobotPart engine       = robotPartFacade.find(engineId);
-        
+
         if (robotName != null && robotName.matches("[A-Za-z0-9_]{1,10}") && programSource != null &&
             oreContainer != null && miningUnit != null && battery != null &&
             memoryModule != null && cpu != null && engine != null &&
             memoryModule.getMemoryCapacity() >= programSource.getCompiledSize()) {
-            
+
             List<MiningQueue> miningQueue = miningQueueFacade.findWaitingByRobotId(robotId);
-            
+
             try {
-                
+
                 transaction.begin();
 
-                Robot robot = robotFacade.findByIdAndUser(robotId, usersId);
+                Robot robot = user.getRobot(robotId);
 
                 if (robot != null) {
 
@@ -194,55 +155,59 @@ public class RobotServlet extends RoboMinerServletBase {
                         robot.setSourceCode(programSource.getSourceCode());
 
                         if (robot.getOreContainer().getId() != oreContainerId) {
-                            
-                            swapUnitStock(usersId, robot.getOreContainer().getId(), oreContainerId);
+
+                            swapUnitStock(user.getId(), robot.getOreContainer().getId(), oreContainerId);
                             robot.setOreContainer(oreContainer);
                         }
-                        
+
                         if (robot.getMiningUnit().getId() != miningUnitId) {
-                            
-                            swapUnitStock(usersId, robot.getMiningUnit().getId(), miningUnitId);
+
+                            swapUnitStock(user.getId(), robot.getMiningUnit().getId(), miningUnitId);
                             robot.setMiningUnit(miningUnit);
                         }
-                        
+
                         if (robot.getBattery().getId() != batteryId) {
-                            
-                            swapUnitStock(usersId, robot.getBattery().getId(), batteryId);
+
+                            swapUnitStock(user.getId(), robot.getBattery().getId(), batteryId);
                             robot.setBattery(battery);
                         }
-                        
+
                         if (robot.getMemoryModule().getId() != memoryModuleId) {
-                            
-                            swapUnitStock(usersId, robot.getMemoryModule().getId(), memoryModuleId);
+
+                            swapUnitStock(user.getId(), robot.getMemoryModule().getId(), memoryModuleId);
                             robot.setMemoryModule(memoryModule);
                         }
-                        
+
                         if (robot.getCpu().getId() != cpuId) {
-                            
-                            swapUnitStock(usersId, robot.getCpu().getId(), cpuId);
+
+                            swapUnitStock(user.getId(), robot.getCpu().getId(), cpuId);
                             robot.setCpu(cpu);
                         }
-                        
+
                         if (robot.getEngine().getId() != engineId) {
-                            
-                            swapUnitStock(usersId, robot.getEngine().getId(), engineId);
+
+                            swapUnitStock(user.getId(), robot.getEngine().getId(), engineId);
                             robot.setEngine(engine);
                         }
-                        
+
                         robot.updateParameters();
 
                         robotFacade.edit(robot);
                     }
                 }
-                
+
                 transaction.commit();
             }
-            catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException exc) {
-                
+            catch (NotSupportedException | SystemException | RollbackException |
+                   HeuristicMixedException | HeuristicRollbackException |
+                   SecurityException | IllegalStateException exc) {
+
                 try {
                     transaction.rollback();
+                    throw new ServletException(exc);
                 }
                 catch (IllegalStateException | SecurityException | SystemException exc2) {
+                    throw new ServletException(exc2);
                 }
             }
         }

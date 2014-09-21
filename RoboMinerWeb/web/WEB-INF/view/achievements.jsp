@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>Robots:</td>
-                    <td>${user.robots.size()}</td>
+                    <td>${user.robotList.size()}</td>
                 </tr>
                 <tr>
                     <td>Max. mining queue size:</td>

@@ -36,10 +36,10 @@ import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotDailyResult;
 import nl.robominer.entity.RobotDailyRuns;
+import nl.robominer.entity.Users;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotDailyResultFacade;
 import nl.robominer.session.RobotDailyRunsFacade;
-import nl.robominer.session.RobotFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -50,9 +50,6 @@ import nl.robominer.session.UsersFacade;
 public class StatisticsServlet extends RoboMinerServletBase {
 
     private static final int LAST_RESULT_COUNT = 100;
-
-    @EJB
-    private RobotFacade robotFacade;
 
     @EJB
     private MiningQueueFacade miningQueueFacade;
@@ -79,35 +76,32 @@ public class StatisticsServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int userId = (int) request.getSession().getAttribute("userId");
+        Users user = usersFacade.findById(getUserId(request));
 
         processAssets(request);
 
-        // Add the list of robots
-        List<Robot> robotList = robotFacade.findByUsersId(userId);
-        request.setAttribute("robotList", robotList);
+        // Add the user account information to the request.
+        request.setAttribute("user", user);
 
         // Calculate the last results totals
-        addLastResultsTotals(request, robotList);
+        addLastResultsTotals(request, user.getRobotList());
 
         // Add the results for today
         Date now = new Date();
-        addDayRangeTotals(request, robotList, now, now, "robotTodayStatisticsMap");
+        addDayRangeTotals(request, user.getRobotList(), now, now, "robotTodayStatisticsMap");
 
         // Add the results for yesterday
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         calendar.add(Calendar.DATE, -1);
         Date yesterday = new Date(calendar.getTimeInMillis());
-        addDayRangeTotals(request, robotList, yesterday, yesterday, "robotYesterdayStatisticsMap");
+        addDayRangeTotals(request, user.getRobotList(), yesterday, yesterday, "robotYesterdayStatisticsMap");
 
         // Add the results of last 7 days
         calendar.setTime(yesterday);
         calendar.add(Calendar.DATE, -6);
         Date lastWeek = new Date(calendar.getTimeInMillis());
-        addDayRangeTotals(request, robotList, lastWeek, yesterday, "robotLastWeekStatisticsMap");
-
-        request.setAttribute("user", usersFacade.findById(getUserId(request)));
+        addDayRangeTotals(request, user.getRobotList(), lastWeek, yesterday, "robotLastWeekStatisticsMap");
 
         request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
     }

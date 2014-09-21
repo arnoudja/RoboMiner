@@ -26,7 +26,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
 
@@ -47,7 +46,7 @@ public class RobotPartFacade extends AbstractFacade<RobotPart> {
     public RobotPartFacade() {
         super(RobotPart.class);
     }
-    
+
     public Map< RobotPartType, List<RobotPart> > findAllMapped() {
         
         List<RobotPart> robotPartList = findAll();
@@ -69,20 +68,5 @@ public class RobotPartFacade extends AbstractFacade<RobotPart> {
         
         return result;
     }
-    
-    public Map<Integer, RobotPart> findTypeMapped(int typeId) {
 
-        Query query = getEntityManager().createNamedQuery("RobotPart.findByTypeId", RobotPart.class);
-        query.setParameter("typeId", typeId);
-        
-        List<RobotPart> robotPartList = query.getResultList();
-        
-        Map<Integer, RobotPart> result = new HashMap<>();
-        
-        for (RobotPart robotPart : robotPartList) {
-            result.put(robotPart.getId(), robotPart);
-        }
-        
-        return result;
-    }
 }

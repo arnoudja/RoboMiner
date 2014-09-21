@@ -37,14 +37,15 @@ function removeMiningQueueItems(robotId) {
 }
 
 function showMiningAreaDetails() {
-    var prevId = document.getElementById('prevMiningAreaId').value;
+
+    var prevId = document.getElementById('prevInfoMiningAreaId').value;
     document.getElementById('miningAreaDetails' + prevId).style.display = 'none';
-    var newId = document.getElementById('miningAreaId').value;
+    var newId = document.getElementById('infoMiningAreaId').value;
     document.getElementById('miningAreaDetails' + newId).style.display = 'table-row-group';
-    document.getElementById('prevMiningAreaId').value = newId;
+    document.getElementById('prevInfoMiningAreaId').value = newId;
 }
 
 function selectMiningAreaDetails(miningAreaId) {
-    document.getElementById('miningAreaId').value = miningAreaId;
+    document.getElementById('infoMiningAreaId').value = miningAreaId;
     showMiningAreaDetails();
 }

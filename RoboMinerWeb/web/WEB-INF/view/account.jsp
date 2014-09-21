@@ -33,21 +33,21 @@
         <title>RoboMiner - Account</title>
     </head>
     <body>
-        <rm:defaultpage currentform="account" username="${username}">
+        <rm:defaultpage currentform="account" username="${currentusername}">
 
             <rm:userassets oreassetlist='${oreAssetList}' />
 
             <form action="<c:url value='account'/>" method="post" onsubmit="return checkAccountForm(this);">
-                <h1>${fn:escapeXml(username)}</h1>
+                <h1>${fn:escapeXml(currentusername)}</h1>
                 <table>
                     <tr>
                         <td>Username:</td>
-                        <td><input type="text" name="username" size="40" pattern="[A-Za-z0-9]{3,30}" value="${fn:escapeXml(username)}" required placeholder="Choose your in-game name"/></td>
+                        <td><input type="text" name="username" size="40" pattern="[A-Za-z0-9]{3,30}" value="${fn:escapeXml(user.username)}" required placeholder="Choose your in-game name"/></td>
                         <td>3 to 30 characters, only letters and numbers</td>
                     </tr>
                     <tr>
                         <td>e-mail address:</td>
-                        <td><input type="email" name="email" size="40" value="${fn:escapeXml(email)}" required placeholder="Enter your e-mail address"/></td>
+                        <td><input type="email" name="email" size="40" value="${fn:escapeXml(user.email)}" required placeholder="Enter your e-mail address"/></td>
                         <td></td>
                     </tr>
                     <tr>
