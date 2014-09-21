@@ -32,14 +32,14 @@
         <title>RoboMiner - Mining area overview</title>
     </head>
     <body>
-        <rm:defaultpage currentform="miningAreaOverview">
+        <rm:defaultpage currentform="miningAreaOverview" username="${user.username}">
 
             <table>
                 <tr>
-                    <td></td>
-                    <td>Total</td>
+                    <th></th>
+                    <th>Total</th>
                     <c:forEach var="ore" items="${oreList}">
-                        <td>${fn:escapeXml(ore.oreName)}</td>
+                        <th>${fn:escapeXml(ore.oreName)}</th>
                     </c:forEach>
                 </tr>
                 <c:forEach var="miningArea" items="${miningAreaList}">

@@ -32,7 +32,7 @@
         <title>RoboMiner - Leaderboard</title>
     </head>
     <body>
-        <rm:defaultpage currentform="leaderboard">
+        <rm:defaultpage currentform="leaderboard" username="${user.username}">
 
             <c:forEach var="miningArea" items="${miningAreaList}">
                 <c:set var="robotMiningAreaScoreList" value="${robotMiningAreaScoreMap.get(miningArea.id)}" />

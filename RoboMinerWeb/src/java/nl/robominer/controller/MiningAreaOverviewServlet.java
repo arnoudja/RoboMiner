@@ -30,6 +30,7 @@ import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.Ore;
 import nl.robominer.session.MiningAreaFacade;
 import nl.robominer.session.OreFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  *
@@ -43,6 +44,9 @@ public class MiningAreaOverviewServlet extends RoboMinerServletBase {
 
     @EJB
     private MiningAreaFacade miningAreaFacade;
+
+    @EJB
+    private UsersFacade usersFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,6 +68,8 @@ public class MiningAreaOverviewServlet extends RoboMinerServletBase {
         // Add the list of mining areas
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);
+
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher("/WEB-INF/view/miningareaoverview.jsp").forward(request, response);
     }

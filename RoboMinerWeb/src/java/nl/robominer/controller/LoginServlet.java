@@ -19,7 +19,6 @@
 
 package nl.robominer.controller;
 
-import bcrypt.BCrypt;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -120,7 +119,7 @@ public class LoginServlet extends RoboMinerServletBase {
 
         Users user = usersFacade.findByUsernameOrEmail(loginName);
 
-        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+        if (user != null && user.verifyPassword(password)) {
 
             Cookie rememberCookie = new Cookie(REMEMBER_USERNAME_COOKIE_NAME, loginName);
 
@@ -162,33 +161,46 @@ public class LoginServlet extends RoboMinerServletBase {
         String newpassword      = request.getParameter("newpassword");
         String confirmpassword  = request.getParameter("confirmpassword");
 
-        if (newusername != null && newusername.matches("[A-Za-z0-9]{3,30}") &&
-            email != null && email.matches(".+@.+") &&
-            newpassword != null && newpassword.length() >= 8 &&
+        if (newusername != null && email != null && newpassword != null &&
             confirmpassword != null && confirmpassword.equals(newpassword)) {
 
             String errorMessage = null;
 
-            try {
-                UserAssets.CreateUserResultData createResult = getUserAssets().createNewUser(newusername, email, newpassword);
+            Users user = new Users();
 
-                if (createResult.result == UserAssets.ECreateUserResult.USERNAME_TAKEN) {
-                    errorMessage = "Username already taken, please choose another one";
-                }
-                else if (createResult.result == UserAssets.ECreateUserResult.EMAIL_TAKEN) {
-                    errorMessage = "You already have an account, please login using your e-mail address";
-                }
-                else {
-                    setUserId(request, createResult.userId);
-
-                    result = true;
-
-                    response.sendRedirect("miningQueue");
-                }
+            if (!user.setUsername(newusername)) {
+                errorMessage = "Invalid username";
             }
-            catch (NotSupportedException | SystemException | RollbackException |
-                   HeuristicMixedException | HeuristicRollbackException ex) {
-                throw new ServletException(ex);
+            else if (!user.setEmail(email)) {
+                errorMessage = "Invalid e-mail address";
+            }
+            else if (!user.setPassword(newpassword)) {
+                errorMessage = "The password doesn't meet the requirements";
+            }
+            else {
+                try {
+                    UsersFacade.EWriteResult createResult = getUserAssets().createNewUser(user);
+
+                    switch (createResult) {
+                        case eDuplicateUsername:
+                            errorMessage = "Username already taken, please choose another one";
+                            break;
+
+                        case eDuplicateEmail:
+                            errorMessage = "You already have an account, please login using your e-mail address";
+                            break;
+
+                        case eSuccess:
+                            setUserId(request, user.getId());
+                            result = true;
+                            response.sendRedirect("miningQueue");
+                            break;
+                    }
+                }
+                catch (NotSupportedException | SystemException | RollbackException |
+                       HeuristicMixedException | HeuristicRollbackException ex) {
+                    throw new ServletException(ex);
+                }
             }
 
             if (!result) {

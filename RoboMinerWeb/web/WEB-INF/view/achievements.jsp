@@ -32,7 +32,7 @@
         <title>RoboMiner - Achievements</title>
     </head>
     <body>
-        <rm:defaultpage currentform="achievements">
+        <rm:defaultpage currentform="achievements" username="${user.username}">
 
             <form id="claimAchievementForm" action="<c:url value='achievements'/>" method="post">
                 <input type="hidden" id="achievementId" name="achievementId" value="" />

@@ -40,6 +40,7 @@ import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotDailyResultFacade;
 import nl.robominer.session.RobotDailyRunsFacade;
 import nl.robominer.session.RobotFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  *
@@ -61,6 +62,9 @@ public class StatisticsServlet extends RoboMinerServletBase {
 
     @EJB
     private RobotDailyResultFacade robotDailyResultFacade;
+
+    @EJB
+    private UsersFacade usersFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -102,6 +106,8 @@ public class StatisticsServlet extends RoboMinerServletBase {
         calendar.add(Calendar.DATE, -6);
         Date lastWeek = new Date(calendar.getTimeInMillis());
         addDayRangeTotals(request, robotList, lastWeek, yesterday, "robotLastWeekStatisticsMap");
+
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher("/WEB-INF/view/statistics.jsp").forward(request, response);
     }

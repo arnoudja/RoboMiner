@@ -32,7 +32,7 @@
         <title>RoboMiner - View rally</title>
     </head>
     <body>
-        <rm:defaultpage currentform="viewRally">
+        <rm:defaultpage currentform="viewRally" username="${user.username}">
 
             <div style="position: relative; min-height: 650px; width: 1100px; margin: 0 auto; margin-top: 10px;">
                 <div style="position: absolute; left: 0; top: 0;">

@@ -42,7 +42,7 @@
             <input type="hidden" id="programSize${programSource.id}" value="${programSource.compiledSize}"/>
         </c:forEach>
 
-        <rm:defaultpage currentform="robot">
+        <rm:defaultpage currentform="robot" username="${user.username}">
 
             <form id="robotForm" action="<c:url value='robot'/>" method="post">
                 <table>

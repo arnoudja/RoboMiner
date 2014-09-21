@@ -37,7 +37,7 @@
         <input id='sourceNameOrig' type='hidden' value='${fn:escapeXml(programSource.sourceName)}'/>
         <textarea id='sourceCodeOrig' style='display: none;'>${fn:escapeXml(programSource.sourceCode)}</textarea>
 
-        <rm:defaultpage currentform="editCode">
+        <rm:defaultpage currentform="editCode" username="${user.username}">
 
             <button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
 

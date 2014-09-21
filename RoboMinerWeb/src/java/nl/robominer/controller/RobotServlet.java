@@ -44,6 +44,7 @@ import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  *
@@ -71,7 +72,10 @@ public class RobotServlet extends RoboMinerServletBase {
     
     @EJB
     private MiningQueueFacade miningQueueFacade;
-    
+
+    @EJB
+    private UsersFacade usersFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -138,7 +142,9 @@ public class RobotServlet extends RoboMinerServletBase {
         // Add the map of memory modules
         Map<Integer, RobotPart> memoryModuleMap = robotPartFacade.findTypeMapped(4);
         request.setAttribute("memoryModuleMap", memoryModuleMap);
-        
+
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
+
         request.getRequestDispatcher("/WEB-INF/view/robot.jsp").forward(request, response);
     }
 

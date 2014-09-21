@@ -19,11 +19,14 @@
 
 <%@ tag description="The top part of the page containing the menu bar" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ attribute name="currentform" required="true" %>
+<%@ attribute name="username" required="true" %>
 
 <header>
     <nav class="logoff">
         <ul class="menubar">
+            <li class="${(currentform == 'account') ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='account'/>');">${fn:escapeXml(username)}</li>
             <li class="menuitem" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');">Logoff</li>
         </ul>
     </nav>

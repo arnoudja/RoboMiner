@@ -32,7 +32,7 @@
         <title>RoboMiner - Shop</title>
     </head>
     <body>
-        <rm:defaultpage currentform="shop">
+        <rm:defaultpage currentform="shop" username="${user.username}">
 
             <rm:userassets oreassetlist='${oreAssetList}' />
 

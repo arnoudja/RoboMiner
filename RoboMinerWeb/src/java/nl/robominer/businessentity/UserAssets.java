@@ -19,7 +19,6 @@
 
 package nl.robominer.businessentity;
 
-import bcrypt.BCrypt;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -74,24 +73,6 @@ import nl.robominer.session.UsersFacade;
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
 public class UserAssets {
-
-    /**
-     * Enumeration type used for the status of a create user attempt.
-     */
-    public enum ECreateUserResult {
-        SUCCESS,
-        USERNAME_TAKEN,
-        EMAIL_TAKEN
-    }
-
-    /**
-     * Result data type for a create user attempt.
-     */
-    public class CreateUserResultData {
-        
-        public int userId;
-        public ECreateUserResult result;
-    }
 
     /**
      * Database transactions resource.
@@ -419,12 +400,10 @@ public class UserAssets {
     }
 
     /**
-     * Create a new user, or specify the reason why this is not possible for the
-     * specified data.
+     * Create a new user, or specify the reason why this is not possible.
      *
-     * @param username The requested username.
-     * @param email The e-mail address of the new user.
-     * @param password The password for the new user.
+     * @param newuser The Users instance to add, with its username, email and
+     * password already set.
      *
      * @return The status of the create user attempt.
      *
@@ -434,42 +413,22 @@ public class UserAssets {
      * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
      * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
      */
-    public CreateUserResultData createNewUser(String username, String email, String password)
+    public UsersFacade.EWriteResult createNewUser(Users newuser)
             throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
 
-        CreateUserResultData result = new CreateUserResultData();
+        newuser.fillDefaults();
 
         transaction.begin();
 
-        if (usersFacade.findByUsername(username) != null) {
+        UsersFacade.EWriteResult result = usersFacade.createNew(newuser);
 
-            result.result = ECreateUserResult.USERNAME_TAKEN;
-            transaction.rollback();
-        }
-        else if (usersFacade.findByEmail(email) != null) {
-
-            result.result = ECreateUserResult.EMAIL_TAKEN;
+        if (result != UsersFacade.EWriteResult.eSuccess) {
             transaction.rollback();
         }
         else {
-
-            Users newuser = new Users();
-            newuser.setUsername(username);
-            newuser.setEmail(email);
-            newuser.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-            newuser.setMiningQueueSize(1);
-
-            usersFacade.create(newuser);
-
-            // Force a database write to make sure the usersId is available.
-            usersFacade.flush();
-
             addNewUserData(newuser);
 
             transaction.commit();
-
-            result.userId = newuser.getId();
-            result.result = ECreateUserResult.SUCCESS;
         }
 
         return result;

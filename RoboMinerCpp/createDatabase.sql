@@ -88,7 +88,9 @@ username VARCHAR(255) NOT NULL UNIQUE,
 email VARCHAR(255) NOT NULL UNIQUE,
 password VARCHAR(255) NOT NULL,
 achievementPoints INT NOT NULL DEFAULT 0,
-miningQueueSize INT NOT NULL DEFAULT 1
+miningQueueSize INT NOT NULL DEFAULT 1,
+INDEX (username),
+INDEX (email)
 );
 
 

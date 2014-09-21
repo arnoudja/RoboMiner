@@ -20,9 +20,10 @@
 <%@ tag description="The default page layout, containing the menu bar at the top and the footer bar" pageEncoding="UTF-8"%>
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="currentform" required="true" %>
+<%@ attribute name="username" required="true" %>
 
 <div class="main">
-    <rm:topmenubar currentform="${currentform}"/>
+    <rm:topmenubar currentform="${currentform}" username="${username}" />
     <div class="interface">
         <jsp:doBody/>
     </div>

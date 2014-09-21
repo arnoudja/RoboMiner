@@ -33,7 +33,7 @@
         <title>RoboMiner - Mining queue</title>
     </head>
     <body>
-        <rm:defaultpage currentform="miningQueue">
+        <rm:defaultpage currentform="miningQueue" username="${user.username}">
 
             <rm:userassets oreassetlist='${oreAssetList}' />
 

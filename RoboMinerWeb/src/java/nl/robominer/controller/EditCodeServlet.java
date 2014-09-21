@@ -33,6 +33,7 @@ import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RoboMinerCppBean;
 import nl.robominer.session.RobotFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  *
@@ -54,6 +55,9 @@ public class EditCodeServlet extends RoboMinerServletBase {
     
     @EJB
     private RoboMinerCppBean roboMinerCppBean;
+
+    @EJB
+    private UsersFacade usersFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -124,6 +128,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
             programSource.fillDefaults();
             programSource.setUsersId(userId);
         }
+
+        request.setAttribute("user", usersFacade.findById(userId));
 
         // Add the data of the currently selected source
         request.setAttribute("programSourceId", nextProgramSourceId);

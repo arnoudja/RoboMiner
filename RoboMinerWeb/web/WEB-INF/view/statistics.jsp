@@ -33,7 +33,7 @@
         <title>RoboMiner - Statistics</title>
     </head>
     <body>
-        <rm:defaultpage currentform="statistics">
+        <rm:defaultpage currentform="statistics" username="${user.username}">
 
             <rm:userassets oreassetlist='${oreAssetList}' />
 

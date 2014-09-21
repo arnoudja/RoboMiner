@@ -33,6 +33,7 @@ import nl.robominer.entity.RobotMiningAreaScore;
 import nl.robominer.session.MiningAreaFacade;
 import nl.robominer.session.RobotMiningAreaScoreFacade;
 import nl.robominer.session.TopRobotsViewFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  *
@@ -75,6 +76,12 @@ public class LeaderboardServlet extends RoboMinerServletBase {
     RobotMiningAreaScoreFacade robotMiningAreaScoreFacade;
 
     /**
+     * Bean to handle the database actions for the user account information.
+     */
+    @EJB
+    UsersFacade usersFacade;
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -100,6 +107,8 @@ public class LeaderboardServlet extends RoboMinerServletBase {
             robotMiningAreaScoreMap.put(miningArea.getId(), robotMiningAreaScoreFacade.findByMiningAreaId(miningArea.getId(), MIN_RUNS, MAX_ENTRIES));
         }
         request.setAttribute("robotMiningAreaScoreMap", robotMiningAreaScoreMap);
+
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }

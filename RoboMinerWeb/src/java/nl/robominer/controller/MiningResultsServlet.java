@@ -34,6 +34,7 @@ import nl.robominer.entity.Robot;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.OreFacade;
 import nl.robominer.session.RobotFacade;
+import nl.robominer.session.UsersFacade;
 
 /**
  * Servlet for handing the mining results view and the rally view.
@@ -75,6 +76,12 @@ public class MiningResultsServlet extends RoboMinerServletBase {
      */
     @EJB
     private OreFacade oreFacade;
+
+    /**
+     * Bean to handle the database actions for the user account information.
+     */
+    @EJB
+    private UsersFacade usersFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -138,6 +145,8 @@ public class MiningResultsServlet extends RoboMinerServletBase {
         }
         request.setAttribute("miningResultListMap", miningResultListMap);
 
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
+
         request.getRequestDispatcher(JAVASCRIPT_RESULTLISTS_VIEW).forward(request, response);
     }
 
@@ -180,6 +189,8 @@ public class MiningResultsServlet extends RoboMinerServletBase {
             request.setAttribute("robot" + i, robotNames.get(i));
             request.setAttribute("player" + i, userNames.get(i));
         }
+
+        request.setAttribute("user", usersFacade.findById(getUserId(request)));
 
         request.getRequestDispatcher(JAVASCRIPT_RALLY_VIEW).forward(request, response);
     }
