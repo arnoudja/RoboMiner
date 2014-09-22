@@ -17,26 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "../stdafx.h"
 
-#include "ValueProgramItem.h"
+#include "DumpAction.h"
+#include "Value.h"
 
-namespace robotcode
+
+using namespace robotcode;
+
+
+CDumpAction::CDumpAction(const CValue& oreType, int amount) :
+    m_oreType(oreType.getIntValue()),
+    m_amount(amount)
 {
-    class CMoveProgramItem :
-        public CValueProgramItem
-    {
-    public:
-        CMoveProgramItem(CValueProgramItem* valueProgramItem);
-        virtual ~CMoveProgramItem();
-
-        virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
-
-        virtual int size() const;
-
-        static CMoveProgramItem* compile(CCompileInput& input);
-
-    private:
-        CValueProgramItem* m_valueProgramItem;
-    };
 }

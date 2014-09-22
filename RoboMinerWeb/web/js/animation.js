@@ -157,9 +157,9 @@ function drawGround(step, scale)
         var oreBMax = typeof myOreTypes.B !== 'undefined' ? myOreTypes.B.max : 255;
         var oreCMax = typeof myOreTypes.C !== 'undefined' ? myOreTypes.C.max : 255;
 
-        var oreAIntensity = Math.floor(oreA * 255 / oreAMax);
-        var oreBIntensity = Math.floor(oreB * 255 / oreBMax);
-        var oreCIntensity = Math.floor(oreC * 255 / oreCMax);
+        var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
+        var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));
+        var oreCIntensity = Math.min(255, Math.floor(oreC * 255 / oreCMax));
 
         myRallyContext.beginPath();
         myRallyContext.rect(x * scale, y * scale, scale, scale);

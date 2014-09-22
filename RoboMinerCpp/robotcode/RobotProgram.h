@@ -43,7 +43,7 @@ namespace robotcode
                       int robotSize);
         virtual ~CRobotProgram();
 
-        virtual EAction getNextAction();
+        virtual RobotAction getNextAction();
 
         CVariableStorage& getVariableStorage()          { return m_variableStorage; }
 

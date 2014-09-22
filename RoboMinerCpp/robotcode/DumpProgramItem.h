@@ -23,18 +23,18 @@
 
 namespace robotcode
 {
-    class CMoveProgramItem :
+    class CDumpProgramItem :
         public CValueProgramItem
     {
     public:
-        CMoveProgramItem(CValueProgramItem* valueProgramItem);
-        virtual ~CMoveProgramItem();
+        CDumpProgramItem(CValueProgramItem* valueProgramItem);
+        virtual ~CDumpProgramItem();
 
         virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const;
 
-        static CMoveProgramItem* compile(CCompileInput& input);
+        static CDumpProgramItem* compile(CCompileInput& input);
 
     private:
         CValueProgramItem* m_valueProgramItem;

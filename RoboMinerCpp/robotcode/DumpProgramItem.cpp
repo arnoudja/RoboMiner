@@ -19,10 +19,10 @@
 
 #include "../stdafx.h"
 
-#include "MoveProgramItem.h"
+#include "DumpProgramItem.h"
 #include "ProgramItemStatus.h"
 #include "CallAction.h"
-#include "MoveAction.h"
+#include "DumpAction.h"
 #include "ConstReturnAction.h"
 #include "CompileInput.h"
 
@@ -33,19 +33,19 @@ using namespace std;
 using namespace robotcode;
 
 
-CMoveProgramItem::CMoveProgramItem(CValueProgramItem* valueProgramItem) :
+CDumpProgramItem::CDumpProgramItem(CValueProgramItem* valueProgramItem) :
     m_valueProgramItem(valueProgramItem)
 {
 }
 
 
-CMoveProgramItem::~CMoveProgramItem()
+CDumpProgramItem::~CDumpProgramItem()
 {
     delete m_valueProgramItem;
 }
 
 
-CProgramAction* CMoveProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
+CProgramAction* CDumpProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 
@@ -56,43 +56,45 @@ CProgramAction* CMoveProgramItem::getNextAction(const CRobot* robot, CProgramIte
     }
     else if (dynamic_cast<CCallAction*>(status->getProgramAction()))
     {
-        action = new CMoveAction(robot->getPosition(), status->getValue());
-    }
-    else
-    {
-        CMoveAction* moveAction = dynamic_cast<CMoveAction*>(status->getProgramAction());
-        assert(moveAction);
+        int amount  = 0;
+        int oreType = status->getValue().getIntValue();
 
-        if (moveAction->getDistance() != .0)
+        if (oreType > 0 && oreType <= (int)robot->getOre().size())
         {
-            action = moveAction;
+            amount = robot->getOre(oreType - 1);
         }
         else
         {
-            action = new CConstReturnAction(robot->getPosition().distance(moveAction->getStartPosition()));
+            amount = robot->getTotalOre();
         }
+
+        action = new CDumpAction(status->getValue(), amount);
+    }
+    else
+    {
+        CDumpAction* dumpAction = dynamic_cast<CDumpAction*>(status->getProgramAction());
+        assert(dumpAction);
+
+        action = new CConstReturnAction(dumpAction->getAmount());
     }
 
-    if (action != status->getProgramAction())
-    {
-        status->adoptProgramAction(action);
-    }
+    status->adoptProgramAction(action);
 
     return action;
 }
 
 
-int CMoveProgramItem::size() const
+int CDumpProgramItem::size() const
 {
     return 1 + (m_valueProgramItem ? m_valueProgramItem->size() : 0);
 }
 
 
-CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input)
+CDumpProgramItem* CDumpProgramItem::compile(CCompileInput& input)
 {
-    CMoveProgramItem* result = NULL;
+    CDumpProgramItem* result = NULL;
 
-    if (input.useNextWord("move"))
+    if (input.useNextWord("dump"))
     {
         if (!input.eatChar('('))
         {
@@ -112,7 +114,7 @@ CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input)
             throw error.str();
         }
 
-        result = new CMoveProgramItem(value);
+        result = new CDumpProgramItem(value);
     }
 
     return result;

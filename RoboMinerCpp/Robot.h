@@ -38,8 +38,15 @@ public:
         eRotateRight,
         eRotateLeft,
         eMine,
+        eDump,
         eWait,
         eUndefined
+    };
+
+    struct RobotAction
+    {
+        EAction action;
+        int     parameter;
     };
 
 public:
@@ -49,7 +56,7 @@ public:
            int robotSize);
     virtual ~CRobot()                                           {}
 
-    virtual EAction getNextAction() = 0;
+    virtual RobotAction getNextAction() = 0;
 
     void prepareForAction();
     void applyRotation();
@@ -66,6 +73,7 @@ public:
     int getTotalOre() const;
     int getLastMined() const                                    { return m_lastMined; }
     void addOre(int type, int amount);
+    void clearOre(int type)                                     { m_ore[type] = 0; }
 
     CPosition& getDestination()                                 { return m_destination; }
     const CPosition& getDestination() const                     { return m_destination; }

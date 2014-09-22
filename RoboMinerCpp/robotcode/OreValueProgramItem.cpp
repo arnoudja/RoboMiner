@@ -17,15 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <vector>
+
 #include "../stdafx.h"
 
-#include "MoveProgramItem.h"
-#include "ProgramItemStatus.h"
+#include "OreValueProgramItem.h"
 #include "CallAction.h"
-#include "MoveAction.h"
 #include "ConstReturnAction.h"
 #include "CompileInput.h"
-
 #include "../Robot.h"
 
 
@@ -33,19 +32,19 @@ using namespace std;
 using namespace robotcode;
 
 
-CMoveProgramItem::CMoveProgramItem(CValueProgramItem* valueProgramItem) :
+COreValueProgramItem::COreValueProgramItem(CValueProgramItem* valueProgramItem) :
     m_valueProgramItem(valueProgramItem)
 {
 }
 
 
-CMoveProgramItem::~CMoveProgramItem()
+COreValueProgramItem::~COreValueProgramItem()
 {
     delete m_valueProgramItem;
 }
 
 
-CProgramAction* CMoveProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
+CProgramAction* COreValueProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
     CProgramAction* action = NULL;
 
@@ -54,45 +53,40 @@ CProgramAction* CMoveProgramItem::getNextAction(const CRobot* robot, CProgramIte
         status = new CProgramItemStatus();
         action = new CCallAction(m_valueProgramItem);
     }
-    else if (dynamic_cast<CCallAction*>(status->getProgramAction()))
-    {
-        action = new CMoveAction(robot->getPosition(), status->getValue());
-    }
     else
     {
-        CMoveAction* moveAction = dynamic_cast<CMoveAction*>(status->getProgramAction());
-        assert(moveAction);
+        int oreType   = status->getValue().getIntValue();
+        int oreAmount = 0;
 
-        if (moveAction->getDistance() != .0)
+        if (oreType == 0)
         {
-            action = moveAction;
+            oreAmount = robot->getTotalOre();
         }
-        else
+        else if (oreType > 0 && oreType <= (int)robot->getOre().size())
         {
-            action = new CConstReturnAction(robot->getPosition().distance(moveAction->getStartPosition()));
+            oreAmount = robot->getOre(oreType - 1);
         }
+
+        action = new CConstReturnAction(oreAmount);
     }
 
-    if (action != status->getProgramAction())
-    {
-        status->adoptProgramAction(action);
-    }
+    status->adoptProgramAction(action);
 
     return action;
 }
 
 
-int CMoveProgramItem::size() const
+int COreValueProgramItem::size() const
 {
     return 1 + (m_valueProgramItem ? m_valueProgramItem->size() : 0);
 }
 
 
-CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input)
+COreValueProgramItem* COreValueProgramItem::compile(CCompileInput& input)
 {
-    CMoveProgramItem* result = NULL;
+    COreValueProgramItem* result = NULL;
 
-    if (input.useNextWord("move"))
+    if (input.useNextWord("ore"))
     {
         if (!input.eatChar('('))
         {
@@ -112,7 +106,7 @@ CMoveProgramItem* CMoveProgramItem::compile(CCompileInput& input)
             throw error.str();
         }
 
-        result = new CMoveProgramItem(value);
+        result = new COreValueProgramItem(value);
     }
 
     return result;

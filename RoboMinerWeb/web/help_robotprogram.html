@@ -104,6 +104,58 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <li>The mining unit installed in the robot. The total amount of ore mined in one cycle can never exceed the mining speed of the mining unit.</li>
                 <li>The ore amount available on the robot location. For each type of ore, the amount of ore mined in one cycle can never exceed half the amount of ore available, rounded up.</li>
             </ul>
+            <h3>ore()</h3>
+            <p class="helptext">Retrieve the amount of ore stored in the robot ore container.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">ore(&lt;value&gt;)</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Parameter:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The ore type to retrieve the amount for.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Return value:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The amount of the specified type of ore stored inside the robot ore container.</td>
+                </tr>
+            </table>
+            <p class="helptext">The ore type can be one of the following values:</p>
+            <ul>
+                <li>0 for the total amount of ore.</li>
+                <li>1 for the high quality ore.</li>
+                <li>2 for the medium quality ore. Will always return 0 when only 1 type of ore is available in the mining area.</li>
+                <li>3 for the low quality ore. Will always return 0 when only 1 or 2 types of ore are available in the mining area.</li>
+            </ul>
+            <h3>dump()</h3>
+            <p class="helptext">Dumps the specified type of ore from the robot ore container.</p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">Syntax:</td>
+                    <td class="helptable">dump(&lt;value&gt;)</td>
+                    <td class="helptable"></td>
+                </tr>
+                <tr>
+                    <td class="helptable">Parameter:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The ore type to dump.</td>
+                </tr>
+                <tr>
+                    <td class="helptable">Return value:</td>
+                    <td class="helptable">int</td>
+                    <td class="helptable">The actual amount of ore dumped.</td>
+                </tr>
+            </table>
+            <p class="helptext">The ore type can be one of the following values:</p>
+            <ul>
+                <li>0 for all the types of ore.</li>
+                <li>1 for the high quality ore.</li>
+                <li>2 for the medium quality ore. Will never dump anything when only 1 type of ore is available in the mining area.</li>
+                <li>3 for the low quality ore. Will never dump anything when only 1 or 2 types of ore are available in the mining area.</li>
+            </ul>
             <h2>Flow control</h2>
             <h3>if - else</h3>
             <p class="helptext">Executes a statement only when a condition is met.</p>

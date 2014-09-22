@@ -52,6 +52,7 @@ protected:
     void processMove(CRobot& robot, double speed, double timefraction);
     void processMine(CRobot& robot);
     void applyMining(CRobot& robot);
+    void processDump(CRobot& robot, int oreType);
 
     void checkWallCollision(CRobot& robot);
     void checkCollisions();

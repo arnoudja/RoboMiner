@@ -220,9 +220,9 @@ void CRally::processStep()
 
 void CRally::processRobotMove(CRobot& robot)
 {
-    CRobot::EAction action = robot.getNextAction();
+    CRobot::RobotAction robotAction = robot.getNextAction();
 
-    switch (action)
+    switch (robotAction.action)
     {
     case CRobot::eForward:
         processMove(robot, robot.getForwardSpeed(), robot.getTimeFraction());
@@ -242,6 +242,10 @@ void CRally::processRobotMove(CRobot& robot)
 
     case CRobot::eMine:
         processMine(robot);
+        break;
+
+    case CRobot::eDump:
+        processDump(robot, robotAction.parameter);
         break;
 
     default:
@@ -399,7 +403,7 @@ void CRally::applyMining(CRobot& robot)
 
     bool mined = false;
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < (int)robot.getOre().size(); ++i)
     {
         int miningAmount = std::min(robot.getMiningAmount(i), groundUnit.getOre(i));
 
@@ -412,6 +416,43 @@ void CRally::applyMining(CRobot& robot)
     }
 
     if (mined)
+    {
+        m_animation.addGroundChange(position, CGroundChangeStep(m_time, groundUnit.getOre()));
+    }
+}
+
+
+void CRally::processDump(CRobot& robot, int parameter)
+{
+    CPosition position = robot.getCenterPosition();
+    CGroundUnit& groundUnit = m_ground.getAt(position);
+
+    bool dumped = false;
+    int oreType = parameter - 1;
+
+    if (oreType >= 0 && oreType < (int)robot.getOre().size())
+    {
+        if (robot.getOre(oreType) > 0)
+        {
+            groundUnit.addOre(oreType, robot.getOre(oreType));
+            robot.clearOre(oreType);
+            dumped = true;
+        }
+    }
+    else
+    {
+        for (int i = 0; i < (int)robot.getOre().size(); ++i)
+        {
+            if (robot.getOre(i) > 0)
+            {
+                groundUnit.addOre(i, robot.getOre(i));
+                robot.clearOre(i);
+                dumped = true;
+            }
+        }
+    }
+
+    if (dumped)
     {
         m_animation.addGroundChange(position, CGroundChangeStep(m_time, groundUnit.getOre()));
     }

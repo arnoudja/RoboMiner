@@ -49,6 +49,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/robotcode/CompileInput.o \
 	${OBJECTDIR}/robotcode/ConstReturnAction.o \
 	${OBJECTDIR}/robotcode/ConstValueProgramItem.o \
+	${OBJECTDIR}/robotcode/DumpAction.o \
+	${OBJECTDIR}/robotcode/DumpProgramItem.o \
 	${OBJECTDIR}/robotcode/IfProgramItem.o \
 	${OBJECTDIR}/robotcode/MineAction.o \
 	${OBJECTDIR}/robotcode/MineProgramItem.o \
@@ -56,6 +58,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/robotcode/MoveAction.o \
 	${OBJECTDIR}/robotcode/MoveProgramItem.o \
 	${OBJECTDIR}/robotcode/OperatorProgramItem.o \
+	${OBJECTDIR}/robotcode/OreValueProgramItem.o \
 	${OBJECTDIR}/robotcode/ProgramAction.o \
 	${OBJECTDIR}/robotcode/ProgramItem.o \
 	${OBJECTDIR}/robotcode/ProgramItemStatus.o \
@@ -171,6 +174,16 @@ ${OBJECTDIR}/robotcode/ConstValueProgramItem.o: robotcode/ConstValueProgramItem.
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/ConstValueProgramItem.o robotcode/ConstValueProgramItem.cpp
 
+${OBJECTDIR}/robotcode/DumpAction.o: robotcode/DumpAction.cpp 
+	${MKDIR} -p ${OBJECTDIR}/robotcode
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/DumpAction.o robotcode/DumpAction.cpp
+
+${OBJECTDIR}/robotcode/DumpProgramItem.o: robotcode/DumpProgramItem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/robotcode
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/DumpProgramItem.o robotcode/DumpProgramItem.cpp
+
 ${OBJECTDIR}/robotcode/IfProgramItem.o: robotcode/IfProgramItem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
@@ -205,6 +218,11 @@ ${OBJECTDIR}/robotcode/OperatorProgramItem.o: robotcode/OperatorProgramItem.cpp
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/OperatorProgramItem.o robotcode/OperatorProgramItem.cpp
+
+${OBJECTDIR}/robotcode/OreValueProgramItem.o: robotcode/OreValueProgramItem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/robotcode
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/OreValueProgramItem.o robotcode/OreValueProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/ProgramAction.o: robotcode/ProgramAction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode

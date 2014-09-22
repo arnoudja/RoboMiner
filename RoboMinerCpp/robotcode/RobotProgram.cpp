@@ -21,21 +21,13 @@
 
 #include "RobotProgram.h"
 
-#include "SequenceProgramItem.h"
-#include "ConstValueProgramItem.h"
-#include "VariableValueProgramItem.h"
-#include "MineProgramItem.h"
-#include "MoveProgramItem.h"
-#include "RotateProgramItem.h"
-#include "SetVariableProgramItem.h"
-#include "WhileProgramItem.h"
-#include "OperatorProgramItem.h"
-#include "IfProgramItem.h"
+#include "ProgramItem.h"
 
 #include "ProgramAction.h"
 #include "MineAction.h"
 #include "MoveAction.h"
 #include "RotateAction.h"
+#include "DumpAction.h"
 #include "CallAction.h"
 #include "SetVariableAction.h"
 #include "ReturnAction.h"
@@ -82,12 +74,14 @@ CRobotProgram::~CRobotProgram()
 }
 
 
-CRobot::EAction CRobotProgram::getNextAction()
+CRobot::RobotAction CRobotProgram::getNextAction()
 {
-    EAction action = eWait;
+    RobotAction robotAction;
     int stepsDone = 0;
 
-    while (action == eWait && stepsDone++ < getCpuSpeed())
+    robotAction.action = eWait;
+
+    while (robotAction.action == eWait && stepsDone++ < getCpuSpeed())
     {
         if (!m_currentStep)
         {
@@ -99,23 +93,24 @@ CRobot::EAction CRobotProgram::getNextAction()
 
         CProgramAction* programAction = m_currentStep->getNextAction(this, m_currentStatus);
 
-        CMineAction*           mineAction           = dynamic_cast<CMineAction*>(programAction);
-        CMoveAction*           moveAction           = dynamic_cast<CMoveAction*>(programAction);
-        CRotateAction*         rotateAction         = dynamic_cast<CRotateAction*>(programAction);
-        CCallAction*           callAction           = dynamic_cast<CCallAction*>(programAction);
-        CReturnAction*         returnAction         = dynamic_cast<CReturnAction*>(programAction);
-        CValueReturnAction*    valueReturnAction    = dynamic_cast<CValueReturnAction*>(programAction);
-        CSetVariableAction*    setVariableAction    = dynamic_cast<CSetVariableAction*>(programAction);
+        CMineAction*        mineAction          = dynamic_cast<CMineAction*>(programAction);
+        CMoveAction*        moveAction          = dynamic_cast<CMoveAction*>(programAction);
+        CRotateAction*      rotateAction        = dynamic_cast<CRotateAction*>(programAction);
+        CDumpAction*        dumpAction          = dynamic_cast<CDumpAction*>(programAction);
+        CCallAction*        callAction          = dynamic_cast<CCallAction*>(programAction);
+        CReturnAction*      returnAction        = dynamic_cast<CReturnAction*>(programAction);
+        CValueReturnAction* valueReturnAction   = dynamic_cast<CValueReturnAction*>(programAction);
+        CSetVariableAction* setVariableAction   = dynamic_cast<CSetVariableAction*>(programAction);
 
         if (mineAction)
         {
-            action = eMine;
+            robotAction.action = eMine;
         }
         else if (moveAction)
         {
             if (moveAction->getDistance() > .0)
             {
-                action = eForward;
+                robotAction.action = eForward;
                 if (moveAction->getDistance() >= getForwardSpeed())
                 {
                     moveAction->traveled(getForwardSpeed());
@@ -128,7 +123,7 @@ CRobot::EAction CRobotProgram::getNextAction()
             }
             else if (moveAction->getDistance() < .0)
             {
-                action = eBackward;
+                robotAction.action = eBackward;
                 if (-moveAction->getDistance() >= getBackwardSpeed())
                 {
                     moveAction->traveled(-getBackwardSpeed());
@@ -144,7 +139,7 @@ CRobot::EAction CRobotProgram::getNextAction()
         {
             if (rotateAction->getRotation() > .0)
             {
-                action = eRotateRight;
+                robotAction.action = eRotateRight;
                 if (rotateAction->getRotation() >= getRotateSpeed())
                 {
                     rotateAction->rotated(getRotateSpeed());
@@ -157,7 +152,7 @@ CRobot::EAction CRobotProgram::getNextAction()
             }
             else if (rotateAction->getRotation() < .0)
             {
-                action = eRotateLeft;
+                robotAction.action = eRotateLeft;
                 if (-rotateAction->getRotation() >= getRotateSpeed())
                 {
                     rotateAction->rotated(-getRotateSpeed());
@@ -168,6 +163,11 @@ CRobot::EAction CRobotProgram::getNextAction()
                     rotateAction->rotated(rotateAction->getRotation());
                 }
             }
+        }
+        else if (dumpAction)
+        {
+            robotAction.action    = eDump;
+            robotAction.parameter = dumpAction->getOreType();
         }
         else if (callAction)
         {
@@ -215,5 +215,5 @@ CRobot::EAction CRobotProgram::getNextAction()
         }
     }
 
-    return action;
+    return robotAction;
 }

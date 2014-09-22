@@ -310,7 +310,7 @@ list<CDatabase::MiningAreaOreSupply> CDatabase::getMiningAreaOreSupply(int minin
     string query("SELECT oreId, supply, radius "
                  "FROM MiningAreaOreSupply "
                  "WHERE miningAreaId = ? "
-                 "ORDER BY oreId ");
+                 "ORDER BY oreId DESC ");
     int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
     assert(status == 0);
 

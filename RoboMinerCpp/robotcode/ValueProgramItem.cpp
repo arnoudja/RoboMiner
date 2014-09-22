@@ -26,6 +26,8 @@
 #include "MineProgramItem.h"
 #include "MoveProgramItem.h"
 #include "RotateProgramItem.h"
+#include "OreValueProgramItem.h"
+#include "DumpProgramItem.h"
 #include "OperatorProgramItem.h"
 #include "CompileInput.h"
 
@@ -67,6 +69,16 @@ CValueProgramItem* CValueProgramItem::compileSingleValue(CCompileInput& input)
     if (!result)
     {
         result = CRotateProgramItem::compile(input);
+    }
+
+    if (!result)
+    {
+        result = COreValueProgramItem::compile(input);
+    }
+
+    if (!result)
+    {
+        result = CDumpProgramItem::compile(input);
     }
 
     if (!result)
