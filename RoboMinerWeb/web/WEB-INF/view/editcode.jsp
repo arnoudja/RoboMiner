@@ -63,7 +63,7 @@
                 <br>
 
                 Code:<br>
-                <textarea id='sourceCode' name='sourceCode' rows='25' cols='100' onkeydown="return processTab(event, this);">${fn:escapeXml(programSource.sourceCode)}</textarea>
+                <textarea id='sourceCode' name='sourceCode' rows='25' cols='100' onkeydown="return processTab(event, this);" required>${fn:escapeXml(programSource.sourceCode)}</textarea>
                 <br>
 
                 <c:if test="${not empty programSource.errorDescription}">

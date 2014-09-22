@@ -42,8 +42,13 @@ function selectOtherSource() {
 }
 
 function submitData() {
-    window.onbeforeunload = function() {};
-    document.getElementById('editCodeForm').submit();
+    var sourceName = document.getElementById('sourceName').value;
+    var sourceCode = document.getElementById('sourceCode').value;
+    if (sourceName !== null && sourceName !== "" &&
+        sourceCode !== null && sourceCode !== "") {
+        window.onbeforeunload = function() {};
+        document.getElementById('editCodeForm').submit();
+    }
 }
 
 function confirmLooseChanges() {
