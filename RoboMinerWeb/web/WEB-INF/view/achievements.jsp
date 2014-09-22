@@ -34,25 +34,11 @@
     <body>
         <rm:defaultpage currentform="achievements" username="${user.username}">
 
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
+
             <form id="claimAchievementForm" action="<c:url value='achievements'/>" method="post">
                 <input type="hidden" id="achievementId" name="achievementId" value="" />
             </form>
-
-            <table>
-                <caption>${fn:escapeXml(user.username)}</caption>
-                <tr>
-                    <td>Achievement points:</td>
-                    <td>${user.achievementPoints}</td>
-                </tr>
-                <tr>
-                    <td>Robots:</td>
-                    <td>${user.robotList.size()}</td>
-                </tr>
-                <tr>
-                    <td>Max. mining queue size:</td>
-                    <td>${user.miningQueueSize}</td>
-                </tr>
-            </table>
 
             <table>
                 <caption>Unclaimed</caption>

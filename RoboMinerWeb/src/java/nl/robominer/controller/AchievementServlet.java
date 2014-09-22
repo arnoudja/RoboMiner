@@ -71,6 +71,8 @@ public class AchievementServlet extends RoboMinerServletBase {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        processAssets(request);
+
         Users user = usersFacade.findById(getUserId(request));
 
         int achievementId = getItemId(request, "achievementId");

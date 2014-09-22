@@ -34,7 +34,7 @@
     <body>
         <rm:defaultpage currentform="shop" username="${user.username}">
 
-            <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <table>
                 <tr>

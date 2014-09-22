@@ -17,23 +17,39 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 
-<%@ tag description="Show the ore assets" pageEncoding="UTF-8"%>
+<%@ tag description="Show the ore assets" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ attribute name="oreassetlist" required="true" type="java.util.List<nl.robominer.entity.UserOreAsset>"%>
+<%@ attribute name="oreassetlist" required="true" type="java.util.List<nl.robominer.entity.UserOreAsset>" %>
+<%@ attribute name="user" required="true" type="nl.robominer.entity.Users" %>
 
-<div class="oreassets">
-    <table class="oreassets">
+<div class="userassets">
+    <table class="userassets">
         <caption>Assets</caption>
         <tr>
-            <th class="oreassets">Ore</th>
-            <th class="oreassets">Amount</th>
+            <th>Ore</th>
+            <th>Amount</th>
         </tr>
         <c:forEach var='oreAsset' items='${oreassetlist}'>
             <tr>
-                <td class="oreassets">${fn:escapeXml(oreAsset.ore.oreName)}</td>
-                <td class="oreassets">${oreAsset.amount}</td>
+                <td>${fn:escapeXml(oreAsset.ore.oreName)}</td>
+                <td>${oreAsset.amount}</td>
             </tr>
         </c:forEach>
+    </table>
+    <table class="userassets">
+        <caption>${fn:escapeXml(user.username)}</caption>
+        <tr>
+            <td>Achievements:</td>
+            <td>${user.achievementPoints}</td>
+        </tr>
+        <tr>
+            <td>Robots:</td>
+            <td>${user.robotList.size()}</td>
+        </tr>
+        <tr>
+            <td>Mining queue:</td>
+            <td>${user.miningQueueSize}</td>
+        </tr>
     </table>
 </div>

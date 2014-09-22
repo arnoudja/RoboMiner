@@ -35,7 +35,7 @@
     <body>
         <rm:defaultpage currentform="account" username="${currentusername}">
 
-            <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <form action="<c:url value='account'/>" method="post" onsubmit="return checkAccountForm(this);">
                 <h1>${fn:escapeXml(currentusername)}</h1>

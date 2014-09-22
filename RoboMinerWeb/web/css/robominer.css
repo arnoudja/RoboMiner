@@ -257,21 +257,17 @@ td.shopPartName {
 
 
 /******************************************************
- * Ore assets
+ * User assets
  ******************************************************/
 
-div.oreassets {
+div.userassets {
     float: right;
     min-height: 50vh;
 }
 
-table.oreassets {
+table.userassets {
+    clear: right;
     float: right;
-}
-
-th.oreassets, td.oreassets {
-    padding-top: 2px;
-    padding-bottom: 2px;
 }
 
 

@@ -35,7 +35,7 @@
     <body>
         <rm:defaultpage currentform="miningResults" username="${user.username}">
 
-            <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <c:forEach var="robot" items="${user.robotList}">
                 <table class="miningresults">

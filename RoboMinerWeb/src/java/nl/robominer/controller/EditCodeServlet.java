@@ -80,7 +80,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
         String sourceName       = request.getParameter("sourceName");
         String sourceCode       = request.getParameter("sourceCode");
 
-        if (sourceName != null && sourceCode != null) {
+        if (sourceName != null && !sourceName.isEmpty() &&
+            sourceCode != null && !sourceCode.isEmpty()) {
 
             if (programSourceId > 0) {
                 String errorMessage = updateProgramSource(userId, programSourceId, sourceName, sourceCode);

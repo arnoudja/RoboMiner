@@ -35,7 +35,7 @@
     <body>
         <rm:defaultpage currentform="miningQueue" username="${user.username}">
 
-            <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <form id='miningqueueform' action="<c:url value='miningQueue'/>" method="post">
 

@@ -35,7 +35,7 @@
     <body>
         <rm:defaultpage currentform="statistics" username="${user.username}">
 
-            <rm:userassets oreassetlist='${oreAssetList}' />
+            <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <select class="statistics" onchange="showStatisticsType(this.value);">
                 <option value="totalStatistics" selected>Total</option>
