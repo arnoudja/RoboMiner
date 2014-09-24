@@ -335,3 +335,13 @@ where UserAchievement.usersId = Users.id
 and UserAchievement.achievementId = AchievementPredecessor.predecessorId
 )
 );
+
+
+-- Update the tier levels
+update RobotPart
+set tierId = 
+(
+select max(OrePriceAmount.oreId)
+from OrePriceAmount
+where OrePriceAmount.orePriceId = RobotPart.orePriceId
+);

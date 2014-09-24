@@ -28,6 +28,7 @@ insert into Ore (id, oreName) values (2, 'Oxaria');
 insert into Ore (id, oreName) values (3, 'Lithabine');
 insert into Ore (id, oreName) values (4, 'Neudralion');
 insert into Ore (id, oreName) values (5, 'Complatix');
+insert into Ore (id, oreName) values (6, 'Prantum');
 
 -- The tier names
 insert into Tier (id, tierName) values (1, 'Cerbonium quality');
@@ -35,6 +36,7 @@ insert into Tier (id, tierName) values (2, 'Oxaria quality');
 insert into Tier (id, tierName) values (3, 'Lithabine quality');
 insert into Tier (id, tierName) values (4, 'Neudralion quality');
 insert into Tier (id, tierName) values (5, 'Complatix quality');
+insert into Tier (id, tierName) values (6, 'Prantum quality');
 
 -- The robot part names
 insert into RobotPartType (id, typeName) values (1, 'Ore container');
@@ -99,19 +101,33 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1314, 131, 4,
 insert into RobotPart (id,  typeId, partName,                            orePriceId, oreCapacity, weight, volume, powerUsage)
                values (131, 1,      'Enhanced Neudralion Ore Container', 131,        60,          26,     65,     9);
 
-insert into OrePrice (id, description) values (140, 'Neudralion Ore Container price');
+insert into OrePrice (id, description) values (140, 'Complatix Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1403, 140, 3, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1404, 140, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1405, 140, 5, 10);
 insert into RobotPart (id,  typeId, partName,                  orePriceId, oreCapacity, weight, volume, powerUsage)
                values (140, 1,      'Complatix Ore Container', 140,        65,          28,     70,     10);
 
-insert into OrePrice (id, description) values (141, 'Enhanced Neudralion Ore Container price');
+insert into OrePrice (id, description) values (141, 'Enhanced Complatix Ore Container price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1413, 141, 3, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1414, 141, 4, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1415, 141, 5, 75);
 insert into RobotPart (id,  typeId, partName,                           orePriceId, oreCapacity, weight, volume, powerUsage)
                values (141, 1,      'Enhanced Complatix Ore Container', 141,        70,          30,     75,     11);
+
+insert into OrePrice (id, description) values (150, 'Prantum Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1504, 150, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1505, 150, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1506, 150, 6, 10);
+insert into RobotPart (id,  typeId, partName,                orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (150, 1,      'Prantum Ore Container', 150,        75,          32,     80,     12);
+
+insert into OrePrice (id, description) values (151, 'Enhanced Prantum Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1514, 151, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1515, 151, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1516, 151, 6, 75);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (151, 1,      'Enhanced Prantum Ore Container', 151,        80,          34,     85,     13);
 
 -- Mining units
 insert into OrePrice (id, description) values (201, 'Standard Mining Unit price');
@@ -181,6 +197,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2414, 241, 4,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2415, 241, 5, 75);
 insert into RobotPart (id,  typeId, partName,                         orePriceId, miningCapacity, weight, volume, powerUsage)
                values (241, 2,      'Enhanced Complatix Mining Unit', 241,        6,              25,     18,     22);
+
+insert into OrePrice (id, description) values (250, 'Prantum Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2504, 250, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2505, 250, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2506, 250, 6, 10);
+insert into RobotPart (id,  typeId, partName,              orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (250, 2,      'Prantum Mining Unit', 250,        7,              26,     19,     30);
+
+insert into OrePrice (id, description) values (251, 'Enhanced Prantum Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2514, 251, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2515, 251, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2516, 251, 6, 75);
+insert into RobotPart (id,  typeId, partName,                       orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (251, 2,      'Enhanced Prantum Mining Unit', 251,        7,              27,     20,     27);
 
 -- Batteries
 insert into OrePrice (id, description) values (301, 'Standard Battery price');
@@ -257,6 +287,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3415, 341, 5,
 insert into RobotPart (id,  typeId, partName,                     orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
                values (341, 3,      'Enhanced Complatix Battery', 341,        72000,           300,          11,     10,      0);
 
+insert into OrePrice (id, description) values (350, 'Prantum Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3504, 350, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3505, 350, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3506, 350, 6, 10);
+insert into RobotPart (id,  typeId, partName,          orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (350, 3,      'Prantum Battery', 350,        98000,           420,          12,     11,     0);
+
+insert into OrePrice (id, description) values (351, 'Enhanced Prantum Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3514, 351, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3515, 351, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3516, 351, 6, 75);
+insert into RobotPart (id,  typeId, partName,                   orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (351, 3,      'Enhanced Prantum Battery', 351,        120000,          600,          13,     12,      0);
+
 -- Memory modules
 insert into OrePrice (id, description) values (401, 'Memory Module 8 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4011, 401, 1, 2);
@@ -326,6 +370,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4415, 441, 5,
 insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (441, 4,      'Memory Module 384', 441,        384,            1,      1,      11);
 
+insert into OrePrice (id, description) values (450, 'Memory Module 256 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4504, 450, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4505, 450, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4506, 450, 6, 10);
+insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (450, 4,      'Memory Module 512', 450,        512,            1,      1,      12);
+
+insert into OrePrice (id, description) values (451, 'Memory Module 384 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4514, 451, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4515, 451, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4516, 451, 6, 75);
+insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (451, 4,      'Memory Module 768', 451,        768,            1,      1,      13);
+
 -- CPUs
 insert into OrePrice (id, description) values (501, 'CPU 1 ipc price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5011, 501, 1, 2);
@@ -388,7 +446,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5413, 541, 3,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5414, 541, 4, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5415, 541, 5, 75);
 insert into RobotPart (id,  typeId, partName,     orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (541, 5,      'CPU 10 ipc', 541,        10,          1,      1,      6);
+               values (541, 5,      'CPU 10 ipc', 541,        10,          1,      1,      9);
+
+insert into OrePrice (id, description) values (550, 'CPU 11 ipc price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5504, 550, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5505, 550, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5506, 550, 6, 10);
+insert into RobotPart (id,  typeId, partName,     orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (550, 5,      'CPU 11 ipc', 550,        11,          1,      1,      11);
+
+insert into OrePrice (id, description) values (551, 'CPU 12 ipc price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5514, 551, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5515, 551, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5516, 551, 6, 75);
+insert into RobotPart (id,  typeId, partName,     orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (551, 5,      'CPU 12 ipc', 551,        12,          1,      1,      12);
 
 -- Engines
 insert into OrePrice (id, description) values (601, 'Engine 50 price');
@@ -458,6 +530,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6414, 641, 4,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6415, 641, 5, 75);
 insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (641, 6,      'Engine 140E', 641,        140,             140,              140,            20,     15,     48);
+
+insert into OrePrice (id, description) values (650, 'Engine 180 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6504, 650, 4, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6505, 650, 5, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6506, 650, 6, 10);
+insert into RobotPart (id,  typeId, partName,     orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (650, 6,      'Engine 180', 650,        180,             140,              180,            22,     16,     60);
+
+insert into OrePrice (id, description) values (651, 'Engine 170A price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6514, 651, 4, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6515, 651, 5, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6516, 651, 6, 75);
+insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (651, 6,      'Engine 170A', 651,        170,             170,              360,            22,     17,     60);
 
 
 -- AI player
@@ -582,6 +668,22 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (14
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 4, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
+
+-- Prantum
+insert into OrePrice (id, description) values (1501, 'Mining Area Prantum-1 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15011, 1501, 1, 30);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15012, 1501, 2, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15013, 1501, 3, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15014, 1501, 4, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15015, 1501, 5, 10);
+insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1501, 'Prantum-1', 1501,       70,    70,    900,      1800,       50,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 10);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 10);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 2, 15, 10);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
+
 
 -- Achievements
 insert into Achievement (id, title,              description,              achievementPoints, robotReward, miningQueueReward, miningAreaId)
@@ -819,8 +921,8 @@ insert into AchievementPredecessor (predecessorId, successorId) values (301, 400
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (400, 5, 1);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward)
-                 values (401, 'More Complatix!', 'Mine even more Complatix ore', 10,                1);
+insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, miningAreaId)
+                 values (401, 'More Complatix!', 'Mine even more Complatix ore', 10,                1,                 1501);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (400, 401);
 
@@ -865,6 +967,46 @@ insert into Achievement (id, title,               description,                  
 insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);
 
 insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 150.0);
+
+
+insert into Achievement (id,  title,            description,                achievementPoints)
+                 values (500, 'Prantum mining', 'Start mining Prantum ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (401, 500);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (500, 6, 1);
+
+
+insert into Achievement (id,  title,           description,                  achievementPoints)
+                 values (501, 'More Prantum!', 'Mine even more Prantum ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (500, 501);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (501, 6, 50);
+
+
+insert into Achievement (id,  title,           description,                  achievementPoints)
+                 values (502, 'More Prantum!', 'Mine even more Prantum ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (501, 502);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (502, 6, 1000);
+
+
+insert into Achievement (id,  title,           description,                  achievementPoints)
+                 values (503, 'More Prantum!', 'Mine even more Prantum ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (502, 503);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (503, 6, 10000);
+
+
+insert into Achievement (id,  title,           description,                  achievementPoints)
+                 values (504, 'More Prantum!', 'Mine even more Prantum ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (503, 504);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (504, 6, 100000);
 
 
 -- initial achievement filling
