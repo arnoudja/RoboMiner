@@ -19,6 +19,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="rm" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
@@ -45,6 +46,7 @@
                 <c:forEach var="userAchievement" items="${userAchievementList}">
                     <c:set var="achievement" value="${userAchievement.achievement}" />
                     <c:set var="achievementMiningTotalRequirementList" value="${achievement.achievementMiningTotalRequirementList}" />
+                    <c:set var="achievementMiningScoreRequirementList" value="${achievement.achievementMiningScoreRequirementList}" />
                     <c:set var="claimable" value="true" />
                     <tbody class="achievements">
                         <tr>
@@ -89,10 +91,25 @@
                                 <c:set var="claimable" value="false" />
                             </c:if>
                             <tr>
-                                <td>${fn:escapeXml(achievementMiningTotalRequirement.ore.oreName)}</td>
+                                <td>${fn:escapeXml(achievementMiningTotalRequirement.ore.oreName)} mined</td>
                                 <td>${achievementMiningTotalRequirement.amount}</td>
                                 <td class="${totalMined ge achievementMiningTotalRequirement.amount ? 'sufficientbalance' : 'insufficientbalance'}">
                                     (${totalMined})
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <c:forEach var="achievementMiningScoreRequirement" items="${achievementMiningScoreRequirementList}">
+                            <c:set var="currentScore" value="${user.getMiningAreaScore(achievementMiningScoreRequirement.miningAreaId)}" />
+                            <c:if test="${currentScore lt achievementMiningScoreRequirement.minimumScore}">
+                                <c:set var="claimable" value="false" />
+                            </c:if>
+                            <tr>
+                                <td>${fn:escapeXml(achievementMiningScoreRequirement.miningArea.areaName)} score</td>
+                                <td>
+                                    <fmt:formatNumber value="${achievementMiningScoreRequirement.minimumScore}" minFractionDigits="3" maxFractionDigits="3"/>
+                                </td>
+                                <td class="${currentScore ge achievementMiningScoreRequirement.minimumScore ? 'sufficientbalance' : 'insufficientbalance'}">
+                                    (<fmt:formatNumber value="${currentScore}" minFractionDigits="3" maxFractionDigits="3"/>)
                                 </td>
                             </tr>
                         </c:forEach>

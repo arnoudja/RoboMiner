@@ -48,7 +48,31 @@ where not exists
 select *
 from Achievement
 where Achievement.id = AchievementMiningTotalRequirement.achievementId
-);
+)
+or not exists
+(
+select *
+from Ore
+where Ore.id = AchievementMiningTotalRequirement.oreId
+)
+;
+
+-- Remove unlinked items from AchievementMiningScoreRequirement
+delete
+from AchievementMiningScoreRequirement
+where not exists
+(
+select *
+from Achievement
+where Achievement.id = AchievementMiningScoreRequirement.achievementId
+)
+or not exists
+(
+select *
+from MiningArea
+where MiningArea.id = AchievementMiningScoreRequirement.miningAreaId
+)
+;
 
 -- Remove unlinked items from Robot
 delete
@@ -275,3 +299,39 @@ on Achievement.id = UserAchievement.achievementId
 where UserAchievement.claimed = true
 and Achievement.miningAreaId IS NOT NULL;
 
+
+-- Add missing UserAchievement records
+insert into UserAchievement
+(usersId, achievementId, claimed)
+select Users.id, Achievement.id, false
+from Achievement, Users
+where not exists
+(
+select *
+from UserAchievement
+where UserAchievement.usersId = Users.id
+and UserAchievement.achievementId = Achievement.id
+)
+and not exists
+(
+select *
+from AchievementPredecessor
+inner join UserAchievement
+on UserAchievement.achievementId = AchievementPredecessor.predecessorId
+where AchievementPredecessor.successorId = Achievement.id
+and UserAchievement.usersId = Users.id
+and (UserAchievement.claimed IS NULL or UserAchievement.claimed = false)
+)
+and not exists
+(
+select *
+from AchievementPredecessor
+where AchievementPredecessor.successorId = Achievement.id
+and not exists
+(
+select *
+from UserAchievement
+where UserAchievement.usersId = Users.id
+and UserAchievement.achievementId = AchievementPredecessor.predecessorId
+)
+);

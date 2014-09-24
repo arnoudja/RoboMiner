@@ -96,6 +96,10 @@ public class Achievement implements Serializable {
     private List<AchievementMiningTotalRequirement> achievementMiningTotalRequirementList;
 
     @OneToMany
+    @JoinColumn(name = "AchievementMiningScoreRequirement.achievementId")
+    private List<AchievementMiningScoreRequirement> achievementMiningScoreRequirementList;
+
+    @OneToMany
     @JoinTable(
             name = "AchievementPredecessor",
             joinColumns = @JoinColumn(name = "predecessorId"),
@@ -136,6 +140,10 @@ public class Achievement implements Serializable {
 
     public List<AchievementMiningTotalRequirement> getAchievementMiningTotalRequirementList() {
         return achievementMiningTotalRequirementList;
+    }
+
+    public List<AchievementMiningScoreRequirement> getAchievementMiningScoreRequirementList() {
+        return achievementMiningScoreRequirementList;
     }
 
     public List<Achievement> getAchievementSuccessorList() {

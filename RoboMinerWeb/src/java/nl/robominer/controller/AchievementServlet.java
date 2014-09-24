@@ -34,6 +34,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import nl.robominer.businessentity.UserAssets;
+import nl.robominer.entity.AchievementMiningScoreRequirement;
 import nl.robominer.entity.AchievementMiningTotalRequirement;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotLifetimeResult;
@@ -138,6 +139,15 @@ public class AchievementServlet extends RoboMinerServletBase {
 
                 Long oreMined = totalOreMined.get(achievementMiningTotalRequirement.getAchievementMiningTotalRequirementPK().getOreId());
                 if (oreMined == null || oreMined < achievementMiningTotalRequirement.getAmount()) {
+                    claimable = false;
+                }
+            }
+
+            List<AchievementMiningScoreRequirement> achievementMiningScoreRequirementList = userAchievement.getAchievement().getAchievementMiningScoreRequirementList();
+
+            for (AchievementMiningScoreRequirement achievementMiningScoreRequirement : achievementMiningScoreRequirementList) {
+
+                if (user.getMiningAreaScore(achievementMiningScoreRequirement.getMiningAreaId()) < achievementMiningScoreRequirement.getMinimumScore()) {
                     claimable = false;
                 }
             }

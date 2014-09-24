@@ -326,6 +326,15 @@ PRIMARY KEY (achievementId, oreId)
 );
 
 
+create table AchievementMiningScoreRequirement
+(
+achievementId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
+miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
+minimumScore DOUBLE NOT NULL,
+PRIMARY KEY (achievementId, miningAreaId)
+);
+
+
 create table UserAchievement
 (
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,

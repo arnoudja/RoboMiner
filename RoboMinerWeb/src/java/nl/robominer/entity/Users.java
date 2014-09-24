@@ -337,6 +337,24 @@ public class Users implements Serializable {
     }
 
     /**
+     * Return the mining area for the specified mining area id if the user has
+     * access to that mining area, or null otherwise.
+     *
+     * @param miningAreaId The requested mining area id.
+     *
+     * @return The mining area instance, or null if the user doesn't have access.
+     */
+    public MiningArea getMiningArea(int miningAreaId) {
+        for (MiningArea miningArea : miningAreaList) {
+            if (miningArea.getId() == miningAreaId) {
+                return miningArea;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Add a mining area to the list of mining areas the user is allowed to mine in.
      *
      * @param miningArea The mining area to add.
@@ -477,6 +495,24 @@ public class Users implements Serializable {
         }
 
         return result;
+    }
+
+    /**
+     * Retrieve the mining score of the best robot for the specified mining area.
+     *
+     * @param miningAreaId The mining area to retrieve the score for.
+     *
+     * @return The score of the best robot for the specified mining area.
+     */
+    public double getMiningAreaScore(int miningAreaId) {
+
+        double score = .0;
+
+        for (Robot robot : robotList) {
+            score = Math.max(score, robot.getMiningAreaScore(miningAreaId));
+        }
+
+        return score;
     }
 
     /**

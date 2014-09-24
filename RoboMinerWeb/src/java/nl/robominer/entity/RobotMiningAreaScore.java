@@ -92,6 +92,15 @@ public class RobotMiningAreaScore implements Serializable {
     }
 
     /**
+     * Retrieve the mining area id this score is for.
+     *
+     * @return The mining area id.
+     */
+    public int getMiningAreaId() {
+        return robotMiningAreaScorePK.getMiningAreaId();
+    }
+
+    /**
      * Retrieve the total number of runs made by this robot in this mining area.
      *
      * @return The total number of runs.

@@ -36,7 +36,6 @@ import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.Users;
-import nl.robominer.session.MiningAreaFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.UsersFacade;
 
@@ -64,12 +63,6 @@ public class MiningQueueServlet extends RoboMinerServletBase {
      */
     @EJB
     private MiningQueueFacade miningQueueFacade;
-
-    /**
-     * Bean to handle the database actions for the mining areas.
-     */
-    @EJB
-    private MiningAreaFacade miningAreaFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -102,7 +95,7 @@ public class MiningQueueServlet extends RoboMinerServletBase {
             // Process the request.
             switch (submitType) {
                 case "add":
-                    errorMessage = addMiningQueueItem(request, user.getRobot(robotId), miningAreaFacade.find(miningAreaAddId));
+                    errorMessage = addMiningQueueItem(request, user.getRobot(robotId), user.getMiningArea(miningAreaAddId));
                     break;
 
                 case "remove":
@@ -126,18 +119,14 @@ public class MiningQueueServlet extends RoboMinerServletBase {
         }
         request.setAttribute("robotMiningQueueMap", robotMiningQueueMap);
 
-        // Add the list of mining areas
-        List<MiningArea> miningAreaList = miningAreaFacade.findAll();
-        request.setAttribute("miningAreaList", miningAreaList);
-
         // Restore the session selection or select first mining area from the lists when none selected yet
         if (infoMiningAreaId <= 0) {
 
             if (request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID) != null) {
                 infoMiningAreaId = (int)request.getSession().getAttribute(SESSION_INFO_MINING_AREA_ID);
             }
-            else if (!miningAreaList.isEmpty()) {
-                infoMiningAreaId = miningAreaList.get(0).getId();
+            else if (!user.getMiningAreaList().isEmpty()) {
+                infoMiningAreaId = user.getMiningAreaList().get(0).getId();
             }
         }
 
@@ -154,8 +143,8 @@ public class MiningQueueServlet extends RoboMinerServletBase {
                 if (sessionRobotMiningAreaIdMap != null && sessionRobotMiningAreaIdMap.get(robot.getId()) != null) {
                     selectedMiningAreaId = sessionRobotMiningAreaIdMap.get(robot.getId());
                 }
-                else if (!miningAreaList.isEmpty()) {
-                    selectedMiningAreaId = miningAreaList.get(0).getId();
+                else if (!user.getMiningAreaList().isEmpty()) {
+                    selectedMiningAreaId = user.getMiningAreaList().get(0).getId();
                 }
             }
 

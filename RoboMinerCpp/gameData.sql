@@ -635,10 +635,18 @@ insert into AchievementPredecessor (predecessorId, successorId) values (15, 16);
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (16, 1, 100000);
 
 
+insert into Achievement (id, title,              description,                                                     achievementPoints, miningAreaId)
+                 values (20, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1002);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (12, 20);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 6.0);
+
+
 insert into Achievement (id,  title,           description,                       achievementPoints, miningQueueReward)
                  values (100, 'Oxaria mining', 'Start mining better quality ore', 10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (3, 100);
+insert into AchievementPredecessor (predecessorId, successorId) values (13, 100);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (100, 2, 1);
 
@@ -681,6 +689,14 @@ insert into Achievement (id, title,            description,                 achi
 insert into AchievementPredecessor (predecessorId, successorId) values (104, 105);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (105, 2, 1000000);
+
+
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (120, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1102);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (101, 120);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 45.0);
 
 
 insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
@@ -731,6 +747,14 @@ insert into AchievementPredecessor (predecessorId, successorId) values (204, 205
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (205, 3, 1000000);
 
 
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (220, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1202);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (201, 220);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 250.0);
+
+
 insert into Achievement (id,  title,               description,                   achievementPoints, miningQueueReward)
                  values (300, 'Neudralion mining', 'Start mining Neudralion ore', 10,                1);
 
@@ -777,6 +801,14 @@ insert into Achievement (id,  title,              description,                  
 insert into AchievementPredecessor (predecessorId, successorId) values (304, 305);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (305, 4, 1000000);
+
+
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (320, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1302);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (301, 320);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 200.0);
 
 
 insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
@@ -826,6 +858,13 @@ insert into AchievementPredecessor (predecessorId, successorId) values (404, 405
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (405, 5, 1000000);
 
+
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (420, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1402);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 150.0);
 
 
 -- initial achievement filling

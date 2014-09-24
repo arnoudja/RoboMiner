@@ -22,6 +22,7 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -274,6 +276,13 @@ public class Robot implements Serializable {
     @OneToMany
     @JoinColumn(name = "RobotLifetimeResult.robotId")
     private List<RobotLifetimeResult> robotLifetimeResultList;
+
+    /**
+     * The mining score per mining area.
+     */
+    @OneToMany
+    @JoinColumn(name = "RobotMiningAreaScore.robotId")
+    private List<RobotMiningAreaScore> robotMiningAreaScoreList;
 
     /**
      * Default constructor.
@@ -524,6 +533,17 @@ public class Robot implements Serializable {
 
     public List<RobotLifetimeResult> getRobotLifetimeResultList() {
         return robotLifetimeResultList;
+    }
+
+    public double getMiningAreaScore(int miningAreaId) {
+
+        for (RobotMiningAreaScore robotMiningAreaScore : robotMiningAreaScoreList) {
+            if (robotMiningAreaScore.getMiningAreaId() == miningAreaId) {
+                return robotMiningAreaScore.getScore();
+            }
+        }
+
+        return .0;
     }
 
     @Override

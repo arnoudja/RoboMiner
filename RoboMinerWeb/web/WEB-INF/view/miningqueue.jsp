@@ -73,27 +73,27 @@
                                 <td>${fn:escapeXml(miningQueueItem.miningQueue.miningArea.areaName)}</td>
                                 <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
                                 <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" ></td>
-                                <script>
-                                    <c:choose>
-                                        <c:when test="${rownr eq 0}">
-                                            countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                                function(secondsLeft) {
-                                                    document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                                },
-                                                function() {
-                                                    document.getElementById("miningqueueform").submit();
-                                                });
-                                        </c:when>
-                                        <c:otherwise>
-                                            countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                                function(secondsLeft) {
-                                                    document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                                },
-                                                function() {});
-                                        </c:otherwise>
-                                    </c:choose>
-                                </script>
                             </tr>
+                            <script>
+                                <c:choose>
+                                    <c:when test="${rownr eq 0}">
+                                        countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                            function(secondsLeft) {
+                                                document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                            },
+                                            function() {
+                                                document.getElementById("miningqueueform").submit();
+                                            });
+                                    </c:when>
+                                    <c:otherwise>
+                                        countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                            function(secondsLeft) {
+                                                document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                            },
+                                            function() {});
+                                    </c:otherwise>
+                                </c:choose>
+                            </script>
                             <c:set var="rownr" value="${rownr + 1}"/>
                         </c:forEach>
                         <tr>
@@ -104,7 +104,7 @@
                             </td>
                             <td>
                                 <select id="miningArea${robot.id}" name="miningArea${robot.id}" class="tableitem" onchange="selectMiningAreaDetails(this.value);">
-                                    <c:forEach var='miningArea' items='${miningAreaList}'>
+                                    <c:forEach var='miningArea' items='${user.miningAreaList}'>
                                         <option value="${miningArea.id}" ${miningArea.id eq robotMiningAreaIdMap.get(robot.id) ? 'selected' : ''} >${fn:escapeXml(miningArea.areaName)}</option>
                                     </c:forEach>
                                 </select>
@@ -132,13 +132,13 @@
                             <th>Mining area:</th>
                             <th colspan="3">
                                 <select id='infoMiningAreaId' name="infoMiningAreaId" class="tableitem" onchange='showMiningAreaDetails();'>
-                                    <c:forEach var='miningArea' items='${miningAreaList}'>
+                                    <c:forEach var='miningArea' items='${user.miningAreaList}'>
                                         <option value="${miningArea.id}" ${miningArea.id eq infoMiningAreaId ? 'selected="selected"' : ''}>${fn:escapeXml(miningArea.areaName)}</option>
                                     </c:forEach>
                                 </select>
                             </th>
                         </tr>
-                        <c:forEach var='miningArea' items='${miningAreaList}'>
+                        <c:forEach var='miningArea' items='${user.miningAreaList}'>
                             <tbody id='miningAreaDetails${miningArea.id}' style="display: none;">
                                 <tr>
                                     <td>Tax rate:</td>
