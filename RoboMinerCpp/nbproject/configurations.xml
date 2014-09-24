@@ -29,6 +29,7 @@
         <itemPath>robotcode/SequenceProgramItem.h</itemPath>
         <itemPath>robotcode/SetVariableAction.h</itemPath>
         <itemPath>robotcode/SetVariableProgramItem.h</itemPath>
+        <itemPath>robotcode/TimeProgramItem.h</itemPath>
         <itemPath>robotcode/Value.h</itemPath>
         <itemPath>robotcode/ValueProgramItem.h</itemPath>
         <itemPath>robotcode/ValueReturnAction.h</itemPath>
@@ -85,6 +86,7 @@
         <itemPath>robotcode/SequenceProgramItem.cpp</itemPath>
         <itemPath>robotcode/SetVariableAction.cpp</itemPath>
         <itemPath>robotcode/SetVariableProgramItem.cpp</itemPath>
+        <itemPath>robotcode/TimeProgramItem.cpp</itemPath>
         <itemPath>robotcode/Value.cpp</itemPath>
         <itemPath>robotcode/ValueProgramItem.cpp</itemPath>
         <itemPath>robotcode/ValueReturnAction.cpp</itemPath>
@@ -293,6 +295,10 @@
             flavor2="0">
       </item>
       <item path="robotcode/SetVariableProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/TimeProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/TimeProgramItem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="robotcode/Value.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -517,6 +523,10 @@
             flavor2="0">
       </item>
       <item path="robotcode/SetVariableProgramItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="robotcode/TimeProgramItem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="robotcode/TimeProgramItem.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="robotcode/Value.cpp" ex="false" tool="1" flavor2="0">
       </item>

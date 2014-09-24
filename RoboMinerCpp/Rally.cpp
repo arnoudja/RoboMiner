@@ -190,7 +190,7 @@ void CRally::processStep()
 {
     for (unsigned int i = 0; i < m_robots.size(); ++i)
     {
-        m_robots[i]->prepareForAction();
+        m_robots[i]->prepareForAction(m_time, m_totalMoves);
     }
 
     if (m_time > 0)

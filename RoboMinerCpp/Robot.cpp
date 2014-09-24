@@ -59,8 +59,9 @@ CRobot::CRobot(int robotId, int maxTurns, int maxOre,
 }
 
 
-void CRobot::prepareForAction()
+void CRobot::prepareForAction(int currentStep, int maxSteps)
 {
+    setTimeLeft(std::min(getMaxTurns(), maxSteps) - currentStep);
     setDestination(getPosition());
     setTimeFraction(1.);
     setCurrentSpeed(.0);

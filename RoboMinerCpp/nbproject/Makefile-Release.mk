@@ -69,6 +69,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/robotcode/SequenceProgramItem.o \
 	${OBJECTDIR}/robotcode/SetVariableAction.o \
 	${OBJECTDIR}/robotcode/SetVariableProgramItem.o \
+	${OBJECTDIR}/robotcode/TimeProgramItem.o \
 	${OBJECTDIR}/robotcode/Value.o \
 	${OBJECTDIR}/robotcode/ValueProgramItem.o \
 	${OBJECTDIR}/robotcode/ValueReturnAction.o \
@@ -273,6 +274,11 @@ ${OBJECTDIR}/robotcode/SetVariableProgramItem.o: robotcode/SetVariableProgramIte
 	${MKDIR} -p ${OBJECTDIR}/robotcode
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/SetVariableProgramItem.o robotcode/SetVariableProgramItem.cpp
+
+${OBJECTDIR}/robotcode/TimeProgramItem.o: robotcode/TimeProgramItem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/robotcode
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/robotcode/TimeProgramItem.o robotcode/TimeProgramItem.cpp
 
 ${OBJECTDIR}/robotcode/Value.o: robotcode/Value.cpp 
 	${MKDIR} -p ${OBJECTDIR}/robotcode

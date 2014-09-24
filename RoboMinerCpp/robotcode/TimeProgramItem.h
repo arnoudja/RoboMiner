@@ -23,17 +23,17 @@
 
 namespace robotcode
 {
-    class CMineProgramItem :
+    class CTimeProgramItem :
         public CValueProgramItem
     {
     public:
-        CMineProgramItem()                              {}
-        virtual ~CMineProgramItem()                     {}
+        CTimeProgramItem()                              {}
+        virtual ~CTimeProgramItem()                     {}
 
         virtual CProgramAction* getNextAction(const CRobot* robot, CProgramItemStatus*& status) const;
 
         virtual int size() const                        { return 1; }
 
-        static CMineProgramItem* compile(CCompileInput& input);
+        static CTimeProgramItem* compile(CCompileInput& input);
     };
 }

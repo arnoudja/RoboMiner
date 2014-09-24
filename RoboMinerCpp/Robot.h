@@ -58,11 +58,14 @@ public:
 
     virtual RobotAction getNextAction() = 0;
 
-    void prepareForAction();
+    void prepareForAction(int currentStep, int maxSteps);
     void applyRotation();
 
     int getRobotId() const                                      { return m_robotId; }
 
+    int getTimeLeft() const                                     { return m_timeLeft; }
+    void setTimeLeft(int timeLeft)                              { m_timeLeft = timeLeft; }
+    
     CPosition& getPosition()                                    { return m_position; }
     const CPosition& getPosition() const                        { return m_position; }
     CPosition getCenterPosition() const;
@@ -123,6 +126,7 @@ public:
 
 private:
     int                     m_robotId;
+    int                     m_timeLeft;
     CPosition               m_position;
     CGroundUnit::TOreAmount m_ore;
     int                     m_maxTurns;

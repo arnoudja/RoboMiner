@@ -19,42 +19,34 @@
 
 #include "../stdafx.h"
 
-#include "MineProgramItem.h"
+#include "TimeProgramItem.h"
 #include "ProgramItemStatus.h"
-#include "MineAction.h"
-#include "MineReturnAction.h"
+#include "ConstReturnAction.h"
 #include "CompileInput.h"
+
+#include "../Robot.h"
 
 
 using namespace std;
 using namespace robotcode;
 
 
-CProgramAction* CMineProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
+CProgramAction* CTimeProgramItem::getNextAction(const CRobot* robot, CProgramItemStatus*& status) const
 {
-    CProgramAction* action = NULL;
+    assert(!status);
+    status = new CProgramItemStatus();
 
-    if (status)
-    {
-        action = new CMineReturnAction();
-    }
-    else
-    {
-        status = new CProgramItemStatus();
-        action = new CMineAction();
-    }
+    status->adoptProgramAction(new CConstReturnAction(robot->getTimeLeft()));
 
-    status->adoptProgramAction(action);
-
-    return action;
+    return status->getProgramAction();
 }
 
 
-CMineProgramItem* CMineProgramItem::compile(CCompileInput& input)
+CTimeProgramItem* CTimeProgramItem::compile(CCompileInput& input)
 {
-    CMineProgramItem* result = NULL;
+    CTimeProgramItem* result = NULL;
 
-    if (input.useNextWord("mine"))
+    if (input.useNextWord("time"))
     {
         if (!input.eatChar('(') || !input.eatChar(')'))
         {
@@ -63,7 +55,7 @@ CMineProgramItem* CMineProgramItem::compile(CCompileInput& input)
             throw error.str();
         }
         
-        result = new CMineProgramItem();
+        result = new CTimeProgramItem();
     }
 
     return result;

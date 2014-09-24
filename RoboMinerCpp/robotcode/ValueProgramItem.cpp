@@ -29,6 +29,7 @@
 #include "OreValueProgramItem.h"
 #include "DumpProgramItem.h"
 #include "OperatorProgramItem.h"
+#include "TimeProgramItem.h"
 #include "CompileInput.h"
 
 
@@ -79,6 +80,11 @@ CValueProgramItem* CValueProgramItem::compileSingleValue(CCompileInput& input)
     if (!result)
     {
         result = CDumpProgramItem::compile(input);
+    }
+
+    if (!result)
+    {
+        result = CTimeProgramItem::compile(input);
     }
 
     if (!result)
