@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -86,6 +87,10 @@ public class Achievement implements Serializable {
     @Column(name = "robotReward")
     private int robotReward;
 
+    @ManyToOne
+    @JoinColumn(name = "miningAreaId", insertable = false, updatable = false)
+    private MiningArea miningArea;
+
     @OneToMany
     @JoinColumn(name = "AchievementMiningTotalRequirement.achievementId")
     private List<AchievementMiningTotalRequirement> achievementMiningTotalRequirementList;
@@ -123,6 +128,10 @@ public class Achievement implements Serializable {
 
     public int getRobotReward() {
         return robotReward;
+    }
+
+    public MiningArea getMiningArea() {
+        return miningArea;
     }
 
     public List<AchievementMiningTotalRequirement> getAchievementMiningTotalRequirementList() {

@@ -51,6 +51,7 @@ import nl.robominer.entity.UserAchievement;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
+import nl.robominer.session.AchievementFacade;
 import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
@@ -145,6 +146,12 @@ public class UserAssets {
      */
     @EJB
     private UserRobotPartAssetFacade userRobotPartAssetFacade;
+
+    /**
+     * Bean to handle the database actions for the achievements.
+     */
+    @EJB
+    private AchievementFacade achievementFacade;
 
     /**
      * Bean to handle the database actions for the user achievements.
@@ -368,32 +375,15 @@ public class UserAssets {
 
         transaction.begin();
 
+        Users user = usersFacade.findById(usersId);
         UserAchievement userAchievement = userAchievementFacade.findByUsersAndAchievementId(usersId, achievementId);
 
         if (userAchievement != null && !userAchievement.getClaimed()) {
 
-            userAchievement.setClaimed(true);
+            processUserAchievement(user, userAchievement);
+
             userAchievementFacade.edit(userAchievement);
-
-            Users user = usersFacade.findById(usersId);
-            Achievement achievement = userAchievement.getAchievement();
-
-            user.increaseAchievementPoints(achievement.getAchievementPoints());
-            user.increaseMiningQueueSize(achievement.getMiningQueueReward());
-
-            if (achievement.getRobotReward() > 0) {
-                addRobot(user);
-            }
-
             usersFacade.edit(user);
-
-            List<Achievement> achievementSuccessorList = achievement.getAchievementSuccessorList();
-
-            for (Achievement successor : achievementSuccessorList) {
-
-                UserAchievement successorUserAchievement = new UserAchievement(usersId, successor.getId());
-                userAchievementFacade.create(successorUserAchievement);
-            }
         }
 
         transaction.commit();
@@ -435,18 +425,53 @@ public class UserAssets {
     }
 
     /**
-     * Add data for a newly created user.
+     * Claim the first achievement for the user.
      *
-     * @param user 
+     * @param user The user to claim the first achievement for.
      */
     private void addNewUserData(Users user) {
 
-        // Add the first robot to the user
-        addRobot(user);
-
-        // Add the first achievement
-        UserAchievement userAchievement = new UserAchievement(user.getId(), 1);
+        UserAchievement userAchievement = new UserAchievement(user.getId(), achievementFacade.findById(1));
         userAchievementFacade.create(userAchievement);
+
+        processUserAchievement(user, userAchievement);
+
+        userAchievementFacade.edit(userAchievement);
+        usersFacade.edit(user);
+    }
+
+    /**
+     * For the specified user, mark the specified achievement as completed,
+     * add the achievement rewards to the user assets and make the follow-up
+     * achievements available.
+     *
+     * @param user The user to process the achievement for.
+     * @param userAchievement The UserAchievement to process the claiming for.
+     */
+    private void processUserAchievement(Users user, UserAchievement userAchievement) {
+
+        userAchievement.setClaimed(true);
+
+        Achievement achievement = achievementFacade.findById(userAchievement.getUserAchievementPK().getAchievementId());
+
+        user.increaseAchievementPoints(achievement.getAchievementPoints());
+        user.increaseMiningQueueSize(achievement.getMiningQueueReward());
+
+        if (achievement.getMiningArea() != null) {
+            user.addMiningArea(achievement.getMiningArea());
+        }
+
+        if (achievement.getRobotReward() > user.getRobotList().size()) {
+            addRobot(user);
+        }
+
+        List<Achievement> achievementSuccessorList = achievement.getAchievementSuccessorList();
+
+        for (Achievement successor : achievementSuccessorList) {
+
+            UserAchievement successorUserAchievement = new UserAchievement(user.getId(), successor);
+            userAchievementFacade.create(successorUserAchievement);
+        }
     }
 
     /**

@@ -25,12 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -126,6 +129,17 @@ public class Users implements Serializable {
     private int miningQueueSize;
 
     /**
+     * The list of mining areas the user is allowed to mine in.
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "UserMiningArea",
+            joinColumns = @JoinColumn(name = "usersId"),
+            inverseJoinColumns = @JoinColumn(name = "miningAreaId")
+    )
+    private List<MiningArea> miningAreaList;
+
+    /**
      * A map of the user ore asset values.
      */
     @OneToMany
@@ -155,6 +169,9 @@ public class Users implements Serializable {
     @JoinColumn(name = "ProgramSource.usersId")
     private List<ProgramSource> programSourceList;
 
+    /**
+     * The list of robot parts owned by the user.
+     */
     @OneToMany
     @JoinColumn(name = "UserRobotPartAsset.usersId")
     private List<UserRobotPartAsset> userRobotPartAssetList;
@@ -308,6 +325,24 @@ public class Users implements Serializable {
      */
     public void increaseMiningQueueSize(int miningQueueIncrement) {
         this.miningQueueSize += miningQueueIncrement;
+    }
+
+    /**
+     * Retrieve the list of mining areas the user is allowed to mine in.
+     *
+     * @return The list of mining areas.
+     */
+    public List<MiningArea> getMiningAreaList() {
+        return miningAreaList;
+    }
+
+    /**
+     * Add a mining area to the list of mining areas the user is allowed to mine in.
+     *
+     * @param miningArea The mining area to add.
+     */
+    public void addMiningArea(MiningArea miningArea) {
+        miningAreaList.add(miningArea);
     }
 
     /**
@@ -471,7 +506,7 @@ public class Users implements Serializable {
     public void fillDefaults() {
 
         achievementPoints = 0;
-        miningQueueSize   = 1;
+        miningQueueSize   = 0;
     }
 
     /**

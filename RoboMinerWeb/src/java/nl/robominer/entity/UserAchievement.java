@@ -63,8 +63,9 @@ public class UserAchievement implements Serializable {
     public UserAchievement() {
     }
 
-    public UserAchievement(int usersId, int achievementId) {
-        this.userAchievementPK = new UserAchievementPK(usersId, achievementId);
+    public UserAchievement(int usersId, Achievement achievement) {
+        this.userAchievementPK = new UserAchievementPK(usersId, achievement.getId());
+        this.claimed = false;
         this.claimed = false;
     }
 

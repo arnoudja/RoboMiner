@@ -66,9 +66,15 @@
                                 <td colspan="2">${achievement.miningQueueReward}</td>
                             </tr>
                         </c:if>
-                        <c:if test="${achievement.robotReward gt 0}">
+                        <c:if test="${achievement.robotReward gt user.robotList.size()}">
                             <tr>
                                 <td colspan="3" class="important">New robot</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${not empty achievement.miningArea}">
+                            <tr>
+                                <td>Mining area:</td>
+                                <td colspan="2">${achievement.miningArea.areaName}</td>
                             </tr>
                         </c:if>
                         <tr>

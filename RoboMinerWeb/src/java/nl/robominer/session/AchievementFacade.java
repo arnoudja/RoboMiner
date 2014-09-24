@@ -22,6 +22,7 @@ package nl.robominer.session;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import nl.robominer.entity.Achievement;
 
 /**
@@ -43,4 +44,15 @@ public class AchievementFacade extends AbstractFacade<Achievement> {
         super(Achievement.class);
     }
 
+    public Achievement findById(int id) {
+
+        try {
+            Query query = getEntityManager().createNamedQuery("Achievement.findById", Achievement.class);
+            query.setParameter("id", id);
+            return (Achievement)query.getSingleResult();
+        }
+        catch (javax.persistence.NoResultException exc) {
+            return null;
+        }
+    }
 }

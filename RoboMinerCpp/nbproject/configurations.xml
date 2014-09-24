@@ -55,6 +55,7 @@
       <itemPath>balanceTestData.sql</itemPath>
       <itemPath>createDatabase.sql</itemPath>
       <itemPath>gameData.sql</itemPath>
+      <itemPath>updateChanges.sql</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -335,6 +336,8 @@
       </item>
       <item path="stdafx.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="updateChanges.sql" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -556,6 +559,8 @@
       <item path="stdafx.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="stdafx.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="updateChanges.sql" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

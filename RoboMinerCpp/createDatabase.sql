@@ -37,6 +37,7 @@ drop table if exists MiningOreResult;
 drop table if exists MiningQueue;
 drop table if exists RobotMiningAreaScore;
 drop table if exists RallyResult;
+drop table if exists UserMiningArea;
 drop table if exists MiningAreaLifetimeResult;
 drop table if exists MiningAreaOreSupply;
 drop table if exists MiningArea;
@@ -88,7 +89,7 @@ username VARCHAR(255) NOT NULL UNIQUE,
 email VARCHAR(255) NOT NULL UNIQUE,
 password VARCHAR(255) NOT NULL,
 achievementPoints INT NOT NULL DEFAULT 0,
-miningQueueSize INT NOT NULL DEFAULT 1,
+miningQueueSize INT NOT NULL DEFAULT 0,
 INDEX (username),
 INDEX (email)
 );
@@ -217,6 +218,14 @@ PRIMARY KEY (miningAreaId, oreId)
 );
 
 
+create table UserMiningArea
+(
+usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
+miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
+PRIMARY KEY (usersId, miningAreaId)
+);
+
+
 create table RallyResult
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -295,7 +304,8 @@ title VARCHAR(255) NOT NULL,
 description TEXT NOT NULL,
 achievementPoints INT NOT NULL DEFAULT 10,
 miningQueueReward INT NOT NULL DEFAULT 0,
-robotReward INT NOT NULL DEFAULT 0
+robotReward INT NOT NULL DEFAULT 0,
+miningAreaId INT NULL REFERENCES MiningArea (id) ON DELETE SET NULL
 );
 
 

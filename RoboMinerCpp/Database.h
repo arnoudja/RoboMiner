@@ -131,6 +131,7 @@ public:
     void removeOldMiningQueueItems(int robotId);
     std::list<OldMiningQueueItem> findOldMiningQueueItems(int robotId);
     void removeMiningQueueEntry(int miningQueueId);
+    void removeMiningOreResultEntries(int miningQueueId);
     bool rallyResultInUse(int rallyResultId);
     void removeRallyResultEntry(int rallyResultId);
 

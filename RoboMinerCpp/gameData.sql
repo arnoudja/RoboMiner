@@ -584,254 +584,243 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (14
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
 
 -- Achievements
-insert into Achievement (id, title,          description,           achievementPoints, miningQueueReward, robotReward)
-                 values (1,  'First mining', 'Mine some Cerbonium', 10,                1,                 0);
+insert into Achievement (id, title,              description,              achievementPoints, robotReward, miningQueueReward, miningAreaId)
+                 values (1,  'Your first robot', 'Claim your first robot', 10,                1,           1,                 1001);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (1, 1, 1);
+insert into Achievement (id, title,          description,           achievementPoints, miningQueueReward)
+                 values (11, 'First mining', 'Mine some Cerbonium', 10,                1);
 
+insert into AchievementPredecessor (predecessorId, successorId) values (1, 11);
 
-insert into Achievement (id, title,           description,                                           achievementPoints, miningQueueReward, robotReward)
-                 values (2,  'Shopping cash', 'Mine enough Cerbonium to buy an upgrade in the shop', 10,                1,                 0);
-
-insert into AchievementPredecessor (predecessorId, successorId) values (1, 2);
-
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (2, 1, 10);
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (11, 1, 1);
 
 
-insert into Achievement (id, title,              description,                                        achievementPoints, miningQueueReward, robotReward)
-                 values (3,  'Better equipment', 'Mine more Cerbonium to buy even better equipment', 10,                1,                 0);
+insert into Achievement (id, title,           description,                                           achievementPoints, miningQueueReward)
+                 values (12, 'Shopping cash', 'Mine enough Cerbonium to buy an upgrade in the shop', 10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (2, 3);
+insert into AchievementPredecessor (predecessorId, successorId) values (11, 12);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (3, 1, 250);
-
-
-insert into Achievement (id, title,             description,                achievementPoints, miningQueueReward, robotReward)
-                 values (4,  'More Cerbonium!', 'Mine even more Cerbonium', 10,                0,                 0);
-
-insert into AchievementPredecessor (predecessorId, successorId) values (3, 4);
-
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (4, 1, 1000);
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (12, 1, 10);
 
 
-insert into Achievement (id, title,             description,                achievementPoints, miningQueueReward, robotReward)
-                 values (5,  'More Cerbonium!', 'Mine even more Cerbonium', 10,                0,                 0);
+insert into Achievement (id, title,              description,                                        achievementPoints, miningQueueReward, miningAreaId)
+                 values (13, 'Better equipment', 'Mine more Cerbonium to buy even better equipment', 10,                1,                 1101);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (4, 5);
+insert into AchievementPredecessor (predecessorId, successorId) values (12, 13);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (5, 1, 10000);
-
-
-insert into Achievement (id, title,             description,                achievementPoints, miningQueueReward, robotReward)
-                 values (6,  'More Cerbonium!', 'Mine even more Cerbonium', 10,                0,                 0);
-
-insert into AchievementPredecessor (predecessorId, successorId) values (5, 6);
-
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (6, 1, 100000);
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (13, 1, 250);
 
 
-insert into Achievement (id, title,             description,                achievementPoints, miningQueueReward, robotReward)
-                 values (7,  'More Cerbonium!', 'Mine even more Cerbonium', 10,                0,                 0);
+insert into Achievement (id, title,             description,                achievementPoints)
+                 values (14, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (6, 7);
+insert into AchievementPredecessor (predecessorId, successorId) values (13, 14);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (7, 1, 1000000);
-
-
-insert into Achievement (id, title,             description,                achievementPoints, miningQueueReward, robotReward)
-                 values (8,  'More Cerbonium!', 'Mine even more Cerbonium', 10,                0,                 0);
-
-insert into AchievementPredecessor (predecessorId, successorId) values (7, 8);
-
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (8, 1, 1000000);
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (14, 1, 1000);
 
 
-insert into Achievement (id,  title,           description,                       achievementPoints, miningQueueReward, robotReward)
-                 values (100, 'Oxaria mining', 'Start mining better quality ore', 10,                1,                 0);
+insert into Achievement (id, title,             description,                achievementPoints)
+                 values (15, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (14, 15);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (15, 1, 10000);
+
+
+insert into Achievement (id, title,             description,                achievementPoints)
+                 values (16, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (15, 16);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (16, 1, 100000);
+
+
+insert into Achievement (id,  title,           description,                       achievementPoints, miningQueueReward)
+                 values (100, 'Oxaria mining', 'Start mining better quality ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (3, 100);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (100, 2, 1);
 
 
-insert into Achievement (id,  title,              description,                                           achievementPoints, miningQueueReward, robotReward)
-                 values (101, 'Oxaria equipment', 'Mine enough Oxaria ore for Oxaria-quality equipment', 10,                1,                 0);
+insert into Achievement (id,  title,              description,                                           achievementPoints, miningQueueReward, miningAreaId)
+                 values (101, 'Oxaria equipment', 'Mine enough Oxaria ore for Oxaria-quality equipment', 10,                1,                 1201);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (100, 101);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (101, 2, 100);
 
 
-insert into Achievement (id, title,            description,                 achievementPoints, miningQueueReward, robotReward)
-                 values (102,  'More Oxaria!', 'Mine even more Oxaria ore', 10,                0,                 0);
+insert into Achievement (id, title,            description,                 achievementPoints)
+                 values (102,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (101, 102);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (102, 2, 1000);
 
 
-insert into Achievement (id, title,            description,                 achievementPoints, miningQueueReward, robotReward)
-                 values (103,  'More Oxaria!', 'Mine even more Oxaria ore', 10,                0,                 0);
+insert into Achievement (id, title,            description,                 achievementPoints)
+                 values (103,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (102, 103);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (103, 2, 10000);
 
 
-insert into Achievement (id, title,            description,                 achievementPoints, miningQueueReward, robotReward)
-                 values (104,  'More Oxaria!', 'Mine even more Oxaria ore', 10,                0,                 0);
+insert into Achievement (id, title,            description,                 achievementPoints)
+                 values (104,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (103, 104);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (104, 2, 100000);
 
 
-insert into Achievement (id, title,            description,                 achievementPoints, miningQueueReward, robotReward)
-                 values (105,  'More Oxaria!', 'Mine even more Oxaria ore', 10,                0,                 0);
+insert into Achievement (id, title,            description,                 achievementPoints)
+                 values (105,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (104, 105);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (105, 2, 1000000);
 
 
-insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward, robotReward)
-                 values (200, 'Lithabine mining', 'Start mining Lithabine ore', 10,                1,                 0);
+insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
+                 values (200, 'Lithabine mining', 'Start mining Lithabine ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (102, 200);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (200, 3, 1);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (201, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                1,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, miningAreaId)
+                 values (201, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                1,                 1301);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (200, 201);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (201, 3, 50);
 
 
-insert into Achievement (id,  title,       description,                                   achievementPoints, miningQueueReward, robotReward)
-                 values (202, 'New robot', 'Show your dedication to earn an extra robot', 10,                0,                 1);
+insert into Achievement (id,  title,       description,                                   achievementPoints, robotReward)
+                 values (202, 'New robot', 'Show your dedication to earn an extra robot', 10,                2);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (201, 202);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (202, 3, 1000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (203, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (203, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (202, 203);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (203, 3, 10000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (204, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (204, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (203, 204);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (204, 3, 100000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (205, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (205, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (204, 205);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (205, 3, 1000000);
 
 
-insert into Achievement (id,  title,               description,                   achievementPoints, miningQueueReward, robotReward)
-                 values (300, 'Neudralion mining', 'Start mining Neudralion ore', 10,                1,                 0);
+insert into Achievement (id,  title,               description,                   achievementPoints, miningQueueReward)
+                 values (300, 'Neudralion mining', 'Start mining Neudralion ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (202, 300);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (300, 4, 1);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, robotReward)
-                 values (301, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1,                 0);
+insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, miningAreaId)
+                 values (301, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1,                 1401);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (300, 301);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (301, 4, 50);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, robotReward)
-                 values (302, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1,                 0);
+insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward)
+                 values (302, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (301, 302);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (302, 4, 1000);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, robotReward)
-                 values (303, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                0,                 0);
+insert into Achievement (id,  title,              description,                     achievementPoints)
+                 values (303, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (302, 303);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (303, 4, 10000);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, robotReward)
-                 values (304, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                0,                 0);
+insert into Achievement (id,  title,              description,                     achievementPoints)
+                 values (304, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (303, 304);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (304, 4, 100000);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, robotReward)
-                 values (305, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                0,                 0);
+insert into Achievement (id,  title,              description,                     achievementPoints)
+                 values (305, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (304, 305);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (305, 4, 1000000);
 
 
-insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward, robotReward)
-                 values (400, 'Complatix mining', 'Start mining Complatix ore', 10,                1,                 0);
+insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
+                 values (400, 'Complatix mining', 'Start mining Complatix ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (301, 400);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (400, 5, 1);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (401, 'More Complatix!', 'Mine even more Complatix ore', 10,                1,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward)
+                 values (401, 'More Complatix!', 'Mine even more Complatix ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (400, 401);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (401, 5, 50);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (402, 'More Complatix!', 'Mine even more Complatix ore', 10,                1,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward)
+                 values (402, 'More Complatix!', 'Mine even more Complatix ore', 10,                1);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (401, 402);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (402, 5, 1000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (403, 'More Complatix!', 'Mine even more Complatix ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (403, 'More Complatix!', 'Mine even more Complatix ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (402, 403);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (403, 5, 10000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (404, 'More Complatix!', 'Mine even more Complatix ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (404, 'More Complatix!', 'Mine even more Complatix ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (403, 404);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (404, 5, 100000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, robotReward)
-                 values (405, 'More Complatix!', 'Mine even more Complatix ore', 10,                0,                 0);
+insert into Achievement (id,  title,             description,                    achievementPoints)
+                 values (405, 'More Complatix!', 'Mine even more Complatix ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (404, 405);
 
@@ -861,100 +850,10 @@ and not exists
 
 
 -- Calculate the tier levels
-update RobotPart set tierId = (select max(OrePriceAmount.oreId) from OrePriceAmount where OrePriceAmount.orePriceId = RobotPart.orePriceId);
-
-
--- Test data
-insert into Users
-(id, username, email, password)
-values
-(2, 'test', 'test@test.com', '$2a$10$Mcn32qmzmfdD9MPjIlZl1eF.K32Q6EtvWI0S8/V1Pa6vG4D7Rh.2m');
-
-insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
-                   values (1,  2,       'Default',
-'move(1);
-mine();', TRUE);
-
-insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
-                   values (2,  2,       'Test',
-'{
-   int i = 1;
-   while (true)
-   {
-      move(i);
-      i = i + 1;
-      while (mine() >= 2)
-      {
-         i = 1;
-      }
-   }
-}', TRUE);
-
-insert into ProgramSource (id, usersId, sourceName, sourceCode, verified)
-                   values (3,  2,       'Test-2',
-'int rot = 0;
-
-while (true)
-{
-    if (rot)
-    {
-        if (rot <= 90)
-        {
-            rotate(rot);
-        }
-        rot = rot - 10;
-    }
-    if (move(1.5) < 1)
-    {
-        move(-1);
-        rotate(14);
-    }
-    while (mine())
-    {
-        rot = 100;
-    }
-}', TRUE);
-
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 101, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 201, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 301, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 401, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 501, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 601, 1, 0);
-
-insert into Robot
-(usersId, robotName, sourceCode, programSourceId,
- oreContainerId, miningUnitId, batteryId, memoryModuleId, cpuId, engineId,
- rechargeTime, maxOre, miningSpeed, maxTurns, memorySize, cpuSpeed,
- forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
-values
-(2, 'Robot_1', 'move(1);
-mine();', 1,
- 101, 201, 301, 401, 501, 601,
- 20, 200, 3, 100, 10, 2,
- 10, 10, 10, 10);
-
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 102, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 202, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 302, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 402, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 502, 1, 0);
-insert into UserRobotPartAsset (usersId, robotPartId, totalOwned, unassigned) values (2, 602, 1, 0);
-
-insert into Robot
-(usersId, robotName, sourceCode, programSourceId,
- oreContainerId, miningUnitId, batteryId, memoryModuleId, cpuId, engineId,
- rechargeTime, maxOre, miningSpeed, maxTurns, memorySize, cpuSpeed,
- forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
-values
-(2, 'Robot_2', 'move(1);
-mine();', 1,
- 102, 202, 302, 402, 502, 602,
- 20, 200, 3, 100, 20, 2,
- 10, 10, 10, 10);
-
-insert into UserOreAsset (usersId, oreId, amount) values (2, 1, 9999);
-insert into UserOreAsset (usersId, oreId, amount) values (2, 2, 9999);
-insert into UserOreAsset (usersId, oreId, amount) values (2, 3, 9999);
-insert into UserOreAsset (usersId, oreId, amount) values (2, 4, 9999);
-insert into UserOreAsset (usersId, oreId, amount) values (2, 5, 9999);
+update RobotPart
+set tierId = 
+(
+select max(OrePriceAmount.oreId)
+from OrePriceAmount
+where OrePriceAmount.orePriceId = RobotPart.orePriceId
+);
