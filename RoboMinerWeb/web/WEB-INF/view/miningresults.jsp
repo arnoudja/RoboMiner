@@ -74,6 +74,45 @@
                                     </tr>
                                 </c:forEach>
                             </c:if>
+                            <c:set var="totalActions" value="0" />
+                            <c:forEach var="robotActionsDone" items="${miningResult.robotActionsDoneList}">
+                                <c:set var="totalActions" value="${totalActions + robotActionsDone.amount}" />
+                            </c:forEach>
+                            <c:set var="first" value="true" />
+                            <c:forEach var="robotActionsDone" items="${miningResult.robotActionsDoneList}">
+                                <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_action_${robotActionsDone.actionType}">
+                                    <td></td>
+                                    <td>
+                                        <c:if test="${first}">
+                                            <c:set var="first" value="false" />
+                                            Actions:
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${robotActionsDone.actionType eq 1}">Wait</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 2}">Move forward</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 3}">Move backward</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 4}">Rotate right</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 5}">Rotate left</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 6}">Mine</c:when>
+                                            <c:when test="${robotActionsDone.actionType eq 7}">Dump</c:when>
+                                        </c:choose>
+                                    </td>
+                                    <td>${robotActionsDone.amount}</td>
+                                    <td>
+                                        <fmt:formatNumber value="${robotActionsDone.amount * 100 / totalActions}" minFractionDigits="1" maxFractionDigits="1"/>%
+                                    </td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </c:forEach>
+                            <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_action_98">
+                                <td></td>
+                                <td></td>
+                                <td>Total</td>
+                                <td>${totalActions}</td>
+                                <td colspan="3"></td>
+                            </tr>
                             <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_queued">
                                 <td></td>
                                 <td>Queued:</td>

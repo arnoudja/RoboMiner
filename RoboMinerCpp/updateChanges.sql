@@ -248,6 +248,16 @@ from Ore
 where Ore.id = MiningOreResult.oreId
 );
 
+-- Remove unlinked items from RobotActionsDone
+delete
+from RobotActionsDone
+where not exists
+(
+select *
+from MiningQueue
+where MiningQueue.id = RobotActionsDone.miningQueueId
+);
+
 -- Remove unlinked items from RallyResult
 delete
 from RallyResult

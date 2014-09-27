@@ -67,7 +67,7 @@ void CRally::start()
     initGround();
     initRobotPositions();
 
-    for (m_time = 0; m_time < m_totalMoves; ++m_time)
+    for (m_time = 0; m_time <= m_totalMoves; ++m_time)
     {
         processStep();
     }
@@ -197,7 +197,7 @@ void CRally::processStep()
     {
         for (unsigned int i = 0; i < m_robots.size(); ++i)
         {
-            if (m_robots[i]->getMaxTurns() > m_time)
+            if (m_robots[i]->getMaxTurns() >= m_time)
             {
                 processRobotMove(*m_robots[i]);
             }
@@ -220,7 +220,7 @@ void CRally::processStep()
 
 void CRally::processRobotMove(CRobot& robot)
 {
-    CRobot::RobotAction robotAction = robot.getNextAction();
+    CRobot::RobotAction robotAction = robot.getNextRobotAction();
 
     switch (robotAction.action)
     {

@@ -23,6 +23,7 @@
 #include "GroundUnit.h"
 
 #include <vector>
+#include <map>
 
 class CRobot;
 
@@ -33,14 +34,14 @@ class CRobot
 public:
     enum EAction
     {
-        eForward,
-        eBackward,
-        eRotateRight,
-        eRotateLeft,
-        eMine,
-        eDump,
-        eWait,
-        eUndefined
+        eUndefined   = 0,
+        eWait        = 1,
+        eForward     = 2,
+        eBackward    = 3,
+        eRotateRight = 4,
+        eRotateLeft  = 5,
+        eMine        = 6,
+        eDump        = 7
     };
 
     struct RobotAction
@@ -56,7 +57,7 @@ public:
            int robotSize);
     virtual ~CRobot()                                           {}
 
-    virtual RobotAction getNextAction() = 0;
+    RobotAction getNextRobotAction();
 
     void prepareForAction(int currentStep, int maxSteps);
     void applyRotation();
@@ -122,7 +123,15 @@ public:
     void setMaxXPos(double max)                                 { m_maxXPos = max; }
     void setMaxYPos(double max)                                 { m_maxYPos = max; }
 
+    const std::map<EAction, int>& getActionsDone() const        { return m_actionsDone; }
+
     double calculateScore() const;
+
+protected:
+    virtual RobotAction getNextAction() = 0;
+
+private:
+    void increaseActionsDone(EAction action)                    { ++(m_actionsDone[action]); }
 
 private:
     int                     m_robotId;
@@ -138,6 +147,8 @@ private:
     double                  m_currentSpeed;
     int                     m_targetRotation;
     CGroundUnit::TOreAmount m_targetMining;
+
+    std::map<EAction, int>  m_actionsDone;
 
     double      m_size;
     int         m_miningSpeed;

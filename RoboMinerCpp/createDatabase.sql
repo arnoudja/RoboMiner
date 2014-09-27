@@ -33,6 +33,7 @@ drop table if exists Achievement;
 drop table if exists RobotDailyResult;
 drop table if exists RobotDailyRuns;
 drop table if exists RobotLifetimeResult;
+drop table if exists RobotActionsDone;
 drop table if exists MiningOreResult;
 drop table if exists MiningQueue;
 drop table if exists RobotMiningAreaScore;
@@ -264,6 +265,15 @@ oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
 tax INT NULL,
 PRIMARY KEY (miningQueueId, oreId)
+);
+
+
+create table RobotActionsDone
+(
+miningQueueId INT NOT NULL REFERENCES MiningQueue (id) ON DELETE CASCADE,
+actionType INT NOT NULL,
+amount INT NOT NULL,
+PRIMARY KEY (miningQueueId, actionType)
 );
 
 

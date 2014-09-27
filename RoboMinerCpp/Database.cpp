@@ -728,6 +728,42 @@ void CDatabase::addMiningOreResult(int miningQueueId, int oreId, int amount)
 }
 
 
+void CDatabase::addRobotActionsDone(int miningQueueId, int actionType, int amount)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("INSERT INTO RobotActionsDone "
+                 "(miningQueueId, actionType, amount) "
+                 "VALUES "
+                 "(?, ?, ?) ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[3];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(miningQueueId);
+    bind[0].buffer = &miningQueueId;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer_length = sizeof(actionType);
+    bind[1].buffer = &actionType;
+
+    bind[2].buffer_type = MYSQL_TYPE_LONG;
+    bind[2].buffer_length = sizeof(amount);
+    bind[2].buffer = &amount;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);    
+}
+
+
 void CDatabase::updateRobot(int robotId, MYSQL_TIME miningEndTime)
 {
     MYSQL_STMT* statement = mysql_stmt_init(m_connection);
@@ -922,8 +958,9 @@ void CDatabase::removeOldMiningQueueItems(int robotId)
 
     for (list<OldMiningQueueItem>::const_iterator iter = idList.begin(); iter != idList.end(); ++iter)
     {
-        removeMiningQueueEntry(iter->miningQueueId);
         removeMiningOreResultEntries(iter->miningQueueId);
+        removeRobotActionsDoneEntries(iter->miningQueueId);
+        removeMiningQueueEntry(iter->miningQueueId);
 
         if (!rallyResultInUse(iter->rallyResultId))
         {
@@ -1025,6 +1062,33 @@ void CDatabase::removeMiningOreResultEntries(int miningQueueId)
 
     string query("DELETE "
                  "FROM MiningOreResult "
+                 "WHERE miningQueueId = ? ");
+    int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
+    assert(status == 0);
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer_length = sizeof(miningQueueId);
+    bind[0].buffer = &miningQueueId;
+
+    status = mysql_stmt_bind_param(statement, bind);
+    assert(status == 0);
+
+    status = mysql_stmt_execute(statement);
+    assert(status == 0);
+
+    mysql_stmt_close(statement);    
+}
+
+
+void CDatabase::removeRobotActionsDoneEntries(int miningQueueId)
+{
+    MYSQL_STMT* statement = mysql_stmt_init(m_connection);
+    assert(statement);
+
+    string query("DELETE "
+                 "FROM RobotActionsDone "
                  "WHERE miningQueueId = ? ");
     int status = mysql_stmt_prepare(statement, query.c_str(), query.size());
     assert(status == 0);

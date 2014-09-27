@@ -56,6 +56,21 @@ CRobot::CRobot(int robotId, int maxTurns, int maxOre,
         m_ore[i]          = 0;
         m_targetMining[i] = 0;
     }
+
+    for (int action = eUndefined; action <= eDump; ++action)
+    {
+        m_actionsDone[(EAction)action] = 0;
+    }
+}
+
+
+CRobot::RobotAction CRobot::getNextRobotAction()
+{
+    RobotAction result = getNextAction();
+
+    ++(m_actionsDone[result.action]);
+
+    return result;
 }
 
 

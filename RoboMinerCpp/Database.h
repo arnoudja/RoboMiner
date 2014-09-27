@@ -119,19 +119,19 @@ public:
     std::list<MiningArea> getMiningAreas();
     std::list<MiningAreaOreSupply> getMiningAreaOreSupply(int miningAreaId);
     RobotData getRobotData(int robotId);
-    
+
     std::list<MiningRallyItem> getNextMiningRally(int miningAreaId);
     int addAnimation(const std::string& animation);
     void updateMiningRally(const std::list<MiningRallyItem>& miningRallyItems, int rallyResultId);
     void updateMiningQueue(int miningQueueId, int playerNumber, int rallyResultId, MYSQL_TIME miningEndTime);
     void addMiningOreResult(int miningQueueId, int oreId, int amount);
+    void addRobotActionsDone(int miningQueueId, int actionType, int amount);
     void updateRobot(int robotId, MYSQL_TIME miningEndTime);
     void updateRobotScore(int robotId, int miningAreaId, double score);
 
     void removeOldMiningQueueItems(int robotId);
     std::list<OldMiningQueueItem> findOldMiningQueueItems(int robotId);
     void removeMiningQueueEntry(int miningQueueId);
-    void removeMiningOreResultEntries(int miningQueueId);
     bool rallyResultInUse(int rallyResultId);
     void removeRallyResultEntry(int rallyResultId);
 
@@ -141,6 +141,9 @@ public:
     void updatePoolItemMiningTotals(int poolItemId, int oreId, int amount);
 
 private:
+    void removeMiningOreResultEntries(int miningQueueId);
+    void removeRobotActionsDoneEntries(int miningQueueId);
+
     bool getRobotScoreDatabaseValue(int robotId, int miningAreaId, int& totalRuns, double& score);
     void insertRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);
     void updateRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);

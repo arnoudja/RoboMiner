@@ -143,11 +143,20 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
                         database.addMiningOreResult(miningQueueIds[iRobot], rally.getOreId(iOre), robots[iRobot]->getOre()[iOre]);
                     }
                 }
+
+                const map<CRobot::EAction, int>& actionsDoneMap = robots[iRobot]->getActionsDone();
+                for (map<CRobot::EAction, int>::const_iterator iter = actionsDoneMap.begin(); iter != actionsDoneMap.end(); ++iter)
+                {
+                    if (iter->second > 0)
+                    {
+                        database.addRobotActionsDone(miningQueueIds[iRobot], iter->first, iter->second);
+                    }
+                }
             }
-            
+
             delete robots[iRobot];
         }
-        
+
         result = true;
         
         now = time(NULL);

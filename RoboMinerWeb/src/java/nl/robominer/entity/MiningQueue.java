@@ -99,19 +99,12 @@ public class MiningQueue implements Serializable {
     @OneToMany
     @JoinColumn(name = "MiningOreResult.miningQueueId")
     private List<MiningOreResult> miningOreResults;
-    
+
+    @OneToMany
+    @JoinColumn(name = "RobotActionsDone.miningQueueId")
+    private List<RobotActionsDone> robotActionsDoneList;
+
     public MiningQueue() {
-    }
-
-    public MiningQueue(Integer id) {
-        this.id = id;
-    }
-
-    public MiningQueue(Integer id, MiningArea miningArea, Robot robot, boolean claimed) {
-        this.id = id;
-        this.miningArea = miningArea;
-        this.robot = robot;
-        this.claimed = claimed;
     }
 
     public Integer getId() {
@@ -160,6 +153,10 @@ public class MiningQueue implements Serializable {
 
     public List<MiningOreResult> getMiningOreResults() {
         return miningOreResults;
+    }
+
+    public List<RobotActionsDone> getRobotActionsDoneList() {
+        return robotActionsDoneList;
     }
 
     public int getTotalOreMined() {
@@ -213,5 +210,4 @@ public class MiningQueue implements Serializable {
     public String toString() {
         return "nl.robominer.entity.MiningQueue[ id=" + id + " ]";
     }
-
 }
