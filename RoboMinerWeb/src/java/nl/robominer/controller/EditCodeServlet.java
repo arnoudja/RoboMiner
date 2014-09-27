@@ -42,8 +42,8 @@ import nl.robominer.session.UsersFacade;
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "EditCodeServlet", urlPatterns = {"/editCode"})
-public class EditCodeServlet extends RoboMinerServletBase {
-
+public class EditCodeServlet extends RoboMinerServletBase
+{
     /**
      * The javascript view used for displaying the program source page.
      */
@@ -59,19 +59,19 @@ public class EditCodeServlet extends RoboMinerServletBase {
      */
     @EJB
     private ProgramSourceFacade programSourceFacade;
-    
+
     /**
      * Bean to handle the database actions for the robot information.
      */
     @EJB
     private RobotFacade robotFacade;
-    
+
     /**
      * Bean to handle the database actions for the mining queue information.
      */
     @EJB
     private MiningQueueFacade miningQueueFacade;
-    
+
     /**
      * Bean to handle the database actions for the user information.
      */
@@ -88,15 +88,17 @@ public class EditCodeServlet extends RoboMinerServletBase {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request The servlet request.
+     * @param request  The servlet request.
      * @param response The servlet response.
+     *
      * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException      if an I/O error occurs.
      */
     @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void processRequest(HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws ServletException, IOException
+    {
         Users user = usersFacade.findById(getUserId(request));
 
         String requestType      = request.getParameter("requestType");
@@ -105,29 +107,36 @@ public class EditCodeServlet extends RoboMinerServletBase {
         String sourceName       = request.getParameter("sourceName");
         String sourceCode       = request.getParameter("sourceCode");
 
-        if ("erase".equals(requestType)) {
-
+        if ("erase".equals(requestType))
+        {
             ProgramSource programSource = user.getProgramSource(programSourceId);
-            if (programSource != null && programSource.getRobotList().isEmpty()) {
 
+            if (programSource != null && programSource.getRobotList().isEmpty())
+            {
                 programSourceFacade.remove(programSource);
                 nextProgramSourceId = 0;
             }
         }
         else if (sourceName != null && !sourceName.isEmpty() &&
-                 sourceCode != null && !sourceCode.isEmpty()) {
+                 sourceCode != null && !sourceCode.isEmpty())
+        {
+            if (programSourceId > 0)
+            {
+                String errorMessage = updateProgramSource(user.getProgramSource(
+                        programSourceId), sourceName, sourceCode);
 
-            if (programSourceId > 0) {
-                String errorMessage = updateProgramSource(user.getProgramSource(programSourceId), sourceName, sourceCode);
-                if (!errorMessage.isEmpty()) {
+                if (!errorMessage.isEmpty())
+                {
                     request.setAttribute("errorMessage", errorMessage);
                 }
             }
-            else {
+            else
+            {
+                programSourceId = addProgramSource(user.getId(), sourceName,
+                                                   sourceCode);
 
-                programSourceId = addProgramSource(user.getId(), sourceName, sourceCode);
-
-                if (nextProgramSourceId <= 0) {
+                if (nextProgramSourceId <= 0)
+                {
                     nextProgramSourceId = programSourceId;
                 }
             }
@@ -138,26 +147,30 @@ public class EditCodeServlet extends RoboMinerServletBase {
 
         ProgramSource programSource = null;
 
-        if (nextProgramSourceId >= 0) {
-
+        if (nextProgramSourceId >= 0)
+        {
             programSource = user.getProgramSource(nextProgramSourceId);
 
-            if (programSource == null && request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID) != null) {
-                nextProgramSourceId = (int)request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID);
-                programSource       = user.getProgramSource(nextProgramSourceId);
+            if (programSource == null && request.getSession().getAttribute(
+                    SESSION_PROGRAM_SOURCE_ID) != null)
+            {
+                nextProgramSourceId = (int)request.getSession().getAttribute(
+                        SESSION_PROGRAM_SOURCE_ID);
+                programSource = user.getProgramSource(nextProgramSourceId);
             }
 
-            if (programSource == null && !user.getProgramSourceList().isEmpty()) {
-                programSource       = user.getProgramSourceList().get(0);
+            if (programSource == null && !user.getProgramSourceList().isEmpty())
+            {
+                programSource = user.getProgramSourceList().get(0);
                 nextProgramSourceId = programSource.getId();
             }
         }
 
-        if (programSource == null) {
-
-            // Retrieve defaults.
+        if (programSource == null)
+        {
             nextProgramSourceId = -1;
 
+            // Retrieve defaults.
             programSource = new ProgramSource(user.getId());
         }
 
@@ -169,7 +182,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
         request.setAttribute("programSource", programSource);
 
         // Save the selected program id in the session
-        request.getSession().setAttribute(SESSION_PROGRAM_SOURCE_ID, nextProgramSourceId);
+        request.getSession().setAttribute(SESSION_PROGRAM_SOURCE_ID,
+                                          nextProgramSourceId);
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
@@ -178,17 +192,20 @@ public class EditCodeServlet extends RoboMinerServletBase {
      * Update the program source in the database and check its validity.
      *
      * @param programSource The program source to update.
-     * @param sourceName The new program source name.
-     * @param sourceCode The new program source code.
+     * @param sourceName    The new program source name.
+     * @param sourceCode    The new program source code.
      *
      * @return The warning message specifying the robots that are using this
-     * program but couldn't be updated, or empty if none.
+     *         program but couldn't be updated, or empty if none.
      */
-    private String updateProgramSource(ProgramSource programSource, String sourceName, String sourceCode) {
+    private String updateProgramSource(ProgramSource programSource,
+                                       String sourceName, String sourceCode)
+    {
 
         StringBuilder errorMessage = new StringBuilder();
 
-        if (programSource != null) {
+        if (programSource != null)
+        {
 
             programSource.setSourceName(sourceName);
             programSource.setSourceCode(sourceCode);
@@ -196,30 +213,44 @@ public class EditCodeServlet extends RoboMinerServletBase {
 
             // Communicate with the c++ part over the database to verify the code.
             programSourceFacade.edit(programSource);
-            roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
+            roboMinerCppBean.verifyCode(getServletContext().getRealPath(
+                    "/WEB-INF/binaries/robominercpp"), programSource.getId());
             programSource = programSourceFacade.find(programSource.getId());
 
-            if (programSource.getVerified()) {
+            if (programSource.getVerified())
+            {
 
                 List<Robot> robotList = programSource.getRobotList();
 
-                for (Robot robot : robotList) {
+                for (Robot robot : robotList)
+                {
 
-                    List<MiningQueue> miningQueue = miningQueueFacade.findWaitingByRobotId(robot.getId());
+                    List<MiningQueue> miningQueue = miningQueueFacade
+                            .findWaitingByRobotId(
+                                    robot.getId());
 
-                    if (miningQueue.isEmpty() && robot.getMemorySize() >= programSource.getCompiledSize()) {
+                    if (miningQueue.isEmpty() && robot.getMemorySize()
+                            >= programSource.getCompiledSize())
+                    {
 
                         robot.setSourceCode(programSource.getSourceCode());
                         robotFacade.edit(robot);
                     }
-                    else {
+                    else
+                    {
 
-                        errorMessage.append("Unable to apply the code to robot ").append(robot.getRobotName()).append(": ");
+                        errorMessage
+                                .append("Unable to apply the code to robot ")
+                                .append(
+                                        robot.getRobotName()).append(": ");
 
-                        if (robot.getMemorySize() < programSource.getCompiledSize()) {
+                        if (robot.getMemorySize()
+                                < programSource.getCompiledSize())
+                        {
                             errorMessage.append("Not enough memory.");
                         }
-                        else {
+                        else
+                        {
                             errorMessage.append("The robot is busy.");
                         }
 
@@ -228,20 +259,22 @@ public class EditCodeServlet extends RoboMinerServletBase {
                 }
             }
         }
-        
+
         return errorMessage.toString();
     }
 
     /**
      * Add a new program source instance to the database.
      *
-     * @param userId The id of the user the program source is for.
+     * @param userId     The id of the user the program source is for.
      * @param sourceName The name of the new program source.
      * @param sourceCode The code of the new program source.
      *
      * @return The id value of the new program source instance created.
      */
-    private int addProgramSource(int userId, String sourceName, String sourceCode) {
+    private int addProgramSource(int userId, String sourceName,
+                                 String sourceCode)
+    {
 
         ProgramSource programSource = new ProgramSource(userId);
 
@@ -250,7 +283,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
         programSource.setVerified(false);
 
         programSourceFacade.create(programSource);
-        roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
+        roboMinerCppBean.verifyCode(getServletContext().getRealPath(
+                "/WEB-INF/binaries/robominercpp"), programSource.getId());
 
         return programSource.getId();
     }
@@ -261,7 +295,8 @@ public class EditCodeServlet extends RoboMinerServletBase {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Robot-program code-edit controller servlet";
     }
 

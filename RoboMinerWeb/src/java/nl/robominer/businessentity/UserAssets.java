@@ -501,10 +501,8 @@ public class UserAssets {
         ProgramSource programSource = getSuitableProgramSource(user.getId(), memoryModule.getMemoryCapacity());
 
         // Create the new robot for the user
-        Robot robot = new Robot();
+        Robot robot = new Robot(user);
         robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
-        robot.setRobotName(user.getUsername() + "_" + (user.getRobotList().size() + 1));
-        robot.setUser(user);
         robot.setProgramSourceId(programSource.getId());
         robot.setSourceCode(programSource.getSourceCode());
         robotFacade.create(robot);

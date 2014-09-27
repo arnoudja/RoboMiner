@@ -148,17 +148,9 @@ public class Users implements Serializable {
     private Map<Integer, UserOreAsset> userOreAssets;
 
     /**
-     * A map of the user robot part assets.
-     */
-    @OneToMany
-    @JoinColumn(name = "UserRobotPartAsset.usersId")
-    @MapKey(name="robotPartId")
-    private Map<Integer, UserRobotPartAsset> userRobotPartAssets;
-
-    /**
      * The list of robots owned by the user.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "Robot.usersId")
     private List<Robot> robotList;
 
@@ -172,7 +164,7 @@ public class Users implements Serializable {
     /**
      * The list of robot parts owned by the user.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserRobotPartAsset.usersId")
     private List<UserRobotPartAsset> userRobotPartAssetList;
 
@@ -385,12 +377,20 @@ public class Users implements Serializable {
     }
 
     /**
-     * Retrieve a mapping of the robot part type id to the user assets for that part.
+     * Retrieve the user robot part asset for the specified robot part id.
      *
-     * @return The mapping robot part type id - robot part assets.
+     * @param robotPartId The id of the robot part to return the asset for.
+     *
+     * @return The robot part asset.
      */
-    public Map<Integer, UserRobotPartAsset> getUserRobotPartAssets() {
-        return userRobotPartAssets;
+    public UserRobotPartAsset getUserRobotPartAsset(int robotPartId) {
+        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList) {
+            if (userRobotPartAsset.getRobotPartId() == robotPartId) {
+                return userRobotPartAsset;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -401,7 +401,7 @@ public class Users implements Serializable {
      * @return The total amount of the specified robot part the user owns.
      */
     public int getTotalRobotPartAmount(int robotPartId) {
-        UserRobotPartAsset asset = userRobotPartAssets.get(robotPartId);
+        UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
         return asset == null ? 0 : asset.getTotalOwned();
     }
 
@@ -413,7 +413,7 @@ public class Users implements Serializable {
      * @return The unassigned amount of the specified robot part the user owns.
      */
     public int getUnassignedRobotPartAmount(int robotPartId) {
-        UserRobotPartAsset asset = userRobotPartAssets.get(robotPartId);
+        UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
         return asset == null ? 0 : asset.getUnassigned();
     }
 

@@ -64,7 +64,7 @@
                             <tr>
                                 <td>Name:</td>
                                 <td colspan="2">
-                                    <input type="text" id="robotName${robot.id}" name="robotName${robot.id}" value="${fn:escapeXml(robot.robotName)}" size="40" pattern="[A-Za-z0-9_]{1,10}" placeholder="1 to 10 characters, only letters and numbers" required />
+                                    <input type="text" id="robotName${robot.id}" name="robotName${robot.id}" value="${fn:escapeXml(robot.robotName)}" size="40" pattern="[A-Za-z0-9_]{1,15}" placeholder="1 to 15 characters, only letters and numbers" required />
                                 </td>
                             </tr>
                             <tr>

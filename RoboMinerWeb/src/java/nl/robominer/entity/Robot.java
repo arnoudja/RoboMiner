@@ -49,15 +49,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Robot")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "Robot.findAll", query = "SELECT r FROM Robot r"),
-    @NamedQuery(name = "Robot.findById", query = "SELECT r FROM Robot r WHERE r.id = :id"),
-    @NamedQuery(name = "Robot.findByIdAndUser", query = "SELECT r FROM Robot r WHERE r.id = :id AND r.user.id = :usersId"),
-    @NamedQuery(name = "Robot.findByUsersId", query = "SELECT r FROM Robot r WHERE r.user.id = :usersId"),
-    @NamedQuery(name = "Robot.findByProgramAndUser", query = "SELECT r FROM Robot r WHERE r.programSourceId = :programSourceId AND r.user.id = :usersId")})
-public class Robot implements Serializable {
-
+    @NamedQuery(name = "Robot.findById",
+                query = "SELECT r FROM Robot r WHERE r.id = :id"),
+    @NamedQuery(name = "Robot.findByIdAndUser",
+                query = "SELECT r FROM Robot r WHERE r.id = :id AND r.user.id = :usersId"),
+    @NamedQuery(name = "Robot.findByUsersId",
+                query = "SELECT r FROM Robot r WHERE r.user.id = :usersId"),
+    @NamedQuery(name = "Robot.findByProgramAndUser",
+                query = "SELECT r FROM Robot r WHERE r.programSourceId = :programSourceId AND r.user.id = :usersId")
+})
+public class Robot implements Serializable
+{
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The regular expression specifying valid robot names.
+     */
+    private static final String ROBOT_NAME_REGEXP = "[A-Za-z0-9_]{1,15}";
 
     /**
      * The robot id, primary key value.
@@ -96,10 +107,10 @@ public class Robot implements Serializable {
     private String sourceCode;
 
     /**
-     * The reference to the source program currently linked to the robot.
-     * The linked source code will be copied to the active source code when
-     * the robot changes are applied, but only when the linked source code
-     * is valid and the robot is inactive.
+     * The reference to the source program currently linked to the robot. The
+     * linked source code will be copied to the active source code when the
+     * robot changes are applied, but only when the linked source code is valid
+     * and the robot is inactive.
      */
     @Column(name = "programSourceId")
     private Integer programSourceId;
@@ -170,8 +181,8 @@ public class Robot implements Serializable {
 
     /**
      * The maximum amount of ore the robot is able to mine each cycle. Please
-     * note that the amount of ore mined in one cycle also cannot exceed
-     * halve the ore available on a square.
+     * note that the amount of ore mined in one cycle also cannot exceed halve
+     * the ore available on a square.
      */
     @Basic(optional = false)
     @NotNull
@@ -179,8 +190,8 @@ public class Robot implements Serializable {
     private int miningSpeed;
 
     /**
-     * The maximum number of turns the robot can operate before the battery
-     * is depleted.
+     * The maximum number of turns the robot can operate before the battery is
+     * depleted.
      */
     @Basic(optional = false)
     @NotNull
@@ -196,10 +207,10 @@ public class Robot implements Serializable {
     private int memorySize;
 
     /**
-     * The maximum number of program instructions the robot can process
-     * each cycle. When the program doesn't activate a robot action like
-     * move or mine before that, the robot will sit idle for that cycle and
-     * the program processing will continue next cycle.
+     * The maximum number of program instructions the robot can process each
+     * cycle. When the program doesn't activate a robot action like move or mine
+     * before that, the robot will sit idle for that cycle and the program
+     * processing will continue next cycle.
      */
     @Basic(optional = false)
     @NotNull
@@ -207,10 +218,10 @@ public class Robot implements Serializable {
     private int cpuSpeed;
 
     /**
-     * The maximum distance the robot can move forward each cycle.
-     * When a move() instruction with a larger number is executed, the robot
-     * moves this distance forward in one cycle and the rest of the
-     * distance in the next cycle(s).
+     * The maximum distance the robot can move forward each cycle. When a move()
+     * instruction with a larger number is executed, the robot moves this
+     * distance forward in one cycle and the rest of the distance in the next
+     * cycle(s).
      */
     @Basic(optional = false)
     @NotNull
@@ -218,8 +229,8 @@ public class Robot implements Serializable {
     private double forwardSpeed;
 
     /**
-     * The maximum distance the robot can move backward each cycle.
-     * The same mechanism applies as for forward movement.
+     * The maximum distance the robot can move backward each cycle. The same
+     * mechanism applies as for forward movement.
      */
     @Basic(optional = false)
     @NotNull
@@ -227,9 +238,9 @@ public class Robot implements Serializable {
     private double backwardSpeed;
 
     /**
-     * The maximum rotation a robot can execute each cycle. When a rotate()
-     * with a larger angle is executed, the robot is rotated this angle in
-     * one cycle and the rest of the requested angle in the next cycle(s).
+     * The maximum rotation a robot can execute each cycle. When a rotate() with
+     * a larger angle is executed, the robot is rotated this angle in one cycle
+     * and the rest of the requested angle in the next cycle(s).
      */
     @Basic(optional = false)
     @NotNull
@@ -245,8 +256,8 @@ public class Robot implements Serializable {
     private int robotSize;
 
     /**
-     * When in the future, the robot is currently recharging till this time
-     * is passed.
+     * When in the future, the robot is currently recharging till this time is
+     * passed.
      */
     @Column(name = "rechargeEndTime")
     @Temporal(TemporalType.TIMESTAMP)
@@ -285,42 +296,59 @@ public class Robot implements Serializable {
     /**
      * Default constructor.
      */
-    public Robot() {
+    public Robot()
+    {
+    }
+
+    /**
+     * Construct a new robot for the specified user.
+     *
+     * @param user The user to construct the robot for.
+     */
+    public Robot(Users user)
+    {
+        this.user = user;
+        
+        generateRobotName(user.getUsername(), user.getRobotList().size() + 1);
     }
 
     /**
      * Retrieve the primary key value of the robot.
-     * 
+     *
      * @return The id value of the robot.
      */
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
     /**
      * Retrieve the owner of the robot.
-     * 
+     *
      * @return The owner of the robot.
      */
-    public Users getUser() {
+    public Users getUser()
+    {
         return user;
     }
 
     /**
      * Change the owner of the robot.
-     * 
+     *
      * @param user The new owner of the robot.
      */
-    public void setUser(Users user) {
+    public void setUser(Users user)
+    {
         this.user = user;
     }
 
     /**
      * Retrieve the name of the robot.
-     * 
+     *
      * @return The name of the robot.
      */
-    public String getRobotName() {
+    public String getRobotName()
+    {
         return robotName;
     }
 
@@ -328,9 +356,37 @@ public class Robot implements Serializable {
      * Change the name of the robot.
      *
      * @param robotName The new name of the robot.
+     *
+     * @throws IllegalArgumentException if the specified name is not allowed.
      */
-    public void setRobotName(String robotName) {
+    public void setRobotName(String robotName) throws IllegalArgumentException
+    {
+        if (!robotName.matches(ROBOT_NAME_REGEXP))
+        {
+            throw new IllegalArgumentException();
+        }
+
         this.robotName = robotName;
+    }
+
+    /**
+     * Generate the name for a new robot.
+     *
+     * @param username The username of the new owner of the robot.
+     * @param robotNumber The robot-number for the user.
+     */
+    private void generateRobotName(String username, int robotNumber)
+    {
+        if (username.length() > 10)
+        {
+            robotName = username.substring(0, 10);
+        }
+        else
+        {
+            robotName = username;
+        }
+        
+        robotName = robotName + "_" + robotNumber;
     }
 
     /**
@@ -339,27 +395,30 @@ public class Robot implements Serializable {
      *
      * @param sourceCode The new program source.
      */
-    public void setSourceCode(String sourceCode) {
+    public void setSourceCode(String sourceCode)
+    {
         this.sourceCode = sourceCode;
     }
 
     /**
      * Retrieve the program source id this robot is linked to. Unlike the
-     * sourceCode field, the linked code could currently be invalid or too
-     * large to fit in the robot memory.
+     * sourceCode field, the linked code could currently be invalid or too large
+     * to fit in the robot memory.
      *
      * @return The program source id this robot is linked to.
      */
-    public Integer getProgramSourceId() {
+    public Integer getProgramSourceId()
+    {
         return programSourceId;
     }
 
     /**
      * Update the program source id this robot is linked to.
-     * 
+     *
      * @param programSourceId The new program source id this robot is linked to.
      */
-    public void setProgramSourceId(Integer programSourceId) {
+    public void setProgramSourceId(Integer programSourceId)
+    {
         this.programSourceId = programSourceId;
     }
 
@@ -368,7 +427,8 @@ public class Robot implements Serializable {
      *
      * @return The ore container robot part linked to this robot.
      */
-    public RobotPart getOreContainer() {
+    public RobotPart getOreContainer()
+    {
         return oreContainer;
     }
 
@@ -377,166 +437,208 @@ public class Robot implements Serializable {
      *
      * @param oreContainer The ore container robot part linked to this robot.
      */
-    public void setOreContainer(RobotPart oreContainer) {
+    public void setOreContainer(RobotPart oreContainer)
+    {
         this.oreContainer = oreContainer;
     }
 
-    public RobotPart getMiningUnit() {
+    public RobotPart getMiningUnit()
+    {
         return miningUnit;
     }
-    
-    public void setMiningUnit(RobotPart miningUnit) {
+
+    public void setMiningUnit(RobotPart miningUnit)
+    {
         this.miningUnit = miningUnit;
     }
 
-    public RobotPart getBattery() {
+    public RobotPart getBattery()
+    {
         return battery;
     }
-    
-    public void setBattery(RobotPart battery) {
+
+    public void setBattery(RobotPart battery)
+    {
         this.battery = battery;
     }
 
-    public RobotPart getMemoryModule() {
+    public RobotPart getMemoryModule()
+    {
         return memoryModule;
     }
-    
-    public void setMemoryModule(RobotPart memoryModule) {
+
+    public void setMemoryModule(RobotPart memoryModule)
+    {
         this.memoryModule = memoryModule;
     }
 
-    public RobotPart getCpu() {
+    public RobotPart getCpu()
+    {
         return cpu;
     }
-    
-    public void setCpu(RobotPart cpu) {
+
+    public void setCpu(RobotPart cpu)
+    {
         this.cpu = cpu;
     }
 
-    public RobotPart getEngine() {
+    public RobotPart getEngine()
+    {
         return engine;
     }
-    
-    public void setEngine(RobotPart engine) {
+
+    public void setEngine(RobotPart engine)
+    {
         this.engine = engine;
     }
-    
-    public int getRechargeTime() {
+
+    public int getRechargeTime()
+    {
         return rechargeTime;
     }
 
-    public void setRechargeTime(int rechargeTime) {
+    public void setRechargeTime(int rechargeTime)
+    {
         this.rechargeTime = rechargeTime;
     }
 
-    public int getMaxOre() {
+    public int getMaxOre()
+    {
         return maxOre;
     }
 
-    public void setMaxOre(int maxOre) {
+    public void setMaxOre(int maxOre)
+    {
         this.maxOre = maxOre;
     }
 
-    public int getMiningSpeed() {
+    public int getMiningSpeed()
+    {
         return miningSpeed;
     }
 
-    public void setMiningSpeed(int miningSpeed) {
+    public void setMiningSpeed(int miningSpeed)
+    {
         this.miningSpeed = miningSpeed;
     }
 
-    public int getMaxTurns() {
+    public int getMaxTurns()
+    {
         return maxTurns;
     }
 
-    public void setMaxTurns(int maxTurns) {
+    public void setMaxTurns(int maxTurns)
+    {
         this.maxTurns = maxTurns;
     }
 
-    public int getMemorySize() {
+    public int getMemorySize()
+    {
         return memorySize;
     }
 
-    public void setMemorySize(int memorySize) {
+    public void setMemorySize(int memorySize)
+    {
         this.memorySize = memorySize;
     }
 
-    public int getCpuSpeed() {
+    public int getCpuSpeed()
+    {
         return cpuSpeed;
     }
 
-    public void setCpuSpeed(int cpuSpeed) {
+    public void setCpuSpeed(int cpuSpeed)
+    {
         this.cpuSpeed = cpuSpeed;
     }
 
-    public double getForwardSpeed() {
+    public double getForwardSpeed()
+    {
         return forwardSpeed;
     }
 
-    public void setForwardSpeed(double forwardSpeed) {
+    public void setForwardSpeed(double forwardSpeed)
+    {
         this.forwardSpeed = forwardSpeed;
     }
 
-    public double getBackwardSpeed() {
+    public double getBackwardSpeed()
+    {
         return backwardSpeed;
     }
 
-    public void setBackwardSpeed(double backwardSpeed) {
+    public void setBackwardSpeed(double backwardSpeed)
+    {
         this.backwardSpeed = backwardSpeed;
     }
 
-    public int getRotateSpeed() {
+    public int getRotateSpeed()
+    {
         return rotateSpeed;
     }
 
-    public void setRotateSpeed(int rotateSpeed) {
+    public void setRotateSpeed(int rotateSpeed)
+    {
         this.rotateSpeed = rotateSpeed;
     }
 
-    public int getRobotSize() {
+    public int getRobotSize()
+    {
         return robotSize;
     }
 
-    public void setRobotSize(int robotSize) {
+    public void setRobotSize(int robotSize)
+    {
         this.robotSize = robotSize;
     }
 
-    public Date getRechargeEndTime() {
+    public Date getRechargeEndTime()
+    {
         return rechargeEndTime;
     }
 
-    public void setRechargeEndTime(Date rechargeEndTime) {
+    public void setRechargeEndTime(Date rechargeEndTime)
+    {
         this.rechargeEndTime = rechargeEndTime;
     }
-    
-    public Date getMiningEndTime() {
+
+    public Date getMiningEndTime()
+    {
         return miningEndTime;
     }
 
-    public void setMiningEndTime(Date miningEndTime) {
+    public void setMiningEndTime(Date miningEndTime)
+    {
         this.miningEndTime = miningEndTime;
     }
 
-    public int getTotalMiningRuns() {
+    public int getTotalMiningRuns()
+    {
         return totalMiningRuns;
     }
 
-    public void setTotalMiningRuns(int totalMiningRuns) {
+    public void setTotalMiningRuns(int totalMiningRuns)
+    {
         this.totalMiningRuns = totalMiningRuns;
     }
 
-    public void increateTotalMiningRuns() {
+    public void increateTotalMiningRuns()
+    {
         ++totalMiningRuns;
     }
 
-    public List<RobotLifetimeResult> getRobotLifetimeResultList() {
+    public List<RobotLifetimeResult> getRobotLifetimeResultList()
+    {
         return robotLifetimeResultList;
     }
 
-    public double getMiningAreaScore(int miningAreaId) {
-
-        for (RobotMiningAreaScore robotMiningAreaScore : robotMiningAreaScoreList) {
-            if (robotMiningAreaScore.getMiningAreaId() == miningAreaId) {
+    public double getMiningAreaScore(int miningAreaId)
+    {
+        for (RobotMiningAreaScore robotMiningAreaScore
+             : robotMiningAreaScoreList)
+        {
+            if (robotMiningAreaScore.getMiningAreaId() == miningAreaId)
+            {
                 return robotMiningAreaScore.getScore();
             }
         }
@@ -545,31 +647,38 @@ public class Robot implements Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Robot)) {
+        if (!(object instanceof Robot))
+        {
             return false;
         }
-        Robot other = (Robot) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        Robot other = (Robot)object;
+        return (this.id != null || other.id == null) && (this.id == null ||
+                                                         this.id
+                                                         .equals(other.id));
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "nl.robominer.entity.Robot[ id=" + id + " ]";
     }
 
-    public void fillDefaults(RobotPart oreContainer, RobotPart miningUnit, RobotPart battery,
-                             RobotPart memoryModule, RobotPart cpu, RobotPart engine) {
-
-        setRobotName("NewRobot");
+    public void fillDefaults(RobotPart oreContainer, RobotPart miningUnit,
+                             RobotPart battery,
+                             RobotPart memoryModule, RobotPart cpu,
+                             RobotPart engine)
+    {
         setSourceCode("move(1);\nmine();");
         setOreContainer(oreContainer);
         setMiningUnit(miningUnit);
@@ -583,62 +692,72 @@ public class Robot implements Serializable {
         updateParameters();
     }
 
-    public void updateParameters() {
-        
-        int batteryCapacity = oreContainer.getBatteryCapacity() + miningUnit.getBatteryCapacity() + 
-                              battery.getBatteryCapacity() + memoryModule.getBatteryCapacity() + 
-                              cpu.getBatteryCapacity() + engine.getBatteryCapacity();
-        
-        int powerUsage = oreContainer.getPowerUsage() + miningUnit.getPowerUsage() + 
-                         battery.getPowerUsage() + memoryModule.getPowerUsage() + 
-                         cpu.getPowerUsage() + engine.getPowerUsage();
-        
-        double weight = oreContainer.getWeight() + miningUnit.getWeight() + 
-                        battery.getWeight() + memoryModule.getWeight() + 
-                        cpu.getWeight() + engine.getWeight();
-        
-        int volume = oreContainer.getVolume() + miningUnit.getVolume() + 
-                     battery.getVolume() + memoryModule.getVolume() + 
-                     cpu.getVolume() + engine.getVolume();
-        
-        double forwardCapacity = oreContainer.getForwardCapacity() + miningUnit.getForwardCapacity() + 
-                                 battery.getForwardCapacity() + memoryModule.getForwardCapacity() + 
-                                 cpu.getForwardCapacity() + engine.getForwardCapacity();
-        
-        double backwardCapacity = oreContainer.getBackwardCapacity() + miningUnit.getBackwardCapacity() + 
-                                  battery.getBackwardCapacity() + memoryModule.getBackwardCapacity() + 
-                                  cpu.getBackwardCapacity() + engine.getBackwardCapacity();
-        
-        int rotateCapacity = oreContainer.getRotateCapacity() + miningUnit.getRotateCapacity() + 
-                             battery.getRotateCapacity() + memoryModule.getRotateCapacity() + 
-                             cpu.getRotateCapacity() + engine.getRotateCapacity();
-        
-        setRechargeTime(oreContainer.getRechargeTime() + miningUnit.getRechargeTime() + 
-                        battery.getRechargeTime() + memoryModule.getRechargeTime() + 
-                        cpu.getRechargeTime() + engine.getRechargeTime());
-        
-        setMaxOre(oreContainer.getOreCapacity() + miningUnit.getOreCapacity() +
-                  battery.getOreCapacity() + memoryModule.getOreCapacity() +
-                  cpu.getOreCapacity() + engine.getOreCapacity());
+    public void updateParameters()
+    {
+        int batteryCapacity = oreContainer.getBatteryCapacity() + miningUnit
+                .getBatteryCapacity() +
+                battery.getBatteryCapacity() + memoryModule.getBatteryCapacity() +
+                cpu.getBatteryCapacity() + engine.getBatteryCapacity();
 
-        setMiningSpeed(oreContainer.getMiningCapacity() + miningUnit.getMiningCapacity() + 
-                       battery.getMiningCapacity() + memoryModule.getMiningCapacity() + 
-                       cpu.getMiningCapacity() + engine.getMiningCapacity());
-        
-        setMemorySize(oreContainer.getMemoryCapacity() + miningUnit.getMemoryCapacity() + 
-                      battery.getMemoryCapacity() + memoryModule.getMemoryCapacity() + 
-                      cpu.getMemoryCapacity() + engine.getMemoryCapacity());
-        
-        setCpuSpeed(oreContainer.getCpuCapacity() + miningUnit.getCpuCapacity() + 
-                    battery.getCpuCapacity() + memoryModule.getCpuCapacity() + 
-                    cpu.getCpuCapacity() + engine.getCpuCapacity());
-        
+        int powerUsage = oreContainer.getPowerUsage() + miningUnit
+                .getPowerUsage() +
+                battery.getPowerUsage() + memoryModule.getPowerUsage() +
+                cpu.getPowerUsage() + engine.getPowerUsage();
+
+        double weight = oreContainer.getWeight() + miningUnit.getWeight() +
+                battery.getWeight() + memoryModule.getWeight() +
+                cpu.getWeight() + engine.getWeight();
+
+        int volume = oreContainer.getVolume() + miningUnit.getVolume() +
+                battery.getVolume() + memoryModule.getVolume() +
+                cpu.getVolume() + engine.getVolume();
+
+        double forwardCapacity = oreContainer.getForwardCapacity() + miningUnit
+                .getForwardCapacity() +
+                battery.getForwardCapacity() + memoryModule.getForwardCapacity() +
+                cpu.getForwardCapacity() + engine.getForwardCapacity();
+
+        double backwardCapacity = oreContainer.getBackwardCapacity() +
+                miningUnit.getBackwardCapacity() +
+                battery.getBackwardCapacity() + memoryModule
+                .getBackwardCapacity() +
+                cpu.getBackwardCapacity() + engine.getBackwardCapacity();
+
+        int rotateCapacity = oreContainer.getRotateCapacity() + miningUnit
+                .getRotateCapacity() +
+                battery.getRotateCapacity() + memoryModule.getRotateCapacity() +
+                cpu.getRotateCapacity() + engine.getRotateCapacity();
+
+        setRechargeTime(oreContainer.getRechargeTime() + miningUnit
+                .getRechargeTime() +
+                battery.getRechargeTime() + memoryModule.getRechargeTime() +
+                cpu.getRechargeTime() + engine.getRechargeTime());
+
+        setMaxOre(oreContainer.getOreCapacity() + miningUnit.getOreCapacity() +
+                battery.getOreCapacity() + memoryModule.getOreCapacity() +
+                cpu.getOreCapacity() + engine.getOreCapacity());
+
+        setMiningSpeed(oreContainer.getMiningCapacity() + miningUnit
+                .getMiningCapacity() +
+                battery.getMiningCapacity() + memoryModule.getMiningCapacity() +
+                cpu.getMiningCapacity() + engine.getMiningCapacity());
+
+        setMemorySize(oreContainer.getMemoryCapacity() + miningUnit
+                .getMemoryCapacity() +
+                battery.getMemoryCapacity() + memoryModule.getMemoryCapacity() +
+                cpu.getMemoryCapacity() + engine.getMemoryCapacity());
+
+        setCpuSpeed(
+                oreContainer.getCpuCapacity() + miningUnit.getCpuCapacity() +
+                battery.getCpuCapacity() + memoryModule.getCpuCapacity() +
+                cpu.getCpuCapacity() + engine.getCpuCapacity());
+
         setMaxTurns(batteryCapacity / powerUsage);
 
         setForwardSpeed(3 * forwardCapacity / weight);
         setBackwardSpeed(3 * backwardCapacity / weight);
         setRotateSpeed((int)(20 * rotateCapacity / weight));
 
-        setRobotSize((int) Math.pow(volume, 0.33));
+        setRobotSize((int)Math.pow(volume, 0.33));
     }
 }
