@@ -57,3 +57,12 @@ function confirmLooseChanges() {
         return "Unsaved changes will be lost";
     }
 }
+
+function eraseProgram(programSourceId) {
+
+    if (confirm("This will permanently delete this program. Are you sure?")) {
+
+        document.getElementById("eraseProgramSourceId").value = programSourceId;
+        document.getElementById("eraseProgramSourceForm").submit();
+    }
+}

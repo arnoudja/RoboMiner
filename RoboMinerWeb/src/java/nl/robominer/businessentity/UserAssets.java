@@ -526,10 +526,8 @@ public class UserAssets {
 
         if (programSource == null) {
 
-            programSource = new ProgramSource();
-            programSource.fillDefaults();
+            programSource = new ProgramSource(userId);
             programSource.setSourceName("Default program");
-            programSource.setUsersId(userId);
             programSourceFacade.create(programSource);
         }
 

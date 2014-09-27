@@ -678,9 +678,9 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15014, 1501, 
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (15015, 1501, 5, 10);
 insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
                 values (1501, 'Prantum-1', 1501,       70,    70,    900,      1800,       50,      3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 10);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 10);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 2, 15, 10);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 1, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 2, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
 

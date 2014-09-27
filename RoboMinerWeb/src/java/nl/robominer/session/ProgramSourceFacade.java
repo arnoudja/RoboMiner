@@ -19,7 +19,6 @@
 
 package nl.robominer.session;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,45 +26,44 @@ import javax.persistence.Query;
 import nl.robominer.entity.ProgramSource;
 
 /**
+ * Session bean for the ProgramSource entity class.
  *
  * @author Arnoud Jagerman
  */
 @Stateless
 public class ProgramSourceFacade extends AbstractFacade<ProgramSource> {
 
+    /**
+     * The EntityManager instance used for the database access.
+     */
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
+    /**
+     * Retrieve the EntityManager instance for this session bean.
+     *
+     * @return The EntityManager instance for this session bean.
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Default constructor.
+     */
     public ProgramSourceFacade() {
         super(ProgramSource.class);
     }
 
-    public ProgramSource findByIdAndUser(int id, int usersId) {
-        
-        try {
-            Query query = getEntityManager().createNamedQuery("ProgramSource.findByIdAndUser", ProgramSource.class);
-            query.setParameter("id", id);
-            query.setParameter("usersId", usersId);
-            return (ProgramSource)query.getSingleResult();
-        }
-        catch (javax.persistence.NoResultException exc) {
-            return null;
-        }
-    }
-
-    public List<ProgramSource> findByUsersId(int usersId) {
-
-        Query query = getEntityManager().createNamedQuery("ProgramSource.findByUsersId", ProgramSource.class);
-        query.setParameter("usersId", usersId);
-        
-        return query.getResultList();
-    }
-
+    /**
+     * Retrieve a suitable program for a robot.
+     *
+     * @param usersId The user owning the robot.
+     * @param maxSize The robot memory size.
+     *
+     * @return A suitable program for the robot, or null if none found.
+     */
     public ProgramSource findSuiteableByUsersId(int usersId, int maxSize) {
 
         try {

@@ -37,61 +37,95 @@ import nl.robominer.session.RobotFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
+ * Servlet for handling program source requests.
  *
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "EditCodeServlet", urlPatterns = {"/editCode"})
 public class EditCodeServlet extends RoboMinerServletBase {
 
+    /**
+     * The javascript view used for displaying the program source page.
+     */
+    private static final String JAVASCRIPT_VIEW = "/WEB-INF/view/editcode.jsp";
+
+    /**
+     * The session attribute id for storing the selected program.
+     */
     private static final String SESSION_PROGRAM_SOURCE_ID = "editCode_programSourceId";
 
+    /**
+     * Bean to handle the database actions for the program source information.
+     */
     @EJB
     private ProgramSourceFacade programSourceFacade;
     
+    /**
+     * Bean to handle the database actions for the robot information.
+     */
     @EJB
     private RobotFacade robotFacade;
     
+    /**
+     * Bean to handle the database actions for the mining queue information.
+     */
     @EJB
     private MiningQueueFacade miningQueueFacade;
     
-    @EJB
-    private RoboMinerCppBean roboMinerCppBean;
-
+    /**
+     * Bean to handle the database actions for the user information.
+     */
     @EJB
     private UsersFacade usersFacade;
+
+    /**
+     * Bean to handle the access to the c++ part of the program.
+     */
+    @EJB
+    private RoboMinerCppBean roboMinerCppBean;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request The servlet request.
+     * @param response The servlet response.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int userId = getUserId(request);
+        Users user = usersFacade.findById(getUserId(request));
 
+        String requestType      = request.getParameter("requestType");
         int programSourceId     = getItemId(request, "programSourceId");
         int nextProgramSourceId = getItemId(request, "nextProgramSourceId");
         String sourceName       = request.getParameter("sourceName");
         String sourceCode       = request.getParameter("sourceCode");
 
-        if (sourceName != null && !sourceName.isEmpty() &&
-            sourceCode != null && !sourceCode.isEmpty()) {
+        if ("erase".equals(requestType)) {
+
+            ProgramSource programSource = user.getProgramSource(programSourceId);
+            if (programSource != null && programSource.getRobotList().isEmpty()) {
+
+                programSourceFacade.remove(programSource);
+                nextProgramSourceId = 0;
+            }
+        }
+        else if (sourceName != null && !sourceName.isEmpty() &&
+                 sourceCode != null && !sourceCode.isEmpty()) {
 
             if (programSourceId > 0) {
-                String errorMessage = updateProgramSource(userId, programSourceId, sourceName, sourceCode);
+                String errorMessage = updateProgramSource(user.getProgramSource(programSourceId), sourceName, sourceCode);
                 if (!errorMessage.isEmpty()) {
                     request.setAttribute("errorMessage", errorMessage);
                 }
             }
             else {
 
-                programSourceId = addProgramSource(userId, sourceName, sourceCode);
+                programSourceId = addProgramSource(user.getId(), sourceName, sourceCode);
 
                 if (nextProgramSourceId <= 0) {
                     nextProgramSourceId = programSourceId;
@@ -99,68 +133,75 @@ public class EditCodeServlet extends RoboMinerServletBase {
             }
         }
 
-        Users user = usersFacade.findById(userId);
-
-        // When the page is opened, select the program from the session or open the first program on the list
-        if (nextProgramSourceId == 0) {
-
-            if (request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID) != null) {
-                nextProgramSourceId = (int)request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID);
-            }
-            else if (!user.getProgramSourceList().isEmpty()) {
-                nextProgramSourceId = user.getProgramSourceList().get(0).getId();
-            }
-        }
+        // Force a refresh on the user instance to update the program list.
+        user = usersFacade.findById(getUserId(request));
 
         ProgramSource programSource = null;
 
-        if (nextProgramSourceId > 0) {
-            programSource = programSourceFacade.findByIdAndUser(nextProgramSourceId, userId);
+        if (nextProgramSourceId >= 0) {
+
+            programSource = user.getProgramSource(nextProgramSourceId);
+
+            if (programSource == null && request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID) != null) {
+                nextProgramSourceId = (int)request.getSession().getAttribute(SESSION_PROGRAM_SOURCE_ID);
+                programSource       = user.getProgramSource(nextProgramSourceId);
+            }
+
+            if (programSource == null && !user.getProgramSourceList().isEmpty()) {
+                programSource       = user.getProgramSourceList().get(0);
+                nextProgramSourceId = programSource.getId();
+            }
         }
 
-        // Retrieve defaults, if requested
         if (programSource == null) {
 
+            // Retrieve defaults.
             nextProgramSourceId = -1;
 
-            programSource = new ProgramSource();
-            programSource.fillDefaults();
-            programSource.setUsersId(userId);
+            programSource = new ProgramSource(user.getId());
         }
 
+        // Add the data of the user to the request.
         request.setAttribute("user", user);
 
-        // Add the data of the currently selected source
+        // Add the data of the currently selected source to the request.
         request.setAttribute("programSourceId", nextProgramSourceId);
         request.setAttribute("programSource", programSource);
 
         // Save the selected program id in the session
         request.getSession().setAttribute(SESSION_PROGRAM_SOURCE_ID, nextProgramSourceId);
 
-        request.getRequestDispatcher("/WEB-INF/view/editcode.jsp").forward(request, response);
+        request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
-    private String updateProgramSource(int userId, int programSourceId, String sourceName, String sourceCode) {
-        
-        ProgramSource programSource = programSourceFacade.find(programSourceId);
-        
+    /**
+     * Update the program source in the database and check its validity.
+     *
+     * @param programSource The program source to update.
+     * @param sourceName The new program source name.
+     * @param sourceCode The new program source code.
+     *
+     * @return The warning message specifying the robots that are using this
+     * program but couldn't be updated, or empty if none.
+     */
+    private String updateProgramSource(ProgramSource programSource, String sourceName, String sourceCode) {
+
         StringBuilder errorMessage = new StringBuilder();
-            
-        if (programSource != null && programSource.getUsersId() == userId) {
+
+        if (programSource != null) {
 
             programSource.setSourceName(sourceName);
             programSource.setSourceCode(sourceCode);
             programSource.setVerified(false);
 
+            // Communicate with the c++ part over the database to verify the code.
             programSourceFacade.edit(programSource);
             roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
-
-            // Reload the verified version
-            programSource = programSourceFacade.findByIdAndUser(programSourceId, userId);
+            programSource = programSourceFacade.find(programSource.getId());
 
             if (programSource.getVerified()) {
 
-                List<Robot> robotList = robotFacade.findByProgramAndUser(programSourceId, userId);
+                List<Robot> robotList = programSource.getRobotList();
 
                 for (Robot robot : robotList) {
 
@@ -190,19 +231,27 @@ public class EditCodeServlet extends RoboMinerServletBase {
         
         return errorMessage.toString();
     }
-    
+
+    /**
+     * Add a new program source instance to the database.
+     *
+     * @param userId The id of the user the program source is for.
+     * @param sourceName The name of the new program source.
+     * @param sourceCode The code of the new program source.
+     *
+     * @return The id value of the new program source instance created.
+     */
     private int addProgramSource(int userId, String sourceName, String sourceCode) {
-        
-        ProgramSource programSource = new ProgramSource();
-        
-        programSource.setUsersId(userId);
+
+        ProgramSource programSource = new ProgramSource(userId);
+
         programSource.setSourceName(sourceName);
         programSource.setSourceCode(sourceCode);
         programSource.setVerified(false);
-        
+
         programSourceFacade.create(programSource);
         roboMinerCppBean.verifyCode(getServletContext().getRealPath("/WEB-INF/binaries/robominercpp"), programSource.getId());
-        
+
         return programSource.getId();
     }
 

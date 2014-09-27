@@ -41,7 +41,13 @@
 
             <button class="helpbutton" onclick="window.open('<c:url value='help_robotprogram.html'/>')">help</button>
 
+            <form id="eraseProgramSourceForm" action="<c:url value='editCode'/>" method="post">
+                <input type="hidden" name="requestType" value="erase" />
+                <input type="hidden" id="eraseProgramSourceId" name="programSourceId" value=""/>
+            </form>
+
             <form id="changeProgramSourceForm" action="<c:url value='editCode'/>" method="post">
+                <input type="hidden" name="requestType" value="change" />
                 Edit code:
                 <select id="programSourceId" name="nextProgramSourceId" onchange="selectOtherSource();">
                     <c:forEach var='programSourceItem' items='${user.programSourceList}'>
@@ -54,11 +60,15 @@
             <br>
 
             <form id='editCodeForm' action="<c:url value='editCode'/>" method="post">
+                <input type="hidden" name="requestType" value="update" />
                 <input type="hidden" id="nextProgramSourceId" name="nextProgramSourceId" value="${programSourceId}"/>
                 <input type="hidden" name="programSourceId" value="${programSourceId}"/>
 
                 Program name:<br>
                 <input id="sourceName" type="text" name="sourceName" value="${fn:escapeXml(programSource.sourceName)}" size="40" placeholder="Please choose a name for your program" required />
+                <c:if test="${programSourceId gt 0 && programSource.robotList.size() eq 0}">
+                    <input type="button" value="Delete" onclick="eraseProgram(${programSourceId});" />
+                </c:if>
                 <br>
                 <br>
 
