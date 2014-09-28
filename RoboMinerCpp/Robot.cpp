@@ -155,5 +155,5 @@ double CRobot::calculateScore() const
         factor *= 10.;
     }
     
-    return score * 10. / m_maxOre;
+    return score * 10. / (m_maxOre + 5.);
 }
