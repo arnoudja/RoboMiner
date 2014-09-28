@@ -73,7 +73,7 @@ function drawRobot(robot, scale, turn)
     var centerY = robot.y * scale + scale / 2;
 
     myRallyContext.beginPath();
-    myRallyContext.arc(centerX, centerY, robot.size * scale / 2, 0, 2 * Math.PI, false);
+    myRallyContext.arc(centerX, centerY, robot.size * scale / 2.0, 0, 2.0 * Math.PI, false);
     myRallyContext.fillStyle = turn < robot.maxturns ? robotColor(robot.robotnr) : depletedRobotColor(robot.robotnr);
     myRallyContext.fill();
     myRallyContext.lineWidth = 2;
@@ -88,6 +88,18 @@ function drawRobot(robot, scale, turn)
     myRallyContext.lineWidth = 2;
     myRallyContext.strokeStyle = 'black';
     myRallyContext.stroke();
+}
+
+
+function eraseRobot(robot, scale, step)
+{
+    var minX = Math.floor(Math.max(0, robot.x - robot.size / 2.0));
+    var minY = Math.floor(Math.max(0, robot.y - robot.size / 2.0));
+
+    var maxX = Math.floor(Math.min(myGround.sizeX, minX + robot.size + 3));
+    var maxY = Math.floor(Math.min(myGround.sizeY, minY + robot.size + 3));
+
+    drawGroundAt(step, scale, minX, minY, maxX, maxY);
 }
 
 
@@ -128,34 +140,29 @@ function drawRobotOre(robot)
 }
 
 
-function drawGround(step, scale)
+function drawInitialGround(scale)
 {
+    myGround.updatedTo = 0;
+
     myRallyContext.beginPath();
     myRallyContext.rect(0, 0, 600, 600);
     myRallyContext.fillStyle = 'black';
     myRallyContext.fill();
 
-    for (i = 0; i < myGround.positions.length; i++)
+    var oreAMax = typeof myOreTypes.A !== 'undefined' ? myOreTypes.A.max : 255;
+    var oreBMax = typeof myOreTypes.B !== 'undefined' ? myOreTypes.B.max : 255;
+    var oreCMax = typeof myOreTypes.C !== 'undefined' ? myOreTypes.C.max : 255;
+
+    for (var i = 0; i < myGround.positions.length; i++)
     {
+        myGround.positions[i].lastDrawn = 0;
+
         var x = myGround.positions[i].x;
         var y = myGround.positions[i].y;
 
-        var oreA = 0;
-        var oreB = 0;
-        var oreC = 0;
-        for (j = 0; j < myGround.positions[i].changes.length; j++)
-        {
-            if (myGround.positions[i].changes[j].t <= step)
-            {
-                oreA = myGround.positions[i].changes[j].A;
-                oreB = myGround.positions[i].changes[j].B;
-                oreC = myGround.positions[i].changes[j].C;
-            }
-        }
-
-        var oreAMax = typeof myOreTypes.A !== 'undefined' ? myOreTypes.A.max : 255;
-        var oreBMax = typeof myOreTypes.B !== 'undefined' ? myOreTypes.B.max : 255;
-        var oreCMax = typeof myOreTypes.C !== 'undefined' ? myOreTypes.C.max : 255;
+        var oreA = myGround.positions[i].changes[0].A;
+        var oreB = myGround.positions[i].changes[0].B;
+        var oreC = myGround.positions[i].changes[0].C;
 
         var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
         var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));
@@ -169,12 +176,58 @@ function drawGround(step, scale)
 }
 
 
+function drawGroundAt(step, scale, fromX, fromY, tillX, tillY)
+{
+    var oreAMax = typeof myOreTypes.A !== 'undefined' ? myOreTypes.A.max : 255;
+    var oreBMax = typeof myOreTypes.B !== 'undefined' ? myOreTypes.B.max : 255;
+    var oreCMax = typeof myOreTypes.C !== 'undefined' ? myOreTypes.C.max : 255;
+
+    myRallyContext.beginPath();
+    myRallyContext.rect(fromX * scale, fromY * scale, (tillX - fromX) * scale, (tillY - fromY) * scale);
+    myRallyContext.fillStyle = 'black';
+    myRallyContext.fill();
+
+    for (var i = 0; i < myGround.positions.length; i++)
+    {
+        if (myGround.positions[i].x >= fromX && myGround.positions[i].x < tillX &&
+            myGround.positions[i].y >= fromY && myGround.positions[i].y < tillY)
+        {
+            var x = myGround.positions[i].x;
+            var y = myGround.positions[i].y;
+
+            var j = myGround.positions[i].lastDrawn;
+
+            while (myGround.positions[i].changes.length > (j + 1) &&
+                   myGround.positions[i].changes[j + 1].t <= step)
+            {
+                j++;
+            }
+
+            myGround.positions[i].lastDrawn = j;
+
+            var oreA = myGround.positions[i].changes[j].A;
+            var oreB = myGround.positions[i].changes[j].B;
+            var oreC = myGround.positions[i].changes[j].C;
+
+            var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
+            var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));
+            var oreCIntensity = Math.min(255, Math.floor(oreC * 255 / oreCMax));
+
+            myRallyContext.beginPath();
+            myRallyContext.rect(x * scale, y * scale, scale, scale);
+            myRallyContext.fillStyle = rgbToHex(oreAIntensity, oreBIntensity, oreCIntensity);
+            myRallyContext.fill();
+        }
+    }
+}
+
+
 function updateRobotTo(robotNr, step)
 {
     if (step > myRobots.robot[robotNr].updatedTo && step < myRobots.robot[robotNr].locations.length)
     {
         updateRobotTo(robotNr, step - 1);
-        
+
         if (typeof myRobots.robot[robotNr].locations[step].x === 'undefined')
         {
             myRobots.robot[robotNr].locations[step].x = myRobots.robot[robotNr].locations[step - 1].x;
@@ -199,7 +252,7 @@ function updateRobotTo(robotNr, step)
         {
             myRobots.robot[robotNr].locations[step].C = myRobots.robot[robotNr].locations[step - 1].C;
         }
-        
+
         myRobots.robot[robotNr].updatedTo = step;
     }
 }
@@ -267,7 +320,6 @@ function animate(scale, startTime, stepTime)
     }
     myCycleText.value = cycle;
 
-    myRallyContext.clearRect(0, 0, myRallyCanvas.width, myRallyCanvas.height);
     myProgressContext.clearRect(0, 0, myProgressCanvas.width, myProgressCanvas.height);
 
     myProgressContext.beginPath();
@@ -278,12 +330,15 @@ function animate(scale, startTime, stepTime)
     myProgressContext.strokeStyle = 'black';
     myProgressContext.stroke();
 
-    drawGround(Math.floor(time / stepTime), scale);
+    for (var i = 0; i < myRobots.robot.length; i++)
+    {
+        eraseRobot(myRobots.robot[i], scale, cycle);
+    }
 
-    for (i = 0; i < myRobots.robot.length; i++)
+    for (var i = 0; i < myRobots.robot.length; i++)
     {
         updateRobotPosition(i, time, stepTime);
-        drawRobot(myRobots.robot[i], scale, Math.floor(time / stepTime));
+        drawRobot(myRobots.robot[i], scale, cycle);
         drawRobotOre(myRobots.robot[i]);
     }
 
@@ -303,9 +358,9 @@ function runanimation()
 
     var scale = scaleX < scaleY ? scaleX : scaleY;
 
-    drawGround(0, scale);
+    drawInitialGround(scale);
 
-    for (i = 0; i < myRobots.robot.length; i++)
+    for (var i = 0; i < myRobots.robot.length; i++)
     {
         myRobots.robot[i].updatedTo = 0;
         drawRobot(myRobots.robot[i], scale, 0);
