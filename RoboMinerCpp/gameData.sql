@@ -558,19 +558,19 @@ insert into Users (id, username, email, password) values (1, 'AI', '', '');
 insert into Robot (id, usersId, robotName, sourceCode,
  rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
 values (1, 1, 'AI-1', 'move(1.5); while (mine());',
- 0,            50,     2,           150,      99,       2,            2,             25,          3);
+ 0,            50,     2,           1500,     99,       2,            2,             25,          3);
 
 insert into Robot (id, usersId, robotName, sourceCode,
  rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
 values (2, 1, 'AI-2', 'if (move(1.5) >= 1) { while (mine()); } else { move(-1); rotate(20); }',
- 0,            50,     2,           300,      99,       2,            2,             25,          3);
+ 0,            50,     2,           3000,     99,       2,            2,             25,          3);
 
 insert into Robot (id, usersId, robotName,
  sourceCode,
  rechargeTime, maxOre, miningSpeed, maxTurns, cpuSpeed, forwardSpeed, backwardSpeed, rotateSpeed, robotSize)
 values (3, 1, 'AI-3', 
 'int rot = 0; while (true) { if (rot) { if (rot <= 90) { rotate(rot); } rot = rot - 10; } if (move(1.5) < 1) { move(-1); rotate(24); } while (mine()) { rot = 100; } }',
- 0,            50,     2,           500,      99,       2,            2,             25,          3);
+ 0,            50,     2,           5000,     99,       2,            2,             25,          3);
 
 -- Mining areas
 
@@ -582,11 +582,18 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (10
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1001, 1, 20, 4);
 
 insert into OrePrice (id, description) values (1002, 'Mining Area Cerbonium-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10021, 1002, 1, 2);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10021, 1002, 1, 1);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1002, 'Cerbonium-2', 1002,       25,    25,    250,      30,         0,       1);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 3);
+                values (1002, 'Cerbonium-2', 1002,       30,    30,    300,      60,         10,      2);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1002, 1, 20, 4);
+
+insert into OrePrice (id, description) values (1003, 'Mining Area Cerbonium-3 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (10031, 1003, 1, 2);
+insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1003, 'Cerbonium-3', 1003,       40,    40,    600,      120,        0,       3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1003, 1, 20, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1003, 1, 20, 4);
 
 -- Oxaria
 insert into OrePrice (id, description) values (1101, 'Mining Area Oxaria-1 price');
@@ -600,12 +607,23 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (11
 
 insert into OrePrice (id, description) values (1102, 'Mining Area Oxaria-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11021, 1102, 1, 10);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11022, 1102, 2, 1);
 insert into MiningArea (id,   areaName,   orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1102, 'Oxaria-2', 1102,       35,    35,    300,      90,         40,      2);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 4);
+                values (1102, 'Oxaria-2', 1102,       45,    45,    500,      120,        10,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 1, 20, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 10, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1102, 2, 5,  4);
+
+insert into OrePrice (id, description) values (1103, 'Mining Area Oxaria-3 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11031, 1103, 1, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (11032, 1103, 2, 2);
+insert into MiningArea (id,   areaName,   orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1103, 'Oxaria-3', 1103,       60,    60,    1000,     240,        0,       3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1103, 1, 20, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1103, 2, 10, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1103, 2, 5,  4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1103, 2, 5,  4);
 
 -- Lithabine
 insert into OrePrice (id, description) values (1201, 'Mining Area Lithabine-1 price');
@@ -619,14 +637,26 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (12
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 4);
 
 insert into OrePrice (id, description) values (1202, 'Mining Area Lithabine-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 1, 20);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12022, 1202, 2, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 1, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12022, 1202, 2, 10);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12022, 1202, 3, 1);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1202, 'Lithabine-2', 1202,       45,    45,    400,      120,        10,      3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 4, 6);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 4, 6);
+                values (1202, 'Lithabine-2', 1202,       60,    60,    700,      240,        10,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
+
+insert into OrePrice (id, description) values (1203, 'Mining Area Lithabine-3 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12031, 1203, 1, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12032, 1203, 2, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12033, 1203, 3, 2);
+insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1203, 'Lithabine-3', 1203,       80,    80,    1400,     480,        0,       3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 6);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
 
 -- Neudralion
 insert into OrePrice (id, description) values (1301, 'Mining Area Neudralion-1 price');
@@ -640,14 +670,14 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (13
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 5, 5);
 
 insert into OrePrice (id, description) values (1302, 'Mining Area Neudralion-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13021, 1302, 1, 25);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13022, 1302, 2, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13021, 1302, 1, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13022, 1302, 2, 15);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13023, 1302, 3, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (13023, 1302, 4, 1);
 insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1302, 'Neudralion-2', 1302,       55,    55,    500,     420,        50,      3);
+                values (1302, 'Neudralion-2', 1302,       75,    75,    900,      600,        20,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 2, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 3, 10, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
 
 -- Complatix
@@ -663,12 +693,13 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (14
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 5, 5);
 
 insert into OrePrice (id, description) values (1402, 'Mining Area Complatix-2 price');
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14021, 1402, 1, 30);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14022, 1402, 2, 25);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14023, 1402, 3, 20);
-insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14024, 1402, 4, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14021, 1402, 1, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14022, 1402, 2, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14023, 1402, 3, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14024, 1402, 4, 10);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (14025, 1402, 5, 1);
 insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1402, 'Complatix-2', 1402,       65,    65,    700,      3600,       50,      3);
+                values (1402, 'Complatix-2', 1402,       90,    90,    1200,     1800,       25,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 3, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 4, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1402, 5, 5, 5);
@@ -747,7 +778,15 @@ insert into Achievement (id, title,              description,                   
 
 insert into AchievementPredecessor (predecessorId, successorId) values (12, 20);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 6.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 7.6);
+
+
+insert into Achievement (id, title,              description,                                                     achievementPoints, miningAreaId)
+                 values (21, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1003);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (20, 21);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (21, 1002, 8.6);
 
 
 insert into Achievement (id,  title,           description,                       achievementPoints, miningQueueReward)
@@ -803,7 +842,16 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (101, 120);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 45.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 35.0);
+
+
+
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (121, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1103);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (120, 121);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (121, 1102, 45.0);
 
 
 insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
@@ -859,7 +907,15 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (201, 220);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 250.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 300.0);
+
+
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+                 values (221, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1203);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (220, 221);
+
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (221, 1202, 400.0);
 
 
 insert into Achievement (id,  title,               description,                   achievementPoints, miningQueueReward)
@@ -915,7 +971,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (301, 320);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 200.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 400.0);
 
 
 insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
@@ -966,12 +1022,12 @@ insert into AchievementPredecessor (predecessorId, successorId) values (404, 405
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (405, 5, 1000000);
 
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
+insert into Achievement (id, title,               description,                                                     achievementPoints, Achievement)
                  values (420, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1402);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 150.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 160.0);
 
 
 insert into Achievement (id,  title,            description,                achievementPoints)
