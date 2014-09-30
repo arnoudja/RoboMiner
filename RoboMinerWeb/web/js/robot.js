@@ -57,7 +57,7 @@ function applyChanges() {
     var availableMemory = getAvailableMemory(robotId);
     var usedMemory = getUsedMemory(robotId);
     var robotName = document.getElementById('robotName' + robotId).value;
-    var robotNameRegExp = new RegExp('^[A-Za-z0-9_]{1,10}$');
+    var robotNameRegExp = new RegExp('^[A-Za-z0-9_]{1,15}$');
 
     if (!robotNameRegExp.test(robotName)) {
         alert("Invalid robot name.");
