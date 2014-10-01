@@ -302,87 +302,87 @@ insert into RobotPart (id,  typeId, partName,                   orePriceId, batt
                values (351, 3,      'Enhanced Prantum Battery', 351,        120000,          600,          13,     12,      0);
 
 -- Memory modules
-insert into OrePrice (id, description) values (401, 'Memory Module 8 price');
+insert into OrePrice (id, description) values (401, 'Standard Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4011, 401, 1, 2);
-insert into RobotPart (id,  typeId, partName,          orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (401, 4,      'Memory Module 8', 401,        8,              1,      1,      1);
+insert into RobotPart (id,  typeId, partName,                 orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (401, 4,      'Standard Memory Module', 401,        8,              1,      1,      1);
 
-insert into OrePrice (id, description) values (402, 'Memory Module 16 price');
+insert into OrePrice (id, description) values (402, 'Enhanced Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4021, 402, 1, 10);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (402, 4,      'Memory Module 16', 402,        16,             1,      1,      2);
+insert into RobotPart (id,  typeId, partName,                 orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (402, 4,      'Enhanced Memory Module', 402,        16,             1,      1,      2);
 
-insert into OrePrice (id, description) values (403, 'Memory Module 24 price');
+insert into OrePrice (id, description) values (403, 'Cerbonium Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4031, 403, 1, 50);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (403, 4,      'Memory Module 24', 403,        24,             1,      1,      3);
+insert into RobotPart (id,  typeId, partName,                  orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (403, 4,      'Cerbonium Memory Module', 403,        24,             1,      1,      3);
 
-insert into OrePrice (id, description) values (410, 'Memory Module 32 price');
+insert into OrePrice (id, description) values (410, 'Oxaria Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4102, 410, 2, 20);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (410, 4,      'Memory Module 32', 410,        32,             1,      1,      4);
+insert into RobotPart (id,  typeId, partName,               orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (410, 4,      'Oxaria Memory Module', 410,        32,             1,      1,      4);
 
-insert into OrePrice (id, description) values (411, 'Memory Module 48 price');
+insert into OrePrice (id, description) values (411, 'Enhanced Oxaria Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4111, 411, 1, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4112, 411, 2, 50);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (411, 4,      'Memory Module 48', 411,        48,             1,      1,      5);
+insert into RobotPart (id,  typeId, partName,                        orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (411, 4,      'Enhanced Oxaria Memory Module', 411,        48,             1,      1,      5);
 
-insert into OrePrice (id, description) values (420, 'Memory Module 64 price');
+insert into OrePrice (id, description) values (420, 'Lithabine Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4201, 420, 1, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4202, 420, 2, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4203, 420, 3, 10);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (420, 4,      'Memory Module 64', 420,        64,             1,      1,      6);
+insert into RobotPart (id,  typeId, partName,                  orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (420, 4,      'Lithabine Memory Module', 420,        64,             1,      1,      6);
 
-insert into OrePrice (id, description) values (421, 'Memory Module 96 price');
+insert into OrePrice (id, description) values (421, 'Enhanced Lithabine Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4211, 421, 1, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4212, 421, 2, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4213, 421, 3, 50);
-insert into RobotPart (id,  typeId, partName,           orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (421, 4,      'Memory Module 96', 421,        96,             1,      1,      7);
+insert into RobotPart (id,  typeId, partName,                           orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (421, 4,      'Enhanced Lithabine Memory Module', 421,        80,             1,      1,      7);
 
-insert into OrePrice (id, description) values (430, 'Memory Module 128 price');
+insert into OrePrice (id, description) values (430, 'Neudralion Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4302, 430, 2, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4303, 430, 3, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4304, 430, 4, 15);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (430, 4,      'Memory Module 128', 430,        128,            1,      1,      8);
+insert into RobotPart (id,  typeId, partName,                   orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (430, 4,      'Neudralion Memory Module', 430,        96,             1,      1,      8);
 
-insert into OrePrice (id, description) values (431, 'Memory Module 196 price');
+insert into OrePrice (id, description) values (431, 'Enhanced Neudralion Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4312, 431, 2, 350);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4313, 431, 3, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4314, 431, 4, 60);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (431, 4,      'Memory Module 196', 431,        196,            1,      1,      9);
+insert into RobotPart (id,  typeId, partName,                            orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (431, 4,      'Enhanced Neudralion Memory Module', 431,        112,            1,      1,      9);
 
-insert into OrePrice (id, description) values (440, 'Memory Module 256 price');
+insert into OrePrice (id, description) values (440, 'Complatix Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4403, 440, 3, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4404, 440, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4405, 440, 5, 10);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (440, 4,      'Memory Module 256', 440,        256,            1,      1,      10);
+insert into RobotPart (id,  typeId, partName,                  orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (440, 4,      'Complatix Memory Module', 440,        128,            1,      1,      10);
 
-insert into OrePrice (id, description) values (441, 'Memory Module 384 price');
+insert into OrePrice (id, description) values (441, 'Enhanced Complatix Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4413, 441, 3, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4414, 441, 4, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4415, 441, 5, 75);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (441, 4,      'Memory Module 384', 441,        384,            1,      1,      11);
+insert into RobotPart (id,  typeId, partName,                           orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (441, 4,      'Enhanced Complatix Memory Module', 441,        160,            1,      1,      11);
 
-insert into OrePrice (id, description) values (450, 'Memory Module 256 price');
+insert into OrePrice (id, description) values (450, 'Prantum Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4504, 450, 4, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4505, 450, 5, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4506, 450, 6, 10);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (450, 4,      'Memory Module 512', 450,        512,            1,      1,      12);
+insert into RobotPart (id,  typeId, partName,                orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (450, 4,      'Prantum Memory Module', 450,        192,            1,      1,      12);
 
-insert into OrePrice (id, description) values (451, 'Memory Module 384 price');
+insert into OrePrice (id, description) values (451, 'Enhanced Prantum Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4514, 451, 4, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4515, 451, 5, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4516, 451, 6, 75);
-insert into RobotPart (id,  typeId, partName,            orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (451, 4,      'Memory Module 768', 451,        768,            1,      1,      13);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (451, 4,      'Enhanced Prantum Memory Module', 451,        224,            1,      1,      13);
 
 -- CPUs
 insert into OrePrice (id, description) values (501, 'Standard CPU price');
