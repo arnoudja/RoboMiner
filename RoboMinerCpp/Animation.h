@@ -40,7 +40,7 @@ public:
     };
     
     CAnimation();
-    ~CAnimation();
+    ~CAnimation()                                           {}
 
     void addStep(unsigned int robotNr, const CRobot& robot);
     void addGroundChange(const CPosition& position, const CGroundChangeStep step);

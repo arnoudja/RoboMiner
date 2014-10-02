@@ -57,7 +57,7 @@ public:
         double  forwardSpeed;
         double  backwardSpeed;
         int     rotateSpeed;
-        int     robotSize;
+        double  robotSize;
         std::string sourceCode;
     };
 
@@ -73,7 +73,7 @@ public:
         double      forwardSpeed;
         double      backwardSpeed;
         int         rotateSpeed;
-        int         robotSize;
+        double      robotSize;
         MYSQL_TIME  miningEndTime;
         int         secondsLeft;
         std::string sourceCode;
@@ -103,7 +103,7 @@ public:
         double      forwardSpeed;
         double      backwardSpeed;
         int         rotateSpeed;
-        int         robotSize;
+        double      robotSize;
         std::string sourceCode;
     };
 

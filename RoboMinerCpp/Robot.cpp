@@ -30,7 +30,7 @@ static const int MAX_ORE_TYPES = 10;
 CRobot::CRobot(int robotId, int maxTurns, int maxOre,
                int miningSpeed, int cpuSpeed,
                double forwardSpeed, double backwardSpeed, int rotateSpeed,
-               int robotSize) :
+               double robotSize) :
     m_robotId(robotId),
     m_maxTurns(maxTurns),
     m_maxOre(maxOre),

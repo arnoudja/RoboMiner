@@ -34,11 +34,6 @@ CAnimation::CAnimation()
 }
 
 
-CAnimation::~CAnimation()
-{
-}
-
-
 void CAnimation::addStep(unsigned int robotNr, const CRobot& robot)
 {
     if (m_robotSteps.size() < (robotNr + 1))

@@ -114,7 +114,6 @@ void CRally::initRobotPositions()
     {
         CRobot* robot = m_robots[0];
 
-        robot->setSize(1.5);
         robot->setMinXPos(robot->getSize() / 2 - .5);
         robot->setMinYPos(robot->getSize() / 2 - .5);
         robot->setMaxXPos(m_ground.getSizeX() - robot->getSize() / 2 - .5);
@@ -128,7 +127,6 @@ void CRally::initRobotPositions()
     {
         CRobot* robot = m_robots[1];
 
-        robot->setSize(1.5);
         robot->setMinXPos(robot->getSize() / 2 - .5);
         robot->setMinYPos(robot->getSize() / 2 - .5);
         robot->setMaxXPos(m_ground.getSizeX() - robot->getSize() / 2 - .5);
@@ -142,7 +140,6 @@ void CRally::initRobotPositions()
     {
         CRobot* robot = m_robots[2];
 
-        robot->setSize(1.5);
         robot->setMinXPos(robot->getSize() / 2 - .5);
         robot->setMinYPos(robot->getSize() / 2 - .5);
         robot->setMaxXPos(m_ground.getSizeX() - robot->getSize() / 2 - .5);
@@ -156,7 +153,6 @@ void CRally::initRobotPositions()
     {
         CRobot* robot = m_robots[3];
 
-        robot->setSize(1.5);
         robot->setMinXPos(robot->getSize() / 2 - .5);
         robot->setMinYPos(robot->getSize() / 2 - .5);
         robot->setMaxXPos(m_ground.getSizeX() - robot->getSize() / 2 - .5);

@@ -178,7 +178,7 @@ cpuSpeed INT NOT NULL,
 forwardSpeed DOUBLE NOT NULL,
 backwardSpeed DOUBLE NOT NULL,
 rotateSpeed INT NOT NULL,
-robotSize INT NOT NULL,
+robotSize DOUBLE NOT NULL,
 rechargeEndTime TIMESTAMP NOT NULL DEFAULT NOW(),
 miningEndTime TIMESTAMP NULL,
 totalMiningRuns INT NOT NULL DEFAULT 0

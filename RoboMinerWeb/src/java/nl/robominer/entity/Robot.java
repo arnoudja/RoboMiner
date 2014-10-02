@@ -253,7 +253,7 @@ public class Robot implements Serializable
     @Basic(optional = false)
     @NotNull
     @Column(name = "robotSize")
-    private int robotSize;
+    private double robotSize;
 
     /**
      * When in the future, the robot is currently recharging till this time is
@@ -582,12 +582,12 @@ public class Robot implements Serializable
         this.rotateSpeed = rotateSpeed;
     }
 
-    public int getRobotSize()
+    public double getRobotSize()
     {
         return robotSize;
     }
 
-    public void setRobotSize(int robotSize)
+    public void setRobotSize(double robotSize)
     {
         this.robotSize = robotSize;
     }
@@ -758,6 +758,6 @@ public class Robot implements Serializable
         setBackwardSpeed(3 * backwardCapacity / weight);
         setRotateSpeed((int)(20 * rotateCapacity / weight));
 
-        setRobotSize((int)Math.pow(volume, 0.33));
+        setRobotSize(Math.pow(volume, 0.33) / 2.);
     }
 }

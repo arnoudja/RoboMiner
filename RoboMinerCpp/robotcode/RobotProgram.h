@@ -40,7 +40,7 @@ namespace robotcode
                       int maxTurns, int maxOre,
                       int miningSpeed, int cpuSpeed,
                       double forwardSpeed, double backwardSpeed, int rotateSpeed,
-                      int robotSize);
+                      double robotSize);
         virtual ~CRobotProgram();
 
         virtual RobotAction getNextAction();
