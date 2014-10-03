@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,14 +52,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Users")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
-    @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id"),
-    @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
-    @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
-    @NamedQuery(name = "Users.findByUsernameOrEmail", query = "SELECT u FROM Users u WHERE u.username = :name OR u.email = :name")})
-public class Users implements Serializable {
-
+    @NamedQuery(name = "Users.findById",
+                query = "SELECT u FROM Users u WHERE u.id = :id"),
+    @NamedQuery(name = "Users.findByUsername",
+                query = "SELECT u FROM Users u WHERE u.username = :username"),
+    @NamedQuery(name = "Users.findByEmail",
+                query = "SELECT u FROM Users u WHERE u.email = :email"),
+    @NamedQuery(name = "Users.findByUsernameOrEmail",
+                query = "SELECT u FROM Users u WHERE u.username = :name OR u.email = :name")
+})
+public class Users implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     /**
@@ -144,7 +151,7 @@ public class Users implements Serializable {
      */
     @OneToMany
     @JoinColumn(name = "UserOreAsset.usersId")
-    @MapKey(name="oreId")
+    @MapKey(name = "oreId")
     private Map<Integer, UserOreAsset> userOreAssets;
 
     /**
@@ -171,7 +178,8 @@ public class Users implements Serializable {
     /**
      * Default constructor.
      */
-    public Users() {
+    public Users()
+    {
     }
 
     /**
@@ -179,7 +187,8 @@ public class Users implements Serializable {
      *
      * @return The primary key id value.
      */
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
@@ -188,7 +197,8 @@ public class Users implements Serializable {
      *
      * @return The username.
      */
-    public String getUsername() {
+    public String getUsername()
+    {
         return username;
     }
 
@@ -197,14 +207,15 @@ public class Users implements Serializable {
      *
      * @param username The new username.
      *
-     * @return true if the username was changed successful, false if the
-     * new username is invalid.
+     * @return true if the username was changed successful, false if the new
+     *         username is invalid.
      */
-    public boolean setUsername(String username) {
-
+    public boolean setUsername(String username)
+    {
         boolean result = false;
-        if (username != null && username.matches(USERNAME_REGEXP)) {
 
+        if (username != null && username.matches(USERNAME_REGEXP))
+        {
             this.username = username;
             result = true;
         }
@@ -217,7 +228,8 @@ public class Users implements Serializable {
      *
      * @return The e-mail address of the user.
      */
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
 
@@ -227,12 +239,14 @@ public class Users implements Serializable {
      * @param email The new e-mail address.
      *
      * @return true if the e-mail address was changed successful, false if the
-     * new e-mail address is invalid.
+     *         new e-mail address is invalid.
      */
-    public boolean setEmail(String email) {
-
+    public boolean setEmail(String email)
+    {
         boolean result = false;
-        if (email != null && email.matches(EMAIL_REGEXP)) {
+
+        if (email != null && email.matches(EMAIL_REGEXP))
+        {
 
             this.email = email;
             result = true;
@@ -246,11 +260,11 @@ public class Users implements Serializable {
      *
      * @param password The password to check.
      *
-     * @return true if the supplied password matches the user password, false
-     * if not.
+     * @return true if the supplied password matches the user password, false if
+     *         not.
      */
-    public boolean verifyPassword(String password) {
-
+    public boolean verifyPassword(String password)
+    {
         return (password != null && BCrypt.checkpw(password, this.password));
     }
 
@@ -259,14 +273,15 @@ public class Users implements Serializable {
      *
      * @param password The new password to set.
      *
-     * @return true if the password is set successful, false if the
-     * new password doesn't meet the requirements.
+     * @return true if the password is set successful, false if the new password
+     *         doesn't meet the requirements.
      */
-    public boolean setPassword(String password) {
-
+    public boolean setPassword(String password)
+    {
         boolean result = false;
-        if (password != null && password.length() >= MIN_PASSWORD_LENGTH) {
 
+        if (password != null && password.length() >= MIN_PASSWORD_LENGTH)
+        {
             this.password = BCrypt.hashpw(password, BCrypt.gensalt());
             result = true;
         }
@@ -279,7 +294,8 @@ public class Users implements Serializable {
      *
      * @return The number of achievement points.
      */
-    public int getAchievementPoints() {
+    public int getAchievementPoints()
+    {
         return achievementPoints;
     }
 
@@ -288,7 +304,8 @@ public class Users implements Serializable {
      *
      * @param achievementPoints The achievement points increment value.
      */
-    public void increaseAchievementPoints(int achievementPoints) {
+    public void increaseAchievementPoints(int achievementPoints)
+    {
         this.achievementPoints += achievementPoints;
     }
 
@@ -297,7 +314,8 @@ public class Users implements Serializable {
      *
      * @return The maximum mining queue size.
      */
-    public int getMiningQueueSize() {
+    public int getMiningQueueSize()
+    {
         return miningQueueSize;
     }
 
@@ -306,7 +324,8 @@ public class Users implements Serializable {
      *
      * @param miningQueueSize The maximum mining queue size.
      */
-    public void setMiningQueueSize(int miningQueueSize) {
+    public void setMiningQueueSize(int miningQueueSize)
+    {
         this.miningQueueSize = miningQueueSize;
     }
 
@@ -315,7 +334,8 @@ public class Users implements Serializable {
      *
      * @param miningQueueIncrement The maximum mining queue size increment.
      */
-    public void increaseMiningQueueSize(int miningQueueIncrement) {
+    public void increaseMiningQueueSize(int miningQueueIncrement)
+    {
         this.miningQueueSize += miningQueueIncrement;
     }
 
@@ -324,7 +344,8 @@ public class Users implements Serializable {
      *
      * @return The list of mining areas.
      */
-    public List<MiningArea> getMiningAreaList() {
+    public List<MiningArea> getMiningAreaList()
+    {
         return miningAreaList;
     }
 
@@ -334,11 +355,15 @@ public class Users implements Serializable {
      *
      * @param miningAreaId The requested mining area id.
      *
-     * @return The mining area instance, or null if the user doesn't have access.
+     * @return The mining area instance, or null if the user doesn't have
+     *         access.
      */
-    public MiningArea getMiningArea(int miningAreaId) {
-        for (MiningArea miningArea : miningAreaList) {
-            if (miningArea.getId() == miningAreaId) {
+    public MiningArea getMiningArea(int miningAreaId)
+    {
+        for (MiningArea miningArea : miningAreaList)
+        {
+            if (miningArea.getId() == miningAreaId)
+            {
                 return miningArea;
             }
         }
@@ -347,12 +372,27 @@ public class Users implements Serializable {
     }
 
     /**
-     * Add a mining area to the list of mining areas the user is allowed to mine in.
+     * Add a mining area to the list of mining areas the user is allowed to mine
+     * in.
      *
      * @param miningArea The mining area to add.
      */
-    public void addMiningArea(MiningArea miningArea) {
-        miningAreaList.add(miningArea);
+    public void addMiningArea(MiningArea miningArea)
+    {
+        boolean found = false;
+
+        for (MiningArea existingArea : miningAreaList)
+        {
+            if (Objects.equals(existingArea.getId(), miningArea.getId()))
+            {
+                found = true;
+            }
+        }
+
+        if (!found)
+        {
+            miningAreaList.add(miningArea);
+        }
     }
 
     /**
@@ -360,7 +400,8 @@ public class Users implements Serializable {
      *
      * @return The ore-id to ore asset values mapping.
      */
-    public Map<Integer, UserOreAsset> getUserOreAssets() {
+    public Map<Integer, UserOreAsset> getUserOreAssets()
+    {
         return userOreAssets;
     }
 
@@ -371,7 +412,8 @@ public class Users implements Serializable {
      *
      * @return The amount of ore owned.
      */
-    public int getUserOreAmount(int oreId) {
+    public int getUserOreAmount(int oreId)
+    {
         UserOreAsset asset = userOreAssets.get(oreId);
         return asset == null ? 0 : asset.getAmount();
     }
@@ -383,9 +425,12 @@ public class Users implements Serializable {
      *
      * @return The robot part asset.
      */
-    public UserRobotPartAsset getUserRobotPartAsset(int robotPartId) {
-        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList) {
-            if (userRobotPartAsset.getRobotPartId() == robotPartId) {
+    public UserRobotPartAsset getUserRobotPartAsset(int robotPartId)
+    {
+        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList)
+        {
+            if (userRobotPartAsset.getRobotPartId() == robotPartId)
+            {
                 return userRobotPartAsset;
             }
         }
@@ -400,7 +445,8 @@ public class Users implements Serializable {
      *
      * @return The total amount of the specified robot part the user owns.
      */
-    public int getTotalRobotPartAmount(int robotPartId) {
+    public int getTotalRobotPartAmount(int robotPartId)
+    {
         UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
         return asset == null ? 0 : asset.getTotalOwned();
     }
@@ -412,7 +458,8 @@ public class Users implements Serializable {
      *
      * @return The unassigned amount of the specified robot part the user owns.
      */
-    public int getUnassignedRobotPartAmount(int robotPartId) {
+    public int getUnassignedRobotPartAmount(int robotPartId)
+    {
         UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
         return asset == null ? 0 : asset.getUnassigned();
     }
@@ -422,7 +469,8 @@ public class Users implements Serializable {
      *
      * @return The list of robots.
      */
-    public List<Robot> getRobotList() {
+    public List<Robot> getRobotList()
+    {
         return robotList;
     }
 
@@ -433,13 +481,16 @@ public class Users implements Serializable {
      *
      * @return The robot instance, or null if not found.
      */
-    public Robot getRobot(int robotId) {
-        for (Robot robot : robotList) {
-            if (robot.getId() == robotId) {
+    public Robot getRobot(int robotId)
+    {
+        for (Robot robot : robotList)
+        {
+            if (robot.getId() == robotId)
+            {
                 return robot;
             }
         }
-        
+
         return null;
     }
 
@@ -448,7 +499,8 @@ public class Users implements Serializable {
      *
      * @return The list of robot program sources.
      */
-    public List<ProgramSource> getProgramSourceList() {
+    public List<ProgramSource> getProgramSourceList()
+    {
         return programSourceList;
     }
 
@@ -459,9 +511,12 @@ public class Users implements Serializable {
      *
      * @return The program source instance, or null if not found.
      */
-    public ProgramSource getProgramSource(int programSourceId) {
-        for (ProgramSource programSource : programSourceList) {
-            if (programSource.getId() == programSourceId) {
+    public ProgramSource getProgramSource(int programSourceId)
+    {
+        for (ProgramSource programSource : programSourceList)
+        {
+            if (programSource.getId() == programSourceId)
+            {
                 return programSource;
             }
         }
@@ -474,7 +529,8 @@ public class Users implements Serializable {
      *
      * @return The list of user robot part assets.
      */
-    public List<UserRobotPartAsset> getUserRobotPartAssetList() {
+    public List<UserRobotPartAsset> getUserRobotPartAssetList()
+    {
         return userRobotPartAssetList;
     }
 
@@ -485,11 +541,16 @@ public class Users implements Serializable {
      *
      * @return The list of user robot part assets of the specified type.
      */
-    public List<UserRobotPartAsset> getUserRobotPartAssetListOfType(int robotPartTypeId) {
-
+    public List<UserRobotPartAsset> getUserRobotPartAssetListOfType(
+            int robotPartTypeId)
+    {
         List<UserRobotPartAsset> result = new ArrayList<>();
-        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList) {
-            if (userRobotPartAsset.getRobotPart().getRobotPartType().getId() == robotPartTypeId) {
+
+        for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList)
+        {
+            if (userRobotPartAsset.getRobotPart().getRobotPartType().getId() ==
+                    robotPartTypeId)
+            {
                 result.add(userRobotPartAsset);
             }
         }
@@ -498,17 +559,19 @@ public class Users implements Serializable {
     }
 
     /**
-     * Retrieve the mining score of the best robot for the specified mining area.
+     * Retrieve the mining score of the best robot for the specified mining
+     * area.
      *
      * @param miningAreaId The mining area to retrieve the score for.
      *
      * @return The score of the best robot for the specified mining area.
      */
-    public double getMiningAreaScore(int miningAreaId) {
-
+    public double getMiningAreaScore(int miningAreaId)
+    {
         double score = .0;
 
-        for (Robot robot : robotList) {
+        for (Robot robot : robotList)
+        {
             score = Math.max(score, robot.getMiningAreaScore(miningAreaId));
         }
 
@@ -522,56 +585,64 @@ public class Users implements Serializable {
      *
      * @return true if the user has enough resources, false if not.
      */
-    public boolean canAffort(OrePrice orePrice) {
-        
+    public boolean canAffort(OrePrice orePrice)
+    {
         boolean result = true;
-        
+
         List<OrePriceAmount> orePriceAmountList = orePrice.getOrePriceAmountList();
-        for (OrePriceAmount orePriceAmount : orePriceAmountList) {
-            if (orePriceAmount.getAmount() > getUserOreAmount(orePriceAmount.getOre().getId())) {
+        for (OrePriceAmount orePriceAmount : orePriceAmountList)
+        {
+            if (orePriceAmount.getAmount() > getUserOreAmount(orePriceAmount
+                    .getOre().getId()))
+            {
                 result = false;
             }
         }
-        
+
         return result;
     }
 
     /**
      * Fill the default values for a new user.
      */
-    public void fillDefaults() {
-
+    public void fillDefaults()
+    {
         achievementPoints = 0;
-        miningQueueSize   = 0;
+        miningQueueSize = 0;
     }
 
     /**
      * Retrieve the hash value of the primary key.
-     * @return 
+     *
+     * @return
      */
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     /**
-     * Checks whether the specified object represents the same user as this instance.
+     * Checks whether the specified object represents the same user as this
+     * instance.
      *
      * @param object The object to check against.
      *
      * @return true if both objects represent the same user.
      */
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Users)) {
+        if (!(object instanceof Users))
+        {
             return false;
         }
-        Users other = (Users) object;
+        Users other = (Users)object;
         return (this.id != null || other.id == null) &&
-               (this.id == null || this.id.equals(other.id));
+                (this.id == null || this.id.equals(other.id));
     }
 
     /**
@@ -580,8 +651,8 @@ public class Users implements Serializable {
      * @return A string representation of the primary key value.
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "nl.robominer.entity.Users[ id=" + id + " ]";
     }
-
 }

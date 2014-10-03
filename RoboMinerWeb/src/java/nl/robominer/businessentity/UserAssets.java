@@ -72,9 +72,9 @@ import nl.robominer.session.UsersFacade;
  * @author Arnoud Jagerman
  */
 @Stateless
-@TransactionManagement( TransactionManagementType.BEAN )
-public class UserAssets {
-
+@TransactionManagement(TransactionManagementType.BEAN)
+public class UserAssets
+{
     /**
      * Database transactions resource.
      */
@@ -167,25 +167,41 @@ public class UserAssets {
 
     /**
      * Process all claimable mining results for the specified user.
-     * 
-     * @param userId The id of the user to process the claimable mining results for.
-     * @throws NotSupportedException When a problem occurs with the database transaction.
-     * @throws SystemException When a problem occurs with the database transaction.
-     * @throws IllegalStateException When a problem occurs with the database transaction.
-     * @throws HeuristicMixedException When a problem occurs with the database transaction.
-     * @throws RollbackException When a problem occurs with the database transaction.
-     * @throws SecurityException When a problem occurs with the database transaction.
-     * @throws HeuristicRollbackException When a problem occurs with the database transaction.
+     *
+     * @param userId The id of the user to process the claimable mining results
+     *               for.
+     *
+     * @throws NotSupportedException      When a problem occurs with the
+     *                                    database transaction.
+     * @throws SystemException            When a problem occurs with the
+     *                                    database transaction.
+     * @throws IllegalStateException      When a problem occurs with the
+     *                                    database transaction.
+     * @throws HeuristicMixedException    When a problem occurs with the
+     *                                    database transaction.
+     * @throws RollbackException          When a problem occurs with the
+     *                                    database transaction.
+     * @throws SecurityException          When a problem occurs with the
+     *                                    database transaction.
+     * @throws HeuristicRollbackException When a problem occurs with the
+     *                                    database transaction.
      */
-    public void updateUserAssets(int userId) throws NotSupportedException, SystemException, IllegalStateException, HeuristicMixedException, RollbackException, SecurityException, HeuristicRollbackException {
-
+    public void updateUserAssets(int userId) throws NotSupportedException,
+                                                    SystemException,
+                                                    IllegalStateException,
+                                                    HeuristicMixedException,
+                                                    RollbackException,
+                                                    SecurityException,
+                                                    HeuristicRollbackException
+    {
         transaction.begin();
 
-        List<MiningQueue> claimableMiningQueues = miningQueueFacade.findClaimableByUsersId(userId);
+        List<MiningQueue> claimableMiningQueues = miningQueueFacade
+                .findClaimableByUsersId(userId);
 
-        for (MiningQueue miningQueue : claimableMiningQueues) {
-
-            int  robotId   = miningQueue.getRobot().getId();
+        for (MiningQueue miningQueue : claimableMiningQueues)
+        {
+            int robotId    = miningQueue.getRobot().getId();
             Date miningDay = miningQueue.getMiningEndTime();
 
             Robot robot = robotFacade.findByIdAndUser(robotId, userId);
@@ -194,13 +210,14 @@ public class UserAssets {
 
             updateRobotDailyRuns(robotId, miningQueue.getMiningEndTime());
 
-            List<MiningOreResult> miningOreResultList = miningQueue.getMiningOreResults();
+            List<MiningOreResult> miningOreResultList = miningQueue
+                    .getMiningOreResults();
 
             miningQueue.setClaimed(true);
             miningQueueFacade.edit(miningQueue);
 
-            for (MiningOreResult miningOreResult : miningOreResultList) {
-
+            for (MiningOreResult miningOreResult : miningOreResultList)
+            {
                 miningOreResult.calculateTax();
                 miningOreResultFacade.edit(miningOreResult);
 
@@ -215,7 +232,9 @@ public class UserAssets {
                 updateUserOreAssets(userId, oreId, reward);
             }
 
-            updateMiningAreaLifetimeResults(miningQueue.getMiningArea(), miningOreResultList, robot.getMaxOre());
+            updateMiningAreaLifetimeResults(miningQueue.getMiningArea(),
+                                            miningOreResultList,
+                                            robot.getMaxOre());
         }
 
         transaction.commit();
@@ -225,35 +244,44 @@ public class UserAssets {
      * If possible, subtract the mining costs for the specified mining area from
      * the user assets of the specified user and return true. If not possible,
      * return false.
-     * 
-     * @param userId The user to subtract the mining costs for.
+     *
+     * @param userId     The user to subtract the mining costs for.
      * @param miningArea The mining area to subtract the mining costs for.
+     *
      * @return true if the mining costs are subtracted successfully, false if
-     * the assets of the user aren't sufficient.
-     * 
-     * @throws NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws SystemException When an unexpected database transaction problem occurred.
-     * @throws IllegalStateException When an unexpected database transaction problem occurred.
-     * @throws HeuristicMixedException When an unexpected database transaction problem occurred.
-     * @throws RollbackException When an unexpected database transaction problem occurred.
-     * @throws SecurityException When an unexpected database transaction problem occurred.
-     * @throws HeuristicRollbackException When an unexpected database transaction problem occurred.
+     *         the assets of the user aren't sufficient.
+     *
+     * @throws NotSupportedException      When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws SystemException            When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws IllegalStateException      When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws HeuristicMixedException    When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws RollbackException          When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws SecurityException          When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws HeuristicRollbackException When an unexpected database
+     *                                    transaction problem occurred.
      */
     public boolean payMiningCosts(int userId, MiningArea miningArea)
             throws NotSupportedException, SystemException, IllegalStateException,
                    HeuristicMixedException, RollbackException, SecurityException,
-                   HeuristicRollbackException {
-
+                   HeuristicRollbackException
+    {
         boolean succeeded = false;
 
         transaction.begin();
 
-        if (miningArea != null && payOreCosts(userId, miningArea.getOrePrice())) {
-
+        if (miningArea != null && payOreCosts(userId, miningArea.getOrePrice()))
+        {
             succeeded = true;
             transaction.commit();
         }
-        else {
+        else
+        {
             transaction.rollback();
         }
 
@@ -264,38 +292,46 @@ public class UserAssets {
      * If possible, subtract the costs of a robot part from the user assets, add
      * the robot part to the user assets and return true. If the user doesn't
      * have sufficient assets to pay for the transaction, return false.
-     * 
-     * @param userId The id of the user to buy the robot part for.
+     *
+     * @param userId      The id of the user to buy the robot part for.
      * @param robotPartId The id of the robot part to buy.
+     *
      * @return true if successful, false if the user doesn't have enough assets.
-     * 
-     * @throws NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws SystemException When an unexpected database transaction problem occurred.
-     * @throws RollbackException When an unexpected database transaction problem occurred.
-     * @throws HeuristicMixedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicRollbackException When an unexpected database transaction problem occurred.
+     *
+     * @throws NotSupportedException      When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws SystemException            When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws RollbackException          When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws HeuristicMixedException    When an unexpected database
+     *                                    transaction problem occurred.
+     * @throws HeuristicRollbackException When an unexpected database
+     *                                    transaction problem occurred.
      */
     public boolean buyRobotPart(int userId, int robotPartId)
             throws NotSupportedException, SystemException, RollbackException,
-                   HeuristicMixedException, HeuristicRollbackException {
-
+                   HeuristicMixedException, HeuristicRollbackException
+    {
         boolean succeeded = false;
 
         transaction.begin();
 
         RobotPart robotPart = robotPartFacade.find(robotPartId);
 
-        if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice())) {
-
+        if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice()))
+        {
             addRobotPart(userId, robotPartId, false);
 
             succeeded = true;
         }
 
-        if (succeeded) {
+        if (succeeded)
+        {
             transaction.commit();
         }
-        else {
+        else
+        {
             transaction.rollback();
         }
 
@@ -308,36 +344,50 @@ public class UserAssets {
      * true. When the user doesn't have sufficient assets for the transaction,
      * return false.
      *
-     * @param userId The id of the user to buy the robot part for.
+     * @param userId      The id of the user to buy the robot part for.
      * @param robotPartId The id of the robot part to buy.
+     *
      * @return true when successful, false when the user doesn't have enough
-     * assets.
-     * 
-     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     *         assets.
+     *
+     * @throws NotSupportedException      NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws SystemException            NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws RollbackException          NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicMixedException    NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
      */
     public boolean sellRobotPart(int userId, int robotPartId)
             throws NotSupportedException, SystemException, RollbackException,
-                   HeuristicMixedException, HeuristicRollbackException {
-
+                   HeuristicMixedException, HeuristicRollbackException
+    {
         boolean succeeded = false;
 
         transaction.begin();
 
         RobotPart robotPart = robotPartFacade.find(robotPartId);
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(userId, robotPartId);
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade
+                .findByUsersIdAndRobotPartId(userId, robotPartId);
 
-        if (robotPart != null && userRobotPartAsset != null && userRobotPartAsset.getUnassigned() > 0) {
-
-            if (userRobotPartAsset.getTotalOwned() > 1) {
-
+        if (robotPart != null && userRobotPartAsset != null &&
+                userRobotPartAsset.getUnassigned() > 0)
+        {
+            if (userRobotPartAsset.getTotalOwned() > 1)
+            {
                 userRobotPartAsset.removeOneOwned();
                 userRobotPartAssetFacade.edit(userRobotPartAsset);
             }
-            else {
+            else
+            {
                 userRobotPartAssetFacade.remove(userRobotPartAsset);
             }
 
@@ -346,10 +396,12 @@ public class UserAssets {
             succeeded = true;
         }
 
-        if (succeeded) {
+        if (succeeded)
+        {
             transaction.commit();
         }
-        else {
+        else
+        {
             transaction.rollback();
         }
 
@@ -357,29 +409,41 @@ public class UserAssets {
     }
 
     /**
-     * For the specified user, mark the specified achievement as completed,
-     * add the achievement rewards to the user assets and make the follow-up
+     * For the specified user, mark the specified achievement as completed, add
+     * the achievement rewards to the user assets and make the follow-up
      * achievements available.
      *
-     * @param usersId The id of the user to complete the achievement for.
+     * @param usersId       The id of the user to complete the achievement for.
      * @param achievementId The id of the achievement to complete.
      *
-     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws NotSupportedException      NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws SystemException            NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws RollbackException          NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicMixedException    NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
      */
     public void claimAchievement(int usersId, int achievementId)
-            throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-
+            throws NotSupportedException, SystemException, RollbackException,
+                   HeuristicMixedException, HeuristicRollbackException
+    {
         transaction.begin();
 
         Users user = usersFacade.findById(usersId);
-        UserAchievement userAchievement = userAchievementFacade.findByUsersAndAchievementId(usersId, achievementId);
+        UserAchievement userAchievement = userAchievementFacade
+                .findByUsersAndAchievementId(usersId, achievementId);
 
-        if (userAchievement != null && !userAchievement.getClaimed()) {
-
+        if (userAchievement != null && !userAchievement.getClaimed())
+        {
             processUserAchievement(user, userAchievement);
 
             userAchievementFacade.edit(userAchievement);
@@ -393,29 +457,42 @@ public class UserAssets {
      * Create a new user, or specify the reason why this is not possible.
      *
      * @param newuser The Users instance to add, with its username, email and
-     * password already set.
+     *                password already set.
      *
      * @return The status of the create user attempt.
      *
-     * @throws NotSupportedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws SystemException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws RollbackException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicMixedException NotSupportedException When an unexpected database transaction problem occurred.
-     * @throws HeuristicRollbackException NotSupportedException When an unexpected database transaction problem occurred.
+     * @throws NotSupportedException      NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws SystemException            NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws RollbackException          NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicMixedException    NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
+     * @throws HeuristicRollbackException NotSupportedException When an
+     *                                    unexpected database transaction
+     *                                    problem occurred.
      */
     public UsersFacade.EWriteResult createNewUser(Users newuser)
-            throws NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-
+            throws NotSupportedException, SystemException, RollbackException,
+                   HeuristicMixedException, HeuristicRollbackException
+    {
         newuser.fillDefaults();
 
         transaction.begin();
 
         UsersFacade.EWriteResult result = usersFacade.createNew(newuser);
 
-        if (result != UsersFacade.EWriteResult.eSuccess) {
+        if (result != UsersFacade.EWriteResult.eSuccess)
+        {
             transaction.rollback();
         }
-        else {
+        else
+        {
             addNewUserData(newuser);
 
             transaction.commit();
@@ -429,9 +506,10 @@ public class UserAssets {
      *
      * @param user The user to claim the first achievement for.
      */
-    private void addNewUserData(Users user) {
-
-        UserAchievement userAchievement = new UserAchievement(user.getId(), achievementFacade.findById(1));
+    private void addNewUserData(Users user)
+    {
+        UserAchievement userAchievement = new UserAchievement(user.getId(),
+                                                achievementFacade.findById(1));
         userAchievementFacade.create(userAchievement);
 
         processUserAchievement(user, userAchievement);
@@ -441,36 +519,46 @@ public class UserAssets {
     }
 
     /**
-     * For the specified user, mark the specified achievement as completed,
-     * add the achievement rewards to the user assets and make the follow-up
+     * For the specified user, mark the specified achievement as completed, add
+     * the achievement rewards to the user assets and make the follow-up
      * achievements available.
      *
-     * @param user The user to process the achievement for.
+     * @param user            The user to process the achievement for.
      * @param userAchievement The UserAchievement to process the claiming for.
      */
-    private void processUserAchievement(Users user, UserAchievement userAchievement) {
-
+    private void processUserAchievement(Users user,
+                                        UserAchievement userAchievement)
+    {
         userAchievement.setClaimed(true);
 
-        Achievement achievement = achievementFacade.findById(userAchievement.getUserAchievementPK().getAchievementId());
+        Achievement achievement = achievementFacade.findById(
+                userAchievement.getUserAchievementPK().getAchievementId());
 
         user.increaseAchievementPoints(achievement.getAchievementPoints());
         user.increaseMiningQueueSize(achievement.getMiningQueueReward());
 
-        if (achievement.getMiningArea() != null) {
+        if (achievement.getMiningArea() != null)
+        {
             user.addMiningArea(achievement.getMiningArea());
         }
 
-        if (achievement.getRobotReward() > user.getRobotList().size()) {
+        if (achievement.getRobotReward() > user.getRobotList().size())
+        {
             addRobot(user);
         }
 
-        List<Achievement> achievementSuccessorList = achievement.getAchievementSuccessorList();
+        List<Achievement> achievementSuccessorList = achievement
+                .getAchievementSuccessorList();
 
-        for (Achievement successor : achievementSuccessorList) {
-
-            UserAchievement successorUserAchievement = new UserAchievement(user.getId(), successor);
-            userAchievementFacade.create(successorUserAchievement);
+        for (Achievement successor : achievementSuccessorList)
+        {
+            if (userAchievementFacade.findByUsersAndAchievementId(user.getId(),
+                    successor.getId()) == null)
+            {
+                UserAchievement successorUserAchievement = new UserAchievement(
+                        user.getId(), successor);
+                userAchievementFacade.create(successorUserAchievement);
+            }
         }
     }
 
@@ -479,8 +567,8 @@ public class UserAssets {
      *
      * @param user The user to add the robot for.
      */
-    private void addRobot(Users user) {
-
+    private void addRobot(Users user)
+    {
         // Retrieve the initial robot parts
         RobotPart oreContainer  = robotPartFacade.find(101);
         RobotPart miningUnit    = robotPartFacade.find(201);
@@ -498,11 +586,14 @@ public class UserAssets {
         addRobotPart(user.getId(), engine.getId(), true);
 
         // Retrieve or create a suitable program
-        ProgramSource programSource = getSuitableProgramSource(user.getId(), memoryModule.getMemoryCapacity());
+        ProgramSource programSource = getSuitableProgramSource(user.getId(),
+                                                               memoryModule
+                                                               .getMemoryCapacity());
 
         // Create the new robot for the user
         Robot robot = new Robot(user);
-        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu, engine);
+        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu,
+                           engine);
         robot.setProgramSourceId(programSource.getId());
         robot.setSourceCode(programSource.getSourceCode());
         robotFacade.create(robot);
@@ -510,20 +601,21 @@ public class UserAssets {
 
     /**
      * Find a valid program from the specified user with a compiled size not
-     * exceeding the specified maximum. If no such program exists yet,
-     * create one.
+     * exceeding the specified maximum. If no such program exists yet, create
+     * one.
      *
-     * @param userId The user to retrieve or create the program for.
+     * @param userId  The user to retrieve or create the program for.
      * @param maxSize The maximum compiled size of the program.
      *
      * @return The ProgramSource instance.
      */
-    private ProgramSource getSuitableProgramSource(int userId, int maxSize) {
+    private ProgramSource getSuitableProgramSource(int userId, int maxSize)
+    {
+        ProgramSource programSource = programSourceFacade
+                .findSuiteableByUsersId(userId, maxSize);
 
-        ProgramSource programSource = programSourceFacade.findSuiteableByUsersId(userId, maxSize);
-
-        if (programSource == null) {
-
+        if (programSource == null)
+        {
             programSource = new ProgramSource(userId);
             programSource.setSourceName("Default program");
             programSourceFacade.create(programSource);
@@ -535,22 +627,24 @@ public class UserAssets {
     /**
      * Add a robot part to the user assets.
      *
-     * @param usersId The id of the user to add the robot part to.
+     * @param usersId     The id of the user to add the robot part to.
      * @param robotPartId The id of the robot part to add.
-     * @param assigned When true, the robot part is added as assigned to a robot,
-     *                 when false it is added as unassigned.
+     * @param assigned    When true, the robot part is added as assigned to a
+     *                    robot, when false it is added as unassigned.
      */
-    private void addRobotPart(int usersId, int robotPartId, boolean assigned) {
+    private void addRobotPart(int usersId, int robotPartId, boolean assigned)
+    {
+        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade
+                .findByUsersIdAndRobotPartId(usersId, robotPartId);
 
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade.findByUsersIdAndRobotPartId(usersId, robotPartId);
-
-        if (userRobotPartAsset == null) {
-
-            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1, assigned ? 0 : 1);
+        if (userRobotPartAsset == null)
+        {
+            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1,
+                                                        assigned ? 0 : 1);
             userRobotPartAssetFacade.create(userRobotPartAsset);
         }
-        else {
-
+        else
+        {
             userRobotPartAsset.addOneOwned(assigned);
             userRobotPartAssetFacade.edit(userRobotPartAsset);
         }
@@ -560,28 +654,32 @@ public class UserAssets {
      * If possible, subtract the specified ore amount from the assets of the
      * specified user and return true. When the assets of the specified user
      * aren't sufficient, return false.
-     * 
-     * @param userId The user to subtract the assets for.
+     *
+     * @param userId   The user to subtract the assets for.
      * @param orePrice The amounts of ore to subtract.
+     *
      * @return true when successful, false when the user doesn't have enough
-     * assets.
+     *         assets.
      */
-    private boolean payOreCosts(int userId, OrePrice orePrice) {
-
+    private boolean payOreCosts(int userId, OrePrice orePrice)
+    {
         boolean succeeded = true;
 
         List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
 
-        for (OrePriceAmount orePriceAmount : priceList) {
+        for (OrePriceAmount orePriceAmount : priceList)
+        {
+            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(
+                    userId, orePriceAmount.getOre().getId());
 
-            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
-
-            if (succeeded && userOreAsset != null && userOreAsset.getAmount() >= orePriceAmount.getAmount()) {
-
+            if (succeeded && userOreAsset != null &&
+                userOreAsset.getAmount() >= orePriceAmount.getAmount())
+            {
                 userOreAsset.decreaseAmount(orePriceAmount.getAmount());
                 userOreAssetFacade.edit(userOreAsset);
             }
-            else {
+            else
+            {
                 succeeded = false;
             }
         }
@@ -592,27 +690,29 @@ public class UserAssets {
     /**
      * Add half the ore price to the user assets of the specified user. Used
      * when a user sells a robot-part back to the system.
-     * 
-     * @param userId The id of the user to add the assets for.
+     *
+     * @param userId   The id of the user to add the assets for.
      * @param orePrice The original price of the item.
      */
-    private void returnHalfOre(int userId, OrePrice orePrice) {
-
+    private void returnHalfOre(int userId, OrePrice orePrice)
+    {
         List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
 
-        for (OrePriceAmount orePriceAmount : priceList) {
+        for (OrePriceAmount orePriceAmount : priceList)
+        {
+            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(
+                    userId, orePriceAmount.getOre().getId());
 
-            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, orePriceAmount.getOre().getId());
-
-            if (userOreAsset == null) {
-
-                userOreAsset = new UserOreAsset(userId, orePriceAmount.getOre().getId());
+            if (userOreAsset == null)
+            {
+                userOreAsset = new UserOreAsset(userId,
+                                                orePriceAmount.getOre().getId());
                 userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
 
                 userOreAssetFacade.create(userOreAsset);
             }
-            else {
-
+            else
+            {
                 userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
                 userOreAssetFacade.edit(userOreAsset);
             }
@@ -621,23 +721,26 @@ public class UserAssets {
 
     /**
      * Update the mining totals for the specified robot.
-     * 
+     *
      * @param robotId The id of the robot to update the mining totals for.
-     * @param oreId The ore id mined.
-     * @param amount The amount of ore mined for the specified ore.
-     * @param tax The amount of ore payed as tax for the specified ore.
+     * @param oreId   The ore id mined.
+     * @param amount  The amount of ore mined for the specified ore.
+     * @param tax     The amount of ore payed as tax for the specified ore.
      */
-    private void updateRobotLifetimeResults(int robotId, int oreId, int amount, int tax) {
+    private void updateRobotLifetimeResults(int robotId, int oreId, int amount,
+                                            int tax)
+    {
+        RobotLifetimeResult robotLifetimeResult = robotLifetimeResultFacade
+                .findByRobotAndOreId(robotId, oreId);
 
-        RobotLifetimeResult robotLifetimeResult = robotLifetimeResultFacade.findByRobotAndOreId(robotId, oreId);
-
-        if (robotLifetimeResult == null) {
-
-            robotLifetimeResult = new RobotLifetimeResult(robotId, oreId, amount, tax);
+        if (robotLifetimeResult == null)
+        {
+            robotLifetimeResult = new RobotLifetimeResult(robotId, oreId, amount,
+                                                          tax);
             robotLifetimeResultFacade.create(robotLifetimeResult);
         }
-        else {
-
+        else
+        {
             robotLifetimeResult.increaseAmount(amount);
             robotLifetimeResult.increaseTax(tax);
             robotLifetimeResultFacade.edit(robotLifetimeResult);
@@ -646,36 +749,41 @@ public class UserAssets {
 
     /**
      * Update the mining totals for the specified mining area.
-     * 
-     * @param miningArea The mining area to update the totals for.
+     *
+     * @param miningArea          The mining area to update the totals for.
      * @param miningOreResultList The list of ore mined.
-     * @param containerSize The size of the container of the robot responsible
-     * for the mining.
+     * @param containerSize       The size of the container of the robot
+     *                            responsible for the mining.
      */
-    private void updateMiningAreaLifetimeResults(MiningArea miningArea, List<MiningOreResult> miningOreResultList, int containerSize) {
-
+    private void updateMiningAreaLifetimeResults(MiningArea miningArea,
+                                                 List<MiningOreResult> miningOreResultList,
+                                                 int containerSize)
+    {
         List<Ore> oreList = miningArea.getMiningAreaOreTypes();
 
-        for (Ore ore : oreList) {
-
+        for (Ore ore : oreList)
+        {
             int amount = 0;
 
-            for (MiningOreResult miningOreResult : miningOreResultList) {
-
-                if (Objects.equals(miningOreResult.getOre().getId(), ore.getId())) {
+            for (MiningOreResult miningOreResult : miningOreResultList)
+            {
+                if (Objects.equals(miningOreResult.getOre().getId(), ore.getId()))
+                {
                     amount = miningOreResult.getAmount();
                 }
             }
 
-            MiningAreaLifetimeResult miningAreaLifetimeResult = miningAreaLifetimeResultFacade.findByPK(miningArea.getId(), ore.getId());
+            MiningAreaLifetimeResult miningAreaLifetimeResult = miningAreaLifetimeResultFacade
+                    .findByPK(miningArea.getId(), ore.getId());
 
-            if (miningAreaLifetimeResult == null) {
-
-                miningAreaLifetimeResult = new MiningAreaLifetimeResult(miningArea.getId(), ore.getId(), amount, containerSize);
+            if (miningAreaLifetimeResult == null)
+            {
+                miningAreaLifetimeResult = new MiningAreaLifetimeResult(
+                        miningArea.getId(), ore.getId(), amount, containerSize);
                 miningAreaLifetimeResultFacade.create(miningAreaLifetimeResult);
             }
-            else {
-
+            else
+            {
                 miningAreaLifetimeResult.increaseTotalAmount(amount);
                 miningAreaLifetimeResult.increaseTotalContainerSize(containerSize);
                 miningAreaLifetimeResultFacade.edit(miningAreaLifetimeResult);
@@ -686,21 +794,22 @@ public class UserAssets {
     /**
      * Update the number of mining runs the specified robot did on the specified
      * day.
-     * 
-     * @param robotId The id of the robot doing the mining run.
+     *
+     * @param robotId   The id of the robot doing the mining run.
      * @param miningDay The day the mining took place.
      */
-    private void updateRobotDailyRuns(int robotId, Date miningDay) {
+    private void updateRobotDailyRuns(int robotId, Date miningDay)
+    {
+        RobotDailyRuns robotDailyRuns = robotDailyRunsFacade
+                .findByRobotIdAndMiningDay(robotId, miningDay);
 
-        RobotDailyRuns robotDailyRuns = robotDailyRunsFacade.findByRobotIdAndMiningDay(robotId, miningDay);
-
-        if (robotDailyRuns == null) {
-
+        if (robotDailyRuns == null)
+        {
             robotDailyRuns = new RobotDailyRuns(robotId, miningDay, 1);
             robotDailyRunsFacade.create(robotDailyRuns);
         }
-        else {
-
+        else
+        {
             robotDailyRuns.increaseTotalMiningRuns();
             robotDailyRunsFacade.edit(robotDailyRuns);
         }
@@ -709,24 +818,27 @@ public class UserAssets {
     /**
      * Update the daily ore mining totals for the specified robot, ore and
      * mining day.
-     * 
-     * @param robotId The id of the robot to update the mining totals for.
-     * @param oreId The id of the ore mined.
+     *
+     * @param robotId   The id of the robot to update the mining totals for.
+     * @param oreId     The id of the ore mined.
      * @param miningDay The day the mining run took place.
-     * @param amount The amount of ore mined for the specified ore type.
-     * @param tax The amount of tax payed for the specified ore type.
+     * @param amount    The amount of ore mined for the specified ore type.
+     * @param tax       The amount of tax payed for the specified ore type.
      */
-    private void updateRobotDailyResult(int robotId, int oreId, Date miningDay, int amount, int tax) {
+    private void updateRobotDailyResult(int robotId, int oreId, Date miningDay,
+                                        int amount, int tax)
+    {
+        RobotDailyResult robotDailyResult = robotDailyResultFacade.findByPK(
+                robotId, oreId, miningDay);
 
-        RobotDailyResult robotDailyResult = robotDailyResultFacade.findByPK(robotId, oreId, miningDay);
-
-        if (robotDailyResult == null) {
-
-            robotDailyResult = new RobotDailyResult(robotId, oreId, miningDay, amount, tax);
+        if (robotDailyResult == null)
+        {
+            robotDailyResult = new RobotDailyResult(robotId, oreId, miningDay,
+                                                    amount, tax);
             robotDailyResultFacade.create(robotDailyResult);
         }
-        else {
-
+        else
+        {
             robotDailyResult.increaseAmount(amount);
             robotDailyResult.increaseTax(tax);
             robotDailyResultFacade.edit(robotDailyResult);
@@ -736,26 +848,25 @@ public class UserAssets {
     /**
      * Add the specified amount of ore of the specified type to the user-assets
      * of the specified user.
-     * 
+     *
      * @param userId The user to add the ore assets for.
-     * @param oreId The ore type to add.
+     * @param oreId  The ore type to add.
      * @param reward The amount of ore to add.
      */
-    private void updateUserOreAssets(int userId, int oreId, int reward) {
-        
+    private void updateUserOreAssets(int userId, int oreId, int reward)
+    {
         UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);
 
-        if (userOreAsset == null) {
-
+        if (userOreAsset == null)
+        {
             userOreAsset = new UserOreAsset(userId, oreId);
             userOreAsset.setAmount(reward);
 
             userOreAssetFacade.create(userOreAsset);
         }
-        else {
-
+        else
+        {
             userOreAsset.increaseAmount(reward);
-
             userOreAssetFacade.edit(userOreAsset);
         }
     }

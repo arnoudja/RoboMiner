@@ -70,7 +70,7 @@
                         </c:if>
                         <c:if test="${achievement.robotReward gt user.robotList.size()}">
                             <tr>
-                                <td colspan="3" class="important">New robot</td>
+                                <td colspan="3">New robot!</td>
                             </tr>
                         </c:if>
                         <c:if test="${not empty achievement.miningArea}">

@@ -454,20 +454,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4516, 451, 6,
 insert into RobotPart (id,  typeId, partName,                         orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (451, 4,      'Enhanced Prantum Memory Module', 451,        224,            1,      1,      13);
 
--- Memory modules - Radia
-insert into OrePrice (id, description) values (460, 'Radia Memory Module price');
+-- Memory modules - Raxia
+insert into OrePrice (id, description) values (460, 'Raxia Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4605, 460, 5, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4606, 460, 6, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4607, 460, 7, 10);
 insert into RobotPart (id,  typeId, partName,              orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (460, 4,      'Radia Memory Module', 460,        256,            1,      1,      14);
+               values (460, 4,      'Raxia Memory Module', 460,        256,            1,      1,      14);
 
-insert into OrePrice (id, description) values (461, 'Enhanced Radia Memory Module price');
+insert into OrePrice (id, description) values (461, 'Enhanced Raxia Memory Module price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4615, 461, 5, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4616, 461, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4617, 461, 7, 75);
 insert into RobotPart (id,  typeId, partName,                       orePriceId, memoryCapacity, weight, volume, powerUsage)
-               values (461, 4,      'Enhanced Radia Memory Module', 461,        288,            1,      1,      15);
+               values (461, 4,      'Enhanced Raxia Memory Module', 461,        288,            1,      1,      15);
 
 
 -- CPUs - Cerbonium
@@ -558,20 +558,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5516, 551, 6,
 insert into RobotPart (id,  typeId, partName,               orePriceId, cpuCapacity, weight, volume, powerUsage)
                values (551, 5,      'Enhanced Prantum CPU', 551,        36,          1,      1,      12);
 
--- CPUs - Radia
-insert into OrePrice (id, description) values (560, 'Radia CPU price');
+-- CPUs - Raxia
+insert into OrePrice (id, description) values (560, 'Raxia CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5605, 560, 5, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5606, 560, 6, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5607, 560, 7, 10);
 insert into RobotPart (id,  typeId, partName,    orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (560, 5,      'Radia CPU', 560,        39,          1,      1,      13);
+               values (560, 5,      'Raxia CPU', 560,        39,          1,      1,      13);
 
-insert into OrePrice (id, description) values (561, 'Enhanced Radia CPU price');
+insert into OrePrice (id, description) values (561, 'Enhanced Raxia CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5615, 561, 5, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5616, 561, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5617, 561, 7, 75);
 insert into RobotPart (id,  typeId, partName,             orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (561, 5,      'Enhanced Radia CPU', 561,        42,          1,      1,      14);
+               values (561, 5,      'Enhanced Raxia CPU', 561,        42,          1,      1,      14);
 
 
 -- Engines - Cerbonium
@@ -662,7 +662,7 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6516, 651, 6,
 insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (651, 6,      'Engine 170A', 651,        170,             170,              360,            22,     17,     60);
 
--- Engines - Radia
+-- Engines - Raxia
 insert into OrePrice (id, description) values (660, 'Engine 210 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6605, 660, 5, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6606, 660, 6, 100);
@@ -847,8 +847,8 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (15
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
 
--- Radia
-insert into OrePrice (id, description) values (1601, 'Mining Area Radia-1 price');
+-- Raxia
+insert into OrePrice (id, description) values (1601, 'Mining Area Raxia-1 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16011, 1601, 1, 35);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16012, 1601, 2, 30);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16013, 1601, 3, 25);
@@ -856,7 +856,7 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16014, 1601, 
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16015, 1601, 5, 15);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (16016, 1601, 6, 10);
 insert into MiningArea (id,   areaName,  orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
-                values (1601, 'Radia-1', 1601,       80,    80,    1250,     3600,       50,      3);
+                values (1601, 'Raxia-1', 1601,       80,    80,    1250,     3600,       50,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 3, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 3, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 5, 15, 15);
@@ -1218,9 +1218,9 @@ insert into AchievementPredecessor (predecessorId, successorId) values (503, 504
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (504, 6, 10000);
 
 
--- Achievements - Radia
+-- Achievements - Raxia
 insert into Achievement (id,  title,          description,              achievementPoints)
-                 values (600, 'Radia mining', 'Start mining Radia ore', 10);
+                 values (600, 'Raxia mining', 'Start mining Raxia ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (502, 600);
 
@@ -1228,7 +1228,7 @@ insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) val
 
 
 insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (601, 'More Radia!', 'Mine even more Radia ore', 10);
+                 values (601, 'More Raxia!', 'Mine even more Raxia ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (600, 601);
 
@@ -1236,7 +1236,7 @@ insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) val
 
 
 insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (602, 'More Radia!', 'Mine even more Radia ore', 10);
+                 values (602, 'More Raxia!', 'Mine even more Raxia ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (601, 602);
 
@@ -1244,7 +1244,7 @@ insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) val
 
 
 insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (603, 'More Radia!', 'Mine even more Radia ore', 10);
+                 values (603, 'More Raxia!', 'Mine even more Raxia ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (602, 603);
 
@@ -1252,7 +1252,7 @@ insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) val
 
 
 insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (604, 'More Radia!', 'Mine even more Radia ore', 10);
+                 values (604, 'More Raxia!', 'Mine even more Raxia ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (603, 604);
 
