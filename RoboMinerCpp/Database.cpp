@@ -95,8 +95,8 @@ void CDatabase::setValidSource(int id, int compiledSize)
 
     CDatabaseStatement statement(m_connection, query);
 
-    statement.addIntParameterValue(id);
     statement.addIntParameterValue(compiledSize);
+    statement.addIntParameterValue(id);
 
     statement.execute();
 }
@@ -344,6 +344,7 @@ void CDatabase::updateMiningRally(const list<MiningRallyItem>& miningRallyItems,
     {
         updateRobot(iter->robotId, iter->miningEndTime);
         updateMiningQueue(iter->miningQueueId, playerNumber, rallyResultId, iter->miningEndTime);
+        applyRobotPendingChanges(iter->robotId, iter->miningEndTime);
         removeOldMiningQueueItems(iter->robotId);
     }
 }
@@ -492,6 +493,40 @@ void CDatabase::updateRobotScoreDatabaseValue(int robotId, int miningAreaId, dou
     statement.addDoubleParameterValue(score);
     statement.addIntParameterValue(robotId);
     statement.addIntParameterValue(miningAreaId);
+
+    statement.execute();
+}
+
+
+void CDatabase::applyRobotPendingChanges(int robotId, MYSQL_TIME miningEndTime)
+{
+    string query("UPDATE Robot "
+                 "INNER JOIN PendingRobotChanges "
+                 "ON PendingRobotChanges.robotId = Robot.id "
+                 "SET Robot.sourceCode = PendingRobotChanges.sourceCode, "
+                 " Robot.programSourceId = PendingRobotChanges.programSourceId, "
+                 " Robot.oreContainerId = PendingRobotChanges.oreContainerId, "
+                 " Robot.miningUnitId = PendingRobotChanges.miningUnitId, "
+                 " Robot.batteryId = PendingRobotChanges.batteryId, "
+                 " Robot.memoryModuleId = PendingRobotChanges.memoryModuleId, "
+                 " Robot.cpuId = PendingRobotChanges.cpuId, "
+                 " Robot.rechargeTime = PendingRobotChanges.rechargeTime, "
+                 " Robot.maxOre = PendingRobotChanges.maxOre, "
+                 " Robot.miningSpeed = PendingRobotChanges.miningSpeed, "
+                 " Robot.maxTurns = PendingRobotChanges.maxTurns, "
+                 " Robot.memorySize = PendingRobotChanges.memorySize, "
+                 " Robot.cpuSpeed = PendingRobotChanges.cpuSpeed, "
+                 " Robot.forwardSpeed = PendingRobotChanges.forwardSpeed, "
+                 " Robot.backwardSpeed = PendingRobotChanges.backwardSpeed, "
+                 " Robot.rotateSpeed = PendingRobotChanges.rotateSpeed, "
+                 " Robot.robotSize = PendingRobotChanges.robotSize, "
+                 " PendingRobotChanges.changesCommitTime = ? "
+                 "WHERE Robot.id = ? ");
+
+    CDatabaseStatement statement(m_connection, query);
+
+    statement.addTimestampParameterValue(miningEndTime);
+    statement.addIntParameterValue(robotId);
 
     statement.execute();
 }
