@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Animation.o \
 	${OBJECTDIR}/AnimationStep.o \
 	${OBJECTDIR}/Database.o \
+	${OBJECTDIR}/DatabaseStatement.o \
 	${OBJECTDIR}/Ground.o \
 	${OBJECTDIR}/GroundChangeStep.o \
 	${OBJECTDIR}/GroundUnit.o \
@@ -119,6 +120,11 @@ ${OBJECTDIR}/Database.o: Database.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Database.o Database.cpp
+
+${OBJECTDIR}/DatabaseStatement.o: DatabaseStatement.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DatabaseStatement.o DatabaseStatement.cpp
 
 ${OBJECTDIR}/Ground.o: Ground.cpp 
 	${MKDIR} -p ${OBJECTDIR}
