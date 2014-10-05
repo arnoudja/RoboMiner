@@ -484,19 +484,19 @@ insert into RobotPart (id,  typeId, partName,       orePriceId, cpuCapacity, wei
 insert into OrePrice (id, description) values (503, 'Cerbonium CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5031, 503, 1, 50);
 insert into RobotPart (id,  typeId, partName,        orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (503, 5,      'Cerbonium CPU', 503,        6,           1,      1,      2);
+               values (503, 5,      'Cerbonium CPU', 503,        8,           1,      1,      2);
 
 -- CPUs - Oxaria
 insert into OrePrice (id, description) values (510, 'Oxaria CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5102, 510, 2, 20);
 insert into RobotPart (id,  typeId, partName,     orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (510, 5,      'Oxaria CPU', 510,        9,           1,      1,      3);
+               values (510, 5,      'Oxaria CPU', 510,        12,           1,      1,      3);
 
 insert into OrePrice (id, description) values (511, 'Enhanced Oxaria CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5111, 511, 1, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5112, 511, 2, 50);
 insert into RobotPart (id,  typeId, partName,              orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (511, 5,      'Enhanced Oxaria CPU', 511,        12,          1,      1,      4);
+               values (511, 5,      'Enhanced Oxaria CPU', 511,        16,          1,      1,      4);
 
 -- CPUs - Lithabine
 insert into OrePrice (id, description) values (520, 'Lithabine CPU price');
@@ -504,14 +504,14 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5201, 520, 1,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5202, 520, 2, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5203, 520, 3, 10);
 insert into RobotPart (id,  typeId, partName,        orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (520, 5,      'Lithabine CPU', 520,        15,          1,      1,      5);
+               values (520, 5,      'Lithabine CPU', 520,        20,          1,      1,      5);
 
 insert into OrePrice (id, description) values (521, 'Enhanced Lithabine CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5211, 521, 1, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5212, 521, 2, 200);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5213, 521, 3, 50);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, cpuCapacity,  weight, volume, powerUsage)
-               values (521, 5,      'Enhanced Lithabine CPU', 521,        18,           1,      1,      6);
+               values (521, 5,      'Enhanced Lithabine CPU', 521,        24,           1,      1,      6);
 
 -- CPUs - Neudralion
 insert into OrePrice (id, description) values (530, 'Neudralion CPU price');
@@ -519,14 +519,14 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5302, 530, 2,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5303, 530, 3, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5304, 530, 4, 15);
 insert into RobotPart (id,  typeId, partName,         orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (530, 5,      'Neudralion CPU', 530,        21,          1,      1,      7);
+               values (530, 5,      'Neudralion CPU', 530,        28,          1,      1,      7);
 
 insert into OrePrice (id, description) values (531, 'Enhanced Neudralion CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5312, 531, 2, 350);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5313, 531, 3, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5314, 531, 4, 60);
 insert into RobotPart (id,  typeId, partName,                  orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (531, 5,      'Enhanced Neudralion CPU', 531,        24,          1,      1,      8);
+               values (531, 5,      'Enhanced Neudralion CPU', 531,        32,          1,      1,      8);
 
 -- CPUs - Complatix
 insert into OrePrice (id, description) values (540, 'Complatix CPU price');
@@ -534,14 +534,14 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5403, 540, 3,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5404, 540, 4, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5405, 540, 5, 10);
 insert into RobotPart (id,  typeId, partName,        orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (540, 5,      'Complatix CPU', 540,        27,          1,      1,      9);
+               values (540, 5,      'Complatix CPU', 540,        36,          1,      1,      9);
 
 insert into OrePrice (id, description) values (541, 'Enhanced Complatix CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5413, 541, 3, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5414, 541, 4, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5415, 541, 5, 75);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (541, 5,      'Enhanced Complatix CPU', 541,        30,          1,      1,      10);
+               values (541, 5,      'Enhanced Complatix CPU', 541,        40,          1,      1,      10);
 
 -- CPUs - Prantum
 insert into OrePrice (id, description) values (550, 'Prantum CPU price');
@@ -549,14 +549,14 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5504, 550, 4,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5505, 550, 5, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5506, 550, 6, 10);
 insert into RobotPart (id,  typeId, partName,      orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (550, 5,      'Prantum CPU', 550,        33,          1,      1,      11);
+               values (550, 5,      'Prantum CPU', 550,        44,          1,      1,      11);
 
 insert into OrePrice (id, description) values (551, 'Enhanced Prantum CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5514, 551, 4, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5515, 551, 5, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5516, 551, 6, 75);
 insert into RobotPart (id,  typeId, partName,               orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (551, 5,      'Enhanced Prantum CPU', 551,        36,          1,      1,      12);
+               values (551, 5,      'Enhanced Prantum CPU', 551,        48,          1,      1,      12);
 
 -- CPUs - Raxia
 insert into OrePrice (id, description) values (560, 'Raxia CPU price');
@@ -564,14 +564,14 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5605, 560, 5,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5606, 560, 6, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5607, 560, 7, 10);
 insert into RobotPart (id,  typeId, partName,    orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (560, 5,      'Raxia CPU', 560,        39,          1,      1,      13);
+               values (560, 5,      'Raxia CPU', 560,        52,          1,      1,      13);
 
 insert into OrePrice (id, description) values (561, 'Enhanced Raxia CPU price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5615, 561, 5, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5616, 561, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5617, 561, 7, 75);
 insert into RobotPart (id,  typeId, partName,             orePriceId, cpuCapacity, weight, volume, powerUsage)
-               values (561, 5,      'Enhanced Raxia CPU', 561,        42,          1,      1,      14);
+               values (561, 5,      'Enhanced Raxia CPU', 561,        56,          1,      1,      14);
 
 
 -- Engines - Cerbonium
