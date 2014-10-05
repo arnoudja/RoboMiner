@@ -424,7 +424,7 @@ void CDatabase::updateRobotScore(int robotId, int miningAreaId, double score)
 
     if (getRobotScoreDatabaseValue(robotId, miningAreaId, totalRuns, previousScore))
     {
-        double newScore = (4. * previousScore + score) / 5.;
+        double newScore = (9. * previousScore + score) / 10.;
         updateRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
     }
     else
