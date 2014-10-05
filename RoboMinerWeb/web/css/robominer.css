@@ -102,7 +102,7 @@ td, th {
     padding-right: 7px;
 }
 
-td.checkbox {
+td.checkbox, td.button {
     text-align: center;
 }
 
@@ -215,24 +215,6 @@ tbody.miningresults {
 
 tbody.achievements {
     border: 2px solid #aaa;
-}
-
-
-/******************************************************
- * Statistics
- ******************************************************/
-
-select.statistics {
-    margin: 10px;
-}
-
-table.statistics {
-    float: left;
-    margin: 10px;
-}
-
-h2.statistics {
-    margin-left: 10px;
 }
 
 

@@ -41,10 +41,9 @@ import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.Ore;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
+import nl.robominer.entity.PendingRobotChanges;
 import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
-import nl.robominer.entity.RobotDailyResult;
-import nl.robominer.entity.RobotDailyRuns;
 import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserAchievement;
@@ -55,9 +54,8 @@ import nl.robominer.session.AchievementFacade;
 import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
+import nl.robominer.session.PendingRobotChangesFacade;
 import nl.robominer.session.ProgramSourceFacade;
-import nl.robominer.session.RobotDailyResultFacade;
-import nl.robominer.session.RobotDailyRunsFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
@@ -112,18 +110,6 @@ public class UserAssets
     private RobotLifetimeResultFacade robotLifetimeResultFacade;
 
     /**
-     * Bean to handle the database actions for the robot mining run totals.
-     */
-    @EJB
-    private RobotDailyRunsFacade robotDailyRunsFacade;
-
-    /**
-     * Bean to handle the database actions for the robot daily mining totals.
-     */
-    @EJB
-    private RobotDailyResultFacade robotDailyResultFacade;
-
-    /**
      * Bean to handle the database actions for the user ore assets.
      */
     @EJB
@@ -166,6 +152,12 @@ public class UserAssets
     private ProgramSourceFacade programSourceFacade;
 
     /**
+     * Bean to handle the database actions for pending robot changes.
+     */
+    @EJB
+    private PendingRobotChangesFacade pendingRobotChangesFacade;
+
+    /**
      * Process all claimable mining results for the specified user.
      *
      * @param userId The id of the user to process the claimable mining results
@@ -201,14 +193,11 @@ public class UserAssets
 
         for (MiningQueue miningQueue : claimableMiningQueues)
         {
-            int robotId    = miningQueue.getRobot().getId();
-            Date miningDay = miningQueue.getMiningEndTime();
+            int robotId = miningQueue.getRobot().getId();
 
             Robot robot = robotFacade.findByIdAndUser(robotId, userId);
             robot.increateTotalMiningRuns();
             robotFacade.edit(robot);
-
-            updateRobotDailyRuns(robotId, miningQueue.getMiningEndTime());
 
             List<MiningOreResult> miningOreResultList = miningQueue
                     .getMiningOreResults();
@@ -227,7 +216,6 @@ public class UserAssets
                 int reward = miningOreResult.getReward();
 
                 updateRobotLifetimeResults(robotId, oreId, amount, tax);
-                updateRobotDailyResult(robotId, oreId, miningDay, amount, tax);
 
                 updateUserOreAssets(userId, oreId, reward);
             }
@@ -235,6 +223,55 @@ public class UserAssets
             updateMiningAreaLifetimeResults(miningQueue.getMiningArea(),
                                             miningOreResultList,
                                             robot.getMaxOre());
+        }
+
+        Users user = usersFacade.findById(userId);
+
+        for (Robot robot : user.getRobotList())
+        {
+            PendingRobotChanges pendingRobotChanges = pendingRobotChangesFacade.findCommittedByRobotId(robot.getId());
+
+            if (pendingRobotChanges != null)
+            {
+                if (!Objects.equals(pendingRobotChanges.getOldOreContainerId(),
+                                    pendingRobotChanges.getOreContainer().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldOreContainerId()).unassignOne();
+                }
+
+                if (!Objects.equals(pendingRobotChanges.getOldMiningUnitId(),
+                                    pendingRobotChanges.getMiningUnit().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldMiningUnitId()).unassignOne();
+                }
+
+                if (!Objects.equals(pendingRobotChanges.getOldBatteryId(),
+                                    pendingRobotChanges.getBattery().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldBatteryId()).unassignOne();
+                }
+
+                if (!Objects.equals(pendingRobotChanges.getOldMemoryModuleId(),
+                                    pendingRobotChanges.getMemoryModule().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldMemoryModuleId()).unassignOne();
+                }
+
+                if (!Objects.equals(pendingRobotChanges.getOldCpuId(),
+                                    pendingRobotChanges.getCpu().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldCpuId()).unassignOne();
+                }
+
+                if (!Objects.equals(pendingRobotChanges.getOldEngineId(),
+                                    pendingRobotChanges.getEngine().getId()))
+                {
+                    user.getUserRobotPartAsset(pendingRobotChanges.getOldEngineId()).unassignOne();
+                }
+
+                usersFacade.edit(user);
+                pendingRobotChangesFacade.remove(pendingRobotChanges);
+            }
         }
 
         transaction.commit();
@@ -788,60 +825,6 @@ public class UserAssets
                 miningAreaLifetimeResult.increaseTotalContainerSize(containerSize);
                 miningAreaLifetimeResultFacade.edit(miningAreaLifetimeResult);
             }
-        }
-    }
-
-    /**
-     * Update the number of mining runs the specified robot did on the specified
-     * day.
-     *
-     * @param robotId   The id of the robot doing the mining run.
-     * @param miningDay The day the mining took place.
-     */
-    private void updateRobotDailyRuns(int robotId, Date miningDay)
-    {
-        RobotDailyRuns robotDailyRuns = robotDailyRunsFacade
-                .findByRobotIdAndMiningDay(robotId, miningDay);
-
-        if (robotDailyRuns == null)
-        {
-            robotDailyRuns = new RobotDailyRuns(robotId, miningDay, 1);
-            robotDailyRunsFacade.create(robotDailyRuns);
-        }
-        else
-        {
-            robotDailyRuns.increaseTotalMiningRuns();
-            robotDailyRunsFacade.edit(robotDailyRuns);
-        }
-    }
-
-    /**
-     * Update the daily ore mining totals for the specified robot, ore and
-     * mining day.
-     *
-     * @param robotId   The id of the robot to update the mining totals for.
-     * @param oreId     The id of the ore mined.
-     * @param miningDay The day the mining run took place.
-     * @param amount    The amount of ore mined for the specified ore type.
-     * @param tax       The amount of tax payed for the specified ore type.
-     */
-    private void updateRobotDailyResult(int robotId, int oreId, Date miningDay,
-                                        int amount, int tax)
-    {
-        RobotDailyResult robotDailyResult = robotDailyResultFacade.findByPK(
-                robotId, oreId, miningDay);
-
-        if (robotDailyResult == null)
-        {
-            robotDailyResult = new RobotDailyResult(robotId, oreId, miningDay,
-                                                    amount, tax);
-            robotDailyResultFacade.create(robotDailyResult);
-        }
-        else
-        {
-            robotDailyResult.increaseAmount(amount);
-            robotDailyResult.increaseTax(tax);
-            robotDailyResultFacade.edit(robotDailyResult);
         }
     }
 

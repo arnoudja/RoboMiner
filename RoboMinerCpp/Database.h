@@ -128,6 +128,7 @@ public:
     void addRobotActionsDone(int miningQueueId, int actionType, int amount);
     void updateRobot(int robotId, MYSQL_TIME miningEndTime);
     void updateRobotScore(int robotId, int miningAreaId, double score);
+    void applyRobotPendingChanges(int robotId, MYSQL_TIME miningEndTime);
 
     void removeOldMiningQueueItems(int robotId);
     std::list<OldMiningQueueItem> findOldMiningQueueItems(int robotId);

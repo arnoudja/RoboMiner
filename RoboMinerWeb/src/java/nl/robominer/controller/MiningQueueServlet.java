@@ -246,11 +246,8 @@ public class MiningQueueServlet extends RoboMinerServletBase {
             if (!robotTimeLeft.containsKey(robot.getId())) {
                 
                 Date now = new Date();
-                if (robot.getRechargeEndTime().after(now) &&
-                    (robot.getMiningEndTime() == null ||
-                     robot.getMiningEndTime().before(now) ||
-                     robot.getMiningEndTime().after(robot.getRechargeEndTime()) )) {
-                    
+                if (robot.isRecharging())
+                {
                     long timeLeft = (robot.getRechargeEndTime().getTime() - now.getTime()) / 1000;
                     if (timeLeft <= 0) {
                         

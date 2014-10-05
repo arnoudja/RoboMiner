@@ -22,7 +22,9 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -293,6 +295,10 @@ public class Robot implements Serializable
     @JoinColumn(name = "RobotMiningAreaScore.robotId")
     private List<RobotMiningAreaScore> robotMiningAreaScoreList;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PendingRobotChanges.robotId")
+    private List<PendingRobotChanges> pendingRobotChangesList;
+
     /**
      * Default constructor.
      */
@@ -390,6 +396,23 @@ public class Robot implements Serializable
     }
 
     /**
+     * Retrieve the currently active source code for this robot.
+     *
+     * @return The currently active source code for this robot.
+     */
+    public String getSourceCode()
+    {
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return this.sourceCode;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getSourceCode();
+        }
+    }
+
+    /**
      * Update the currently active source code for this robot. This program
      * source should always be valid.
      *
@@ -397,7 +420,14 @@ public class Robot implements Serializable
      */
     public void setSourceCode(String sourceCode)
     {
-        this.sourceCode = sourceCode;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.sourceCode = sourceCode;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setSourceCode(sourceCode);
+        }
     }
 
     /**
@@ -429,7 +459,14 @@ public class Robot implements Serializable
      */
     public RobotPart getOreContainer()
     {
-        return oreContainer;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return oreContainer;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getOreContainer();
+        }
     }
 
     /**
@@ -439,157 +476,374 @@ public class Robot implements Serializable
      */
     public void setOreContainer(RobotPart oreContainer)
     {
-        this.oreContainer = oreContainer;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.oreContainer = oreContainer;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setOreContainer(oreContainer);
+        }
     }
 
     public RobotPart getMiningUnit()
     {
-        return miningUnit;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return miningUnit;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMiningUnit();
+        }
     }
 
     public void setMiningUnit(RobotPart miningUnit)
     {
-        this.miningUnit = miningUnit;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.miningUnit = miningUnit;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMiningUnit(miningUnit);
+        }
     }
 
     public RobotPart getBattery()
     {
-        return battery;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return battery;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getBattery();
+        }
     }
 
     public void setBattery(RobotPart battery)
     {
-        this.battery = battery;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.battery = battery;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setBattery(battery);
+        }
     }
 
     public RobotPart getMemoryModule()
     {
-        return memoryModule;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return memoryModule;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMemoryModule();
+        }
     }
 
     public void setMemoryModule(RobotPart memoryModule)
     {
-        this.memoryModule = memoryModule;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.memoryModule = memoryModule;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMemoryModule(memoryModule);
+        }
     }
 
     public RobotPart getCpu()
     {
-        return cpu;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return cpu;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getCpu();
+        }
     }
 
     public void setCpu(RobotPart cpu)
     {
-        this.cpu = cpu;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.cpu = cpu;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setCpu(cpu);
+        }
     }
 
     public RobotPart getEngine()
     {
-        return engine;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return engine;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getEngine();
+        }
     }
 
     public void setEngine(RobotPart engine)
     {
-        this.engine = engine;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.engine = engine;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setEngine(engine);
+        }
     }
 
     public int getRechargeTime()
     {
-        return rechargeTime;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return rechargeTime;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getRechargeTime();
+        }
     }
 
     public void setRechargeTime(int rechargeTime)
     {
-        this.rechargeTime = rechargeTime;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.rechargeTime = rechargeTime;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setRechargeTime(rechargeTime);
+        }
     }
 
     public int getMaxOre()
     {
-        return maxOre;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return maxOre;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMaxOre();
+        }
     }
 
     public void setMaxOre(int maxOre)
     {
-        this.maxOre = maxOre;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.maxOre = maxOre;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMaxOre(maxOre);
+        }
     }
 
     public int getMiningSpeed()
     {
-        return miningSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return miningSpeed;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMiningSpeed();
+        }
     }
 
     public void setMiningSpeed(int miningSpeed)
     {
-        this.miningSpeed = miningSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.miningSpeed = miningSpeed;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMiningSpeed(miningSpeed);
+        }
     }
 
     public int getMaxTurns()
     {
-        return maxTurns;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return maxTurns;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMaxTurns();
+        }
     }
 
     public void setMaxTurns(int maxTurns)
     {
-        this.maxTurns = maxTurns;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.maxTurns = maxTurns;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMaxTurns(maxTurns);
+        }
     }
 
     public int getMemorySize()
     {
-        return memorySize;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return memorySize;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getMemorySize();
+        }
     }
 
     public void setMemorySize(int memorySize)
     {
-        this.memorySize = memorySize;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.memorySize = memorySize;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setMemorySize(memorySize);
+        }
     }
 
     public int getCpuSpeed()
     {
-        return cpuSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return cpuSpeed;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getCpuSpeed();
+        }
     }
 
     public void setCpuSpeed(int cpuSpeed)
     {
-        this.cpuSpeed = cpuSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.cpuSpeed = cpuSpeed;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setCpuSpeed(cpuSpeed);
+        }
     }
 
     public double getForwardSpeed()
     {
-        return forwardSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return forwardSpeed;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getForwardSpeed();
+        }
     }
 
     public void setForwardSpeed(double forwardSpeed)
     {
-        this.forwardSpeed = forwardSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.forwardSpeed = forwardSpeed;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setForwardSpeed(forwardSpeed);
+        }
     }
 
     public double getBackwardSpeed()
     {
-        return backwardSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return backwardSpeed;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getBackwardSpeed();
+        }
     }
 
     public void setBackwardSpeed(double backwardSpeed)
     {
-        this.backwardSpeed = backwardSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.backwardSpeed = backwardSpeed;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setBackwardSpeed(backwardSpeed);
+        }
     }
 
     public int getRotateSpeed()
     {
-        return rotateSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return rotateSpeed;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getRotateSpeed();
+        }
     }
 
     public void setRotateSpeed(int rotateSpeed)
     {
-        this.rotateSpeed = rotateSpeed;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.rotateSpeed = rotateSpeed;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setRotateSpeed(rotateSpeed);
+        }
     }
 
     public double getRobotSize()
     {
-        return robotSize;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            return robotSize;
+        }
+        else
+        {
+            return pendingRobotChangesList.get(0).getRobotSize();
+        }
     }
 
     public void setRobotSize(double robotSize)
     {
-        this.robotSize = robotSize;
+        if (pendingRobotChangesList.isEmpty())
+        {
+            this.robotSize = robotSize;
+        }
+        else
+        {
+            pendingRobotChangesList.get(0).setRobotSize(robotSize);
+        }
     }
 
     public Date getRechargeEndTime()
@@ -646,32 +900,29 @@ public class Robot implements Serializable
         return .0;
     }
 
-    @Override
-    public int hashCode()
+    public PendingRobotChanges getPendingRobotChanges()
     {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return pendingRobotChangesList.isEmpty() ? null : pendingRobotChangesList.get(0);
     }
 
-    @Override
-    public boolean equals(Object object)
+    public boolean getChangePending()
     {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Robot))
-        {
-            return false;
-        }
-        Robot other = (Robot)object;
-        return (this.id != null || other.id == null) && (this.id == null ||
-                                                         this.id
-                                                         .equals(other.id));
+        return !(pendingRobotChangesList.isEmpty());
     }
 
-    @Override
-    public String toString()
+    public void makeChangesPending()
     {
-        return "nl.robominer.entity.Robot[ id=" + id + " ]";
+        pendingRobotChangesList.add(new PendingRobotChanges(this));
+    }
+
+    public boolean isRecharging()
+    {
+        Date now = new Date();
+
+        return ( getRechargeEndTime().after(now) &&
+                 ( getMiningEndTime() == null ||
+                   getMiningEndTime().before(now) ||
+                   getMiningEndTime().after(getRechargeEndTime()) ) );
     }
 
     public void fillDefaults(RobotPart oreContainer, RobotPart miningUnit,
@@ -694,63 +945,102 @@ public class Robot implements Serializable
 
     public void updateParameters()
     {
-        int batteryCapacity = oreContainer.getBatteryCapacity() + miningUnit
-                .getBatteryCapacity() +
-                battery.getBatteryCapacity() + memoryModule.getBatteryCapacity() +
-                cpu.getBatteryCapacity() + engine.getBatteryCapacity();
+        PendingRobotChanges pendingRobotChanges = getPendingRobotChanges();
 
-        int powerUsage = oreContainer.getPowerUsage() + miningUnit
-                .getPowerUsage() +
-                battery.getPowerUsage() + memoryModule.getPowerUsage() +
-                cpu.getPowerUsage() + engine.getPowerUsage();
+        RobotPart calculateOreContainer = (pendingRobotChanges == null) ?
+                   this.oreContainer : pendingRobotChanges.getOreContainer();
+        RobotPart calculateMiningUnit = (pendingRobotChanges == null) ?
+                   this.miningUnit : pendingRobotChanges.getMiningUnit();
+        RobotPart calculateBattery = (pendingRobotChanges == null) ?
+                   this.battery : pendingRobotChanges.getBattery();
+        RobotPart calculateMemoryModule = (pendingRobotChanges == null) ?
+                   this.memoryModule : pendingRobotChanges.getMemoryModule();
+        RobotPart calculateCpu = (pendingRobotChanges == null) ?
+                   this.cpu : pendingRobotChanges.getCpu();
+        RobotPart calculateEngine = (pendingRobotChanges == null) ?
+                   this.engine : pendingRobotChanges.getEngine();
 
-        double weight = oreContainer.getWeight() + miningUnit.getWeight() +
-                battery.getWeight() + memoryModule.getWeight() +
-                cpu.getWeight() + engine.getWeight();
+        int batteryCapacity = calculateOreContainer.getBatteryCapacity() +
+                calculateMiningUnit.getBatteryCapacity() +
+                calculateBattery.getBatteryCapacity() +
+                calculateMemoryModule.getBatteryCapacity() +
+                calculateCpu.getBatteryCapacity() +
+                calculateEngine.getBatteryCapacity();
 
-        int volume = oreContainer.getVolume() + miningUnit.getVolume() +
-                battery.getVolume() + memoryModule.getVolume() +
-                cpu.getVolume() + engine.getVolume();
+        int powerUsage = calculateOreContainer.getPowerUsage() +
+                calculateMiningUnit.getPowerUsage() +
+                calculateBattery.getPowerUsage() +
+                calculateMemoryModule.getPowerUsage() +
+                calculateCpu.getPowerUsage() + calculateEngine.getPowerUsage();
 
-        double forwardCapacity = oreContainer.getForwardCapacity() + miningUnit
-                .getForwardCapacity() +
-                battery.getForwardCapacity() + memoryModule.getForwardCapacity() +
-                cpu.getForwardCapacity() + engine.getForwardCapacity();
+        double weight = calculateOreContainer.getWeight() +
+                calculateMiningUnit.getWeight() +
+                calculateBattery.getWeight() +
+                calculateMemoryModule.getWeight() +
+                calculateCpu.getWeight() + calculateEngine.getWeight();
 
-        double backwardCapacity = oreContainer.getBackwardCapacity() +
-                miningUnit.getBackwardCapacity() +
-                battery.getBackwardCapacity() + memoryModule
-                .getBackwardCapacity() +
-                cpu.getBackwardCapacity() + engine.getBackwardCapacity();
+        int volume = calculateOreContainer.getVolume() +
+                calculateMiningUnit.getVolume() +
+                calculateBattery.getVolume() +
+                calculateMemoryModule.getVolume() +
+                calculateCpu.getVolume() + calculateEngine.getVolume();
 
-        int rotateCapacity = oreContainer.getRotateCapacity() + miningUnit
-                .getRotateCapacity() +
-                battery.getRotateCapacity() + memoryModule.getRotateCapacity() +
-                cpu.getRotateCapacity() + engine.getRotateCapacity();
+        double forwardCapacity = calculateOreContainer.getForwardCapacity() +
+                calculateMiningUnit.getForwardCapacity() +
+                calculateBattery.getForwardCapacity() +
+                calculateMemoryModule.getForwardCapacity() +
+                calculateCpu.getForwardCapacity() +
+                calculateEngine.getForwardCapacity();
 
-        setRechargeTime(oreContainer.getRechargeTime() + miningUnit
-                .getRechargeTime() +
-                battery.getRechargeTime() + memoryModule.getRechargeTime() +
-                cpu.getRechargeTime() + engine.getRechargeTime());
+        double backwardCapacity = calculateOreContainer.getBackwardCapacity() +
+                calculateMiningUnit.getBackwardCapacity() +
+                calculateBattery.getBackwardCapacity() +
+                calculateMemoryModule.getBackwardCapacity() +
+                calculateCpu.getBackwardCapacity() +
+                calculateEngine.getBackwardCapacity();
 
-        setMaxOre(oreContainer.getOreCapacity() + miningUnit.getOreCapacity() +
-                battery.getOreCapacity() + memoryModule.getOreCapacity() +
-                cpu.getOreCapacity() + engine.getOreCapacity());
+        int rotateCapacity = calculateOreContainer.getRotateCapacity() +
+                calculateMiningUnit.getRotateCapacity() +
+                calculateBattery.getRotateCapacity() +
+                calculateMemoryModule.getRotateCapacity() +
+                calculateCpu.getRotateCapacity() +
+                calculateEngine.getRotateCapacity();
 
-        setMiningSpeed(oreContainer.getMiningCapacity() + miningUnit
-                .getMiningCapacity() +
-                battery.getMiningCapacity() + memoryModule.getMiningCapacity() +
-                cpu.getMiningCapacity() + engine.getMiningCapacity());
+        setRechargeTime(calculateOreContainer.getRechargeTime() +
+                calculateMiningUnit.getRechargeTime() +
+                calculateBattery.getRechargeTime() +
+                calculateMemoryModule.getRechargeTime() +
+                calculateCpu.getRechargeTime() +
+                calculateEngine.getRechargeTime());
 
-        setMemorySize(oreContainer.getMemoryCapacity() + miningUnit
-                .getMemoryCapacity() +
-                battery.getMemoryCapacity() + memoryModule.getMemoryCapacity() +
-                cpu.getMemoryCapacity() + engine.getMemoryCapacity());
+        setMaxOre(calculateOreContainer.getOreCapacity() +
+                calculateMiningUnit.getOreCapacity() +
+                calculateBattery.getOreCapacity() +
+                calculateMemoryModule.getOreCapacity() +
+                calculateCpu.getOreCapacity() +
+                calculateEngine.getOreCapacity());
+
+        setMiningSpeed(calculateOreContainer.getMiningCapacity() +
+                calculateMiningUnit.getMiningCapacity() +
+                calculateBattery.getMiningCapacity() +
+                calculateMemoryModule.getMiningCapacity() +
+                calculateCpu.getMiningCapacity() +
+                calculateEngine.getMiningCapacity());
+
+        setMemorySize(calculateOreContainer.getMemoryCapacity() +
+                calculateMiningUnit.getMemoryCapacity() +
+                calculateBattery.getMemoryCapacity() +
+                calculateMemoryModule.getMemoryCapacity() +
+                calculateCpu.getMemoryCapacity() +
+                calculateEngine.getMemoryCapacity());
 
         setCpuSpeed(
-                oreContainer.getCpuCapacity() + miningUnit.getCpuCapacity() +
-                battery.getCpuCapacity() + memoryModule.getCpuCapacity() +
-                cpu.getCpuCapacity() + engine.getCpuCapacity());
+                calculateOreContainer.getCpuCapacity() +
+                calculateMiningUnit.getCpuCapacity() +
+                calculateBattery.getCpuCapacity() +
+                calculateMemoryModule.getCpuCapacity() +
+                calculateCpu.getCpuCapacity() +
+                calculateEngine.getCpuCapacity());
 
         setMaxTurns(batteryCapacity / powerUsage);
 
@@ -759,5 +1049,30 @@ public class Robot implements Serializable
         setRotateSpeed((int)(20 * rotateCapacity / weight));
 
         setRobotSize(Math.pow(volume, 0.33) / 2.);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Robot))
+        {
+            return false;
+        }
+
+        Robot other = (Robot)object;
+        return Objects.equals(this.id, other.getId());
+    }
+
+    @Override
+    public String toString()
+    {
+        return "nl.robominer.entity.Robot[ id=" + id + " ]";
     }
 }

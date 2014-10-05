@@ -30,8 +30,6 @@ drop table if exists UserAchievement;
 drop table if exists AchievementMiningTotalRequirement;
 drop table if exists AchievementPredecessor;
 drop table if exists Achievement;
-drop table if exists RobotDailyResult;
-drop table if exists RobotDailyRuns;
 drop table if exists RobotLifetimeResult;
 drop table if exists RobotActionsDone;
 drop table if exists MiningOreResult;
@@ -42,6 +40,7 @@ drop table if exists UserMiningArea;
 drop table if exists MiningAreaLifetimeResult;
 drop table if exists MiningAreaOreSupply;
 drop table if exists MiningArea;
+drop table if exists PendingRobotChanges;
 drop table if exists Robot;
 drop table if exists UserRobotPartAsset;
 drop table if exists RobotPart;
@@ -185,6 +184,37 @@ totalMiningRuns INT NOT NULL DEFAULT 0
 );
 
 
+create table PendingRobotChanges
+(
+robotId INT PRIMARY KEY REFERENCES Robot (id) ON DELETE CASCADE,
+submitTime TIMESTAMP NOT NULL DEFAULT NOW(),
+sourceCode TEXT NOT NULL,
+oreContainerId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+miningUnitId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+batteryId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+memoryModuleId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+cpuId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+engineId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldOreContainerId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldMiningUnitId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldBatteryId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldMemoryModuleId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldCpuId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+oldEngineId INT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
+rechargeTime INT NOT NULL,
+maxOre INT NOT NULL,
+miningSpeed INT NOT NULL,
+maxTurns INT NOT NULL,
+memorySize INT NOT NULL,
+cpuSpeed INT NOT NULL,
+forwardSpeed DOUBLE NOT NULL,
+backwardSpeed DOUBLE NOT NULL,
+rotateSpeed INT NOT NULL,
+robotSize DOUBLE NOT NULL,
+changesCommitTime TIMESTAMP NULL
+);
+
+
 create table MiningArea
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -284,26 +314,6 @@ oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
 tax INT NOT NULL,
 PRIMARY KEY (robotId, oreId)
-);
-
-
-create table RobotDailyRuns
-(
-robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
-miningDay DATE NOT NULL,
-totalMiningRuns INT NOT NULL DEFAULT 0,
-PRIMARY KEY (robotId, miningDay)
-);
-
-
-create table RobotDailyResult
-(
-robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
-oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
-miningDay DATE NOT NULL,
-amount INT NOT NULL,
-tax INT NOT NULL,
-PRIMARY KEY (robotId, oreId, miningDay)
 );
 
 

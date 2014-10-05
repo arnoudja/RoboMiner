@@ -504,7 +504,6 @@ void CDatabase::applyRobotPendingChanges(int robotId, MYSQL_TIME miningEndTime)
                  "INNER JOIN PendingRobotChanges "
                  "ON PendingRobotChanges.robotId = Robot.id "
                  "SET Robot.sourceCode = PendingRobotChanges.sourceCode, "
-                 " Robot.programSourceId = PendingRobotChanges.programSourceId, "
                  " Robot.oreContainerId = PendingRobotChanges.oreContainerId, "
                  " Robot.miningUnitId = PendingRobotChanges.miningUnitId, "
                  " Robot.batteryId = PendingRobotChanges.batteryId, "

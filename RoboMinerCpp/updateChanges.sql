@@ -84,22 +84,6 @@ from Users
 where Users.id = Robot.usersId
 );
 
--- Remove unlinked items from RobotDailyResult
-delete
-from RobotDailyResult
-where not exists
-(
-select *
-from Robot
-where Robot.id = RobotDailyResult.robotId
-)
-or not exists
-(
-select *
-from Ore
-where Ore.id = RobotDailyResult.oreId
-);
-
 -- Remove unlinked items from RobotLifetimeResult
 delete
 from RobotLifetimeResult
@@ -114,16 +98,6 @@ or not exists
 select *
 from Ore
 where Ore.id = RobotLifetimeResult.oreId
-);
-
--- Remove unlinked items from RobotDailyRuns
-delete
-from RobotDailyRuns
-where not exists
-(
-select *
-from Robot
-where Robot.id = RobotDailyRuns.robotId
 );
 
 -- Remove unlinked items from RobotMiningAreaScore

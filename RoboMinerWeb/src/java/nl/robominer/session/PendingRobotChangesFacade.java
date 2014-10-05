@@ -19,52 +19,44 @@
 
 package nl.robominer.session;
 
-import java.util.Date;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import nl.robominer.entity.RobotDailyRuns;
+import nl.robominer.entity.PendingRobotChanges;
 
 /**
  *
  * @author Arnoud Jagerman
  */
 @Stateless
-public class RobotDailyRunsFacade extends AbstractFacade<RobotDailyRuns> {
-
+public class PendingRobotChangesFacade extends AbstractFacade<PendingRobotChanges>
+{
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    protected EntityManager getEntityManager()
+    {
         return em;
     }
 
-    public RobotDailyRunsFacade() {
-        super(RobotDailyRuns.class);
+    public PendingRobotChangesFacade()
+    {
+        super(PendingRobotChanges.class);
     }
 
-    public RobotDailyRuns findByRobotIdAndMiningDay(int robotId, Date miningDay) {
-        try {
-            Query query = getEntityManager().createNamedQuery("RobotDailyRuns.findByRobotIdAndMiningDay", RobotDailyRuns.class);
+    public PendingRobotChanges findCommittedByRobotId(int robotId)
+    {
+        try
+        {
+            Query query = getEntityManager().createNamedQuery("PendingRobotChanges.findCommittedByRobotId", PendingRobotChanges.class);
             query.setParameter("robotId", robotId);
-            query.setParameter("miningDay", miningDay);
-            return (RobotDailyRuns)query.getSingleResult();
+            return (PendingRobotChanges)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
     }
-
-    public List<RobotDailyRuns> findByRobotIdAndMiningDayRange(int robotId, Date firstMiningDay, Date lastMiningDay) {
-
-        Query query = getEntityManager().createNamedQuery("RobotDailyRuns.findByRobotIdAndMiningDayRange", RobotDailyRuns.class);
-        query.setParameter("robotId", robotId);
-        query.setParameter("firstMiningDay", firstMiningDay);
-        query.setParameter("lastMiningDay", lastMiningDay);
-        return query.getResultList();
-    }
-
 }

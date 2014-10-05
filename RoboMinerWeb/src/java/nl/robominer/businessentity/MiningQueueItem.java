@@ -32,27 +32,27 @@ public class MiningQueueItem {
         RECHARGING("Recharging"),
         QUEUED("Queued"),
         UPDATING("Updating");
-        
+
         private final String description;
-        
+
         private EMiningQueueItemStatus(String description) {
             this.description = description;
         }
-        
+
         public String getDescription() {
             return description;
         }
-        
+
         public boolean isQueued() {
             return this == QUEUED;
         }
     }
-    
+
     private final MiningQueue miningQueue;
     private final EMiningQueueItemStatus itemStatus;
     private final long timeLeft;
     private final boolean selected;
-    
+
     public MiningQueueItem(MiningQueue miningQueue, EMiningQueueItemStatus itemStatus, long timeLeft, boolean selected) {
         
         this.miningQueue        = miningQueue;
@@ -60,24 +60,23 @@ public class MiningQueueItem {
         this.timeLeft           = timeLeft;
         this.selected           = selected;
     }
-    
+
     public MiningQueue getMiningQueue() {
         
         return miningQueue;
     }
-    
+
     public EMiningQueueItemStatus getItemStatus() {
         
         return itemStatus;
     }
-    
+
     public long getTimeLeft() {
         
         return timeLeft;
     }
-    
+
     public boolean isSelected() {
         return selected;
     }
-    
 }

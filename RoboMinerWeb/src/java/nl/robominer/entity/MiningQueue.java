@@ -22,6 +22,7 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,16 +47,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "MiningQueue")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MiningQueue.findAll", query = "SELECT m FROM MiningQueue m"),
-    @NamedQuery(name = "MiningQueue.findById", query = "SELECT m FROM MiningQueue m WHERE m.id = :id"),
-    @NamedQuery(name = "MiningQueue.findWaitingByUsersId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.user.id = :usersId ORDER BY m.id"),
-    @NamedQuery(name = "MiningQueue.findWaitingByRobotId", query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.id = :robotId ORDER BY m.id"),
-    @NamedQuery(name = "MiningQueue.findResultsByRobotId", query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.robot.id = :robotId ORDER BY m.id DESC"),
-    @NamedQuery(name = "MiningQueue.findClaimableByUsersId", query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId and m.claimed = false"),
-    @NamedQuery(name = "MiningQueue.findByRallyAndUsersId", query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")})
-public class MiningQueue implements Serializable {
-
+@NamedQueries(
+{
+    @NamedQuery(name = "MiningQueue.findAll",
+                query = "SELECT m FROM MiningQueue m"),
+    @NamedQuery(name = "MiningQueue.findById",
+                query = "SELECT m FROM MiningQueue m WHERE m.id = :id"),
+    @NamedQuery(name = "MiningQueue.findWaitingByUsersId",
+                query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.user.id = :usersId ORDER BY m.creationTime"),
+    @NamedQuery(name = "MiningQueue.findWaitingByRobotId",
+                query = "SELECT m FROM MiningQueue m WHERE (m.miningEndTime IS NULL OR m.miningEndTime > CURRENT_TIMESTAMP) AND m.robot.id = :robotId ORDER BY m.creationTime"),
+    @NamedQuery(name = "MiningQueue.findResultsByRobotId",
+                query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.robot.id = :robotId ORDER BY m.creationTime DESC"),
+    @NamedQuery(name = "MiningQueue.findClaimableByUsersId",
+                query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId and m.claimed = false"),
+    @NamedQuery(name = "MiningQueue.findByRallyAndUsersId",
+                query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")
+})
+public class MiningQueue implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -86,7 +96,7 @@ public class MiningQueue implements Serializable {
     @Column(name = "creationTime", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
-    
+
     @Column(name = "miningEndTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date miningEndTime;
@@ -104,110 +114,133 @@ public class MiningQueue implements Serializable {
     @JoinColumn(name = "RobotActionsDone.miningQueueId")
     private List<RobotActionsDone> robotActionsDoneList;
 
-    public MiningQueue() {
+    public MiningQueue()
+    {
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public MiningArea getMiningArea() {
+    public MiningArea getMiningArea()
+    {
         return miningArea;
     }
 
-    public void setMiningArea(MiningArea miningArea) {
+    public void setMiningArea(MiningArea miningArea)
+    {
         this.miningArea = miningArea;
     }
 
-    public Robot getRobot() {
+    public Robot getRobot()
+    {
         return robot;
     }
 
-    public void setRobot(Robot robot) {
+    public void setRobot(Robot robot)
+    {
         this.robot = robot;
     }
 
-    public RallyResult getRallyResult() {
+    public RallyResult getRallyResult()
+    {
         return rallyResult;
     }
 
-    public int getPlayerNumber() {
+    public int getPlayerNumber()
+    {
         return playerNumber;
     }
 
-    public Date getCreationTime() {
+    public Date getCreationTime()
+    {
         return creationTime;
     }
 
-    public Date getMiningEndTime() {
+    public Date getMiningEndTime()
+    {
         return miningEndTime;
     }
 
-    public boolean getClaimed() {
+    public boolean getClaimed()
+    {
         return claimed;
     }
 
-    public void setClaimed(boolean claimed) {
+    public void setClaimed(boolean claimed)
+    {
         this.claimed = claimed;
     }
 
-    public List<MiningOreResult> getMiningOreResults() {
+    public List<MiningOreResult> getMiningOreResults()
+    {
         return miningOreResults;
     }
 
-    public List<RobotActionsDone> getRobotActionsDoneList() {
+    public List<RobotActionsDone> getRobotActionsDoneList()
+    {
         return robotActionsDoneList;
     }
 
-    public int getTotalOreMined() {
+    public int getTotalOreMined()
+    {
         int result = 0;
-        
-        for (MiningOreResult miningOreResult : miningOreResults) {
+
+        for (MiningOreResult miningOreResult : miningOreResults)
+        {
             result += miningOreResult.getAmount();
         }
-        
+
         return result;
     }
-    
-    public int getTotalTax() {
+
+    public int getTotalTax()
+    {
         int result = 0;
 
-        for (MiningOreResult miningOreResult : miningOreResults) {
+        for (MiningOreResult miningOreResult : miningOreResults)
+        {
             result += miningOreResult.getTax();
         }
-        
+
         return result;
     }
-    
-    public int getTotalReward() {
+
+    public int getTotalReward()
+    {
         int result = 0;
 
-        for (MiningOreResult miningOreResult : miningOreResults) {
+        for (MiningOreResult miningOreResult : miningOreResults)
+        {
             result += miningOreResult.getReward();
         }
-        
+
         return result;
     }
-    
+
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MiningQueue)) {
+        if (!(object instanceof MiningQueue))
+        {
             return false;
         }
-        MiningQueue other = (MiningQueue) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+
+        MiningQueue other = (MiningQueue)object;
+        return Objects.equals(this.id, other.id);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "nl.robominer.entity.MiningQueue[ id=" + id + " ]";
     }
 }

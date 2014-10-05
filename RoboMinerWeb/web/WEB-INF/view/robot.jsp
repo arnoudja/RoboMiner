@@ -209,6 +209,18 @@
                                 <td>${robot.rechargeTime}</td>
                                 <td>seconds</td>
                             </tr>
+                            <tr>
+                                <td colspan="3" class="button">
+                                    <c:choose>
+                                        <c:when test="${robot.changePending}">
+                                            Changes are pending for this robot.
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button onclick="applyChanges();">Apply</button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
                         </tbody>
                     </c:forEach>
                 </table>
@@ -218,8 +230,6 @@
                     <br>
                 </c:if>
             </form>
-            <button onclick="applyChanges();">Apply</button>
-
         </rm:defaultpage>
 
         <script>
