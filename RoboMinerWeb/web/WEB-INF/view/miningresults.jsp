@@ -74,6 +74,13 @@
                                     </tr>
                                 </c:forEach>
                             </c:if>
+                            <tr class="miningresultsdetails" id="resultDetails_${miningResult.id}_score">
+                                <td></td>
+                                <td>Score</td>
+                                <td colspan="5">
+                                    <fmt:formatNumber value="${miningResult.score}" minFractionDigits="1" maxFractionDigits="1"/>
+                                </td>
+                            </tr>
                             <c:set var="totalActions" value="0" />
                             <c:forEach var="robotActionsDone" items="${miningResult.robotActionsDoneList}">
                                 <c:set var="totalActions" value="${totalActions + robotActionsDone.amount}" />

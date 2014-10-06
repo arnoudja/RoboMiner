@@ -19,7 +19,6 @@
 
 package nl.robominer.businessentity;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Resource;

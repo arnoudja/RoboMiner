@@ -51,9 +51,8 @@ function showRobotDetails() {
     updateMemorySizes();
 }
 
-function applyChanges() {
+function applyChanges(robotId) {
 
-    var robotId = document.getElementById('robotId').value;
     var availableMemory = getAvailableMemory(robotId);
     var usedMemory = getUsedMemory(robotId);
     var robotName = document.getElementById('robotName' + robotId).value;

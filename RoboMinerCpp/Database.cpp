@@ -29,7 +29,9 @@ using namespace std;
 
 namespace
 {
-    static const int cMaxSourceCodeLength = 10240;
+    static const int    cMaxSourceCodeLength = 10240;
+    static const double cScoreHistoryFactor  = 5.;
+    static const double cScoreStartFactor    = 2.;
 }
 
 
@@ -417,22 +419,39 @@ void CDatabase::updateRobot(int robotId, MYSQL_TIME miningEndTime)
 }
 
 
-void CDatabase::updateRobotScore(int robotId, int miningAreaId, double score)
+void CDatabase::updateRobotScore(int robotId, int miningQueueId, int miningAreaId, double score)
 {
+    updateMiningQueueScore(miningQueueId, score);
+
     int totalRuns = 0;
     double previousScore = .0;
 
     if (getRobotScoreDatabaseValue(robotId, miningAreaId, totalRuns, previousScore))
     {
-        double newScore = (9. * previousScore + score) / 10.;
+        double newScore = ((cScoreHistoryFactor - 1.) * previousScore + score) / cScoreHistoryFactor;
         updateRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
     }
     else
     {
         // Start with a low value to avoid robots with a low number of high luck runs getting a top score.
-        double newScore = score / 2.;
+        double newScore = score / cScoreStartFactor;
         insertRobotScoreDatabaseValue(robotId, miningAreaId, newScore);
     }
+}
+
+
+void CDatabase::updateMiningQueueScore(int miningQueueId, double score)
+{
+    string query("UPDATE MiningQueue "
+                 "SET score = ? "
+                 "WHERE id = ? ");
+
+    CDatabaseStatement statement(m_connection, query);
+
+    statement.addDoubleParameterValue(score);
+    statement.addIntParameterValue(miningQueueId);
+
+    statement.execute();
 }
 
 

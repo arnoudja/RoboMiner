@@ -93,6 +93,10 @@ public class MiningQueue implements Serializable
     private int playerNumber;
 
     @Basic(optional = true)
+    @Column(name = "score")
+    private double score;
+
+    @Basic(optional = true)
     @Column(name = "creationTime", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
@@ -151,6 +155,11 @@ public class MiningQueue implements Serializable
     public int getPlayerNumber()
     {
         return playerNumber;
+    }
+
+    public double getScore()
+    {
+        return score;
     }
 
     public Date getCreationTime()

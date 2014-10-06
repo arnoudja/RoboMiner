@@ -127,7 +127,7 @@ public:
     void addMiningOreResult(int miningQueueId, int oreId, int amount);
     void addRobotActionsDone(int miningQueueId, int actionType, int amount);
     void updateRobot(int robotId, MYSQL_TIME miningEndTime);
-    void updateRobotScore(int robotId, int miningAreaId, double score);
+    void updateRobotScore(int robotId, int miningQueueId, int miningAreaId, double score);
     void applyRobotPendingChanges(int robotId, MYSQL_TIME miningEndTime);
 
     void removeOldMiningQueueItems(int robotId);
@@ -145,6 +145,7 @@ private:
     void removeMiningOreResultEntries(int miningQueueId);
     void removeRobotActionsDoneEntries(int miningQueueId);
 
+    void updateMiningQueueScore(int miningQueueId, double score);
     bool getRobotScoreDatabaseValue(int robotId, int miningAreaId, int& totalRuns, double& score);
     void insertRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);
     void updateRobotScoreDatabaseValue(int robotId, int miningAreaId, double score);

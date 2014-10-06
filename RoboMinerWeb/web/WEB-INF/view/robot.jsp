@@ -216,7 +216,7 @@
                                             Changes are pending for this robot.
                                         </c:when>
                                         <c:otherwise>
-                                            <button onclick="applyChanges();">Apply</button>
+                                            <button onclick="applyChanges(${robot.id});">Apply</button>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>

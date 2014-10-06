@@ -139,7 +139,7 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
                 {
                     if (robots[iRobot]->getOre()[iOre] > 0)
                     {
-                        database.updateRobotScore(robots[iRobot]->getRobotId(), miningArea.miningAreaId, robots[iRobot]->calculateScore());
+                        database.updateRobotScore(robots[iRobot]->getRobotId(), miningQueueIds[iRobot], miningArea.miningAreaId, robots[iRobot]->calculateScore());
                         database.addMiningOreResult(miningQueueIds[iRobot], rally.getOreId(iOre), robots[iRobot]->getOre()[iOre]);
                     }
                 }

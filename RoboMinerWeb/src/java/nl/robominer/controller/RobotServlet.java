@@ -164,8 +164,6 @@ public class RobotServlet extends RoboMinerServletBase
         {
             List<MiningQueue> miningQueue = miningQueueFacade.findWaitingByRobotId(robot.getId());
 
-            robot.setRobotName(robotName);
-
             boolean pending = (!miningQueue.isEmpty() && !robot.isRecharging());
 
             if (pending)
@@ -173,6 +171,7 @@ public class RobotServlet extends RoboMinerServletBase
                 robot.makeChangesPending();
             }
 
+            robot.setRobotName(robotName);
             robot.setProgramSourceId(programSourceId);
             robot.setSourceCode(programSource.getSourceCode());
 

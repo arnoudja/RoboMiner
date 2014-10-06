@@ -21,10 +21,9 @@ function swapShowDetails(rowsName, button) {
     if (button.innerHTML === '+') {
         for (i = 0; i < 99; ++i) {
             updateDisplayStyleIfExists(rowsName + '_ore_' + i, 'table-row');
-        }
-        for (i = 0; i < 99; ++i) {
             updateDisplayStyleIfExists(rowsName + '_action_' + i, 'table-row');
         }
+        document.getElementById(rowsName + '_score').style.display = 'table-row';
         document.getElementById(rowsName + '_queued').style.display = 'table-row';
         document.getElementById(rowsName + '_miningend').style.display = 'table-row';
         button.innerHTML = '-';
@@ -32,10 +31,9 @@ function swapShowDetails(rowsName, button) {
     else {
         for (i = 0; i < 99; ++i) {
             updateDisplayStyleIfExists(rowsName + '_ore_' + i, 'none');
-        }
-        for (i = 0; i < 99; ++i) {
             updateDisplayStyleIfExists(rowsName + '_action_' + i, 'none');
         }
+        document.getElementById(rowsName + '_score').style.display = 'none';
         document.getElementById(rowsName + '_queued').style.display = 'none';
         document.getElementById(rowsName + '_miningend').style.display = 'none';
         button.innerHTML = '+';
