@@ -147,13 +147,13 @@ void CRobot::setTargetMining(const CGroundUnit& groundUnit)
 double CRobot::calculateScore() const
 {
     double score  = .0;
-    double factor = 1.;
+    double factor = 1000.;
 
     for (int i = 0; i < MAX_ORE_TYPES; ++i)
     {
         score += factor * m_ore[i];
-        factor *= 10.;
+        factor /= 10.;
     }
-    
-    return score * 10. / (m_maxOre + 5.);
+
+    return score / (m_maxOre + 5.);
 }
