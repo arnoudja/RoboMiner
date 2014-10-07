@@ -921,7 +921,7 @@ insert into Achievement (id, title,              description,                   
 
 insert into AchievementPredecessor (predecessorId, successorId) values (12, 20);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 7.6);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 760.0);
 
 
 insert into Achievement (id, title,              description,                                                     achievementPoints, miningAreaId)
@@ -929,7 +929,7 @@ insert into Achievement (id, title,              description,                   
 
 insert into AchievementPredecessor (predecessorId, successorId) values (20, 21);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (21, 1002, 8.6);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (21, 1002, 860.0);
 
 
 -- Achievements - Oxaria
@@ -986,7 +986,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (101, 120);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 35.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 600.0);
 
 
 
@@ -995,7 +995,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (120, 121);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (121, 1102, 45.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (121, 1102, 700.0);
 
 
 -- Achievements - Lithabine
@@ -1052,7 +1052,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (201, 220);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 300.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 400.0);
 
 
 insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
@@ -1060,7 +1060,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (220, 221);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (221, 1202, 400.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (221, 1202, 600.0);
 
 
 -- Achievements - Neudralion
@@ -1117,7 +1117,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (301, 320);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 400.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 700.0);
 
 
 -- Achievements - Complatix
@@ -1174,7 +1174,7 @@ insert into Achievement (id, title,               description,                  
 
 insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 160.0);
+insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 400.0);
 
 
 -- Achievements - Prantum
