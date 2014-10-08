@@ -77,8 +77,13 @@
                             <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
                                 <tr>
                                     <td class="important">Owned:</td>
-                                    <td>${user.getTotalRobotPartAmount(robotPart.id)}/${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
-                                    <td colspan="2">total/unused</td>
+                                    <td>total:</td>
+                                    <td colspan="3">${user.getTotalRobotPartAmount(robotPart.id)}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>unused:</td>
+                                    <td colspan="2">${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
                                     <td>
                                         <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
                                             <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
@@ -89,69 +94,65 @@
                             <c:if test="${robotPart.oreCapacity gt 0}">
                                 <tr>
                                     <td>Ore capacity:</td>
-                                    <td>${robotPart.oreCapacity}</td>
-                                    <td>units</td>
-                                    <td colspan="2"></td>
+                                    <td colspan="4">${robotPart.oreCapacity} units</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.miningCapacity gt 0}">
                                 <tr>
                                     <td>Mining capacity:</td>
-                                    <td>${robotPart.miningCapacity}</td>
-                                    <td>upc</td>
-                                    <td colspan="2"></td>
+                                    <td colspan="4">${robotPart.miningCapacity} o/c</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.batteryCapacity gt 0}">
                                 <tr>
                                     <td>Battery capacity:</td>
-                                    <td>${robotPart.batteryCapacity}</td>
-                                    <td colspan="3"></td>
+                                    <td colspan="4">${robotPart.batteryCapacity} pc</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.memoryCapacity gt 0}">
                                 <tr>
                                     <td>Memory size:</td>
-                                    <td>${robotPart.memoryCapacity}</td>
-                                    <td colspan="3"></td>
+                                    <td colspan="4">${robotPart.memoryCapacity}</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.cpuCapacity gt 0}">
                                 <tr>
                                     <td>CPU speed:</td>
-                                    <td>${robotPart.cpuCapacity}</td>
-                                    <td>ipc</td>
-                                    <td colspan="2"></td>
+                                    <td colspan="4">${robotPart.cpuCapacity} i/c</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.forwardCapacity gt 0}">
                                 <tr>
                                     <td>Engine power:</td>
-                                    <td>${robotPart.forwardCapacity}/${robotPart.backwardCapacity}/${robotPart.rotateCapacity}</td>
-                                    <td colspan="2">fwd/bkwd/rot</td>
+                                    <td colspan="4">${robotPart.forwardCapacity} forward</td>
+                                </tr>
+                                <tr>
                                     <td></td>
+                                    <td colspan="4">${robotPart.backwardCapacity} backward</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="4">${robotPart.rotateCapacity} rotate</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.powerUsage gt 0}">
                                 <tr>
                                     <td>Power consumption:</td>
-                                    <td>${robotPart.powerUsage}</td>
-                                    <td colspan="3"></td>
+                                    <td colspan="4">${robotPart.powerUsage} p</td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.rechargeTime gt 0}">
                                 <tr>
                                     <td>Recharge time:</td>
-                                    <td>${robotPart.rechargeTime}</td>
-                                    <td>seconds</td>
-                                    <td colspan="2"></td>
+                                    <td colspan="4">
+                                        <rm:formatperiod seconds="${robotPart.rechargeTime}"/>
+                                    </td>
                                 </tr>
                             </c:if>
                             <c:if test="${robotPart.weight gt 0}">
                                 <tr>
                                     <td>Weight:</td>
-                                    <td>${robotPart.weight}</td>
-                                    <td colspan="3"></td>
+                                    <td colspan="4">${robotPart.weight}</td>
                                 </tr>
                             </c:if>
                             <tr>

@@ -159,7 +159,9 @@
                                 </c:if>
                                 <tr>
                                     <td>Mining time:</td>
-                                    <td colspan="3">${miningArea.miningTime} seconds</td>
+                                    <td colspan="3">
+                                        <rm:formatperiod seconds="${miningArea.miningTime}"/>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Mining cycles:</td>
