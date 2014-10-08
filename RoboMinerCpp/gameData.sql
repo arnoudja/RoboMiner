@@ -30,6 +30,7 @@ insert into Ore (id, oreName) values (4, 'Neudralion');
 insert into Ore (id, oreName) values (5, 'Complatix');
 insert into Ore (id, oreName) values (6, 'Prantum');
 insert into Ore (id, oreName) values (7, 'Raxia');
+insert into Ore (id, oreName) values (8, 'Dipolir');
 
 -- The tier names
 insert into Tier (id, tierName) values (1, 'Cerbonium quality');
@@ -39,6 +40,7 @@ insert into Tier (id, tierName) values (4, 'Neudralion quality');
 insert into Tier (id, tierName) values (5, 'Complatix quality');
 insert into Tier (id, tierName) values (6, 'Prantum quality');
 insert into Tier (id, tierName) values (7, 'Raxia quality');
+insert into Tier (id, tierName) values (8, 'Dipolir quality');
 
 -- The robot part names
 insert into RobotPartType (id, typeName) values (1, 'Ore container');
@@ -149,7 +151,22 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1615, 161, 5,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1616, 161, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1617, 161, 7, 75);
 insert into RobotPart (id,  typeId, partName,                       orePriceId, oreCapacity, weight, volume, powerUsage)
-               values (161, 1,      'Enhanced Raxia Ore Container', 161,        90,          37,     95,     15);
+               values (161, 1,      'Enhanced Raxia Ore Container', 161,        90,          38,     95,     15);
+
+-- Ore containers - Dipolir
+insert into OrePrice (id, description) values (170, 'Dipolir Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1706, 170, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1707, 170, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1708, 170, 8, 10);
+insert into RobotPart (id,  typeId, partName,                orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (170, 1,      'Dipolir Ore Container', 170,        95,          40,     100,    16);
+
+insert into OrePrice (id, description) values (171, 'Enhanced Dipolir Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1716, 171, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1717, 171, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1718, 171, 8, 75);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (171, 1,      'Enhanced Dipolir Ore Container', 171,        100,         42,     105,    17);
 
 
 -- Mining units - Cerbonium
@@ -255,6 +272,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2617, 261, 7,
 insert into RobotPart (id,  typeId, partName,                     orePriceId, miningCapacity, weight, volume, powerUsage)
                values (261, 2,      'Enhanced Raxia Mining Unit', 261,        8,              29,     22,     32);
 
+-- Mining units - Dipolir
+insert into OrePrice (id, description) values (270, 'Dipolir Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2706, 270, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2707, 270, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2708, 270, 8, 10);
+insert into RobotPart (id,  typeId, partName,              orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (270, 2,      'Dipolir Mining Unit', 270,        9,              30,     23,     40);
+
+insert into OrePrice (id, description) values (271, 'Enhanced Dipolir Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2716, 271, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2717, 271, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2718, 271, 8, 75);
+insert into RobotPart (id,  typeId, partName,                       orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (271, 2,      'Enhanced Dipolir Mining Unit', 271,        5,              22,     15,     18);
+
 
 -- Batteries - Cerbonium
 insert into OrePrice (id, description) values (301, 'Standard Battery price');
@@ -356,14 +388,29 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3604, 360, 5,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3605, 360, 6, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3606, 360, 7, 10);
 insert into RobotPart (id,  typeId, partName,        orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (360, 3,      'Raxia Battery', 360,        145000,          720,          14,     13,     0);
+               values (360, 3,      'Raxia Battery', 360,        160000,          720,          14,     13,     0);
 
 insert into OrePrice (id, description) values (361, 'Enhanced Raxia Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3615, 361, 5, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3616, 361, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3617, 361, 7, 75);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (361, 3,      'Enhanced Raxia Battery', 361,        190000,          900,          15,     14,     0);
+               values (361, 3,      'Enhanced Raxia Battery', 361,        230000,          900,          15,     14,     0);
+
+-- Batteries - Dipolir
+insert into OrePrice (id, description) values (370, 'Dipolir Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3706, 370, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3707, 370, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3708, 370, 8, 10);
+insert into RobotPart (id,  typeId, partName,          orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (370, 3,      'Dipolir Battery', 370,        280000,          1200,         16,     15,     0);
+
+insert into OrePrice (id, description) values (371, 'Enhanced Dipolir Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3716, 371, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3717, 371, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3718, 371, 8, 75);
+insert into RobotPart (id,  typeId, partName,                   orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (371, 3,      'Enhanced Dipolir Battery', 371,        350000,          1500,         17,     16,     0);
 
 
 -- Memory modules - Cerbonium
@@ -469,6 +516,22 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4617, 461, 7,
 insert into RobotPart (id,  typeId, partName,                       orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (461, 4,      'Enhanced Raxia Memory Module', 461,        288,            1,      1,      15);
 
+-- Memory modules - Dipolir
+insert into OrePrice (id, description) values (470, 'Dipolir Memory Module price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4706, 470, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4707, 470, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4708, 470, 8, 10);
+insert into RobotPart (id,  typeId, partName,                orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (470, 4,      'Dipolir Memory Module', 470,        320,            1,      1,      16);
+
+insert into OrePrice (id, description) values (471, 'Enhanced Dipolir Memory Module price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4716, 471, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4717, 471, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4718, 471, 8, 75);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (471, 4,      'Enhanced Dipolir Memory Module', 471,        352,            1,      1,      17);
+
+
 
 -- CPUs - Cerbonium
 insert into OrePrice (id, description) values (501, 'Standard CPU price');
@@ -573,6 +636,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5617, 561, 7,
 insert into RobotPart (id,  typeId, partName,             orePriceId, cpuCapacity, weight, volume, powerUsage)
                values (561, 5,      'Enhanced Raxia CPU', 561,        56,          1,      1,      14);
 
+-- CPUs - Dipolir
+insert into OrePrice (id, description) values (570, 'Dipolir CPU price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5706, 570, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5707, 570, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5708, 570, 8, 10);
+insert into RobotPart (id,  typeId, partName,      orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (570, 5,      'Dipolir CPU', 570,        60,          1,      1,      15);
+
+insert into OrePrice (id, description) values (571, 'Enhanced Dipolir CPU price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5716, 571, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5717, 571, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5718, 571, 8, 75);
+insert into RobotPart (id,  typeId, partName,               orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (571, 5,      'Enhanced Dipolir CPU', 571,        64,          1,      1,      16);
+
 
 -- Engines - Cerbonium
 insert into OrePrice (id, description) values (601, 'Engine 50 price');
@@ -676,6 +754,22 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6616, 661, 6,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6617, 661, 7, 75);
 insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (661, 6,      'Engine 200A', 661,        200,             200,              400,            24,     19,     70);
+
+-- Engines - Dipolir
+insert into OrePrice (id, description) values (670, 'Engine 210E price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6706, 670, 6, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6707, 670, 7, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6708, 670, 8, 10);
+insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (670, 6,      'Engine 210E', 670,        210,             150,              210,            23,     17,     65);
+
+insert into OrePrice (id, description) values (671, 'Engine 210A price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6716, 671, 6, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6717, 671, 7, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6718, 671, 8, 75);
+insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (671, 6,      'Engine 210A', 671,        210,             210,              600,            25,     20,     75);
+
 
 
 -- AI player
@@ -862,6 +956,24 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (16
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 5, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 7, 4, 4);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1601, 7, 4, 4);
+
+-- Dipolir
+insert into OrePrice (id, description) values (1701, 'Mining Area Dipolir-1 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17011, 1701, 1, 40);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17012, 1701, 2, 35);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17013, 1701, 3, 30);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17014, 1701, 4, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17015, 1701, 5, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17016, 1701, 6, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (17017, 1701, 7, 10);
+insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1701, 'Dipolir-1', 1701,       90,    90,    1800,     7200,       60,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 2, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 2, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 4, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
 
 
 -- Achievements - Cerbonium
@@ -1235,12 +1347,12 @@ insert into AchievementPredecessor (predecessorId, successorId) values (600, 601
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (601, 7, 50);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (602, 'More Raxia!', 'Mine even more Raxia ore', 10);
+insert into Achievement (id,  title,         description,                achievementPoints, miningAreaId)
+                 values (602, 'More Raxia!', 'Mine even more Raxia ore', 10,                1701);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (601, 602);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (602, 7, 250);
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (602, 7, 500);
 
 
 insert into Achievement (id,  title,         description,                achievementPoints)
@@ -1257,6 +1369,46 @@ insert into Achievement (id,  title,         description,                achieve
 insert into AchievementPredecessor (predecessorId, successorId) values (603, 604);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (604, 7, 10000);
+
+-- Achievements - Dipolir
+insert into Achievement (id,  title,          description,              achievementPoints)
+                 values (700, 'Dipolir mining', 'Start mining Dipolir ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (602, 700);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (700, 8, 1);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (701, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (700, 701);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (701, 8, 50);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (702, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (701, 702);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (702, 8, 500);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (702, 703);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (703, 8, 1000);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (704, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (703, 704);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (704, 8, 10000);
 
 
 -- initial achievement filling
