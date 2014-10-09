@@ -402,7 +402,7 @@ public class Robot implements Serializable
      */
     public String getSourceCode()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return this.sourceCode;
         }
@@ -420,7 +420,7 @@ public class Robot implements Serializable
      */
     public void setSourceCode(String sourceCode)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.sourceCode = sourceCode;
         }
@@ -459,7 +459,7 @@ public class Robot implements Serializable
      */
     public RobotPart getOreContainer()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return oreContainer;
         }
@@ -476,7 +476,7 @@ public class Robot implements Serializable
      */
     public void setOreContainer(RobotPart oreContainer)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.oreContainer = oreContainer;
         }
@@ -488,7 +488,7 @@ public class Robot implements Serializable
 
     public RobotPart getMiningUnit()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return miningUnit;
         }
@@ -500,7 +500,7 @@ public class Robot implements Serializable
 
     public void setMiningUnit(RobotPart miningUnit)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.miningUnit = miningUnit;
         }
@@ -512,7 +512,7 @@ public class Robot implements Serializable
 
     public RobotPart getBattery()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return battery;
         }
@@ -524,7 +524,7 @@ public class Robot implements Serializable
 
     public void setBattery(RobotPart battery)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.battery = battery;
         }
@@ -536,7 +536,7 @@ public class Robot implements Serializable
 
     public RobotPart getMemoryModule()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return memoryModule;
         }
@@ -548,7 +548,7 @@ public class Robot implements Serializable
 
     public void setMemoryModule(RobotPart memoryModule)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.memoryModule = memoryModule;
         }
@@ -560,7 +560,7 @@ public class Robot implements Serializable
 
     public RobotPart getCpu()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return cpu;
         }
@@ -572,7 +572,7 @@ public class Robot implements Serializable
 
     public void setCpu(RobotPart cpu)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.cpu = cpu;
         }
@@ -584,7 +584,7 @@ public class Robot implements Serializable
 
     public RobotPart getEngine()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return engine;
         }
@@ -596,7 +596,7 @@ public class Robot implements Serializable
 
     public void setEngine(RobotPart engine)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.engine = engine;
         }
@@ -608,7 +608,7 @@ public class Robot implements Serializable
 
     public int getRechargeTime()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return rechargeTime;
         }
@@ -620,7 +620,7 @@ public class Robot implements Serializable
 
     public void setRechargeTime(int rechargeTime)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.rechargeTime = rechargeTime;
         }
@@ -632,7 +632,7 @@ public class Robot implements Serializable
 
     public int getMaxOre()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return maxOre;
         }
@@ -644,7 +644,7 @@ public class Robot implements Serializable
 
     public void setMaxOre(int maxOre)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.maxOre = maxOre;
         }
@@ -656,7 +656,7 @@ public class Robot implements Serializable
 
     public int getMiningSpeed()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return miningSpeed;
         }
@@ -668,7 +668,7 @@ public class Robot implements Serializable
 
     public void setMiningSpeed(int miningSpeed)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.miningSpeed = miningSpeed;
         }
@@ -680,7 +680,7 @@ public class Robot implements Serializable
 
     public int getMaxTurns()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return maxTurns;
         }
@@ -692,7 +692,7 @@ public class Robot implements Serializable
 
     public void setMaxTurns(int maxTurns)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.maxTurns = maxTurns;
         }
@@ -704,7 +704,7 @@ public class Robot implements Serializable
 
     public int getMemorySize()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return memorySize;
         }
@@ -716,7 +716,7 @@ public class Robot implements Serializable
 
     public void setMemorySize(int memorySize)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.memorySize = memorySize;
         }
@@ -728,7 +728,7 @@ public class Robot implements Serializable
 
     public int getCpuSpeed()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return cpuSpeed;
         }
@@ -740,7 +740,7 @@ public class Robot implements Serializable
 
     public void setCpuSpeed(int cpuSpeed)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.cpuSpeed = cpuSpeed;
         }
@@ -752,7 +752,7 @@ public class Robot implements Serializable
 
     public double getForwardSpeed()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return forwardSpeed;
         }
@@ -764,7 +764,7 @@ public class Robot implements Serializable
 
     public void setForwardSpeed(double forwardSpeed)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.forwardSpeed = forwardSpeed;
         }
@@ -776,7 +776,7 @@ public class Robot implements Serializable
 
     public double getBackwardSpeed()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return backwardSpeed;
         }
@@ -788,7 +788,7 @@ public class Robot implements Serializable
 
     public void setBackwardSpeed(double backwardSpeed)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.backwardSpeed = backwardSpeed;
         }
@@ -800,7 +800,7 @@ public class Robot implements Serializable
 
     public int getRotateSpeed()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return rotateSpeed;
         }
@@ -812,7 +812,7 @@ public class Robot implements Serializable
 
     public void setRotateSpeed(int rotateSpeed)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.rotateSpeed = rotateSpeed;
         }
@@ -824,7 +824,7 @@ public class Robot implements Serializable
 
     public double getRobotSize()
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             return robotSize;
         }
@@ -836,7 +836,7 @@ public class Robot implements Serializable
 
     public void setRobotSize(double robotSize)
     {
-        if (pendingRobotChangesList.isEmpty())
+        if (!getChangePending())
         {
             this.robotSize = robotSize;
         }
@@ -902,12 +902,13 @@ public class Robot implements Serializable
 
     public PendingRobotChanges getPendingRobotChanges()
     {
-        return pendingRobotChangesList.isEmpty() ? null : pendingRobotChangesList.get(0);
+        return (pendingRobotChangesList == null ||
+                pendingRobotChangesList.isEmpty()) ? null : pendingRobotChangesList.get(0);
     }
 
     public boolean getChangePending()
     {
-        return !(pendingRobotChangesList.isEmpty());
+        return !(pendingRobotChangesList == null || pendingRobotChangesList.isEmpty());
     }
 
     public void makeChangesPending()
