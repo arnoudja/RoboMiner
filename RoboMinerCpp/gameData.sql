@@ -31,6 +31,7 @@ insert into Ore (id, oreName) values (5, 'Complatix');
 insert into Ore (id, oreName) values (6, 'Prantum');
 insert into Ore (id, oreName) values (7, 'Raxia');
 insert into Ore (id, oreName) values (8, 'Dipolir');
+insert into Ore (id, oreName) values (9, 'Asradon');
 
 -- The tier names
 insert into Tier (id, tierName) values (1, 'Cerbonium quality');
@@ -41,6 +42,7 @@ insert into Tier (id, tierName) values (5, 'Complatix quality');
 insert into Tier (id, tierName) values (6, 'Prantum quality');
 insert into Tier (id, tierName) values (7, 'Raxia quality');
 insert into Tier (id, tierName) values (8, 'Dipolir quality');
+insert into Tier (id, tierName) values (9, 'Asradon quality');
 
 -- The robot part names
 insert into RobotPartType (id, typeName) values (1, 'Ore container');
@@ -168,6 +170,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1718, 171, 8,
 insert into RobotPart (id,  typeId, partName,                         orePriceId, oreCapacity, weight, volume, powerUsage)
                values (171, 1,      'Enhanced Dipolir Ore Container', 171,        100,         42,     105,    17);
 
+-- Ore containers - Asradon
+insert into OrePrice (id, description) values (180, 'Asradon Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1807, 180, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1808, 180, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1809, 180, 9, 10);
+insert into RobotPart (id,  typeId, partName,                orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (180, 1,      'Asradon Ore Container', 180,        105,         44,     110,    18);
+
+insert into OrePrice (id, description) values (181, 'Enhanced Asradon Ore Container price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1817, 181, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1818, 181, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (1819, 181, 9, 75);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (181, 1,      'Enhanced Asradon Ore Container', 181,        110,         46,     115,    19);
+
 
 -- Mining units - Cerbonium
 insert into OrePrice (id, description) values (201, 'Standard Mining Unit price');
@@ -287,6 +304,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2718, 271, 8,
 insert into RobotPart (id,  typeId, partName,                       orePriceId, miningCapacity, weight, volume, powerUsage)
                values (271, 2,      'Enhanced Dipolir Mining Unit', 271,        5,              22,     15,     18);
 
+-- Mining units - Asradon
+insert into OrePrice (id, description) values (280, 'Asradon Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2807, 280, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2808, 280, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2809, 280, 9, 10);
+insert into RobotPart (id,  typeId, partName,              orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (280, 2,      'Asradon Mining Unit', 280,        10,             32,     24,     45);
+
+insert into OrePrice (id, description) values (281, 'Enhanced Asradon Mining Unit price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2817, 281, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2818, 281, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (2819, 281, 9, 75);
+insert into RobotPart (id,  typeId, partName,                       orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (281, 2,      'Enhanced Asradon Mining Unit', 281,        4,              19,     12,     16);
+
 
 -- Batteries - Cerbonium
 insert into OrePrice (id, description) values (301, 'Standard Battery price');
@@ -395,7 +427,7 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3615, 361, 5,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3616, 361, 6, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3617, 361, 7, 75);
 insert into RobotPart (id,  typeId, partName,                 orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (361, 3,      'Enhanced Raxia Battery', 361,        230000,          900,          15,     14,     0);
+               values (361, 3,      'Enhanced Raxia Battery', 361,        200000,          900,          15,     14,     0);
 
 -- Batteries - Dipolir
 insert into OrePrice (id, description) values (370, 'Dipolir Battery price');
@@ -403,14 +435,29 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3706, 370, 6,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3707, 370, 7, 100);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3708, 370, 8, 10);
 insert into RobotPart (id,  typeId, partName,          orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (370, 3,      'Dipolir Battery', 370,        280000,          1200,         16,     15,     0);
+               values (370, 3,      'Dipolir Battery', 370,        240000,          1200,         16,     15,     0);
 
 insert into OrePrice (id, description) values (371, 'Enhanced Dipolir Battery price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3716, 371, 6, 500);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3717, 371, 7, 300);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3718, 371, 8, 75);
 insert into RobotPart (id,  typeId, partName,                   orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (371, 3,      'Enhanced Dipolir Battery', 371,        350000,          1500,         17,     16,     0);
+               values (371, 3,      'Enhanced Dipolir Battery', 371,        280000,          1500,         17,     16,     0);
+
+-- Batteries - Asradon
+insert into OrePrice (id, description) values (380, 'Asradon Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3807, 380, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3808, 380, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3809, 380, 9, 10);
+insert into RobotPart (id,  typeId, partName,          orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (380, 3,      'Asradon Battery', 380,        320000,          1800,         18,     17,     0);
+
+insert into OrePrice (id, description) values (381, 'Enhanced Asradon Battery price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3817, 381, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3818, 381, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (3819, 381, 9, 75);
+insert into RobotPart (id,  typeId, partName,                   orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (381, 3,      'Enhanced Asradon Battery', 381,        360000,          2100,         19,     18,     0);
 
 
 -- Memory modules - Cerbonium
@@ -531,6 +578,20 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4718, 471, 8,
 insert into RobotPart (id,  typeId, partName,                         orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (471, 4,      'Enhanced Dipolir Memory Module', 471,        352,            1,      1,      17);
 
+-- Memory modules - Asradon
+insert into OrePrice (id, description) values (480, 'Asradon Memory Module price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4807, 480, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4808, 480, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4809, 480, 9, 10);
+insert into RobotPart (id,  typeId, partName,                orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (480, 4,      'Asradon Memory Module', 480,        384,            1,      1,      18);
+
+insert into OrePrice (id, description) values (481, 'Enhanced Asradon Memory Module price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4817, 481, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4818, 481, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (4819, 481, 9, 75);
+insert into RobotPart (id,  typeId, partName,                         orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (481, 4,      'Enhanced Asradon Memory Module', 481,        416,            1,      1,      19);
 
 
 -- CPUs - Cerbonium
@@ -651,6 +712,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5718, 571, 8,
 insert into RobotPart (id,  typeId, partName,               orePriceId, cpuCapacity, weight, volume, powerUsage)
                values (571, 5,      'Enhanced Dipolir CPU', 571,        64,          1,      1,      16);
 
+-- CPUs - Asradon
+insert into OrePrice (id, description) values (580, 'Asradon CPU price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5807, 580, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5808, 580, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5809, 580, 9, 10);
+insert into RobotPart (id,  typeId, partName,      orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (580, 5,      'Asradon CPU', 580,        68,          1,      1,      17);
+
+insert into OrePrice (id, description) values (581, 'Enhanced Asradon CPU price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5817, 581, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5818, 581, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (5819, 581, 9, 75);
+insert into RobotPart (id,  typeId, partName,               orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (581, 5,      'Enhanced Asradon CPU', 581,        72,          1,      1,      18);
+
 
 -- Engines - Cerbonium
 insert into OrePrice (id, description) values (601, 'Engine 50 price');
@@ -769,6 +845,21 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6717, 671, 7,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6718, 671, 8, 75);
 insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (671, 6,      'Engine 210A', 671,        210,             210,              600,            25,     20,     75);
+
+-- Engines - Asradon
+insert into OrePrice (id, description) values (680, 'Engine 230E price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6807, 680, 7, 200);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6808, 680, 8, 100);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6809, 680, 9, 10);
+insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (680, 6,      'Engine 230E', 680,        230,             150,              220,            26,     18,     70);
+
+insert into OrePrice (id, description) values (681, 'Engine 230A price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6817, 681, 7, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6818, 681, 8, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (6819, 681, 9, 75);
+insert into RobotPart (id,  typeId, partName,      orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (681, 6,      'Engine 230A', 681,        230,             230,              650,            26,     21,     80);
 
 
 
@@ -974,6 +1065,25 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (17
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
+
+-- Asradon
+insert into OrePrice (id, description) values (1801, 'Mining Area Asradon-1 price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18011, 1801, 1, 45);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18012, 1801, 2, 40);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18013, 1801, 3, 35);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18014, 1801, 4, 30);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18015, 1801, 5, 25);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18016, 1801, 6, 20);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18017, 1801, 7, 15);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (18018, 1801, 8, 10);
+insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (1801, 'Asradon-1', 1801,       100,   100,   2700,     10800,      65,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 2, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 2, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 3, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 1, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 1, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 3);
 
 
 -- Achievements - Cerbonium
@@ -1395,8 +1505,8 @@ insert into AchievementPredecessor (predecessorId, successorId) values (701, 702
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (702, 8, 500);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+insert into Achievement (id,  title,           description,                  achievementPoints, miningAreaId)
+                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10,                1801);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (702, 703);
 
@@ -1409,6 +1519,46 @@ insert into Achievement (id,  title,         description,                achieve
 insert into AchievementPredecessor (predecessorId, successorId) values (703, 704);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (704, 8, 10000);
+
+-- Achievements - Asradon
+insert into Achievement (id,  title,          description,              achievementPoints)
+                 values (800, 'Asradon mining', 'Start mining Asradon ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (703, 800);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (800, 9, 1);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (801, 'More Asradon!', 'Mine even more Asradon ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (800, 801);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (801, 9, 50);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (802, 'More Asradon!', 'Mine even more Asradon ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (801, 802);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (802, 9, 500);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (803, 'More Asradon!', 'Mine even more Asradon ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (802, 803);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (803, 9, 1000);
+
+
+insert into Achievement (id,  title,         description,                achievementPoints)
+                 values (804, 'More Asradon!', 'Mine even more Asradon ore', 10);
+
+insert into AchievementPredecessor (predecessorId, successorId) values (803, 804);
+
+insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (804, 9, 10000);
 
 
 -- initial achievement filling
