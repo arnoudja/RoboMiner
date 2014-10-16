@@ -1391,7 +1391,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (404, 405
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (405, 5, 1000000);
 
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, Achievement)
+insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
                  values (420, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1402);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);

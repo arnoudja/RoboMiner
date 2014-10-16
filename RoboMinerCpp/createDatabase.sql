@@ -27,6 +27,7 @@ drop table if exists PoolItemMiningTotals;
 drop table if exists PoolItem;
 drop table if exists Pool;
 drop table if exists UserAchievement;
+drop table if exists AchievementMiningScoreRequirement;
 drop table if exists AchievementMiningTotalRequirement;
 drop table if exists AchievementPredecessor;
 drop table if exists Achievement;
