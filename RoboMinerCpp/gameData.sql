@@ -1481,7 +1481,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (603, 604
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (604, 7, 10000);
 
 -- Achievements - Dipolir
-insert into Achievement (id,  title,          description,              achievementPoints)
+insert into Achievement (id,  title,            description,                achievementPoints)
                  values (700, 'Dipolir mining', 'Start mining Dipolir ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (602, 700);
@@ -1489,7 +1489,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (602, 700
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (700, 8, 1);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (701, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (700, 701);
@@ -1497,23 +1497,23 @@ insert into AchievementPredecessor (predecessorId, successorId) values (700, 701
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (701, 8, 50);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (702, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+insert into Achievement (id,  title,           description,                  achievementPoints, miningAreaId)
+                 values (702, 'More Dipolir!', 'Mine even more Dipolir ore', 10,                1801);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (701, 702);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (702, 8, 500);
 
 
-insert into Achievement (id,  title,           description,                  achievementPoints, miningAreaId)
-                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10,                1801);
+insert into Achievement (id,  title,           description,                  achievementPoints)
+                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (702, 703);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (703, 8, 1000);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (704, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (703, 704);
@@ -1521,15 +1521,15 @@ insert into AchievementPredecessor (predecessorId, successorId) values (703, 704
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (704, 8, 10000);
 
 -- Achievements - Asradon
-insert into Achievement (id,  title,          description,              achievementPoints)
+insert into Achievement (id,  title,            description,                achievementPoints)
                  values (800, 'Asradon mining', 'Start mining Asradon ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (703, 800);
+insert into AchievementPredecessor (predecessorId, successorId) values (702, 800);
 
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (800, 9, 1);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (801, 'More Asradon!', 'Mine even more Asradon ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (800, 801);
@@ -1537,7 +1537,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (800, 801
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (801, 9, 50);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (802, 'More Asradon!', 'Mine even more Asradon ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (801, 802);
@@ -1545,7 +1545,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (801, 802
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (802, 9, 500);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (803, 'More Asradon!', 'Mine even more Asradon ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (802, 803);
@@ -1553,7 +1553,7 @@ insert into AchievementPredecessor (predecessorId, successorId) values (802, 803
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (803, 9, 1000);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
+insert into Achievement (id,  title,           description,                  achievementPoints)
                  values (804, 'More Asradon!', 'Mine even more Asradon ore', 10);
 
 insert into AchievementPredecessor (predecessorId, successorId) values (803, 804);
