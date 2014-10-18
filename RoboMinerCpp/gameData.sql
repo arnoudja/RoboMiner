@@ -1561,27 +1561,6 @@ insert into AchievementPredecessor (predecessorId, successorId) values (803, 804
 insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (804, 9, 10000);
 
 
--- initial achievement filling
-insert into UserAchievement
-(usersId, achievementId)
-select Users.id as usersId, NewAchievement.id as achievementId
-from Users, Achievement NewAchievement
-where not exists (
-    select *
-    from UserAchievement
-    where UserAchievement.usersId = Users.id
-    and UserAchievement.achievementId = NewAchievement.id)
-and not exists
-(
-    select *
-    from AchievementPredecessor
-    left outer join UserAchievement
-    on UserAchievement.achievementId = AchievementPredecessor.predecessorId
-    where AchievementPredecessor.successorId = NewAchievement.id
-    and (UserAchievement.claimed IS NULL OR UserAchievement.claimed = false)
-);
-
-
 -- Calculate the tier levels
 update RobotPart
 set tierId = 
