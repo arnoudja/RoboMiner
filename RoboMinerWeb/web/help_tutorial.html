@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2014 Arnoud Jagerman
+
+This file is part of RoboMiner.
+
+RoboMiner is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+RoboMiner is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+    <head>
+        <title>RoboMiner - Tutorial</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/robominer.css">
+    </head>
+    <body class="helptext">
+        <div class="helptext">
+            <h1>Tutorial</h1>
+            <p class="helptext">
+                RoboMiner is an on-line programming game.
+                The goal of the game is to improve a mining robot to mine as efficient as possible.
+            </p>
+            <p class="helptext">
+                There are several options to improve the mining efficiency of the robot:
+            </p>
+            <ul>
+                <li>Upgrade the robot equipment.</li>
+                <li>Improve the robot program.</li>
+                <li>Mine in better mining area's.</li>
+                <li>Avoid a robot being idle.</li>
+            </ul>
+            <p class="helptext">
+                This tutorial will explain the first steps in improving your robot.
+            </p>
+            <h2>Step 1: Keep your robot busy</h2>
+            <p class="helptext">
+                An idle robot isn't very useful.
+                When you've logged in, you end up on the 'Mining queue' page.
+                Click on the 'add' button.
+                The status will change to 'Mining' and a count-down timer will start.
+            </p>
+            <p class="helptext">
+                When the count-down timer reaches zero, click on the 'add' button again.
+                The mining process will continue when you switch to another page, log out of RoboMiner and even when you turn off your computer.
+            </p>
+            <p class="helptext">
+                By mining you generate ore, which will be useful later.
+            </p>
+            <h2>Step 2: Claiming achievements</h2>
+            <p class="helptext">
+                Now click on the 'Achievements' item in the top menu bar.
+                When you've finished some mining sessions in step 1, the first achievement will be claimable.
+            </p>
+            <p class="helptext">
+                Click the 'claim' button.
+                In this case, a mining queue slot is one of the rewards.
+                Return to the 'Mining queue' page and click the 'add' button.
+            </p>
+            <p class="helptext">
+                As you can see it is possible to have two mining sessions in the queue, which makes it much easier to keep your robot busy.
+            </p>
+            <p class="helptext">
+                Check your achievements regularly to check for claimable achievements.
+            </p>
+            <h2>Step 3: Check the mining results</h2>
+            <p class="helptext">
+                Now open the 'Mining results' page.
+            </p>
+            <p class="helptext">
+                Here you can see the results of your last mining sessions.
+                Click on the 'View' link to start an animation of the mining session.
+                Or click on the '+' button to see more details.
+            </p>
+            <p class="helptext">
+                You can use this information to decide how to improve your robot next.
+            </p>
+            <h2>Step 4: Upgrade your robot</h2>
+            <p class="helptext">
+                When you've got at least 10 Cerbonium ore, go to the 'Shop' page.
+                An 'Enhanced Ore Container' is a good first upgrade.
+                Switch the 'Category' selection if you prefer something else.
+            </p>
+            <p class="helptext">
+                Click the 'Buy' button to buy the item.
+            </p>
+            <p class="helptext">
+                Now open the 'Robot' page.
+                Switch the selection of the type of item you've bought to the newly bought item and click 'Apply'.
+            </p>
+            <p class="helptext">
+                Repeat this process for other upgrades, but don't forget to check your mining results to find the weakest spots of your robot.
+            </p>
+            <h2>Step 5: Improve your robot program</h2>
+            <p class="helptext">
+                This is the most challenging step of improving your robot.
+                Open the 'Edit code' page.
+            </p>
+            <p class="helptext">
+                You'll see the program currently active for your robot.
+                When the program ends, it will restart until either the battery is depleted or the mining session is over.
+            </p>
+            <p class="helptext">
+                A first good change is the mine() statement.
+                In most cases, the robot won't be able to mine all the ore on the current location in one mining step.
+                So by executing mine() only one time, a lot of ore is skipped.
+                To see this for yourself, view some mining animations in the 'Mining results' page.
+            </p>
+            <p class="helptext">
+                Replace the line 'mine();' with 'while (mine());'. Now click on the Save button.
+            </p>
+            <p class="helptext">
+                If your robot is idle, the program is applied immediately. If not, you'll get a warning.
+            </p>
+            <p class="helptext">
+                To apply the robot code when the robot is busy, go to the Robot page and press the Apply button.
+                The program will be used by your robot after the current mining session.
+            </p>
+            <p class="helptext">
+                Wait for at least one mining session to finish and view the animation on the 'Mining results' page.
+            </p>
+            <p class="helptext">
+                Click on the Help button on the Edit code page for more information about improving your code.
+            </p>
+        </div>
+    </body>
+</html>

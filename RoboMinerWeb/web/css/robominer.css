@@ -243,6 +243,7 @@ td.shopPartName {
  ******************************************************/
 
 div.userassets {
+    clear: right;
     float: right;
     min-height: 50vh;
 }

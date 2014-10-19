@@ -35,6 +35,8 @@
     <body>
         <rm:defaultpage currentform="miningQueue" username="${user.username}">
 
+            <button class="helpbutton" onclick="window.open('<c:url value='help_tutorial.html'/>')">help</button>
+
             <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
 
             <form id='miningqueueform' action="<c:url value='miningQueue'/>" method="post">
