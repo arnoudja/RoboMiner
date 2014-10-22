@@ -1168,7 +1168,7 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
                      values (210, 2,             10,   10,                1);
 
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2101, 210, 1003, 900.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2102, 210, 1102, 450.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2102, 210, 1103, 650.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2103, 210, 1201, 350.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2104, 210, 1301, 250.0);
 
@@ -1176,10 +1176,10 @@ insert into AchievementStepMiningScoreRequirement (id, achievementStepId, mining
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
                      values (211, 2,             11,   10,                1);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2111, 211, 1103, 600.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2112, 211, 1202, 450.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2113, 211, 1301, 350.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2114, 211, 1401, 300.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2111, 211, 1103, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2112, 211, 1203, 500.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2113, 211, 1302, 450.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2114, 211, 1401, 400.0);
 
 
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
@@ -1385,8 +1385,7 @@ insert into AchievementStepMiningScoreRequirement (id, achievementStepId, mining
 insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
                      values (1102, 11,            2,    10,                1003);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110201, 1102, 1001, 860.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110202, 1102, 1002, 850.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110201, 1102, 1002, 800.0);
 
 
 -- Achievements - Oxaria - Quantity mining
@@ -1440,14 +1439,13 @@ insert into AchievementPredecessor (id, predecessorId, predecessorStep, successo
 insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
                      values (2101, 21,            1,    10,                1102);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210101, 2101, 1101, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210101, 2101, 1101, 400.0);
 
 
 insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
                      values (2102, 21,            2,    10,                1103);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210201, 2102, 1101, 750.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210202, 2102, 1102, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210201, 2102, 1102, 450.0);
 
 
 -- Achievements - Lithabine - Quantity mining
@@ -1507,8 +1505,7 @@ insert into AchievementStepMiningScoreRequirement (id, achievementStepId, mining
 insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
                      values (3102, 31,            2,    10,                1203);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310201, 3102, 1201, 650.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310202, 3102, 1202, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310201, 3102, 1202, 600.0);
 
 
 -- Achievements - Neudralion - Quantity mining
