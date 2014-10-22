@@ -1559,7 +1559,7 @@ insert into AchievementPredecessor (id, predecessorId, predecessorStep, successo
 insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
                      values (4101, 41,            1,    10,                1302);
 
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (410101, 4101, 1301, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (410101, 4101, 1301, 350.0);
 
 
 -- Achievements - Complatix - Quantity mining
