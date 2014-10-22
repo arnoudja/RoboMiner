@@ -45,8 +45,6 @@
                 <input type='hidden' id='miningAreaAddId' name='miningAreaAddId' value='' />
                 <input type='hidden' id='submitType' name='submitType' value='' />
 
-                <c:set var="canremove" value="false"/>
-
                 <c:forEach var='robot' items="${user.robotList}">
                     <table class="miningqueue">
                         <caption>${fn:escapeXml(robot.robotName)}</caption>
@@ -69,33 +67,33 @@
                                             </c:if>
                                         </c:forEach>
                                         <input type="checkbox" name="selectedQueueItemId" value="${miningQueueId}" ${ischecked ? 'checked' : ''}/>
-                                        <c:set var="canremove" value="true"/>
                                     </c:if>
                                 </td>
                                 <td>${fn:escapeXml(miningQueueItem.miningQueue.miningArea.areaName)}</td>
                                 <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
-                                <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" ></td>
+                                <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" >
+                                    <script>
+                                        <c:choose>
+                                            <c:when test="${rownr eq 0}">
+                                                countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                                    function(secondsLeft) {
+                                                        document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                                    },
+                                                    function() {
+                                                        document.getElementById("miningqueueform").submit();
+                                                    });
+                                            </c:when>
+                                            <c:otherwise>
+                                                countdownTimer(${miningQueueItem.timeLeft} + 1,
+                                                    function(secondsLeft) {
+                                                        document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
+                                                    },
+                                                    function() {});
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </script>
+                                </td>
                             </tr>
-                            <script>
-                                <c:choose>
-                                    <c:when test="${rownr eq 0}">
-                                        countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                            function(secondsLeft) {
-                                                document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                            },
-                                            function() {
-                                                document.getElementById("miningqueueform").submit();
-                                            });
-                                    </c:when>
-                                    <c:otherwise>
-                                        countdownTimer(${miningQueueItem.timeLeft} + 1,
-                                            function(secondsLeft) {
-                                                document.getElementById('timeLeft' + ${miningQueueItem.miningQueue.id}).innerHTML = formatTimeLeft(secondsLeft);
-                                            },
-                                            function() {});
-                                    </c:otherwise>
-                                </c:choose>
-                            </script>
                             <c:set var="rownr" value="${rownr + 1}"/>
                         </c:forEach>
                         <tr>
@@ -116,7 +114,11 @@
                                     <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
                                 </c:if>
                             </td>
-                            <td></td>
+                            <td>
+                                <c:if test="${user.miningQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
+                                    <input type='button' value='fill' onclick="fillMiningQueue(${robot.id}, 'miningArea${robot.id}');"/>
+                                </c:if>
+                            </td>
                         </tr>
                     </table>
                 </c:forEach>
