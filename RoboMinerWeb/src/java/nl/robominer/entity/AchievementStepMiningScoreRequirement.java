@@ -85,16 +85,33 @@ public class AchievementStepMiningScoreRequirement implements Serializable
         return achievementStepId;
     }
 
+    /**
+     * Retrieve the mining area for this requirement.
+     *
+     * @return The mining area for this requirement.
+     */
     public MiningArea getMiningArea()
     {
         return miningArea;
     }
 
+    /**
+     * Retrieve the minimum score for this requirement.
+     *
+     * @return The minimum score for this requirement.
+     */
     public double getMinimumScore()
     {
         return minimumScore;
     }
 
+    /**
+     * Check whether this requirement is met by the specified user.
+     *
+     * @param user The user to check this requirement for.
+     *
+     * @return true if the requirement is met by the specified user, else false.
+     */
     public boolean isAchievedByUser(Users user)
     {
         return (user.getMiningAreaScore(miningArea.getId()) >= minimumScore);
@@ -114,6 +131,7 @@ public class AchievementStepMiningScoreRequirement implements Serializable
         {
             return false;
         }
+
         AchievementStepMiningScoreRequirement other = (AchievementStepMiningScoreRequirement)object;
         return !((this.id == null && other.id != null) ||
                  (this.id != null && !this.id.equals(other.id)));

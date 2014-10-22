@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "RobotMiningAreaScore.findAll", query = "SELECT r FROM RobotMiningAreaScore r"),
     @NamedQuery(name = "RobotMiningAreaScore.findByRobotId", query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robotMiningAreaScorePK.robotId = :robotId"),
-    @NamedQuery(name = "RobotMiningAreaScore.findByMiningAreaId", query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robotMiningAreaScorePK.miningAreaId = :miningAreaId AND r.totalRuns >= :minimumRuns ORDER BY r.score DESC")})
+    @NamedQuery(name = "RobotMiningAreaScore.findByMiningAreaId", query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robotMiningAreaScorePK.miningAreaId = :miningAreaId ORDER BY r.score DESC")})
 public class RobotMiningAreaScore implements Serializable {
 
     private static final long serialVersionUID = 1L;

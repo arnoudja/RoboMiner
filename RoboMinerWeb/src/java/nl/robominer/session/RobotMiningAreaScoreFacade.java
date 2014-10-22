@@ -57,15 +57,12 @@ public class RobotMiningAreaScoreFacade extends AbstractFacade<RobotMiningAreaSc
      * descending score.
      *
      * @param miningAreaId The mining area to retrieve the scores for.
-     * @param minimumRuns The minimum number of runs a robot must have made in
-     *                    the mining area to return its result.
      * @param maximumResults The maximum number of results to return.
      * @return The ordered list of robot scores.
      */
-    public List<RobotMiningAreaScore> findByMiningAreaId(int miningAreaId, int minimumRuns, int maximumResults) {
+    public List<RobotMiningAreaScore> findByMiningAreaId(int miningAreaId, int maximumResults) {
         Query query = getEntityManager().createNamedQuery("RobotMiningAreaScore.findByMiningAreaId", RobotMiningAreaScore.class);
         query.setParameter("miningAreaId", miningAreaId);
-        query.setParameter("minimumRuns", minimumRuns);
         query.setMaxResults(maximumResults);
         return query.getResultList();
     }

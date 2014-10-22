@@ -113,41 +113,83 @@ public class AchievementStep implements Serializable
         return achievementId;
     }
 
+    /**
+     * Retrieve the step number of this achievement step.
+     *
+     * @return The step number of this achievement step.
+     */
     public int getStep()
     {
         return step;
     }
 
+    /**
+     * Retrieve the number of achievement points awarded when completing this step.
+     *
+     * @return The number of achievement points awarded when completing this step.
+     */
     public int getAchievementPoints()
     {
         return achievementPoints;
     }
 
+    /**
+     * Retrieve the mining queue size increment awarded by completing this step.
+     *
+     * @return The mining queue size increment awarded by completing this step.
+     */
     public int getMiningQueueReward()
     {
         return miningQueueReward;
     }
 
+    /**
+     * Retrieve the robot reward for this achievement step.
+     *
+     * @return The number of robots after completing this achievement step.
+     */
     public int getRobotReward()
     {
         return robotReward;
     }
 
+    /**
+     * Retrieve the mining area reward for this achievement step.
+     *
+     * @return The mining area reward, or null if none.
+     */
     public MiningArea getMiningArea()
     {
         return miningArea;
     }
 
+    /**
+     * Retrieve the list of mining total requirements for this achievement step.
+     *
+     * @return The list of mining total requirements for this achievement step.
+     */
     public List<AchievementStepMiningTotalRequirement> getAchievementStepMiningTotalRequirementList()
     {
         return achievementStepMiningTotalRequirementList;
     }
 
+    /**
+     * Retrieve the list of mining score requirements for this achievement step.
+     *
+     * @return The list of mining score requirements for this achievement step.
+     */
     public List<AchievementStepMiningScoreRequirement> getAchievementStepMiningScoreRequirementList()
     {
         return achievementStepMiningScoreRequirementList;
     }
 
+    /**
+     * Check whether the requirements for this achievement step are met by the specified user.
+     *
+     * @param user The user to check the requirements against.
+     *
+     * @return true if all requirements are met, else false.
+     */
     public boolean isAchievedByUser(Users user)
     {
         for (AchievementStepMiningTotalRequirement achievementStepMiningTotalRequirement : achievementStepMiningTotalRequirementList)

@@ -85,16 +85,33 @@ public class AchievementStepMiningTotalRequirement implements Serializable
         return achievementStepId;
     }
 
+    /**
+     * Retrieve the ore this requirement is for.
+     *
+     * @return The ore this requirement is for.
+     */
     public Ore getOre()
     {
         return ore;
     }
 
+    /**
+     * Retrieve the ore mined amount requirement.
+     *
+     * @return The ore mined amount requirement.
+     */
     public int getAmount()
     {
         return amount;
     }
 
+    /**
+     * Check whether this requirement is met by the specified user.
+     *
+     * @param user The user to check the requirement for.
+     *
+     * @return true if the requirement is met by the specified user, else false.
+     */
     public boolean isAchievedByUser(Users user)
     {
         return (user.getTotalOreMined(ore.getId()) >= amount);

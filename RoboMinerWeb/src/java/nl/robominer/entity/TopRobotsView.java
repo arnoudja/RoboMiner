@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TopRobotsView.findAll", query = "SELECT t FROM TopRobotsView t"),
-    @NamedQuery(name = "TopRobotsView.findTopRobots", query = "SELECT t FROM TopRobotsView t WHERE t.totalRuns >= :minimalRuns ORDER BY t.orePerRun DESC")})
+    @NamedQuery(name = "TopRobotsView.findTopRobots", query = "SELECT t FROM TopRobotsView t ORDER BY t.orePerRun DESC")})
 public class TopRobotsView implements Serializable {
 
     private static final long serialVersionUID = 1L;

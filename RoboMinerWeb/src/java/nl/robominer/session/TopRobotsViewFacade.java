@@ -44,10 +44,9 @@ public class TopRobotsViewFacade extends AbstractFacade<TopRobotsView> {
         super(TopRobotsView.class);
     }
 
-    public List<TopRobotsView> getTopRobots(int maximumResults, int minimumNumberOfRuns) {
+    public List<TopRobotsView> getTopRobots(int maximumResults) {
 
         Query query = getEntityManager().createNamedQuery("TopRobotsView.findTopRobots", TopRobotsView.class);
-        query.setParameter("minimalRuns", minimumNumberOfRuns);
         query.setMaxResults(maximumResults);
         return query.getResultList();
     }

@@ -109,6 +109,7 @@ public class AchievementPredecessor implements Serializable
         {
             return false;
         }
+
         AchievementPredecessor other = (AchievementPredecessor)object;
         return !((this.id == null && other.id != null) ||
                  (this.id != null && !this.id.equals(other.id)));

@@ -36,6 +36,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ * Entity class for user achievement progress information.
  *
  * @author Arnoud Jagerman
  */
@@ -45,9 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries(
 {
     @NamedQuery(name = "UserAchievement.findByUsersId",
-                query = "SELECT u FROM UserAchievement u WHERE u.user.id = :usersId"),
-    @NamedQuery(name = "UserAchievement.findByUsersAndAchievementId",
-                query = "SELECT u FROM UserAchievement u WHERE u.user.id = :usersId AND u.achievement.id = :achievementId")
+                query = "SELECT u FROM UserAchievement u WHERE u.user.id = :usersId")
 })
 public class UserAchievement implements Serializable
 {
@@ -90,31 +89,40 @@ public class UserAchievement implements Serializable
         return id;
     }
 
+    /**
+     * Retrieve the user this achievement progress belongs to.
+     * @return The user this achievement progress belongs to.
+     */
     public Users getUser()
     {
         return user;
     }
 
-    public void setUser(Users user)
-    {
-        this.user = user;
-    }
-
+    /**
+     * Retrieve the achievement belonging to this progress.
+     *
+     * @return The achievement belonging to this progress.
+     */
     public Achievement getAchievement()
     {
         return achievement;
     }
 
+    /**
+     * Retrieve the number of achievement steps already completed.
+     *
+     * @return The number of achievement steps already completed.
+     */
     public int getStepsClaimed()
     {
         return stepsClaimed;
     }
 
-    public void setStepsClaimed(int stepsClaimed)
-    {
-        this.stepsClaimed = stepsClaimed;
-    }
-
+    /**
+     * Retrieve the number of achievement points earned so far.
+     *
+     * @return The number of achievement points earned so far.
+     */
     public int getAchievementPointsEarned()
     {
         int total = 0;
@@ -123,10 +131,16 @@ public class UserAchievement implements Serializable
         {
             total += achievement.getAchievementStep(i).getAchievementPoints();
         }
-        
+
         return total;
     }
 
+    /**
+     * Check whether the next step is claimable.
+     *
+     * @return true if all requirements for the next step are met, false if
+     * not all requirements are met or there is no next step.
+     */
     public boolean isClaimable()
     {
         AchievementStep achievementStep = achievement.getAchievementStep(stepsClaimed + 1);
@@ -134,6 +148,12 @@ public class UserAchievement implements Serializable
         return (achievementStep != null && achievementStep.isAchievedByUser(user));
     }
 
+    /**
+     * Claim the next achievement step.
+     *
+     * @return true if the next achievement step is claimed successfully, false
+     * if not all requirements are met or there is no next step.
+     */
     public boolean claimNextStep()
     {
         AchievementStep achievementStep = achievement.getAchievementStep(stepsClaimed + 1);
@@ -186,6 +206,7 @@ public class UserAchievement implements Serializable
         {
             return false;
         }
+
         UserAchievement other = (UserAchievement)object;
         return !((this.id == null && other.id != null) ||
                  (this.id != null && !this.id.equals(other.id)));

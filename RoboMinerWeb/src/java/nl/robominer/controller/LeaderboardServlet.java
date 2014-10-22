@@ -53,11 +53,6 @@ public class LeaderboardServlet extends RoboMinerServletBase {
     private static final int MAX_ENTRIES = 10;
 
     /**
-     * Ignore entries for values with less rally runs than this.
-     */
-    private static final int MIN_RUNS    = 3;
-
-    /**
      * Bean to handle the database actions for the top robots database view.
      */
     @EJB
@@ -95,7 +90,7 @@ public class LeaderboardServlet extends RoboMinerServletBase {
             throws ServletException, IOException {
 
         // Add the list of top robots to the request.
-        request.setAttribute("topRobotsList", topRobotsViewFacade.getTopRobots(MAX_ENTRIES, MIN_RUNS));
+        request.setAttribute("topRobotsList", topRobotsViewFacade.getTopRobots(MAX_ENTRIES));
 
         // Add the list of mining areas to the request.
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
@@ -104,7 +99,7 @@ public class LeaderboardServlet extends RoboMinerServletBase {
         // Add the mapping of mining area to the list of robot scores.
         Map<Integer, List<RobotMiningAreaScore> > robotMiningAreaScoreMap = new HashMap<>();
         for (MiningArea miningArea : miningAreaList) {
-            robotMiningAreaScoreMap.put(miningArea.getId(), robotMiningAreaScoreFacade.findByMiningAreaId(miningArea.getId(), MIN_RUNS, MAX_ENTRIES));
+            robotMiningAreaScoreMap.put(miningArea.getId(), robotMiningAreaScoreFacade.findByMiningAreaId(miningArea.getId(), MAX_ENTRIES));
         }
         request.setAttribute("robotMiningAreaScoreMap", robotMiningAreaScoreMap);
 

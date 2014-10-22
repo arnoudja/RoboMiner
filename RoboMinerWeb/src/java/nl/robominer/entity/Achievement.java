@@ -35,6 +35,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -89,6 +90,9 @@ public class Achievement implements Serializable
     @JoinColumn(name = "AchievementPredecessor.successorId")
     private List<AchievementPredecessor> achievementPredecessorList;
 
+    @Transient
+    private int totalAchievementPoints = -1;
+
     public Achievement()
     {
     }
@@ -98,48 +102,89 @@ public class Achievement implements Serializable
         return id;
     }
 
+    /**
+     * Retrieve the title of the achievement.
+     *
+     * @return The title of the achievement.
+     */
     public String getTitle()
     {
         return title;
     }
 
+    /**
+     * Retrieve the description of the achievement.
+     *
+     * @return The description of the achievement.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * Retrieve the total number of achievement steps.
+     *
+     * @return The total number of achievement steps.
+     */
     public int getNumberOfSteps()
     {
         return achievementStepMap.size();
     }
 
+    /**
+     * Retrieve the specified achievement step.
+     *
+     * @param step The step number to retrieve the achievement step for.
+     *
+     * @return The achievement step information, or null if the specified
+     * step does not exist.
+     */
     public AchievementStep getAchievementStep(int step)
     {
         return achievementStepMap.get(step);
     }
 
+    /**
+     * Retrieve the list of predecessors for this achievement.
+     *
+     * @return The list of predecessors for this achievement.
+     */
     public List<AchievementPredecessor> getAchievementPredecessorList()
     {
         return achievementPredecessorList;
     }
 
+    /**
+     * Retrieve the list of successors for this achievement.
+     *
+     * @return The list of successors for this achievement.
+     */
     public List<AchievementPredecessor> getAchievementSuccessorList()
     {
         return achievementSuccessorList;
     }
 
+    /**
+     * Retrieve the total number of achievement points for all steps.
+     *
+     * @return The total number of achievement points for all steps.
+     */
     public int getTotalAchievementPoints()
     {
-        int total = 0;
-
-        for (AchievementStep achievementStep : achievementStepMap.values())
+        if (totalAchievementPoints < 0)
         {
-            total += achievementStep.getAchievementPoints();
+            totalAchievementPoints = 0;
+
+            for (AchievementStep achievementStep : achievementStepMap.values())
+            {
+                totalAchievementPoints += achievementStep.getAchievementPoints();
+            }
         }
-        
-        return total;
+
+        return totalAchievementPoints;
     }
-    
+
     @Override
     public int hashCode()
     {
@@ -154,6 +199,7 @@ public class Achievement implements Serializable
         {
             return false;
         }
+
         Achievement other = (Achievement)object;
         return (this.id != null || other.id == null) &&
                 (this.id == null || this.id.equals(other.id));
