@@ -27,9 +27,10 @@ drop table if exists PoolItemMiningTotals;
 drop table if exists PoolItem;
 drop table if exists Pool;
 drop table if exists UserAchievement;
-drop table if exists AchievementMiningScoreRequirement;
-drop table if exists AchievementMiningTotalRequirement;
+drop table if exists AchievementStepMiningScoreRequirement;
+drop table if exists AchievementStepMiningTotalRequirement;
 drop table if exists AchievementPredecessor;
+drop table if exists AchievementStep;
 drop table if exists Achievement;
 drop table if exists RobotLifetimeResult;
 drop table if exists RobotActionsDone;
@@ -323,46 +324,59 @@ create table Achievement
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
 title VARCHAR(255) NOT NULL,
-description TEXT NOT NULL,
+description TEXT NOT NULL
+);
+
+create table AchievementStep
+(
+id INT AUTO_INCREMENT PRIMARY KEY,
+achievementId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
+step INT NOT NULL,
 achievementPoints INT NOT NULL DEFAULT 10,
 miningQueueReward INT NOT NULL DEFAULT 0,
 robotReward INT NOT NULL DEFAULT 0,
-miningAreaId INT NULL REFERENCES MiningArea (id) ON DELETE SET NULL
+miningAreaId INT NULL REFERENCES MiningArea (id) ON DELETE SET NULL,
+CONSTRAINT UNIQUE INDEX (achievementId, step)
 );
 
 
 create table AchievementPredecessor
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 predecessorId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
+predecessorStep INT NOT NULL,
 successorId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
-PRIMARY KEY (predecessorId, successorId)
+CONSTRAINT UNIQUE INDEX (predecessorId, successorId)
 );
 
 
-create table AchievementMiningTotalRequirement
+create table AchievementStepMiningTotalRequirement
 (
-achievementId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
+id INT AUTO_INCREMENT PRIMARY KEY,
+achievementStepId INT NOT NULL REFERENCES AchievementStep (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
-PRIMARY KEY (achievementId, oreId)
+CONSTRAINT UNIQUE INDEX (AchievementStepId, oreId)
 );
 
 
-create table AchievementMiningScoreRequirement
+create table AchievementStepMiningScoreRequirement
 (
-achievementId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
+id INT AUTO_INCREMENT PRIMARY KEY,
+achievementStepId INT NOT NULL REFERENCES AchievementStep (id) ON DELETE CASCADE,
 miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
 minimumScore DOUBLE NOT NULL,
-PRIMARY KEY (achievementId, miningAreaId)
+CONSTRAINT UNIQUE INDEX (achievementStepId, miningAreaId)
 );
 
 
 create table UserAchievement
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
 achievementId INT NOT NULL REFERENCES Achievement (id) ON DELETE CASCADE,
-claimed BOOL NOT NULL DEFAULT FALSE,
-PRIMARY KEY (usersId, achievementId)
+stepsClaimed INT NOT NULL DEFAULT 0,
+CONSTRAINT UNIQUE INDEX (usersId, achievementId)
 );
 
 

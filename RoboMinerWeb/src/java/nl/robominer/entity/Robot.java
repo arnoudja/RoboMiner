@@ -886,6 +886,19 @@ public class Robot implements Serializable
         return robotLifetimeResultList;
     }
 
+    public int getTotalOreMined(int oreId)
+    {
+        for (RobotLifetimeResult robotLifetimeResult : robotLifetimeResultList)
+        {
+            if (robotLifetimeResult.getOre().getId() == oreId)
+            {
+                return robotLifetimeResult.getAmount();
+            }
+        }
+
+        return 0;
+    }
+
     public double getMiningAreaScore(int miningAreaId)
     {
         for (RobotMiningAreaScore robotMiningAreaScore

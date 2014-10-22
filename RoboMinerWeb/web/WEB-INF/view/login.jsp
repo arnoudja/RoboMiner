@@ -64,6 +64,12 @@
                     <input type='submit' value='Log in'/>
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
+                    <h1>Latest news</h1>
+                    <p>22-10-2014 The achievements are changed.</p>
+                    <p>
+                        Please visit the Achievements page and claim your achievements.
+                        Some requirements are changed, so be prepared for some new challenges.
+                    </p>
                 </form>
                 <form id="signupForm" action="<c:url value='Login'/>" method="post" onsubmit="return checkSignupForm(this);">
                     <h1>Sign up</h1>

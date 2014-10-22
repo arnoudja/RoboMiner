@@ -32,7 +32,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import nl.robominer.entity.Achievement;
 import nl.robominer.entity.MiningArea;
 import nl.robominer.entity.MiningAreaLifetimeResult;
 import nl.robominer.entity.MiningOreResult;
@@ -41,11 +40,9 @@ import nl.robominer.entity.Ore;
 import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
 import nl.robominer.entity.PendingRobotChanges;
-import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
-import nl.robominer.entity.UserAchievement;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
@@ -54,11 +51,9 @@ import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.PendingRobotChangesFacade;
-import nl.robominer.session.ProgramSourceFacade;
 import nl.robominer.session.RobotFacade;
 import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
-import nl.robominer.session.UserAchievementFacade;
 import nl.robominer.session.UserOreAssetFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
@@ -137,18 +132,6 @@ public class UserAssets
      */
     @EJB
     private AchievementFacade achievementFacade;
-
-    /**
-     * Bean to handle the database actions for the user achievements.
-     */
-    @EJB
-    private UserAchievementFacade userAchievementFacade;
-
-    /**
-     * Bean to handle the database actions for the program sources.
-     */
-    @EJB
-    private ProgramSourceFacade programSourceFacade;
 
     /**
      * Bean to handle the database actions for pending robot changes.
@@ -445,51 +428,6 @@ public class UserAssets
     }
 
     /**
-     * For the specified user, mark the specified achievement as completed, add
-     * the achievement rewards to the user assets and make the follow-up
-     * achievements available.
-     *
-     * @param usersId       The id of the user to complete the achievement for.
-     * @param achievementId The id of the achievement to complete.
-     *
-     * @throws NotSupportedException      NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws SystemException            NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws RollbackException          NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws HeuristicMixedException    NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws HeuristicRollbackException NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     */
-    public void claimAchievement(int usersId, int achievementId)
-            throws NotSupportedException, SystemException, RollbackException,
-                   HeuristicMixedException, HeuristicRollbackException
-    {
-        transaction.begin();
-
-        Users user = usersFacade.findById(usersId);
-        UserAchievement userAchievement = userAchievementFacade
-                .findByUsersAndAchievementId(usersId, achievementId);
-
-        if (userAchievement != null && !userAchievement.getClaimed())
-        {
-            processUserAchievement(user, userAchievement);
-
-            userAchievementFacade.edit(userAchievement);
-            usersFacade.edit(user);
-        }
-
-        transaction.commit();
-    }
-
-    /**
      * Create a new user, or specify the reason why this is not possible.
      *
      * @param newuser The Users instance to add, with its username, email and
@@ -529,135 +467,15 @@ public class UserAssets
         }
         else
         {
-            addNewUserData(newuser);
+            newuser.addUserAchievementIfApplicable(achievementFacade.findById(1));
+            newuser.getUserAchievement(1).claimNextStep();
+
+            usersFacade.edit(newuser);
 
             transaction.commit();
         }
 
         return result;
-    }
-
-    /**
-     * Claim the first achievement for the user.
-     *
-     * @param user The user to claim the first achievement for.
-     */
-    private void addNewUserData(Users user)
-    {
-        UserAchievement userAchievement = new UserAchievement(user.getId(),
-                                                achievementFacade.findById(1));
-        userAchievementFacade.create(userAchievement);
-
-        processUserAchievement(user, userAchievement);
-
-        userAchievementFacade.edit(userAchievement);
-        usersFacade.edit(user);
-    }
-
-    /**
-     * For the specified user, mark the specified achievement as completed, add
-     * the achievement rewards to the user assets and make the follow-up
-     * achievements available.
-     *
-     * @param user            The user to process the achievement for.
-     * @param userAchievement The UserAchievement to process the claiming for.
-     */
-    private void processUserAchievement(Users user,
-                                        UserAchievement userAchievement)
-    {
-        userAchievement.setClaimed(true);
-
-        Achievement achievement = achievementFacade.findById(
-                userAchievement.getUserAchievementPK().getAchievementId());
-
-        user.increaseAchievementPoints(achievement.getAchievementPoints());
-        user.increaseMiningQueueSize(achievement.getMiningQueueReward());
-
-        if (achievement.getMiningArea() != null)
-        {
-            user.addMiningArea(achievement.getMiningArea());
-        }
-
-        if (achievement.getRobotReward() > user.getRobotList().size())
-        {
-            addRobot(user);
-        }
-
-        List<Achievement> achievementSuccessorList = achievement
-                .getAchievementSuccessorList();
-
-        for (Achievement successor : achievementSuccessorList)
-        {
-            if (userAchievementFacade.findByUsersAndAchievementId(user.getId(),
-                    successor.getId()) == null)
-            {
-                UserAchievement successorUserAchievement = new UserAchievement(
-                        user.getId(), successor);
-                userAchievementFacade.create(successorUserAchievement);
-            }
-        }
-    }
-
-    /**
-     * Add a new robot for the specified user.
-     *
-     * @param user The user to add the robot for.
-     */
-    private void addRobot(Users user)
-    {
-        // Retrieve the initial robot parts
-        RobotPart oreContainer  = robotPartFacade.find(101);
-        RobotPart miningUnit    = robotPartFacade.find(201);
-        RobotPart battery       = robotPartFacade.find(301);
-        RobotPart memoryModule  = robotPartFacade.find(401);
-        RobotPart cpu           = robotPartFacade.find(501);
-        RobotPart engine        = robotPartFacade.find(601);
-
-        // Add the initial robot parts for the user
-        addRobotPart(user.getId(), oreContainer.getId(), true);
-        addRobotPart(user.getId(), miningUnit.getId(), true);
-        addRobotPart(user.getId(), battery.getId(), true);
-        addRobotPart(user.getId(), memoryModule.getId(), true);
-        addRobotPart(user.getId(), cpu.getId(), true);
-        addRobotPart(user.getId(), engine.getId(), true);
-
-        // Retrieve or create a suitable program
-        ProgramSource programSource = getSuitableProgramSource(user.getId(),
-                                                               memoryModule
-                                                               .getMemoryCapacity());
-
-        // Create the new robot for the user
-        Robot robot = new Robot(user);
-        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu,
-                           engine);
-        robot.setProgramSourceId(programSource.getId());
-        robot.setSourceCode(programSource.getSourceCode());
-        robotFacade.create(robot);
-    }
-
-    /**
-     * Find a valid program from the specified user with a compiled size not
-     * exceeding the specified maximum. If no such program exists yet, create
-     * one.
-     *
-     * @param userId  The user to retrieve or create the program for.
-     * @param maxSize The maximum compiled size of the program.
-     *
-     * @return The ProgramSource instance.
-     */
-    private ProgramSource getSuitableProgramSource(int userId, int maxSize)
-    {
-        ProgramSource programSource = programSourceFacade
-                .findSuiteableByUsersId(userId, maxSize);
-
-        if (programSource == null)
-        {
-            programSource = new ProgramSource(userId);
-            programSource.setSourceName("Default program");
-            programSourceFacade.create(programSource);
-        }
-
-        return programSource;
     }
 
     /**

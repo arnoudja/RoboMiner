@@ -20,10 +20,13 @@
 package nl.robominer.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,73 +42,158 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "UserAchievement")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserAchievement.findAll", query = "SELECT u FROM UserAchievement u"),
-    @NamedQuery(name = "UserAchievement.findByUsersId", query = "SELECT u FROM UserAchievement u WHERE u.userAchievementPK.usersId = :usersId"),
-    @NamedQuery(name = "UserAchievement.findByUsersAndAchievementId", query = "SELECT u FROM UserAchievement u WHERE u.userAchievementPK.usersId = :usersId AND u.userAchievementPK.achievementId = :achievementId"),
-    @NamedQuery(name = "UserAchievement.findUnclaimedByUsersId", query = "SELECT u FROM UserAchievement u WHERE u.userAchievementPK.usersId = :usersId AND u.claimed = false")})
-public class UserAchievement implements Serializable {
-
+@NamedQueries(
+{
+    @NamedQuery(name = "UserAchievement.findByUsersId",
+                query = "SELECT u FROM UserAchievement u WHERE u.user.id = :usersId"),
+    @NamedQuery(name = "UserAchievement.findByUsersAndAchievementId",
+                query = "SELECT u FROM UserAchievement u WHERE u.user.id = :usersId AND u.achievement.id = :achievementId")
+})
+public class UserAchievement implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    protected UserAchievementPK userAchievementPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "usersId")
+    private Users user;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "achievementId")
+    private Achievement achievement;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "claimed")
-    private boolean claimed;
+    @Column(name = "stepsClaimed")
+    private int stepsClaimed;
 
-    @ManyToOne
-    @JoinColumn(name = "achievementId", insertable = false, updatable = false)
-    private Achievement achievement;
-
-    public UserAchievement() {
+    public UserAchievement()
+    {
     }
 
-    public UserAchievement(int usersId, Achievement achievement) {
-        this.userAchievementPK = new UserAchievementPK(usersId, achievement.getId());
-        this.claimed = false;
-        this.claimed = false;
+    public UserAchievement(Users user, Achievement achievement)
+    {
+        this.user = user;
+        this.achievement = achievement;
+        this.stepsClaimed = 0;
     }
 
-    public UserAchievementPK getUserAchievementPK() {
-        return userAchievementPK;
+    public Integer getId()
+    {
+        return id;
     }
 
-    public boolean getClaimed() {
-        return claimed;
+    public Users getUser()
+    {
+        return user;
     }
 
-    public void setClaimed(boolean claimed) {
-        this.claimed = claimed;
+    public void setUser(Users user)
+    {
+        this.user = user;
     }
 
-    public Achievement getAchievement() {
+    public Achievement getAchievement()
+    {
         return achievement;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userAchievementPK != null ? userAchievementPK.hashCode() : 0);
-        return hash;
+    public int getStepsClaimed()
+    {
+        return stepsClaimed;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserAchievement)) {
+    public void setStepsClaimed(int stepsClaimed)
+    {
+        this.stepsClaimed = stepsClaimed;
+    }
+
+    public int getAchievementPointsEarned()
+    {
+        int total = 0;
+
+        for (int i = 1; i <= stepsClaimed; ++i)
+        {
+            total += achievement.getAchievementStep(i).getAchievementPoints();
+        }
+        
+        return total;
+    }
+
+    public boolean isClaimable()
+    {
+        AchievementStep achievementStep = achievement.getAchievementStep(stepsClaimed + 1);
+
+        return (achievementStep != null && achievementStep.isAchievedByUser(user));
+    }
+
+    public boolean claimNextStep()
+    {
+        AchievementStep achievementStep = achievement.getAchievementStep(stepsClaimed + 1);
+
+        if (achievementStep == null || !achievementStep.isAchievedByUser(user))
+        {
             return false;
         }
-        UserAchievement other = (UserAchievement) object;
-        return (this.userAchievementPK != null || other.userAchievementPK == null) &&
-               (this.userAchievementPK == null || this.userAchievementPK.equals(other.userAchievementPK));
+        
+        ++stepsClaimed;
+
+        user.increaseAchievementPoints(achievementStep.getAchievementPoints());
+
+        user.increaseMiningQueueSize(achievementStep.getMiningQueueReward());
+
+        if (achievementStep.getMiningArea() != null)
+        {
+            user.addMiningArea(achievementStep.getMiningArea());
+        }
+
+        if (achievementStep.getRobotReward() > user.getRobotList().size())
+        {
+            user.addRobot();
+        }
+
+        List<AchievementPredecessor> achievementPredecessorList = achievement.getAchievementSuccessorList();
+
+        for (AchievementPredecessor successor : achievementPredecessorList)
+        {
+            if (successor.getPredecessorStep() == stepsClaimed)
+            {
+                user.addUserAchievementIfApplicable(successor.getSuccessor());
+            }
+        }
+
+        return true;
     }
 
     @Override
-    public String toString() {
-        return "nl.robominer.entity.UserAchievement[ userAchievementPK=" + userAchievementPK + " ]";
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof UserAchievement))
+        {
+            return false;
+        }
+        UserAchievement other = (UserAchievement)object;
+        return !((this.id == null && other.id != null) ||
+                 (this.id != null && !this.id.equals(other.id)));
+    }
+
+    @Override
+    public String toString()
+    {
+        return "nl.robominer.entity.UserAchievement[ id=" + id + " ]";
+    }
 }

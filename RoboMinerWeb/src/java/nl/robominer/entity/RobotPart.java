@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RobotPart implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -144,6 +144,11 @@ public class RobotPart implements Serializable {
     public RobotPart() {
     }
 
+    public RobotPart(int typeId)
+    {
+        fillDefaultsForType(typeId);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -214,6 +219,110 @@ public class RobotPart implements Serializable {
 
     public Tier getTier() {
         return tier;
+    }
+
+    private void fillDefaultsForType(int typeId)
+    {
+        tierId = 1;
+
+        switch (typeId)
+        {
+        case 1:
+            id               = 101;
+            oreCapacity      = 15;
+            miningCapacity   = 0;
+            batteryCapacity  = 0;
+            memoryCapacity   = 0;
+            cpuCapacity      = 0;
+            forwardCapacity  = 0;
+            backwardCapacity = 0;
+            rotateCapacity   = 0;
+            rechargeTime     = 0;
+            weight           = 10;
+            volume           = 20;
+            powerUsage       = 1;
+            break;
+
+        case 2:
+            id               = 201;
+            oreCapacity      = 0;
+            miningCapacity   = 1;
+            batteryCapacity  = 0;
+            memoryCapacity   = 0;
+            cpuCapacity      = 0;
+            forwardCapacity  = 0;
+            backwardCapacity = 0;
+            rotateCapacity   = 0;
+            rechargeTime     = 0;
+            weight           = 10;
+            volume           = 5;
+            powerUsage       = 8;
+            break;
+
+        case 3:
+            id               = 301;
+            oreCapacity      = 0;
+            miningCapacity   = 0;
+            batteryCapacity  = 2500;
+            memoryCapacity   = 0;
+            cpuCapacity      = 0;
+            forwardCapacity  = 0;
+            backwardCapacity = 0;
+            rotateCapacity   = 0;
+            rechargeTime     = 5;
+            weight           = 2;
+            volume           = 2;
+            powerUsage       = 0;
+            break;
+
+        case 4:
+            id               = 401;
+            oreCapacity      = 0;
+            miningCapacity   = 0;
+            batteryCapacity  = 0;
+            memoryCapacity   = 8;
+            cpuCapacity      = 0;
+            forwardCapacity  = 0;
+            backwardCapacity = 0;
+            rotateCapacity   = 0;
+            rechargeTime     = 0;
+            weight           = 1;
+            volume           = 1;
+            powerUsage       = 1;
+            break;
+
+        case 5:
+            id               = 501;
+            oreCapacity      = 0;
+            miningCapacity   = 0;
+            batteryCapacity  = 0;
+            memoryCapacity   = 0;
+            cpuCapacity      = 2;
+            forwardCapacity  = 0;
+            backwardCapacity = 0;
+            rotateCapacity   = 0;
+            rechargeTime     = 0;
+            weight           = 1;
+            volume           = 1;
+            powerUsage       = 1;
+            break;
+
+        case 6:
+            id               = 601;
+            oreCapacity      = 0;
+            miningCapacity   = 0;
+            batteryCapacity  = 0;
+            memoryCapacity   = 0;
+            cpuCapacity      = 0;
+            forwardCapacity  = 50;
+            backwardCapacity = 50;
+            rotateCapacity   = 50;
+            rechargeTime     = 0;
+            weight           = 8;
+            volume           = 4;
+            powerUsage       = 8;
+            break;
+        }
     }
 
     @Override

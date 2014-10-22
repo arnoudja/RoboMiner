@@ -30,8 +30,8 @@ using namespace std;
 namespace
 {
     static const int    cMaxSourceCodeLength = 10240;
-    static const double cScoreHistoryFactor  = 10.;
-    static const double cScoreStartFactor    = 2.;
+    static const double cScoreHistoryFactor  = 5.;
+    static const double cScoreStartFactor    = 1.4;
 }
 
 

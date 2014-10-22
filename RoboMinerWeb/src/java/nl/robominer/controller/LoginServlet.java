@@ -31,7 +31,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-import nl.robominer.businessentity.UserAssets;
 import nl.robominer.entity.Users;
 import nl.robominer.session.UsersFacade;
 
@@ -117,7 +116,12 @@ public class LoginServlet extends RoboMinerServletBase {
         String password  = request.getParameter("password");
         String remember  = request.getParameter("remember");
 
-        Users user = usersFacade.findByUsernameOrEmail(loginName);
+        Users user = null;
+        
+        if (loginName != null)
+        {
+            user = usersFacade.findByUsernameOrEmail(loginName);
+        }
 
         if (user != null && user.verifyPassword(password)) {
 
@@ -225,5 +229,4 @@ public class LoginServlet extends RoboMinerServletBase {
     public String getServletInfo() {
         return "Login-page controller servlet";
     }
-
 }

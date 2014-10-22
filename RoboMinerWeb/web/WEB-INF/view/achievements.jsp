@@ -41,14 +41,10 @@
                 <input type="hidden" id="achievementId" name="achievementId" value="" />
             </form>
 
-            <table>
-                <caption>Unclaimed</caption>
-                <c:forEach var="userAchievement" items="${userAchievementList}">
-                    <c:set var="achievement" value="${userAchievement.achievement}" />
-                    <c:set var="achievementMiningTotalRequirementList" value="${achievement.achievementMiningTotalRequirementList}" />
-                    <c:set var="achievementMiningScoreRequirementList" value="${achievement.achievementMiningScoreRequirementList}" />
-                    <c:set var="claimable" value="true" />
-                    <tbody class="achievements">
+            <c:forEach var="userAchievement" items="${user.userAchievementList}">
+                <c:set var="achievement" value="${userAchievement.achievement}" />
+                <c:if test="${achievement.numberOfSteps gt userAchievement.stepsClaimed}">
+                    <table>
                         <tr>
                             <th colspan="3">${fn:escapeXml(achievement.title)}</th>
                         </tr>
@@ -56,73 +52,77 @@
                             <td colspan="3">${fn:escapeXml(achievement.description)}</td>
                         </tr>
                         <tr>
-                            <td colspan="3" class="important">Rewards</td>
+                            <td colspan="2">Completed</td>
+                            <td>${userAchievement.stepsClaimed} / ${achievement.numberOfSteps}</td>
                         </tr>
                         <tr>
-                            <td>Achievement points:</td>
-                            <td colspan="2">${achievement.achievementPoints}</td>
+                            <td colspan="2">Achievement points</td>
+                            <td>${userAchievement.achievementPointsEarned} / ${achievement.totalAchievementPoints}</td>
                         </tr>
-                        <c:if test="${achievement.miningQueueReward gt 0}">
+                        <c:if test="${achievement.numberOfSteps gt userAchievement.stepsClaimed}">
+                            <c:set var="achievementStep" value="${achievement.getAchievementStep(userAchievement.stepsClaimed + 1)}" />
+                            <c:set var="achievementStepMiningTotalRequirementList" value="${achievementStep.achievementStepMiningTotalRequirementList}" />
+                            <c:set var="achievementStepMiningScoreRequirementList" value="${achievementStep.achievementStepMiningScoreRequirementList}" />
                             <tr>
-                                <td>Queue increase:</td>
-                                <td colspan="2">${achievement.miningQueueReward}</td>
+                                <td colspan="3" class="important">Next reward</td>
                             </tr>
-                        </c:if>
-                        <c:if test="${achievement.robotReward gt user.robotList.size()}">
                             <tr>
-                                <td colspan="3">New robot!</td>
+                                <td colspan="2">Achievement points</td>
+                                <td>${achievementStep.achievementPoints}</td>
                             </tr>
-                        </c:if>
-                        <c:if test="${not empty achievement.miningArea}">
-                            <tr>
-                                <td>Mining area:</td>
-                                <td colspan="2">${achievement.miningArea.areaName}</td>
-                            </tr>
-                        </c:if>
-                        <tr>
-                            <td colspan="3" class="important">Requirements</td>
-                        </tr>
-                        <c:forEach var="achievementMiningTotalRequirement" items="${achievementMiningTotalRequirementList}">
-                            <c:set var="totalMined" value="${totalOreMined.get(achievementMiningTotalRequirement.ore.id)}" />
-                            <c:if test="${empty totalMined}">
-                                <c:set var="totalMined" value="0" />
+                            <c:if test="${achievementStep.miningQueueReward gt 0}">
+                                <tr>
+                                    <td colspan="2">Queue increase:</td>
+                                    <td>${achievementStep.miningQueueReward}</td>
+                                </tr>
                             </c:if>
-                            <c:if test="${totalMined lt achievementMiningTotalRequirement.amount}">
-                                <c:set var="claimable" value="false" />
+                            <c:if test="${achievementStep.robotReward gt user.robotList.size()}">
+                                <tr>
+                                    <td colspan="3">New robot!</td>
+                                </tr>
                             </c:if>
-                            <tr>
-                                <td>${fn:escapeXml(achievementMiningTotalRequirement.ore.oreName)} mined</td>
-                                <td>${achievementMiningTotalRequirement.amount}</td>
-                                <td class="${totalMined ge achievementMiningTotalRequirement.amount ? 'sufficientbalance' : 'insufficientbalance'}">
-                                    (${totalMined})
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        <c:forEach var="achievementMiningScoreRequirement" items="${achievementMiningScoreRequirementList}">
-                            <c:set var="currentScore" value="${user.getMiningAreaScore(achievementMiningScoreRequirement.miningAreaId)}" />
-                            <c:if test="${currentScore lt achievementMiningScoreRequirement.minimumScore}">
-                                <c:set var="claimable" value="false" />
+                            <c:if test="${not empty achievementStep.miningArea}">
+                                <tr>
+                                    <td colspan="2">Mining area:</td>
+                                    <td>${achievementStep.miningArea.areaName}</td>
+                                </tr>
                             </c:if>
                             <tr>
-                                <td>${fn:escapeXml(achievementMiningScoreRequirement.miningArea.areaName)} score</td>
-                                <td>
-                                    <fmt:formatNumber value="${achievementMiningScoreRequirement.minimumScore}" minFractionDigits="3" maxFractionDigits="3"/>
-                                </td>
-                                <td class="${currentScore ge achievementMiningScoreRequirement.minimumScore ? 'sufficientbalance' : 'insufficientbalance'}">
-                                    (<fmt:formatNumber value="${currentScore}" minFractionDigits="3" maxFractionDigits="3"/>)
-                                </td>
+                                <td colspan="3" class="important">Requirements</td>
                             </tr>
-                        </c:forEach>
-                        <c:if test="${claimable}">
-                            <tr>
-                                <td colspan="3">
-                                    <button onclick="claimAchievement(${achievement.id});">Claim</button>
-                                </td>
-                            </tr>
+                            <c:forEach var="achievementStepMiningTotalRequirement" items="${achievementStepMiningTotalRequirementList}">
+                                <c:set var="totalMined" value="${user.getTotalOreMined(achievementStepMiningTotalRequirement.ore.id)}" />
+                                <tr>
+                                    <td>${fn:escapeXml(achievementStepMiningTotalRequirement.ore.oreName)} mined</td>
+                                    <td>${achievementStepMiningTotalRequirement.amount}</td>
+                                    <td class="${totalMined ge achievementStepMiningTotalRequirement.amount ? 'sufficientbalance' : 'insufficientbalance'}">
+                                        (${totalMined})
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:forEach var="achievementStepMiningScoreRequirement" items="${achievementStepMiningScoreRequirementList}">
+                                <c:set var="currentScore" value="${user.getMiningAreaScore(achievementStepMiningScoreRequirement.miningArea.id)}" />
+                                <tr>
+                                    <td>Average ${fn:escapeXml(achievementStepMiningScoreRequirement.miningArea.areaName)} score</td>
+                                    <td>
+                                        <fmt:formatNumber value="${achievementStepMiningScoreRequirement.minimumScore}" minFractionDigits="3" maxFractionDigits="3"/>
+                                    </td>
+                                    <td class="${currentScore ge achievementStepMiningScoreRequirement.minimumScore ? 'sufficientbalance' : 'insufficientbalance'}">
+                                        (<fmt:formatNumber value="${currentScore}" minFractionDigits="3" maxFractionDigits="3"/>)
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${userAchievement.claimable}">
+                                <tr>
+                                    <td colspan="3">
+                                        <button onclick="claimAchievement(${achievement.id});">Claim</button>
+                                    </td>
+                                </tr>
+                            </c:if>
                         </c:if>
-                    </tbody>
-                </c:forEach>
-            </table>
+                    </table>
+                </c:if>
+            </c:forEach>
 
         </rm:defaultpage>
     </body>

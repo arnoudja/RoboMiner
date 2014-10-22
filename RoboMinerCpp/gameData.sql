@@ -1086,479 +1086,706 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (18
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 3);
 
 
--- Achievements - Cerbonium
-insert into Achievement (id, title,              description,              achievementPoints, robotReward, miningQueueReward, miningAreaId)
-                 values (1,  'Your first robot', 'Claim your first robot', 10,                1,           1,                 1001);
+-- Achievements - Initial achievement
+insert into Achievement (id, title,              description)
+                 values (1,  'Your first robot', 'Claim your first robot');
 
-insert into Achievement (id, title,          description,           achievementPoints, miningQueueReward)
-                 values (11, 'First mining', 'Mine some Cerbonium', 10,                1);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward, robotReward, miningAreaId)
+                     values (101, 1,             1,    10,                1,                 1,           1001);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (1, 11);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (11, 1, 1);
+-- Achievements - Mining queue increments
+insert into Achievement (id, title,                        description)
+                 values (2,  'Increase mining queue size', 'Earn a larger mining queue');
 
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (201, 1, 1, 2);
 
-insert into Achievement (id, title,           description,                                           achievementPoints, miningQueueReward)
-                 values (12, 'Shopping cash', 'Mine enough Cerbonium to buy an upgrade in the shop', 10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (11, 12);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (201, 2,             1,    10,                1);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (12, 1, 10);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2011, 201, 1, 1);
 
 
-insert into Achievement (id, title,              description,                                        achievementPoints, miningQueueReward, miningAreaId)
-                 values (13, 'Better equipment', 'Mine more Cerbonium to buy even better equipment', 10,                1,                 1101);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (202, 2,             2,    10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (12, 13);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2021, 202, 1, 25);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (13, 1, 250);
 
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (203, 2,             3,    10,                1);
 
-insert into Achievement (id, title,             description,                achievementPoints)
-                 values (14, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2031, 203, 1, 500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (13, 14);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (14, 1, 1000);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (204, 2,             4,    10,                1);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2041, 204, 1, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2042, 204, 2, 10);
 
-insert into Achievement (id, title,             description,                achievementPoints)
-                 values (15, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (14, 15);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (205, 2,             5,    10,                1);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (15, 1, 10000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2051, 205, 1, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2052, 205, 2, 500);
 
 
-insert into Achievement (id, title,             description,                achievementPoints)
-                 values (16, 'More Cerbonium!', 'Mine even more Cerbonium', 10);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (206, 2,             6,    10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (15, 16);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2061, 206, 1, 10000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2062, 206, 2, 2500);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2063, 206, 3, 250);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (16, 1, 100000);
 
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (207, 2,             7,    10,                1);
 
-insert into Achievement (id, title,              description,                                                     achievementPoints, miningAreaId)
-                 values (20, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1002);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2071, 207, 4, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2072, 207, 1001, 500.0);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (12, 20);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (20, 1001, 760.0);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (208, 2,             8,    10,                1);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (2081, 208, 5, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2082, 208, 1001, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2083, 208, 2001, 500.0);
 
-insert into Achievement (id, title,              description,                                                     achievementPoints, miningAreaId)
-                 values (21, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1003);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (20, 21);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (209, 2,             9,    10,                1);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (21, 1002, 860.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2091, 209, 1002, 800.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2092, 209, 2001, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2093, 209, 3001, 400.0);
 
 
--- Achievements - Oxaria
-insert into Achievement (id,  title,           description,                       achievementPoints, miningQueueReward)
-                 values (100, 'Oxaria mining', 'Start mining better quality ore', 10,                1);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (210, 2,             10,   10,                1);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (13, 100);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2101, 210, 1003, 900.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2102, 210, 2002, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2103, 210, 3001, 500.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2104, 210, 4001, 400.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (100, 2, 1);
 
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (211, 2,             11,   10,                1);
 
-insert into Achievement (id,  title,              description,                                           achievementPoints, miningQueueReward, miningAreaId)
-                 values (101, 'Oxaria equipment', 'Mine enough Oxaria ore for Oxaria-quality equipment', 10,                1,                 1201);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2111, 211, 2003, 750.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2112, 211, 3002, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2113, 211, 4001, 450.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2114, 211, 5001, 400.0);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (100, 101);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (101, 2, 100);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (212, 2,             12,   10,                1);
 
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2121, 212, 2003, 800.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2122, 212, 3003, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2123, 212, 4002, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2124, 212, 5002, 500.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2125, 212, 6001, 500.0);
+
+
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (213, 2,             13,   10,                1);
+
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2131, 213, 2003, 850.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2132, 213, 3003, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2133, 213, 4002, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2134, 213, 5002, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2135, 213, 6001, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2136, 213, 7001, 500.0);
+
+
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (214, 2,             14,   10,                1);
+
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2141, 214, 2003, 900.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2142, 214, 3003, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2143, 214, 4002, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2144, 214, 5002, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2145, 214, 6001, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2146, 214, 7001, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2147, 214, 8001, 500.0);
+
+
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningQueueReward)
+                     values (215, 2,             15,   10,                1);
+
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2151, 215, 3003, 800.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2152, 215, 4002, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2153, 215, 5002, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2154, 215, 6001, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2155, 215, 7001, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2156, 215, 8001, 550.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (2157, 215, 9001, 500.0);
+
+
+-- Achievements - Ore type mining
+insert into Achievement (id, title,        description)
+                 values (3,  'Better ore', 'Earn mining rights for better ore');
+
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (301, 2, 2, 3);
+
+-- Oraxia-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (301, 3,             1,    10,                1101);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3011, 301, 1, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3012, 301, 1001, 500.0);
 
-insert into Achievement (id, title,            description,                 achievementPoints)
-                 values (102,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
+-- Lithabine-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (302, 3,             2,    10,                1201);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (101, 102);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3021, 302, 1, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3022, 302, 2, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3023, 302, 1001, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3024, 302, 1101, 400.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (102, 2, 1000);
+-- Neudralion-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (303, 3,             3,    10,                1301);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3031, 303, 1, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3032, 303, 2, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3033, 303, 3, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3034, 303, 1001, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3035, 303, 1101, 450.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3036, 303, 1201, 200.0);
 
-insert into Achievement (id, title,            description,                 achievementPoints)
-                 values (103,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
+-- Complatix-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (304, 3,             4,    10,                1401);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (102, 103);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3041, 304, 2, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3042, 304, 3, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3043, 304, 4, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3044, 304, 1101, 500.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3045, 304, 1201, 240.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3046, 304, 1301, 200.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (103, 2, 10000);
+-- Prantum-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (305, 3,             5,    10,                1501);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3051, 305, 3, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3052, 305, 4, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3053, 305, 5, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3054, 305, 1201, 250.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3055, 305, 1301, 230.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3056, 305, 1401, 210.0);
 
-insert into Achievement (id, title,            description,                 achievementPoints)
-                 values (104,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
+-- Raxia-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (306, 3,             6,    10,                1601);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (103, 104);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3061, 306, 4, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3062, 306, 5, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3063, 306, 6, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3064, 306, 1301, 250.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3065, 306, 1401, 230.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3066, 306, 1501, 210.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (104, 2, 100000);
+-- Dipolir-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (307, 3,             7,    10,                1701);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3071, 307, 5, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3072, 307, 6, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3073, 307, 7, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3074, 307, 1401, 250.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3075, 307, 1501, 230.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3076, 307, 1601, 210.0);
 
-insert into Achievement (id, title,            description,                 achievementPoints)
-                 values (105,  'More Oxaria!', 'Mine even more Oxaria ore', 10);
+-- Asradon-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (308, 3,             8,    10,                1801);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (104, 105);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3081, 308, 6, 5000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3082, 308, 7, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3083, 308, 8, 250);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3084, 308, 1501, 250.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3085, 308, 1601, 230.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3086, 308, 1701, 210.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (105, 2, 1000000);
 
+-- Achievements - New robot
+insert into Achievement (id, title,       description)
+                 values (4,  'New robot', 'Earn an extra robot');
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (120, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1102);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (401, 3, 2, 4);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (101, 120);
+insert into AchievementStep (id,  achievementId, step, achievementPoints, robotReward)
+                     values (401, 4,             1,    10,                2);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (120, 1101, 600.0);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (4011, 401, 3, 1000);
 
 
+-- Achievements - Cerbonium - Quantity mining
+insert into Achievement (id, title,              description)
+                 values (10, 'Cerbonium mining', 'Mine Cerbonium');
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (121, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1103);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (1001, 1, 1, 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (120, 121);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1001, 10,            1,    10);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (121, 1102, 700.0);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10011, 1001, 1, 25);
 
 
--- Achievements - Lithabine
-insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
-                 values (200, 'Lithabine mining', 'Start mining Lithabine ore', 10,                1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1002, 10,            2,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (102, 200);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10021, 1002, 1, 250);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (200, 3, 1);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1003, 10,            3,    10);
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, miningAreaId)
-                 values (201, 'More Lithabine!', 'Mine even more Lithabine ore', 10,                1,                 1301);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10031, 1003, 1, 1000);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (200, 201);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (201, 3, 50);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1004, 10,            4,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10041, 1004, 1, 2500);
 
-insert into Achievement (id,  title,       description,                                   achievementPoints, robotReward)
-                 values (202, 'New robot', 'Show your dedication to earn an extra robot', 10,                2);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (201, 202);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1005, 10,            5,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (202, 3, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10051, 1005, 1, 10000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (203, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (1006, 10,            6,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (202, 203);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (10061, 1006, 1, 100000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (203, 3, 10000);
 
+-- Achievements - Cerbonium - Mining score
+insert into Achievement (id, title,                       description)
+                 values (11, 'Improved Cerbonium mining', 'Improve your mining efficiency for Cerbonium ore');
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (204, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (1101, 10, 4, 11);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (203, 204);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (1101, 11,            1,    10,                1002);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (204, 3, 100000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110101, 1101, 1001, 760.0);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (205, 'More Lithabine!', 'Mine even more Lithabine ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (1102, 11,            2,    10,                1003);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (204, 205);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110201, 1102, 1001, 860.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110202, 1102, 1002, 850.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (205, 3, 1000000);
 
+-- Achievements - Oxaria - Quantity mining
+insert into Achievement (id, title,           description)
+                 values (20, 'Oxaria mining', 'Mine Oxaria');
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (220, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1202);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (2001, 3, 1, 20);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (201, 220);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2001, 20,            1,    10);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (220, 1201, 400.0);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20011, 2001, 2, 50);
 
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (221, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1203);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2002, 20,            2,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (220, 221);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20021, 2002, 2, 500);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (221, 1202, 600.0);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2003, 20,            3,    10);
 
--- Achievements - Neudralion
-insert into Achievement (id,  title,               description,                   achievementPoints, miningQueueReward)
-                 values (300, 'Neudralion mining', 'Start mining Neudralion ore', 10,                1);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20031, 2003, 2, 2500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (202, 300);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (300, 4, 1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2004, 20,            4,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20041, 2004, 2, 10000);
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward, miningAreaId)
-                 values (301, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1,                 1401);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (300, 301);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2005, 20,            5,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (301, 4, 50);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20051, 2005, 2, 25000);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints, miningQueueReward)
-                 values (302, 'More Neudralion!', 'Mine even more Neudralion ore', 10,                1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (2006, 20,            6,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (301, 302);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (20061, 2006, 2, 100000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (302, 4, 1000);
 
+-- Achievements - Oxaria - Mining score
+insert into Achievement (id, title,                    description)
+                 values (21, 'Improved Oxaria mining', 'Improve your mining efficiency for Oxaria ore');
 
-insert into Achievement (id,  title,              description,                     achievementPoints)
-                 values (303, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (2101, 20, 3, 21);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (302, 303);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (2101, 21,            1,    10,                1102);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (303, 4, 10000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210101, 2101, 1101, 600.0);
 
 
-insert into Achievement (id,  title,              description,                     achievementPoints)
-                 values (304, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (2102, 21,            2,    10,                1103);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (303, 304);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210201, 2102, 1101, 750.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (210202, 2102, 1102, 700.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (304, 4, 100000);
 
+-- Achievements - Lithabine - Quantity mining
+insert into Achievement (id, title,              description)
+                 values (30, 'Lithabine mining', 'Mine Lithabine');
 
-insert into Achievement (id,  title,              description,                     achievementPoints)
-                 values (305, 'More Neudralion!', 'Mine even more Neudralion ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (3001, 3, 2, 30);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (304, 305);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3001, 30,            1,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (305, 4, 1000000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30011, 3001, 3, 100);
 
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (320, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1302);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3002, 30,            2,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (301, 320);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30021, 3002, 3, 500);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (320, 1301, 700.0);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3003, 30,            3,    10);
 
--- Achievements - Complatix
-insert into Achievement (id,  title,              description,                  achievementPoints, miningQueueReward)
-                 values (400, 'Complatix mining', 'Start mining Complatix ore', 10,                1);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30031, 3003, 3, 2500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (301, 400);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (400, 5, 1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3004, 30,            4,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30041, 3004, 3, 10000);
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward, miningAreaId)
-                 values (401, 'More Complatix!', 'Mine even more Complatix ore', 10,                1,                 1501);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (400, 401);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3005, 30,            5,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (401, 5, 50);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30051, 3005, 3, 50000);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints, miningQueueReward)
-                 values (402, 'More Complatix!', 'Mine even more Complatix ore', 10,                1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (3006, 30,            6,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (401, 402);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (30061, 3006, 3, 100000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (402, 5, 1000);
 
+-- Achievements - Lithabine - Mining score
+insert into Achievement (id, title,                       description)
+                 values (31, 'Improved Lithabine mining', 'Improve your mining efficiency for Lithabine ore');
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (403, 'More Complatix!', 'Mine even more Complatix ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (3101, 30, 3, 31);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (402, 403);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (3101, 31,            1,    10,                1202);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (403, 5, 10000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310101, 3101, 1201, 400.0);
 
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (404, 'More Complatix!', 'Mine even more Complatix ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (3102, 31,            2,    10,                1203);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (403, 404);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310201, 3102, 1201, 650.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (310202, 3102, 1202, 600.0);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (404, 5, 100000);
 
+-- Achievements - Neudralion - Quantity mining
+insert into Achievement (id, title,               description)
+                 values (40, 'Neudralion mining', 'Mine Neudralion');
 
-insert into Achievement (id,  title,             description,                    achievementPoints)
-                 values (405, 'More Complatix!', 'Mine even more Complatix ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (4001, 3, 3, 40);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (404, 405);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4001, 40,            1,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (405, 5, 1000000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40011, 4001, 4, 100);
 
 
-insert into Achievement (id, title,               description,                                                     achievementPoints, miningAreaId)
-                 values (420, 'Alternative area', 'Mine efficient enough to earn the right to mine in a new area', 10,                1402);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4002, 40,            2,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (401, 420);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40021, 4002, 4, 500);
 
-insert into AchievementMiningScoreRequirement (achievementId, miningAreaId, minimumScore) values (420, 1401, 400.0);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4003, 40,            3,    10);
 
--- Achievements - Prantum
-insert into Achievement (id,  title,            description,                achievementPoints)
-                 values (500, 'Prantum mining', 'Start mining Prantum ore', 10);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40031, 4003, 4, 2500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (401, 500);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (500, 6, 1);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4004, 40,            4,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40041, 4004, 4, 10000);
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (501, 'More Prantum!', 'Mine even more Prantum ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (500, 501);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4005, 40,            5,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (501, 6, 50);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40051, 4005, 4, 50000);
 
 
-insert into Achievement (id,  title,           description,                  achievementPoints, miningAreaId)
-                 values (502, 'More Prantum!', 'Mine even more Prantum ore', 10,                1601);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (4006, 40,            6,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (501, 502);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (40061, 4006, 4, 100000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (502, 6, 250);
 
+-- Achievements - Neudralion - Mining score
+insert into Achievement (id, title,                        description)
+                 values (41, 'Improved Neudralion mining', 'Improve your mining efficiency for Neudralion ore');
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (503, 'More Prantum!', 'Mine even more Prantum ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (4101, 40, 3, 41);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (502, 503);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (4101, 41,            1,    10,                1302);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (503, 6, 1000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (410101, 4101, 1301, 700.0);
 
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (504, 'More Prantum!', 'Mine even more Prantum ore', 10);
+-- Achievements - Complatix - Quantity mining
+insert into Achievement (id, title,              description)
+                 values (50, 'Complatix mining', 'Mine Complatix');
 
-insert into AchievementPredecessor (predecessorId, successorId) values (503, 504);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (5001, 3, 4, 50);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (504, 6, 10000);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5001, 50,            1,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50011, 5001, 5, 100);
 
--- Achievements - Raxia
-insert into Achievement (id,  title,          description,              achievementPoints)
-                 values (600, 'Raxia mining', 'Start mining Raxia ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (502, 600);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5002, 50,            2,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (600, 7, 1);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50021, 5002, 5, 500);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (601, 'More Raxia!', 'Mine even more Raxia ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5003, 50,            3,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (600, 601);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50031, 5003, 5, 2500);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (601, 7, 50);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5004, 50,            4,    10);
 
-insert into Achievement (id,  title,         description,                achievementPoints, miningAreaId)
-                 values (602, 'More Raxia!', 'Mine even more Raxia ore', 10,                1701);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50041, 5004, 5, 10000);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (601, 602);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (602, 7, 500);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5005, 50,            5,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50051, 5005, 5, 50000);
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (603, 'More Raxia!', 'Mine even more Raxia ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (602, 603);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (5006, 50,            6,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (603, 7, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (50061, 5006, 5, 100000);
 
 
-insert into Achievement (id,  title,         description,                achievementPoints)
-                 values (604, 'More Raxia!', 'Mine even more Raxia ore', 10);
+-- Achievements - Complatix - Mining score
+insert into Achievement (id, title,                       description)
+                 values (51, 'Improved Complatix mining', 'Improve your mining efficiency for Complatix ore');
 
-insert into AchievementPredecessor (predecessorId, successorId) values (603, 604);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (5101, 50, 3, 51);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (604, 7, 10000);
+insert into AchievementStep (id,   achievementId, step, achievementPoints, miningAreaId)
+                     values (5101, 51,            1,    10,                1402);
 
--- Achievements - Dipolir
-insert into Achievement (id,  title,            description,                achievementPoints)
-                 values (700, 'Dipolir mining', 'Start mining Dipolir ore', 10);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (510101, 5101, 1401, 400.0);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (602, 700);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (700, 8, 1);
+-- Achievements - Prantum - Quantity mining
+insert into Achievement (id, title,            description)
+                 values (60, 'Prantum mining', 'Mine Prantum');
 
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (6001, 3, 5, 60);
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (701, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6001, 60,            1,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (700, 701);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60011, 6001, 6, 100);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (701, 8, 50);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6002, 60,            2,    10);
 
-insert into Achievement (id,  title,           description,                  achievementPoints, miningAreaId)
-                 values (702, 'More Dipolir!', 'Mine even more Dipolir ore', 10,                1801);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60021, 6002, 6, 500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (701, 702);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (702, 8, 500);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6003, 60,            3,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60031, 6003, 6, 2500);
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (703, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (702, 703);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6004, 60,            4,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (703, 8, 1000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60041, 6004, 6, 10000);
 
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (704, 'More Dipolir!', 'Mine even more Dipolir ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6005, 60,            5,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (703, 704);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60051, 6005, 6, 50000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (704, 8, 10000);
 
--- Achievements - Asradon
-insert into Achievement (id,  title,            description,                achievementPoints)
-                 values (800, 'Asradon mining', 'Start mining Asradon ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (6006, 60,            6,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (702, 800);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (60061, 6006, 6, 100000);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (800, 9, 1);
 
+-- Achievements - Raxia - Quantity mining
+insert into Achievement (id, title,          description)
+                 values (70, 'Raxia mining', 'Mine Raxia');
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (801, 'More Asradon!', 'Mine even more Asradon ore', 10);
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (7001, 3, 6, 70);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (800, 801);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7001, 70,            1,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (801, 9, 50);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70011, 7001, 7, 100);
 
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (802, 'More Asradon!', 'Mine even more Asradon ore', 10);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7002, 70,            2,    10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (801, 802);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70021, 7002, 7, 500);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (802, 9, 500);
 
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7003, 70,            3,    10);
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (803, 'More Asradon!', 'Mine even more Asradon ore', 10);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70031, 7003, 7, 2500);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (802, 803);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (803, 9, 1000);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7004, 70,            4,    10);
 
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70041, 7004, 7, 10000);
 
-insert into Achievement (id,  title,           description,                  achievementPoints)
-                 values (804, 'More Asradon!', 'Mine even more Asradon ore', 10);
 
-insert into AchievementPredecessor (predecessorId, successorId) values (803, 804);
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7005, 70,            5,    10);
 
-insert into AchievementMiningTotalRequirement (achievementId, oreId, amount) values (804, 9, 10000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70051, 7005, 7, 50000);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (7006, 70,            6,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (70061, 7006, 7, 100000);
+
+
+-- Achievements - Dipolir - Quantity mining
+insert into Achievement (id, title,            description)
+                 values (80, 'Dipolir mining', 'Mine Dipolir');
+
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (8001, 3, 7, 80);
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8001, 80,            1,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80011, 8001, 8, 100);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8002, 80,            2,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80021, 8002, 8, 500);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8003, 80,            3,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80031, 8003, 8, 2500);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8004, 80,            4,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80041, 8004, 8, 10000);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8005, 80,            5,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80051, 8005, 8, 50000);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (8006, 80,            6,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (80061, 8006, 8, 100000);
+
+
+-- Achievements - Asradon - Quantity mining
+insert into Achievement (id, title,            description)
+                 values (90, 'Asradon mining', 'Mine Asradon');
+
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (9001, 3, 8, 90);
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9001, 90,            1,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90011, 9001, 9, 100);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9002, 90,            2,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90021, 9002, 9, 500);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9003, 90,            3,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90031, 9003, 9, 2500);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9004, 90,            4,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90041, 9004, 9, 10000);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9005, 90,            5,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90051, 9005, 9, 50000);
+
+
+insert into AchievementStep (id,   achievementId, step, achievementPoints)
+                     values (9006, 90,            6,    10);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (90061, 9006, 9, 100000);
+
 
 
 -- Calculate the tier levels

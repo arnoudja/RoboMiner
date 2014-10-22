@@ -24,56 +24,6 @@ SET storage_engine=InnoDB;
 
 -- Database cleaning
 
--- Remove unlinked items from AchievementPredecessor
-delete
-from AchievementPredecessor
-where not exists
-(
-select *
-from Achievement
-where Achievement.id = AchievementPredecessor.predecessorId
-)
-or not exists
-(
-select *
-from Achievement
-where Achievement.id = AchievementPredecessor.successorId
-);
-
--- Remove unlinked items from AchievementMiningTotalRequirement
-delete
-from AchievementMiningTotalRequirement
-where not exists
-(
-select *
-from Achievement
-where Achievement.id = AchievementMiningTotalRequirement.achievementId
-)
-or not exists
-(
-select *
-from Ore
-where Ore.id = AchievementMiningTotalRequirement.oreId
-)
-;
-
--- Remove unlinked items from AchievementMiningScoreRequirement
-delete
-from AchievementMiningScoreRequirement
-where not exists
-(
-select *
-from Achievement
-where Achievement.id = AchievementMiningScoreRequirement.achievementId
-)
-or not exists
-(
-select *
-from MiningArea
-where MiningArea.id = AchievementMiningScoreRequirement.miningAreaId
-)
-;
-
 -- Remove unlinked items from Robot
 delete
 from Robot
@@ -249,12 +199,12 @@ where MiningQueue.rallyResultId = RallyResult.id
 update Users
 set achievementPoints =
 (
-select coalesce(sum(Achievement.achievementPoints), 0)
+select coalesce(sum(AchievementStep.achievementPoints), 0)
 from UserAchievement
-inner join Achievement
-on Achievement.id = UserAchievement.achievementId
+inner join AchievementStep
+on AchievementStep.achievementId = UserAchievement.achievementId
 where UserAchievement.usersId = Users.id
-and UserAchievement.claimed = true
+and AchievementStep.step <= UserAchievement.stepsClaimed
 );
 
 
@@ -262,12 +212,12 @@ and UserAchievement.claimed = true
 update Users
 set miningQueueSize =
 (
-select coalesce(sum(Achievement.miningQueueReward), 0)
+select coalesce(sum(AchievementStep.miningQueueReward), 0)
 from UserAchievement
-inner join Achievement
-on Achievement.id = UserAchievement.achievementId
+inner join AchievementStep
+on AchievementStep.achievementId = UserAchievement.achievementId
 where UserAchievement.usersId = Users.id
-and UserAchievement.claimed = true
+and AchievementStep.step <= UserAchievement.stepsClaimed
 );
 
 
@@ -276,20 +226,40 @@ delete from UserMiningArea;
 
 insert into UserMiningArea
 (usersId, miningAreaId)
-select UserAchievement.usersId, Achievement.miningAreaId
+select UserAchievement.usersId, AchievementStep.miningAreaId
 from UserAchievement
-inner join Achievement
-on Achievement.id = UserAchievement.achievementId
-where UserAchievement.claimed = true
-and Achievement.miningAreaId IS NOT NULL;
+inner join AchievementStep
+on AchievementStep.achievementId = UserAchievement.achievementId
+where AchievementStep.step <= UserAchievement.stepsClaimed
+and AchievementStep.miningAreaId IS NOT NULL;
+
+
+-- Complete robot achievements when the number of robots is already achieved
+update UserAchievement
+set stepsClaimed = stepsClaimed + 1
+where exists
+(
+select *
+from AchievementStep
+where AchievementStep.achievementId = UserAchievement.achievementId
+and AchievementStep.step = UserAchievement.stepsClaimed + 1
+and AchievementStep.robotReward > 0
+and AchievementStep.robotReward <= 
+(
+select count(Robot.id)
+from Robot
+where Robot.usersId = UserAchievement.usersId
+)
+);
 
 
 -- Add missing UserAchievement records
 insert into UserAchievement
-(usersId, achievementId, claimed)
-select Users.id, Achievement.id, false
+(usersId, achievementId, stepsClaimed)
+select Users.id, Achievement.id, 0
 from Achievement, Users
-where not exists
+where Users.id > 1
+and not exists
 (
 select *
 from UserAchievement
@@ -304,7 +274,7 @@ inner join UserAchievement
 on UserAchievement.achievementId = AchievementPredecessor.predecessorId
 where AchievementPredecessor.successorId = Achievement.id
 and UserAchievement.usersId = Users.id
-and (UserAchievement.claimed IS NULL or UserAchievement.claimed = false)
+and UserAchievement.stepsClaimed < AchievementPredecessor.predecessorStep
 )
 and not exists
 (

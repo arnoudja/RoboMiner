@@ -164,7 +164,7 @@ public class Users implements Serializable
     /**
      * The list of robot program sources owned by the user.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ProgramSource.usersId")
     private List<ProgramSource> programSourceList;
 
@@ -174,6 +174,13 @@ public class Users implements Serializable
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserRobotPartAsset.usersId")
     private List<UserRobotPartAsset> userRobotPartAssetList;
+
+    /**
+     * The list of achievement progress.
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "UserAchievement.usersId")
+    private List<UserAchievement> userAchievementList;
 
     /**
      * Default constructor.
@@ -524,6 +531,24 @@ public class Users implements Serializable
         return null;
     }
 
+    public ProgramSource getOrCreateSuitableProgramSource(int maxSize)
+    {
+        for (ProgramSource programSource : programSourceList)
+        {
+            if (programSource.getCompiledSize() <= maxSize)
+            {
+                return programSource;
+            }
+        }
+
+        ProgramSource programSource = new ProgramSource(id);
+        programSource.setSourceName("Default program");
+
+        programSourceList.add(programSource);
+
+        return programSource;
+    }
+    
     /**
      * Retrieve the list of user robot part assets.
      *
@@ -556,6 +581,83 @@ public class Users implements Serializable
         }
 
         return result;
+    }
+
+    /**
+     * Retrieve the list of user achievement progress information.
+     *
+     * @return The list of user achievement progress information.
+     */
+    public List<UserAchievement> getUserAchievementList()
+    {
+        return userAchievementList;
+    }
+
+    /**
+     * Retrieve the user achievement progress for the specified achievement.
+     *
+     * @param achievementId The id of the achievement to retrieve the progress for.
+     *
+     * @return The achievement progress for the specified achievement, or null if none.
+     */
+    public UserAchievement getUserAchievement(int achievementId)
+    {
+        for (UserAchievement userAchievement : userAchievementList)
+        {
+            if (userAchievement.getAchievement().getId() == achievementId)
+            {
+                return userAchievement;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Add the achievement to the list of user achievement progress information.
+     *
+     * @param achievement The achievement to add the progress information for.
+     */
+    public void addUserAchievementIfApplicable(Achievement achievement)
+    {
+        if (getUserAchievement(achievement.getId()) != null)
+        {
+            return;
+        }
+
+        List<AchievementPredecessor> achievementPredecessorList = achievement.getAchievementPredecessorList();
+
+        for (AchievementPredecessor achievementPredecessor : achievementPredecessorList)
+        {
+            UserAchievement predecessor = getUserAchievement(achievementPredecessor.getPredecessor().getId());
+            if (predecessor == null || predecessor.getStepsClaimed() < achievementPredecessor.getPredecessorStep())
+            {
+                return;
+            }
+        }
+        
+        UserAchievement userAchievement = new UserAchievement(this, achievement);
+        
+        userAchievementList.add(userAchievement);
+    }
+
+    /**
+     * Retrieve the total amount of ore mined of the specific type.
+     *
+     * @param oreId The type of ore to retrieve the total for.
+     *
+     * @return The total amount of ore mined.
+     */
+    public int getTotalOreMined(int oreId)
+    {
+        int total = 0;
+        
+        for (Robot robot : robotList)
+        {
+            total += robot.getTotalOreMined(oreId);
+        }
+        
+        return total;
     }
 
     /**
@@ -611,6 +713,55 @@ public class Users implements Serializable
         miningQueueSize = 0;
     }
 
+    public void addRobotPart(RobotPart robotPart, boolean assigned)
+    {
+        UserRobotPartAsset userRobotPartAsset = getUserRobotPartAsset(robotPart.getId());
+        
+        if (userRobotPartAsset == null)
+        {
+            userRobotPartAsset = new UserRobotPartAsset(id, robotPart.getId(),
+                                                        1, assigned ? 0 : 1);
+
+            userRobotPartAssetList.add(userRobotPartAsset);
+        }
+        else
+        {
+            userRobotPartAsset.addOneOwned(assigned);
+        }
+    }
+
+    public void addRobot()
+    {
+        // Retrieve the initial robot parts
+        RobotPart oreContainer  = new RobotPart(1);
+        RobotPart miningUnit    = new RobotPart(2);
+        RobotPart battery       = new RobotPart(3);
+        RobotPart memoryModule  = new RobotPart(4);
+        RobotPart cpu           = new RobotPart(5);
+        RobotPart engine        = new RobotPart(6);
+
+        // Add the initial robot parts for the user
+        addRobotPart(oreContainer, true);
+        addRobotPart(miningUnit, true);
+        addRobotPart(battery, true);
+        addRobotPart(memoryModule, true);
+        addRobotPart(cpu, true);
+        addRobotPart(engine, true);
+
+        // Retrieve or create a suitable program
+        ProgramSource programSource = getOrCreateSuitableProgramSource(
+                                     memoryModule.getMemoryCapacity());
+
+        // Create the new robot for the user
+        Robot robot = new Robot(this);
+        robot.fillDefaults(oreContainer, miningUnit, battery, memoryModule, cpu,
+                           engine);
+        robot.setProgramSourceId(programSource.getId());
+        robot.setSourceCode(programSource.getSourceCode());
+
+        robotList.add(robot);
+    }
+
     /**
      * Retrieve the hash value of the primary key.
      *
@@ -619,9 +770,7 @@ public class Users implements Serializable
     @Override
     public int hashCode()
     {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return (id != null ? id.hashCode() : 0);
     }
 
     /**

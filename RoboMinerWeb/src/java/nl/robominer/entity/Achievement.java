@@ -21,6 +21,7 @@ package nl.robominer.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,9 +29,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -46,11 +46,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "Achievement")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Achievement.findAll", query = "SELECT a FROM Achievement a"),
-    @NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id")})
-public class Achievement implements Serializable {
-
+@NamedQueries(
+{
+    @NamedQuery(name = "Achievement.findAll",
+                query = "SELECT a FROM Achievement a"),
+    @NamedQuery(name = "Achievement.findById",
+                query = "SELECT a FROM Achievement a WHERE a.id = :id")
+})
+public class Achievement implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -72,105 +76,92 @@ public class Achievement implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "achievementPoints")
-    private int achievementPoints;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "miningQueueReward")
-    private int miningQueueReward;
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "robotReward")
-    private int robotReward;
-
-    @ManyToOne
-    @JoinColumn(name = "miningAreaId", insertable = false, updatable = false)
-    private MiningArea miningArea;
+    @OneToMany
+    @JoinColumn(name = "AchievementStep.achievementId")
+    @MapKey(name = "step")
+    private Map<Integer, AchievementStep> achievementStepMap;
 
     @OneToMany
-    @JoinColumn(name = "AchievementMiningTotalRequirement.achievementId")
-    private List<AchievementMiningTotalRequirement> achievementMiningTotalRequirementList;
+    @JoinColumn(name = "AchievementPredecessor.predecessorId")
+    private List<AchievementPredecessor> achievementSuccessorList;
 
     @OneToMany
-    @JoinColumn(name = "AchievementMiningScoreRequirement.achievementId")
-    private List<AchievementMiningScoreRequirement> achievementMiningScoreRequirementList;
+    @JoinColumn(name = "AchievementPredecessor.successorId")
+    private List<AchievementPredecessor> achievementPredecessorList;
 
-    @OneToMany
-    @JoinTable(
-            name = "AchievementPredecessor",
-            joinColumns = @JoinColumn(name = "predecessorId"),
-            inverseJoinColumns= @JoinColumn(name = "successorId")
-    )
-    private List<Achievement> achievementSuccessorList;
-
-    public Achievement() {
+    public Achievement()
+    {
     }
 
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public int getAchievementPoints() {
-        return achievementPoints;
+    public int getNumberOfSteps()
+    {
+        return achievementStepMap.size();
     }
 
-    public int getMiningQueueReward() {
-        return miningQueueReward;
+    public AchievementStep getAchievementStep(int step)
+    {
+        return achievementStepMap.get(step);
     }
 
-    public int getRobotReward() {
-        return robotReward;
+    public List<AchievementPredecessor> getAchievementPredecessorList()
+    {
+        return achievementPredecessorList;
     }
 
-    public MiningArea getMiningArea() {
-        return miningArea;
-    }
-
-    public List<AchievementMiningTotalRequirement> getAchievementMiningTotalRequirementList() {
-        return achievementMiningTotalRequirementList;
-    }
-
-    public List<AchievementMiningScoreRequirement> getAchievementMiningScoreRequirementList() {
-        return achievementMiningScoreRequirementList;
-    }
-
-    public List<Achievement> getAchievementSuccessorList() {
+    public List<AchievementPredecessor> getAchievementSuccessorList()
+    {
         return achievementSuccessorList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+    public int getTotalAchievementPoints()
+    {
+        int total = 0;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Achievement)) {
-            return false;
+        for (AchievementStep achievementStep : achievementStepMap.values())
+        {
+            total += achievementStep.getAchievementPoints();
         }
-        Achievement other = (Achievement) object;
-        return (this.id != null || other.id == null) &&
-               (this.id == null || this.id.equals(other.id));
-    }
-
-    @Override
-    public String toString() {
-        return "nl.robominer.entity.Achievement[ id=" + id + " ]";
+        
+        return total;
     }
     
+    @Override
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Achievement))
+        {
+            return false;
+        }
+        Achievement other = (Achievement)object;
+        return (this.id != null || other.id == null) &&
+                (this.id == null || this.id.equals(other.id));
+    }
+
+    @Override
+    public String toString()
+    {
+        return "nl.robominer.entity.Achievement[ id=" + id + " ]";
+    }
 }
