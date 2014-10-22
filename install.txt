@@ -1,0 +1,24 @@
+The following programs are needed to compile and run RoboMiner:
+
+- NetBeans IDE 8.0.1, including C++ and JavaEE support and including Glassfish
+
+Downloadable from https://netbeans.org/
+
+
+- boost
+
+yum install boost-devel
+
+
+- mysql
+
+yum install mysql-server
+yum install mysql-devel
+
+
+After installation, execute the following sql scripts to create the database:
+
+RoboMinerCpp/createDatabase.sql
+RoboMinerCpp/gameData.sql
+
+
