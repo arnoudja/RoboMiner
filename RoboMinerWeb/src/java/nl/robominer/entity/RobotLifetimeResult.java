@@ -22,8 +22,10 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,16 +41,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "RobotLifetimeResult")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "RobotLifetimeResult.findAll", query = "SELECT r FROM RobotLifetimeResult r"),
-    @NamedQuery(name = "RobotLifetimeResult.findByRobotId", query = "SELECT r FROM RobotLifetimeResult r WHERE r.robotLifetimeResultPK.robotId = :robotId"),
-    @NamedQuery(name = "RobotLifetimeResult.findByRobotAndOreId", query = "SELECT r FROM RobotLifetimeResult r WHERE r.robotLifetimeResultPK.robotId = :robotId AND r.robotLifetimeResultPK.oreId = :oreId")})
-public class RobotLifetimeResult implements Serializable {
-
+@NamedQueries(
+{
+    @NamedQuery(name = "RobotLifetimeResult.findAll",
+                query = "SELECT r FROM RobotLifetimeResult r"),
+    @NamedQuery(name = "RobotLifetimeResult.findByRobotId",
+                query = "SELECT r FROM RobotLifetimeResult r WHERE r.robotId = :robotId"),
+    @NamedQuery(name = "RobotLifetimeResult.findByRobotAndOreId",
+                query = "SELECT r FROM RobotLifetimeResult r WHERE r.robotId = :robotId AND r.ore.id = :oreId")
+})
+public class RobotLifetimeResult implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    protected RobotLifetimeResultPK robotLifetimeResultPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "robotId")
+    private int robotId;
+
+    @ManyToOne
+    @JoinColumn(name = "oreId")
+    private Ore ore;
 
     @Basic(optional = false)
     @NotNull
@@ -60,64 +79,89 @@ public class RobotLifetimeResult implements Serializable {
     @Column(name = "tax")
     private int tax;
 
-    @ManyToOne
-    @JoinColumn(name = "oreId", insertable = false, updatable = false)
-    private Ore ore;
-
-    public RobotLifetimeResult() {
+    public RobotLifetimeResult()
+    {
     }
 
-    public RobotLifetimeResult(int robotId, int oreId, int amount, int tax) {
-        this.robotLifetimeResultPK = new RobotLifetimeResultPK(robotId, oreId);
-        this.amount = amount;
-        this.tax = tax;
+    public RobotLifetimeResult(int robotId, Ore ore)
+    {
+        this.robotId = robotId;
+        this.ore     = ore;
+        this.amount  = 0;
+        this.tax     = 0;
     }
 
-    public RobotLifetimeResultPK getRobotLifetimeResultPK() {
-        return robotLifetimeResultPK;
+    public RobotLifetimeResult(int robotId, Ore ore, int amount, int tax)
+    {
+        this.robotId = robotId;
+        this.ore     = ore;
+        this.amount  = amount;
+        this.tax     = tax;
     }
 
-    public int getAmount() {
-        return amount;
+    public Integer getId()
+    {
+        return id;
     }
 
-    public void increaseAmount(int amount) {
-        this.amount += amount;
+    public int getRobotId()
+    {
+        return robotId;
     }
 
-    public int getTax() {
-        return tax;
-    }
-
-    public void increaseTax(int tax) {
-        this.tax += tax;
-    }
-
-    public Ore getOre() {
+    public Ore getOre()
+    {
         return ore;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (robotLifetimeResultPK != null ? robotLifetimeResultPK.hashCode() : 0);
-        return hash;
+    public Integer getOreId()
+    {
+        return ore.getId();
+    }
+
+    public int getAmount()
+    {
+        return amount;
+    }
+
+    public void increaseAmount(int amount)
+    {
+        this.amount += amount;
+    }
+
+    public int getTax()
+    {
+        return tax;
+    }
+
+    public void increaseTax(int tax)
+    {
+        this.tax += tax;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RobotLifetimeResult)) {
+        if (!(object instanceof RobotLifetimeResult))
+        {
             return false;
         }
-        RobotLifetimeResult other = (RobotLifetimeResult) object;
-        return (this.robotLifetimeResultPK != null || other.robotLifetimeResultPK == null) &&
-               (this.robotLifetimeResultPK == null || this.robotLifetimeResultPK.equals(other.robotLifetimeResultPK));
+
+        RobotLifetimeResult other = (RobotLifetimeResult)object;
+        return !((this.id == null && other.id != null) ||
+                 (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
-    public String toString() {
-        return "nl.robominer.entity.RobotLifetimeResult[ robotLifetimeResultPK=" + robotLifetimeResultPK + " ]";
+    public String toString()
+    {
+        return "nl.robominer.entity.RobotLifetimeResult[ id=" + id + " ]";
     }
-    
 }

@@ -33,17 +33,6 @@ insert into Ore (id, oreName) values (7, 'Raxia');
 insert into Ore (id, oreName) values (8, 'Dipolir');
 insert into Ore (id, oreName) values (9, 'Asradon');
 
--- The tier names
-insert into Tier (id, tierName) values (1, 'Cerbonium quality');
-insert into Tier (id, tierName) values (2, 'Oxaria quality');
-insert into Tier (id, tierName) values (3, 'Lithabine quality');
-insert into Tier (id, tierName) values (4, 'Neudralion quality');
-insert into Tier (id, tierName) values (5, 'Complatix quality');
-insert into Tier (id, tierName) values (6, 'Prantum quality');
-insert into Tier (id, tierName) values (7, 'Raxia quality');
-insert into Tier (id, tierName) values (8, 'Dipolir quality');
-insert into Tier (id, tierName) values (9, 'Asradon quality');
-
 -- The robot part names
 insert into RobotPartType (id, typeName) values (1, 'Ore container');
 insert into RobotPartType (id, typeName) values (2, 'Mining unit');

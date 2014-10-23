@@ -41,7 +41,6 @@ import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
 import nl.robominer.entity.PendingRobotChanges;
 import nl.robominer.entity.Robot;
-import nl.robominer.entity.RobotLifetimeResult;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.UserRobotPartAsset;
@@ -51,8 +50,6 @@ import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.PendingRobotChangesFacade;
-import nl.robominer.session.RobotFacade;
-import nl.robominer.session.RobotLifetimeResultFacade;
 import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.UserOreAssetFacade;
 import nl.robominer.session.UserRobotPartAssetFacade;
@@ -90,18 +87,6 @@ public class UserAssets
      */
     @EJB
     private MiningAreaLifetimeResultFacade miningAreaLifetimeResultFacade;
-
-    /**
-     * Bean to handle the database actions for the robots.
-     */
-    @EJB
-    private RobotFacade robotFacade;
-
-    /**
-     * Bean to handle the database actions for the robot mining totals.
-     */
-    @EJB
-    private RobotLifetimeResultFacade robotLifetimeResultFacade;
 
     /**
      * Bean to handle the database actions for the user ore assets.
@@ -170,6 +155,8 @@ public class UserAssets
     {
         transaction.begin();
 
+        Users user = usersFacade.findById(userId);
+
         List<MiningQueue> claimableMiningQueues = miningQueueFacade
                 .findClaimableByUsersId(userId);
 
@@ -177,9 +164,9 @@ public class UserAssets
         {
             int robotId = miningQueue.getRobot().getId();
 
-            Robot robot = robotFacade.findByIdAndUser(robotId, userId);
+            Robot robot = user.getRobot(robotId);
+
             robot.increateTotalMiningRuns();
-            robotFacade.edit(robot);
 
             List<MiningOreResult> miningOreResultList = miningQueue
                     .getMiningOreResults();
@@ -192,14 +179,13 @@ public class UserAssets
                 miningOreResult.calculateTax();
                 miningOreResultFacade.edit(miningOreResult);
 
-                int oreId  = miningOreResult.getOre().getId();
+                Ore ore    = miningOreResult.getOre();
                 int amount = miningOreResult.getAmount();
                 int tax    = miningOreResult.getTax();
                 int reward = miningOreResult.getReward();
 
-                updateRobotLifetimeResults(robotId, oreId, amount, tax);
-
-                updateUserOreAssets(userId, oreId, reward);
+                robot.increaseLifetimeResult(ore, amount, tax);
+                user.increaseUserOreAsset(miningOreResult.getOre(), reward);
             }
 
             updateMiningAreaLifetimeResults(miningQueue.getMiningArea(),
@@ -207,7 +193,9 @@ public class UserAssets
                                             robot.getMaxOre());
         }
 
-        Users user = usersFacade.findById(userId);
+        usersFacade.edit(user);
+
+        user = usersFacade.findById(userId);
 
         for (Robot robot : user.getRobotList())
         {
@@ -560,7 +548,7 @@ public class UserAssets
             if (userOreAsset == null)
             {
                 userOreAsset = new UserOreAsset(userId,
-                                                orePriceAmount.getOre().getId());
+                                                orePriceAmount.getOre());
                 userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
 
                 userOreAssetFacade.create(userOreAsset);
@@ -570,34 +558,6 @@ public class UserAssets
                 userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
                 userOreAssetFacade.edit(userOreAsset);
             }
-        }
-    }
-
-    /**
-     * Update the mining totals for the specified robot.
-     *
-     * @param robotId The id of the robot to update the mining totals for.
-     * @param oreId   The ore id mined.
-     * @param amount  The amount of ore mined for the specified ore.
-     * @param tax     The amount of ore payed as tax for the specified ore.
-     */
-    private void updateRobotLifetimeResults(int robotId, int oreId, int amount,
-                                            int tax)
-    {
-        RobotLifetimeResult robotLifetimeResult = robotLifetimeResultFacade
-                .findByRobotAndOreId(robotId, oreId);
-
-        if (robotLifetimeResult == null)
-        {
-            robotLifetimeResult = new RobotLifetimeResult(robotId, oreId, amount,
-                                                          tax);
-            robotLifetimeResultFacade.create(robotLifetimeResult);
-        }
-        else
-        {
-            robotLifetimeResult.increaseAmount(amount);
-            robotLifetimeResult.increaseTax(tax);
-            robotLifetimeResultFacade.edit(robotLifetimeResult);
         }
     }
 
@@ -642,32 +602,6 @@ public class UserAssets
                 miningAreaLifetimeResult.increaseTotalContainerSize(containerSize);
                 miningAreaLifetimeResultFacade.edit(miningAreaLifetimeResult);
             }
-        }
-    }
-
-    /**
-     * Add the specified amount of ore of the specified type to the user-assets
-     * of the specified user.
-     *
-     * @param userId The user to add the ore assets for.
-     * @param oreId  The ore type to add.
-     * @param reward The amount of ore to add.
-     */
-    private void updateUserOreAssets(int userId, int oreId, int reward)
-    {
-        UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(userId, oreId);
-
-        if (userOreAsset == null)
-        {
-            userOreAsset = new UserOreAsset(userId, oreId);
-            userOreAsset.setAmount(reward);
-
-            userOreAssetFacade.create(userOreAsset);
-        }
-        else
-        {
-            userOreAsset.increaseAmount(reward);
-            userOreAssetFacade.edit(userOreAsset);
         }
     }
 }

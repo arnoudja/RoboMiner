@@ -23,7 +23,6 @@ import bcrypt.BCrypt;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -35,7 +34,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -149,10 +147,9 @@ public class Users implements Serializable
     /**
      * A map of the user ore asset values.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserOreAsset.usersId")
-    @MapKey(name = "oreId")
-    private Map<Integer, UserOreAsset> userOreAssets;
+    private List<UserOreAsset> userOreAssetList;
 
     /**
      * The list of robots owned by the user.
@@ -403,13 +400,40 @@ public class Users implements Serializable
     }
 
     /**
-     * Retrieve a map of the ore-ids to the ore asset values for the user.
+     * Retrieve the list of the ore asset values for the user.
      *
-     * @return The ore-id to ore asset values mapping.
+     * @return The list of the ore asset values for the user.
      */
-    public Map<Integer, UserOreAsset> getUserOreAssets()
+    public List<UserOreAsset> getUserOreAssetList()
     {
-        return userOreAssets;
+        return userOreAssetList;
+    }
+
+    /**
+     * Increase the amount of ore owned by this user.
+     *
+     * @param ore    The ore to increase the amount for.
+     * @param amount The amount to increase with.
+     */
+    public void increaseUserOreAsset(Ore ore, int amount)
+    {
+        UserOreAsset result = null;
+
+        for (UserOreAsset userOreAsset : userOreAssetList)
+        {
+            if (userOreAsset.getOre().equals(ore))
+            {
+                result = userOreAsset;
+            }
+        }
+
+        if (result == null)
+        {
+            result = new UserOreAsset(id, ore);
+            userOreAssetList.add(result);
+        }
+
+        result.increaseAmount(amount);
     }
 
     /**
@@ -421,8 +445,15 @@ public class Users implements Serializable
      */
     public int getUserOreAmount(int oreId)
     {
-        UserOreAsset asset = userOreAssets.get(oreId);
-        return asset == null ? 0 : asset.getAmount();
+        for (UserOreAsset asset : userOreAssetList)
+        {
+            if (asset.getOre().getId() == oreId)
+            {
+                return asset.getAmount();
+            }
+        }
+
+        return 0;
     }
 
     /**

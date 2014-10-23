@@ -139,7 +139,7 @@ public class RobotPart implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "tierId", insertable = false, updatable = false)
-    private Tier tier;
+    private Ore tier;
 
     public RobotPart() {
     }
@@ -217,7 +217,7 @@ public class RobotPart implements Serializable {
         return powerUsage;
     }
 
-    public Tier getTier() {
+    public Ore getTier() {
         return tier;
     }
 

@@ -51,8 +51,8 @@
                     <td>Quality:</td>
                     <td>
                         <select id="tierId" class="tableitem" onchange="showRobotParts();">
-                            <c:forEach var="tier" items="${tierList}">
-                                <option value="${tier.id}" ${tier.id eq selectedTierId ? 'selected' : ''}>${fn:escapeXml(tier.tierName)}</option>
+                            <c:forEach var="ore" items="${oreList}">
+                                <option value="${ore.id}" ${ore.id eq selectedTierId ? 'selected' : ''}>${fn:escapeXml(ore.oreName)} quality</option>
                             </c:forEach>
                         </select>
                     </td>
@@ -182,7 +182,7 @@
                 <c:forEach var="userRobotPartAsset" items="${user.userRobotPartAssetList}">
                     <tr>
                         <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
-                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.tierName)}</td>
+                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.oreName)} quality</td>
                         <td>${userRobotPartAsset.totalOwned}</td>
                         <td>${userRobotPartAsset.unassigned}</td>
                         <td>

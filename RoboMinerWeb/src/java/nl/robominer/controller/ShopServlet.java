@@ -27,13 +27,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nl.robominer.entity.Ore;
 import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.RobotPartType;
-import nl.robominer.entity.Tier;
 import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.Users;
+import nl.robominer.session.OreFacade;
 import nl.robominer.session.RobotPartFacade;
-import nl.robominer.session.TierFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -42,8 +42,8 @@ import nl.robominer.session.UsersFacade;
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "ShopServlet", urlPatterns = {"/shop"})
-public class ShopServlet extends RoboMinerServletBase {
-
+public class ShopServlet extends RoboMinerServletBase
+{
     /**
      * The javascript view used for displaying the shop page.
      */
@@ -67,24 +67,26 @@ public class ShopServlet extends RoboMinerServletBase {
     private RobotPartFacade robotPartFacade;
 
     /**
-     * Bean to handle the database actions for the tiers.
+     * Bean to handle the database actions for the ore names.
      */
     @EJB
-    private TierFacade tierFacade;
+    private OreFacade oreFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
+     *
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void processRequest(HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws ServletException, IOException
+    {
         processAssets(request);
 
         // Retrieve the form values
@@ -94,24 +96,33 @@ public class ShopServlet extends RoboMinerServletBase {
         int selectedTierId          = getItemId(request, "selectedTierId");
 
         // Process the buy or sell request
-        if (buyRobotPartId > 0) {
+        if (buyRobotPartId > 0)
+        {
             buyRobotPart(request, buyRobotPartId);
         }
-        else if (sellRobotPartId > 0) {
+        else if (sellRobotPartId > 0)
+        {
             sellRobotPart(request, sellRobotPartId);
         }
 
-        if (selectedRobotPartTypeId <= 0 && request.getSession().getAttribute(SESSION_CATEGORY_ID) != null) {
-            selectedRobotPartTypeId = (int)request.getSession().getAttribute(SESSION_CATEGORY_ID);
+        if (selectedRobotPartTypeId <= 0 &&
+            request.getSession().getAttribute(SESSION_CATEGORY_ID) != null)
+        {
+            selectedRobotPartTypeId = (int)request.getSession().getAttribute(
+                    SESSION_CATEGORY_ID);
         }
 
         Users user = usersFacade.findById(getUserId(request));
 
         // Initially select the highest tier the user has ore for
-        if (selectedTierId < 1) {
-            for (Map.Entry<Integer, UserOreAsset> userOreAssetEntry : user.getUserOreAssets().entrySet()) {
-                if (userOreAssetEntry.getValue().getAmount() > 0 && userOreAssetEntry.getKey() > selectedTierId) {
-                    selectedTierId = userOreAssetEntry.getKey();
+        if (selectedTierId < 1)
+        {
+            for (UserOreAsset userOreAsset : user.getUserOreAssetList())
+            {
+                if (userOreAsset.getAmount() > 0 &&
+                    userOreAsset.getOre().getId() > selectedTierId)
+                {
+                    selectedTierId = userOreAsset.getOre().getId();
                 }
             }
         }
@@ -120,19 +131,21 @@ public class ShopServlet extends RoboMinerServletBase {
         request.setAttribute("user", user);
 
         // Add the robot parts
-        Map< RobotPartType, List<RobotPart> > robotPartMap = robotPartFacade.findAllMapped();
+        Map< RobotPartType, List<RobotPart>> robotPartMap =
+                robotPartFacade.findAllMapped();
         request.setAttribute("robotPartMap", robotPartMap);
 
-        // Add the tier list
-        List<Tier> tierList = tierFacade.findAll();
-        request.setAttribute("tierList", tierList);
+        // Add the ore list
+        List<Ore> oreList = oreFacade.findAll();
+        request.setAttribute("oreList", oreList);
 
         // Add the previous selected part type and selection
         request.setAttribute("selectedRobotPartTypeId", selectedRobotPartTypeId);
         request.setAttribute("selectedTierId", selectedTierId);
 
         // Store the selected category in the session
-        request.getSession().setAttribute(SESSION_CATEGORY_ID, selectedRobotPartTypeId);
+        request.getSession().setAttribute(SESSION_CATEGORY_ID,
+                                          selectedRobotPartTypeId);
 
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
@@ -143,8 +156,8 @@ public class ShopServlet extends RoboMinerServletBase {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Shopping servlet";
     }
-
 }

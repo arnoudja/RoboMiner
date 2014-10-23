@@ -284,7 +284,7 @@ public class Robot implements Serializable
     /**
      * The total amounts of ore this robot mined so far.
      */
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "RobotLifetimeResult.robotId")
     private List<RobotLifetimeResult> robotLifetimeResultList;
 
@@ -881,11 +881,6 @@ public class Robot implements Serializable
         ++totalMiningRuns;
     }
 
-    public List<RobotLifetimeResult> getRobotLifetimeResultList()
-    {
-        return robotLifetimeResultList;
-    }
-
     public int getTotalOreMined(int oreId)
     {
         for (RobotLifetimeResult robotLifetimeResult : robotLifetimeResultList)
@@ -897,6 +892,28 @@ public class Robot implements Serializable
         }
 
         return 0;
+    }
+
+    public void increaseLifetimeResult(Ore ore, int amount, int tax)
+    {
+        RobotLifetimeResult result = null;
+
+        for (RobotLifetimeResult robotLifetimeResult : robotLifetimeResultList)
+        {
+            if (robotLifetimeResult.getOre().equals(ore))
+            {
+                result = robotLifetimeResult;
+            }
+        }
+
+        if (result == null)
+        {
+            result = new RobotLifetimeResult(id, ore);
+            robotLifetimeResultList.add(result);
+        }
+
+        result.increaseAmount(amount);
+        result.increaseTax(tax);
     }
 
     public double getMiningAreaScore(int miningAreaId)

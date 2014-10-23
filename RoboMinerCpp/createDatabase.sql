@@ -62,13 +62,6 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 oreName VARCHAR(255) NOT NULL
 );
 
-create table Tier
-(
-id INT AUTO_INCREMENT PRIMARY KEY,
-tierName VARCHAR(255) NOT NULL
-);
-
-
 create table OrePrice
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,10 +92,11 @@ INDEX (email)
 
 create table UserOreAsset
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL DEFAULT 0,
-PRIMARY KEY (usersId, oreId)
+CONSTRAINT UNIQUE INDEX (usersId, oreId)
 );
 
 
@@ -129,7 +123,7 @@ create table RobotPart
 (
 id INT AUTO_INCREMENT PRIMARY KEY,
 typeId INT NOT NULL REFERENCES RobotPartType (id) ON DELETE CASCADE,
-tierId INT NULL REFERENCES Tier (id) ON DELETE SET NULL,
+tierId INT NULL REFERENCES Ore (id) ON DELETE SET NULL,
 partName VARCHAR(255) NOT NULL,
 orePriceId INT NOT NULL REFERENCES OrePrice (id),
 oreCapacity INT NOT NULL DEFAULT 0,
@@ -312,11 +306,12 @@ PRIMARY KEY (miningQueueId, actionType)
 
 create table RobotLifetimeResult
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
 tax INT NOT NULL,
-PRIMARY KEY (robotId, oreId)
+CONSTRAINT UNIQUE INDEX (robotId, oreId)
 );
 
 
@@ -414,7 +409,7 @@ robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
 sourceCode TEXT NOT NULL,
 totalScore DOUBLE NOT NULL DEFAULT 0,
 runsDone INT NOT NULL DEFAULT 0,
-index (runsDone, totalScore, id)
+INDEX (runsDone, totalScore, id)
 );
 
 

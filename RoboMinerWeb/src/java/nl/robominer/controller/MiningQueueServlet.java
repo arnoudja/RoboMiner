@@ -241,14 +241,14 @@ public class MiningQueueServlet extends RoboMinerServletBase
             else
             {
                 int count = fill ? (robot.getUser().getMiningQueueSize() - robotMiningQueueList.size()) : 1;
-                
-                for (int i = 0; i < count; ++i)
-                {
-                    MiningQueue miningQueue = new MiningQueue();
-                    miningQueue.setMiningArea(miningArea);
-                    miningQueue.setRobot(robot);
 
-                    miningQueueFacade.create(miningQueue);
+                addMiningQueueRecord(robot, miningArea);
+                --count;
+
+                while (count > 0 && payMiningCosts(request, miningArea))
+                {
+                    addMiningQueueRecord(robot, miningArea);
+                    --count;
                 }
             }
         }
@@ -256,6 +256,15 @@ public class MiningQueueServlet extends RoboMinerServletBase
         return errorMessage;
     }
 
+    private void addMiningQueueRecord(Robot robot, MiningArea miningArea)
+    {
+        MiningQueue miningQueue = new MiningQueue();
+        miningQueue.setMiningArea(miningArea);
+        miningQueue.setRobot(robot);
+
+        miningQueueFacade.create(miningQueue);
+    }
+    
     private void removeMiningQueueItems(int userId, int robotId,
                                         String[] selectedQueueItems)
     {
