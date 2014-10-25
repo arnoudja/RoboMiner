@@ -69,23 +69,23 @@
                                 <td class="shopFirstRow">Part name:</td>
                                 <td class="shopPartName" colspan="3">${fn:escapeXml(robotPart.partName)}</td>
                                 <td class="shopFirstRow">
-                                    <c:if test="${user.canAffort(robotPart.orePrice) && user.robotList.size() gt user.getTotalRobotPartAmount(robotPart.id)}">
+                                    <c:if test="${user.canAffort(robotPart.orePrice) && user.robotList.size() gt user.getTotalRobotPartAmount(robotPart)}">
                                             <button onclick="buyItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Buy</button>
                                     </c:if>
                                 </td>
                             </tr>
-                            <c:if test="${user.getTotalRobotPartAmount(robotPart.id) gt 0}">
+                            <c:if test="${user.getTotalRobotPartAmount(robotPart) gt 0}">
                                 <tr>
                                     <td class="important">Owned:</td>
                                     <td>total:</td>
-                                    <td colspan="3">${user.getTotalRobotPartAmount(robotPart.id)}</td>
+                                    <td colspan="3">${user.getTotalRobotPartAmount(robotPart)}</td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>unused:</td>
-                                    <td colspan="2">${user.getUnassignedRobotPartAmount(robotPart.id)}</td>
+                                    <td colspan="2">${user.getUnassignedRobotPartAmount(robotPart)}</td>
                                     <td>
-                                        <c:if test="${user.getUnassignedRobotPartAmount(robotPart.id) gt 0}">
+                                        <c:if test="${user.getUnassignedRobotPartAmount(robotPart) gt 0}">
                                             <button onclick="sellItem(${robotPart.id}, '${fn:escapeXml(robotPart.partName)}');">Sell</button>
                                         </c:if>
                                     </td>
@@ -163,7 +163,7 @@
                                     <td></td>
                                     <td colspan="2">${fn:escapeXml(orePrice.ore.oreName)}:</td>
                                     <td>${orePrice.amount}</td>
-                                    <td class="${user.getUserOreAmount(orePrice.ore.id) ge orePrice.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePrice.ore.id)})</td>
+                                    <td class="${user.getUserOreAmount(orePrice.ore) ge orePrice.amount ? 'sufficientbalance' : 'insufficientbalance'}">(${user.getUserOreAmount(orePrice.ore)})</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -180,17 +180,19 @@
                     <th></th>
                 </tr>
                 <c:forEach var="userRobotPartAsset" items="${user.userRobotPartAssetList}">
-                    <tr>
-                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
-                        <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.oreName)} quality</td>
-                        <td>${userRobotPartAsset.totalOwned}</td>
-                        <td>${userRobotPartAsset.unassigned}</td>
-                        <td>
-                            <c:if test="${userRobotPartAsset.unassigned gt 0}">
-                                <button onclick="sellItem(${userRobotPartAsset.robotPart.id}, '${fn:escapeXml(userRobotPartAsset.robotPart.partName)}');">Sell</button>
-                            </c:if>
-                        </td>
-                    </tr>
+                    <c:if test="${userRobotPartAsset.totalOwned gt 0}">
+                        <tr>
+                            <td>${fn:escapeXml(userRobotPartAsset.robotPart.partName)}</td>
+                            <td>${fn:escapeXml(userRobotPartAsset.robotPart.tier.oreName)} quality</td>
+                            <td>${userRobotPartAsset.totalOwned}</td>
+                            <td>${userRobotPartAsset.unassigned}</td>
+                            <td>
+                                <c:if test="${userRobotPartAsset.unassigned gt 0}">
+                                    <button onclick="sellItem(${userRobotPartAsset.robotPart.id}, '${fn:escapeXml(userRobotPartAsset.robotPart.partName)}');">Sell</button>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </table>
 

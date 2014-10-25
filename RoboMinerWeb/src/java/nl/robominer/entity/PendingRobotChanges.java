@@ -362,6 +362,20 @@ public class PendingRobotChanges implements Serializable
         this.oldEngineId = oldEngineId;
     }
 
+    /**
+     * Check whether the specified robot part is in use in the new configuration.
+     *
+     * @param robotPart The robot part to check for.
+     *
+     * @return True when the robot part will be used, else false.
+     */
+    public boolean isRobotPartInUse(RobotPart robotPart)
+    {
+        return (oreContainer == robotPart || miningUnit == robotPart ||
+                battery == robotPart || memoryModule == robotPart ||
+                cpu == robotPart || engine == robotPart);
+    }
+
     public int getRechargeTime()
     {
         return rechargeTime;

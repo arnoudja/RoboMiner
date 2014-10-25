@@ -606,6 +606,22 @@ public class Robot implements Serializable
         }
     }
 
+    /**
+     * Check whether a robot part is being used by this robot.
+     *
+     * @param robotPart The robot part to check for.
+     *
+     * @return true if the robot part is being used, else false.
+     */
+    public boolean isRobotPartInUse(RobotPart robotPart)
+    {
+        return (oreContainer == robotPart || miningUnit == robotPart ||
+                battery == robotPart || memoryModule == robotPart ||
+                cpu == robotPart || engine == robotPart ||
+                (getChangePending() &&
+                 pendingRobotChangesList.get(0).isRobotPartInUse(robotPart)));
+    }
+
     public int getRechargeTime()
     {
         if (!getChangePending())

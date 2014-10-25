@@ -41,18 +41,14 @@ import nl.robominer.entity.OrePrice;
 import nl.robominer.entity.OrePriceAmount;
 import nl.robominer.entity.PendingRobotChanges;
 import nl.robominer.entity.Robot;
-import nl.robominer.entity.RobotPart;
 import nl.robominer.entity.UserOreAsset;
-import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.AchievementFacade;
 import nl.robominer.session.MiningAreaLifetimeResultFacade;
 import nl.robominer.session.MiningOreResultFacade;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.PendingRobotChangesFacade;
-import nl.robominer.session.RobotPartFacade;
 import nl.robominer.session.UserOreAssetFacade;
-import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -95,22 +91,10 @@ public class UserAssets
     private UserOreAssetFacade userOreAssetFacade;
 
     /**
-     * Bean to handle the database actions for the robot parts.
-     */
-    @EJB
-    private RobotPartFacade robotPartFacade;
-
-    /**
      * Bean to handle the database actions for the user data.
      */
     @EJB
     private UsersFacade usersFacade;
-
-    /**
-     * Bean to handle the database actions for the user robot part assets.
-     */
-    @EJB
-    private UserRobotPartAssetFacade userRobotPartAssetFacade;
 
     /**
      * Bean to handle the database actions for the achievements.
@@ -195,51 +179,12 @@ public class UserAssets
 
         usersFacade.edit(user);
 
-        user = usersFacade.findById(userId);
-
         for (Robot robot : user.getRobotList())
         {
             PendingRobotChanges pendingRobotChanges = pendingRobotChangesFacade.findCommittedByRobotId(robot.getId());
 
             if (pendingRobotChanges != null)
             {
-                if (!Objects.equals(pendingRobotChanges.getOldOreContainerId(),
-                                    pendingRobotChanges.getOreContainer().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldOreContainerId()).unassignOne();
-                }
-
-                if (!Objects.equals(pendingRobotChanges.getOldMiningUnitId(),
-                                    pendingRobotChanges.getMiningUnit().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldMiningUnitId()).unassignOne();
-                }
-
-                if (!Objects.equals(pendingRobotChanges.getOldBatteryId(),
-                                    pendingRobotChanges.getBattery().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldBatteryId()).unassignOne();
-                }
-
-                if (!Objects.equals(pendingRobotChanges.getOldMemoryModuleId(),
-                                    pendingRobotChanges.getMemoryModule().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldMemoryModuleId()).unassignOne();
-                }
-
-                if (!Objects.equals(pendingRobotChanges.getOldCpuId(),
-                                    pendingRobotChanges.getCpu().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldCpuId()).unassignOne();
-                }
-
-                if (!Objects.equals(pendingRobotChanges.getOldEngineId(),
-                                    pendingRobotChanges.getEngine().getId()))
-                {
-                    user.getUserRobotPartAsset(pendingRobotChanges.getOldEngineId()).unassignOne();
-                }
-
-                usersFacade.edit(user);
                 pendingRobotChangesFacade.remove(pendingRobotChanges);
             }
         }
@@ -285,126 +230,6 @@ public class UserAssets
         if (miningArea != null && payOreCosts(userId, miningArea.getOrePrice()))
         {
             succeeded = true;
-            transaction.commit();
-        }
-        else
-        {
-            transaction.rollback();
-        }
-
-        return succeeded;
-    }
-
-    /**
-     * If possible, subtract the costs of a robot part from the user assets, add
-     * the robot part to the user assets and return true. If the user doesn't
-     * have sufficient assets to pay for the transaction, return false.
-     *
-     * @param userId      The id of the user to buy the robot part for.
-     * @param robotPartId The id of the robot part to buy.
-     *
-     * @return true if successful, false if the user doesn't have enough assets.
-     *
-     * @throws NotSupportedException      When an unexpected database
-     *                                    transaction problem occurred.
-     * @throws SystemException            When an unexpected database
-     *                                    transaction problem occurred.
-     * @throws RollbackException          When an unexpected database
-     *                                    transaction problem occurred.
-     * @throws HeuristicMixedException    When an unexpected database
-     *                                    transaction problem occurred.
-     * @throws HeuristicRollbackException When an unexpected database
-     *                                    transaction problem occurred.
-     */
-    public boolean buyRobotPart(int userId, int robotPartId)
-            throws NotSupportedException, SystemException, RollbackException,
-                   HeuristicMixedException, HeuristicRollbackException
-    {
-        boolean succeeded = false;
-
-        transaction.begin();
-
-        RobotPart robotPart = robotPartFacade.find(robotPartId);
-
-        if (robotPart != null && payOreCosts(userId, robotPart.getOrePrice()))
-        {
-            addRobotPart(userId, robotPartId, false);
-
-            succeeded = true;
-        }
-
-        if (succeeded)
-        {
-            transaction.commit();
-        }
-        else
-        {
-            transaction.rollback();
-        }
-
-        return succeeded;
-    }
-
-    /**
-     * For the specified user, if possible, subtract the price of the specified
-     * robot part from the assets, add the robot part to the assets and return
-     * true. When the user doesn't have sufficient assets for the transaction,
-     * return false.
-     *
-     * @param userId      The id of the user to buy the robot part for.
-     * @param robotPartId The id of the robot part to buy.
-     *
-     * @return true when successful, false when the user doesn't have enough
-     *         assets.
-     *
-     * @throws NotSupportedException      NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws SystemException            NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws RollbackException          NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws HeuristicMixedException    NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     * @throws HeuristicRollbackException NotSupportedException When an
-     *                                    unexpected database transaction
-     *                                    problem occurred.
-     */
-    public boolean sellRobotPart(int userId, int robotPartId)
-            throws NotSupportedException, SystemException, RollbackException,
-                   HeuristicMixedException, HeuristicRollbackException
-    {
-        boolean succeeded = false;
-
-        transaction.begin();
-
-        RobotPart robotPart = robotPartFacade.find(robotPartId);
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade
-                .findByUsersIdAndRobotPartId(userId, robotPartId);
-
-        if (robotPart != null && userRobotPartAsset != null &&
-                userRobotPartAsset.getUnassigned() > 0)
-        {
-            if (userRobotPartAsset.getTotalOwned() > 1)
-            {
-                userRobotPartAsset.removeOneOwned();
-                userRobotPartAssetFacade.edit(userRobotPartAsset);
-            }
-            else
-            {
-                userRobotPartAssetFacade.remove(userRobotPartAsset);
-            }
-
-            returnHalfOre(userId, robotPart.getOrePrice());
-
-            succeeded = true;
-        }
-
-        if (succeeded)
-        {
             transaction.commit();
         }
         else
@@ -467,32 +292,6 @@ public class UserAssets
     }
 
     /**
-     * Add a robot part to the user assets.
-     *
-     * @param usersId     The id of the user to add the robot part to.
-     * @param robotPartId The id of the robot part to add.
-     * @param assigned    When true, the robot part is added as assigned to a
-     *                    robot, when false it is added as unassigned.
-     */
-    private void addRobotPart(int usersId, int robotPartId, boolean assigned)
-    {
-        UserRobotPartAsset userRobotPartAsset = userRobotPartAssetFacade
-                .findByUsersIdAndRobotPartId(usersId, robotPartId);
-
-        if (userRobotPartAsset == null)
-        {
-            userRobotPartAsset = new UserRobotPartAsset(usersId, robotPartId, 1,
-                                                        assigned ? 0 : 1);
-            userRobotPartAssetFacade.create(userRobotPartAsset);
-        }
-        else
-        {
-            userRobotPartAsset.addOneOwned(assigned);
-            userRobotPartAssetFacade.edit(userRobotPartAsset);
-        }
-    }
-
-    /**
      * If possible, subtract the specified ore amount from the assets of the
      * specified user and return true. When the assets of the specified user
      * aren't sufficient, return false.
@@ -527,38 +326,6 @@ public class UserAssets
         }
 
         return succeeded;
-    }
-
-    /**
-     * Add half the ore price to the user assets of the specified user. Used
-     * when a user sells a robot-part back to the system.
-     *
-     * @param userId   The id of the user to add the assets for.
-     * @param orePrice The original price of the item.
-     */
-    private void returnHalfOre(int userId, OrePrice orePrice)
-    {
-        List<OrePriceAmount> priceList = orePrice.getOrePriceAmountList();
-
-        for (OrePriceAmount orePriceAmount : priceList)
-        {
-            UserOreAsset userOreAsset = userOreAssetFacade.findByUserAndOreId(
-                    userId, orePriceAmount.getOre().getId());
-
-            if (userOreAsset == null)
-            {
-                userOreAsset = new UserOreAsset(userId,
-                                                orePriceAmount.getOre());
-                userOreAsset.setAmount(orePriceAmount.getAmount() / 2);
-
-                userOreAssetFacade.create(userOreAsset);
-            }
-            else
-            {
-                userOreAsset.increaseAmount(orePriceAmount.getAmount() / 2);
-                userOreAssetFacade.edit(userOreAsset);
-            }
-        }
     }
 
     /**

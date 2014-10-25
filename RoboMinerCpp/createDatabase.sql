@@ -52,7 +52,6 @@ drop table if exists UserOreAsset;
 drop table if exists Users;
 drop table if exists OrePriceAmount;
 drop table if exists OrePrice;
-drop table if exists Tier;
 drop table if exists Ore;
 
 
@@ -143,12 +142,14 @@ powerUsage INT NOT NULL
 
 create table UserRobotPartAsset
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
 robotPartId INT NOT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
 totalOwned INT NOT NULL DEFAULT 0,
 unassigned INT NOT NULL DEFAULT 0,
-PRIMARY KEY (usersId, robotPartId)
+CONSTRAINT UNIQUE INDEX (usersId, robotPartId)
 );
+-- TODO: remove column 'unassigned'.
 
 
 create table Robot

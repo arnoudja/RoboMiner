@@ -23,6 +23,7 @@ import bcrypt.BCrypt;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -34,9 +35,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -149,7 +152,8 @@ public class Users implements Serializable
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "UserOreAsset.usersId")
-    private List<UserOreAsset> userOreAssetList;
+    @MapKey(name = "ore")
+    private Map<Ore, UserOreAsset> userOreAssetMap;
 
     /**
      * The list of robots owned by the user.
@@ -404,9 +408,9 @@ public class Users implements Serializable
      *
      * @return The list of the ore asset values for the user.
      */
-    public List<UserOreAsset> getUserOreAssetList()
+    public Map<Ore, UserOreAsset> getUserOreAssetMap()
     {
-        return userOreAssetList;
+        return userOreAssetMap;
     }
 
     /**
@@ -417,57 +421,62 @@ public class Users implements Serializable
      */
     public void increaseUserOreAsset(Ore ore, int amount)
     {
-        UserOreAsset result = null;
+        UserOreAsset userOreAsset = userOreAssetMap.get(ore);
 
-        for (UserOreAsset userOreAsset : userOreAssetList)
+        if (userOreAsset == null)
         {
-            if (userOreAsset.getOre().equals(ore))
-            {
-                result = userOreAsset;
-            }
+            userOreAsset = new UserOreAsset(id, ore);
+            userOreAssetMap.put(ore, userOreAsset);
         }
 
-        if (result == null)
+        userOreAsset.increaseAmount(amount);
+    }
+
+    /**
+     * Decrease the amount of ore owned by this user.
+     *
+     * @param ore    The ore to decrease the amount for.
+     * @param amount The amount to decrease with.
+     */
+    public void decreaseUserOreAsset(Ore ore, int amount)
+            throws IllegalStateException
+    {
+        UserOreAsset userOreAsset = userOreAssetMap.get(ore);
+
+        if (userOreAsset == null || userOreAsset.getAmount() < amount)
         {
-            result = new UserOreAsset(id, ore);
-            userOreAssetList.add(result);
+            throw new IllegalStateException();
         }
 
-        result.increaseAmount(amount);
+        userOreAsset.decreaseAmount(amount);
     }
 
     /**
      * Retrieve the amount of ore owned by the user for a specific ore type.
      *
-     * @param oreId The ore type id to retrieve the amount owned for.
+     * @param ore The ore type to retrieve the amount owned for.
      *
      * @return The amount of ore owned.
      */
-    public int getUserOreAmount(int oreId)
+    public int getUserOreAmount(Ore ore)
     {
-        for (UserOreAsset asset : userOreAssetList)
-        {
-            if (asset.getOre().getId() == oreId)
-            {
-                return asset.getAmount();
-            }
-        }
+        UserOreAsset userOreAsset = userOreAssetMap.get(ore);
 
-        return 0;
+        return (userOreAsset == null ? 0 : userOreAsset.getAmount());
     }
 
     /**
      * Retrieve the user robot part asset for the specified robot part id.
      *
-     * @param robotPartId The id of the robot part to return the asset for.
+     * @param robotPart The robot part to return the asset for.
      *
      * @return The robot part asset.
      */
-    public UserRobotPartAsset getUserRobotPartAsset(int robotPartId)
+    public UserRobotPartAsset getUserRobotPartAsset(RobotPart robotPart)
     {
         for (UserRobotPartAsset userRobotPartAsset : userRobotPartAssetList)
         {
-            if (userRobotPartAsset.getRobotPartId() == robotPartId)
+            if (userRobotPartAsset.getRobotPart().equals(robotPart))
             {
                 return userRobotPartAsset;
             }
@@ -477,28 +486,52 @@ public class Users implements Serializable
     }
 
     /**
+     * Count the number of robots using the specified robot part. Robots
+     * currently using the part are counted as well as robots that will use
+     * the part after currently pending robot changes.
+     *
+     * @param robotPart The robot part to count.
+     *
+     * @return The number of robots using this robot part.
+     */
+    public int countRobotPartUsage(RobotPart robotPart)
+    {
+        int count = 0;
+
+        for (Robot robot : robotList)
+        {
+            if (robot.isRobotPartInUse(robotPart))
+            {
+                ++count;
+            }
+        }
+
+        return count;
+    }
+
+    /**
      * Retrieve the total amount of the specified robot part the user owns.
      *
-     * @param robotPartId The id of the robot part to retrieve the amount for.
+     * @param robotPart The robot part to retrieve the amount for.
      *
      * @return The total amount of the specified robot part the user owns.
      */
-    public int getTotalRobotPartAmount(int robotPartId)
+    public int getTotalRobotPartAmount(RobotPart robotPart)
     {
-        UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
+        UserRobotPartAsset asset = getUserRobotPartAsset(robotPart);
         return asset == null ? 0 : asset.getTotalOwned();
     }
 
     /**
      * Retrieve the unassigned amount of the specified robot part the user owns.
      *
-     * @param robotPartId The id of the robot part to retrieve the amount for.
+     * @param robotPart The robot part to retrieve the amount for.
      *
      * @return The unassigned amount of the specified robot part the user owns.
      */
-    public int getUnassignedRobotPartAmount(int robotPartId)
+    public int getUnassignedRobotPartAmount(RobotPart robotPart)
     {
-        UserRobotPartAsset asset = getUserRobotPartAsset(robotPartId);
+        UserRobotPartAsset asset = getUserRobotPartAsset(robotPart);
         return asset == null ? 0 : asset.getUnassigned();
     }
 
@@ -725,14 +758,54 @@ public class Users implements Serializable
         List<OrePriceAmount> orePriceAmountList = orePrice.getOrePriceAmountList();
         for (OrePriceAmount orePriceAmount : orePriceAmountList)
         {
-            if (orePriceAmount.getAmount() > getUserOreAmount(orePriceAmount
-                    .getOre().getId()))
+            if (orePriceAmount.getAmount() >
+                    getUserOreAmount(orePriceAmount.getOre()))
             {
                 result = false;
             }
         }
 
         return result;
+    }
+
+    /**
+     * Decrease the user ore assets with the specified ore price.
+     *
+     * @param orePrice The ore price to decrease the assets with.
+     *
+     * @return true if the ore assets are successfully decreased, false if the
+     * user cannot afford the costs. When false is returned, nothing is changed.
+     */
+    public boolean payOreCosts(OrePrice orePrice)
+    {
+        if (!canAffort(orePrice))
+        {
+            return false;
+        }
+
+        List<OrePriceAmount> orePriceAmountList = orePrice.getOrePriceAmountList();
+        for (OrePriceAmount orePriceAmount : orePriceAmountList)
+        {
+            decreaseUserOreAsset(orePriceAmount.getOre(),
+                                 orePriceAmount.getAmount());
+        }
+        
+        return true;
+    }
+
+    /**
+     * Increase the user ore assets with half the specified ore price.
+     *
+     * @param orePrice The ore price.
+     */
+    public void returnHalfOreCosts(OrePrice orePrice)
+    {
+        List<OrePriceAmount> orePriceAmountList = orePrice.getOrePriceAmountList();
+        for (OrePriceAmount orePriceAmount : orePriceAmountList)
+        {
+            increaseUserOreAsset(orePriceAmount.getOre(),
+                                 orePriceAmount.getAmount() / 2);
+        }
     }
 
     /**
@@ -744,23 +817,97 @@ public class Users implements Serializable
         miningQueueSize = 0;
     }
 
-    public void addRobotPart(RobotPart robotPart, boolean assigned)
+    /**
+     * Add the specified robot part to the user assets.
+     *
+     * @param robotPart The robot part to add.
+     */
+    public void addRobotPart(RobotPart robotPart)
     {
-        UserRobotPartAsset userRobotPartAsset = getUserRobotPartAsset(robotPart.getId());
-        
+        UserRobotPartAsset userRobotPartAsset = getUserRobotPartAsset(robotPart);
+
         if (userRobotPartAsset == null)
         {
-            userRobotPartAsset = new UserRobotPartAsset(id, robotPart.getId(),
-                                                        1, assigned ? 0 : 1);
-
+            userRobotPartAsset = new UserRobotPartAsset(this, robotPart, 1);
             userRobotPartAssetList.add(userRobotPartAsset);
         }
         else
         {
-            userRobotPartAsset.addOneOwned(assigned);
+            userRobotPartAsset.addOneOwned();
         }
     }
 
+    /**
+     * Remove the specified robot part from the user assets.
+     *
+     * @param robotPart The robot part to remove.
+     * 
+     * @return true when the robot part is successfully removed, false when
+     * the user doesn't have an unassigned version of the specified robot part.
+     */
+    public boolean removeRobotPart(RobotPart robotPart)
+    {
+        boolean result = false;
+
+        UserRobotPartAsset userRobotPartAsset = getUserRobotPartAsset(robotPart);
+
+        if (userRobotPartAsset != null && userRobotPartAsset.getUnassigned() >= 1)
+        {
+            userRobotPartAsset.removeOneOwned();
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Decrease the user assets with the ore costs of the specified robot part
+     * and increase the owned count of the specified robot part by one.
+     *
+     * @param robotPart The robot part to buy.
+     *
+     * @return true when successful, false if the user doesn't have enough ore
+     * assets for the transaction.
+     */
+    public boolean buyRobotPart(RobotPart robotPart)
+    {
+        boolean result = false;
+
+        if (payOreCosts(robotPart.getOrePrice()))
+        {
+            addRobotPart(robotPart);
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Decrease the owned count of the specified robot part by one and
+     * increase the user assets with half the ore costs of the specified
+     * robot part.
+     *
+     * @param robotPart The robot part to sell.
+     *
+     * @return true when successful, false if the user doesn't have an
+     * unassigned robot part of the specified type.
+     */
+    public boolean sellRobotPart(RobotPart robotPart)
+    {
+        boolean result = false;
+
+        if (removeRobotPart(robotPart))
+        {
+            returnHalfOreCosts(robotPart.getOrePrice());
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Add a new robot for this user.
+     */
     public void addRobot()
     {
         // Retrieve the initial robot parts
@@ -772,12 +919,12 @@ public class Users implements Serializable
         RobotPart engine        = new RobotPart(6);
 
         // Add the initial robot parts for the user
-        addRobotPart(oreContainer, true);
-        addRobotPart(miningUnit, true);
-        addRobotPart(battery, true);
-        addRobotPart(memoryModule, true);
-        addRobotPart(cpu, true);
-        addRobotPart(engine, true);
+        addRobotPart(oreContainer);
+        addRobotPart(miningUnit);
+        addRobotPart(battery);
+        addRobotPart(memoryModule);
+        addRobotPart(cpu);
+        addRobotPart(engine);
 
         // Retrieve or create a suitable program
         ProgramSource programSource = getOrCreateSuitableProgramSource(

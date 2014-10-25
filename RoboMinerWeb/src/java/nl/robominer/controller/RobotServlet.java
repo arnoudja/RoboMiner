@@ -129,7 +129,7 @@ public class RobotServlet extends RoboMinerServletBase
      * Update the robot configuration as requested.
      *
      * @param request The servlet request containing the configuration changes.
-     * @param robot The robot to change the configuration for.
+     * @param robot   The robot to change the configuration for.
      *
      * @throws IllegalStateException if the user assets don't allow the new configuration.
      * @throws IllegalArgumentException if the new robot name isn't allowed.
@@ -175,89 +175,50 @@ public class RobotServlet extends RoboMinerServletBase
             robot.setProgramSourceId(programSourceId);
             robot.setSourceCode(programSource.getSourceCode());
 
-            if (robot.getOreContainer().getId() != oreContainerId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getOreContainer().getId(),
-                                oreContainerId, pending);
-                robot.setOreContainer(oreContainer);
-            }
-
-            if (robot.getMiningUnit().getId() != miningUnitId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getMiningUnit().getId(),
-                                miningUnitId, pending);
-                robot.setMiningUnit(miningUnit);
-            }
-
-            if (robot.getBattery().getId() != batteryId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getBattery().getId(),
-                                batteryId, pending);
-                robot.setBattery(battery);
-            }
-
-            if (robot.getMemoryModule().getId() != memoryModuleId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getMemoryModule().getId(),
-                                memoryModuleId, pending);
-                robot.setMemoryModule(memoryModule);
-            }
-
-            if (robot.getCpu().getId() != cpuId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getCpu().getId(), cpuId, pending);
-                robot.setCpu(cpu);
-            }
-
-            if (robot.getEngine().getId() != engineId)
-            {
-                updateUnitStock(robot.getUser(),
-                                robot.getEngine().getId(), engineId,
-                                pending);
-                robot.setEngine(engine);
-            }
-
-            robot.updateParameters();
-        }
-    }
-
-    /**
-     * Update the assigned/unassigned user assets for the specified robot parts.
-     *
-     * @param user The user to swap the assets for.
-     *
-     * @param oldPartId The id of the old assigned robot part.
-     * @param newPartId The id of the robot part to assign.
-     * @param pending true if the unassign is delayed, false if not.
-     *
-     * @throws IllegalStateException if the user assets don't allow the swap.
-     */
-    private void updateUnitStock(Users user, int oldPartId, int newPartId,
-                                 boolean pending)
-            throws IllegalStateException
-    {
-        UserRobotPartAsset newContainerAsset = user.getUserRobotPartAsset(newPartId);
-        
-        if (!pending)
-        {
-            UserRobotPartAsset oldContainerAsset = user.getUserRobotPartAsset(oldPartId);
-
-            if (newContainerAsset == null ||
-                newContainerAsset.getUnassigned() <= 0 ||
-                oldContainerAsset == null)
+            if (robot.getOreContainer().getId() != oreContainerId &&
+                robot.getUser().getUnassignedRobotPartAmount(oreContainer) <= 0)
             {
                 throw new IllegalStateException();
             }
+            robot.setOreContainer(oreContainer);
 
-            oldContainerAsset.unassignOne();
+            if (robot.getMiningUnit().getId() != miningUnitId &&
+                robot.getUser().getUnassignedRobotPartAmount(miningUnit) <= 0)
+            {
+                throw new IllegalStateException();
+            }
+            robot.setMiningUnit(miningUnit);
+
+            if (robot.getBattery().getId() != batteryId &&
+                robot.getUser().getUnassignedRobotPartAmount(battery) <= 0)
+            {
+                throw new IllegalStateException();
+            }
+            robot.setBattery(battery);
+
+            if (robot.getMemoryModule().getId() != memoryModuleId &&
+                robot.getUser().getUnassignedRobotPartAmount(memoryModule) <= 0)
+            {
+                throw new IllegalStateException();
+            }
+            robot.setMemoryModule(memoryModule);
+
+            if (robot.getCpu().getId() != cpuId &&
+                robot.getUser().getUnassignedRobotPartAmount(cpu) <= 0)
+            {
+                throw new IllegalStateException();
+            }
+            robot.setCpu(cpu);
+
+            if (robot.getEngine().getId() != engineId &&
+                robot.getUser().getUnassignedRobotPartAmount(engine) <= 0)
+            {
+                throw new IllegalStateException();
+            }
+            robot.setEngine(engine);
+
+            robot.updateParameters();
         }
-
-        newContainerAsset.assignOne();
     }
 
     /**

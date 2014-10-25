@@ -82,9 +82,9 @@
                                 <td>
                                     <select name="oreContainerId${robot.id}" class="tableitem">
                                         <option value="${robot.oreContainer.id}" selected="selected">${fn:escapeXml(robot.oreContainer.partName)}</option>
-                                        <c:forEach var='oreContainer' items="${user.getUserRobotPartAssetListOfType(1)}">
-                                            <c:if test="${oreContainer.unassigned gt 0 and oreContainer.userRobotPartAssetPK.robotPartId ne robot.oreContainer.id}">
-                                                <option value="${oreContainer.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(oreContainer.robotPart.partName)}</option>
+                                        <c:forEach var='oreContainerAsset' items="${user.getUserRobotPartAssetListOfType(1)}">
+                                            <c:if test="${oreContainerAsset.unassigned gt 0 and oreContainerAsset.robotPart.id ne robot.oreContainer.id}">
+                                                <option value="${oreContainerAsset.robotPart.id}">${fn:escapeXml(oreContainerAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
@@ -95,9 +95,9 @@
                                 <td>
                                     <select name="miningUnitId${robot.id}" class="tableitem">
                                         <option value="${robot.miningUnit.id}" selected="selected">${fn:escapeXml(robot.miningUnit.partName)}</option>
-                                        <c:forEach var='miningUnit' items="${user.getUserRobotPartAssetListOfType(2)}">
-                                            <c:if test="${miningUnit.unassigned gt 0 and miningUnit.userRobotPartAssetPK.robotPartId ne robot.miningUnit.id}">
-                                                <option value="${miningUnit.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(miningUnit.robotPart.partName)}</option>
+                                        <c:forEach var='miningUnitAsset' items="${user.getUserRobotPartAssetListOfType(2)}">
+                                            <c:if test="${miningUnitAsset.unassigned gt 0 and miningUnitAsset.robotPart.id ne robot.miningUnit.id}">
+                                                <option value="${miningUnitAsset.robotPart.id}">${fn:escapeXml(miningUnitAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
@@ -108,9 +108,9 @@
                                 <td>
                                     <select name="batteryId${robot.id}" class="tableitem">
                                         <option value="${robot.battery.id}" selected="selected">${fn:escapeXml(robot.battery.partName)}</option>
-                                        <c:forEach var='battery' items="${user.getUserRobotPartAssetListOfType(3)}">
-                                            <c:if test="${battery.unassigned gt 0 and battery.userRobotPartAssetPK.robotPartId ne robot.battery.id}">
-                                                <option value="${battery.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(battery.robotPart.partName)}</option>
+                                        <c:forEach var='batteryAsset' items="${user.getUserRobotPartAssetListOfType(3)}">
+                                            <c:if test="${batteryAsset.unassigned gt 0 and batteryAsset.robotPart.id ne robot.battery.id}">
+                                                <option value="${batteryAsset.robotPart.id}">${fn:escapeXml(batteryAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
@@ -121,9 +121,9 @@
                                 <td>
                                     <select id="memoryModuleId${robot.id}" name="memoryModuleId${robot.id}" class="tableitem" onchange="updateMemorySizes();">
                                         <option value="${robot.memoryModule.id}" selected="selected">${fn:escapeXml(robot.memoryModule.partName)}</option>
-                                        <c:forEach var='memoryModule' items="${user.getUserRobotPartAssetListOfType(4)}">
-                                            <c:if test="${memoryModule.unassigned gt 0 and memoryModule.userRobotPartAssetPK.robotPartId ne robot.memoryModule.id}">
-                                                <option value="${memoryModule.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(memoryModule.robotPart.partName)}</option>
+                                        <c:forEach var='memoryModuleAsset' items="${user.getUserRobotPartAssetListOfType(4)}">
+                                            <c:if test="${memoryModuleAsset.unassigned gt 0 and memoryModuleAsset.robotPart.id ne robot.memoryModule.id}">
+                                                <option value="${memoryModuleAsset.robotPart.id}">${fn:escapeXml(memoryModuleAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
@@ -134,9 +134,9 @@
                                 <td>
                                     <select name="cpuId${robot.id}" class="tableitem">
                                         <option value="${robot.cpu.id}" selected="selected">${fn:escapeXml(robot.cpu.partName)}</option>
-                                        <c:forEach var='cpu' items="${user.getUserRobotPartAssetListOfType(5)}">
-                                            <c:if test="${cpu.unassigned gt 0 and cpu.userRobotPartAssetPK.robotPartId ne robot.cpu.id}">
-                                                <option value="${cpu.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(cpu.robotPart.partName)}</option>
+                                        <c:forEach var='cpuAsset' items="${user.getUserRobotPartAssetListOfType(5)}">
+                                            <c:if test="${cpuAsset.unassigned gt 0 and cpuAsset.robotPart.id ne robot.cpu.id}">
+                                                <option value="${cpuAsset.robotPart.id}">${fn:escapeXml(cpuAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>
@@ -147,9 +147,9 @@
                                 <td>
                                     <select name="engineId${robot.id}" class="tableitem">
                                         <option value="${robot.engine.id}" selected="selected">${fn:escapeXml(robot.engine.partName)}</option>
-                                        <c:forEach var='engine' items="${user.getUserRobotPartAssetListOfType(6)}">
-                                            <c:if test="${engine.unassigned gt 0 and engine.userRobotPartAssetPK.robotPartId ne robot.engine.id}">
-                                                <option value="${engine.userRobotPartAssetPK.robotPartId}">${fn:escapeXml(engine.robotPart.partName)}</option>
+                                        <c:forEach var='engineAsset' items="${user.getUserRobotPartAssetListOfType(6)}">
+                                            <c:if test="${engineAsset.unassigned gt 0 and engineAsset.robotPart.id ne robot.engine.id}">
+                                                <option value="${engineAsset.robotPart.id}">${fn:escapeXml(engineAsset.robotPart.partName)}</option>
                                             </c:if>
                                         </c:forEach>
                                     </select>

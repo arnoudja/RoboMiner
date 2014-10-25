@@ -22,8 +22,10 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -34,128 +36,126 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
-* @author Arnoud Jagerman
+ * @author Arnoud Jagerman
  */
 @Entity
 @Table(name = "UserRobotPartAsset")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserRobotPartAsset.findAll", query = "SELECT u FROM UserRobotPartAsset u"),
-    @NamedQuery(name = "UserRobotPartAsset.findByUsersId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId ORDER BY u.robotPart.robotPartType.id, u.robotPart.tierId"),
-    @NamedQuery(name = "UserRobotPartAsset.findByUsersIdAndPartType", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId AND u.robotPart.robotPartType.id = :robotPartTypeId"),
-    @NamedQuery(name = "UserRobotPartAsset.findByRobotPartId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.robotPartId = :robotPartId"),
-    @NamedQuery(name = "UserRobotPartAsset.findByUsersIdAndRobotPartId", query = "SELECT u FROM UserRobotPartAsset u WHERE u.userRobotPartAssetPK.usersId = :usersId AND u.userRobotPartAssetPK.robotPartId = :robotPartId")})
-public class UserRobotPartAsset implements Serializable {
-    
+@NamedQueries(
+{
+    @NamedQuery(name = "UserRobotPartAsset.findAll",
+                query = "SELECT u FROM UserRobotPartAsset u"),
+    @NamedQuery(name = "UserRobotPartAsset.clearByUsersId",
+                query = "DELETE FROM UserRobotPartAsset u WHERE u.user.id = :usersId AND u.totalOwned = 0")
+})
+public class UserRobotPartAsset implements Serializable
+{
     private static final long serialVersionUID = 1L;
-    
-    @EmbeddedId
-    protected UserRobotPartAssetPK userRobotPartAssetPK;
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "usersId")
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "robotPartId")
+    private RobotPart robotPart;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "totalOwned")
     private int totalOwned;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "unassigned")
-    private int unassigned;
-
-    @Column(name = "robotPartId", insertable = false, updatable = false)
-    private int robotPartId;
-
-    @ManyToOne
-    @JoinColumn(name = "robotPartId", insertable = false, updatable = false)
-    private RobotPart robotPart;
-
-    public UserRobotPartAsset() {
+    public UserRobotPartAsset()
+    {
     }
 
-    public UserRobotPartAsset(int usersId, int robotPartId, int totalOwned, int unassigned) {
-        
-        this.userRobotPartAssetPK = new UserRobotPartAssetPK(usersId, robotPartId);
-        this.totalOwned           = totalOwned;
-        this.unassigned           = unassigned;
+    public UserRobotPartAsset(Users user, RobotPart robotPart, int totalOwned)
+    {
+        this.user       = user;
+        this.robotPart  = robotPart;
+        this.totalOwned = totalOwned;
     }
 
-    public UserRobotPartAssetPK getUserRobotPartAssetPK() {
-        return userRobotPartAssetPK;
-    }
-
-    public RobotPart getRobotPart() {
+    public RobotPart getRobotPart()
+    {
         return robotPart;
     }
-    
-    public int getRobotPartId() {
-        return robotPartId;
-    }
-    
-    public int getTotalOwned() {
+
+    /**
+     * Retrieve the total amount of robot parts of this type owned by this user.
+     *
+     * @return The total amount of robot parts of this type owned by this user.
+     */
+    public int getTotalOwned()
+    {
         return totalOwned;
     }
 
-    public int getUnassigned() {
-        return unassigned;
+    /**
+     * Retrieve the amount of robot parts of this type owned by this user that
+     * aren't in use by a robot.
+     *
+     * @return The unassigned amount of robot parts.
+     */
+    public int getUnassigned()
+    {
+        return totalOwned - user.countRobotPartUsage(robotPart);
     }
-    
-    public void assignOne() throws IllegalStateException {
-        
-        if (unassigned <= 0) {
+
+    /**
+     * Increase the amount of robot parts of this type for this user by one.
+     */
+    public void addOneOwned()
+    {
+        ++totalOwned;
+    }
+
+    /**
+     * Decrease the amount of robot parts of this type for this user by one.
+     *
+     * @throws IllegalStateException When the user doesn't own an unassigned
+     * robot part of this type.
+     */
+    public void removeOneOwned() throws IllegalStateException
+    {
+        if (getUnassigned() < 1)
+        {
             throw new IllegalStateException();
         }
-        
-        unassigned--;
-    }
-    
-    public void unassignOne() throws IllegalStateException {
 
-        if (unassigned >= totalOwned) {
-            throw new IllegalStateException();
-        }
-        
-        unassigned++;
-    }
-
-    public void addOneOwned(boolean assigned) {
-
-        totalOwned++;
-
-        if (!assigned) {
-            unassigned++;
-        }
-    }
-
-    public void removeOneOwned() throws IllegalStateException {
-        
-        if (totalOwned <= 0 || unassigned <= 0) {
-            throw new IllegalStateException();
-        }
-            
-        totalOwned--;
-        unassigned--;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userRobotPartAssetPK != null ? userRobotPartAssetPK.hashCode() : 0);
-        return hash;
+        --totalOwned;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserRobotPartAsset)) {
+        if (!(object instanceof UserRobotPartAsset))
+        {
             return false;
         }
-        UserRobotPartAsset other = (UserRobotPartAsset) object;
-        return (this.userRobotPartAssetPK != null || other.userRobotPartAssetPK == null) && (this.userRobotPartAssetPK == null || this.userRobotPartAssetPK.equals(other.userRobotPartAssetPK));
+
+        UserRobotPartAsset other = (UserRobotPartAsset)object;
+        return !((this.id == null && other.id != null) ||
+                 (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
-    public String toString() {
-        return "nl.robominer.entity.UserRobotPartAsset[ userRobotPartAssetPK=" + userRobotPartAssetPK + " ]";
+    public String toString()
+    {
+        return "nl.robominer.entity.UserRobotPartAsset[ id=" + id + " ]";
     }
-    
 }

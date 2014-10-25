@@ -22,6 +22,7 @@ package nl.robominer.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +35,7 @@ import nl.robominer.entity.UserOreAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.OreFacade;
 import nl.robominer.session.RobotPartFacade;
+import nl.robominer.session.UserRobotPartAssetFacade;
 import nl.robominer.session.UsersFacade;
 
 /**
@@ -73,6 +75,12 @@ public class ShopServlet extends RoboMinerServletBase
     private OreFacade oreFacade;
 
     /**
+     * Bean to handle the database actions for the user robot part assets data.
+     */
+    @EJB
+    private UserRobotPartAssetFacade userRobotPartAssetFacade;
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -89,21 +97,14 @@ public class ShopServlet extends RoboMinerServletBase
     {
         processAssets(request);
 
+        // Process the buy or sell request
+        processRequestedTransaction(request);
+
         // Retrieve the form values
-        int buyRobotPartId          = getItemId(request, "buyRobotPartId");
-        int sellRobotPartId         = getItemId(request, "sellRobotPartId");
         int selectedRobotPartTypeId = getItemId(request, "selectedRobotPartTypeId");
         int selectedTierId          = getItemId(request, "selectedTierId");
 
-        // Process the buy or sell request
-        if (buyRobotPartId > 0)
-        {
-            buyRobotPart(request, buyRobotPartId);
-        }
-        else if (sellRobotPartId > 0)
-        {
-            sellRobotPart(request, sellRobotPartId);
-        }
+        Users user = usersFacade.findById(getUserId(request));
 
         if (selectedRobotPartTypeId <= 0 &&
             request.getSession().getAttribute(SESSION_CATEGORY_ID) != null)
@@ -112,17 +113,16 @@ public class ShopServlet extends RoboMinerServletBase
                     SESSION_CATEGORY_ID);
         }
 
-        Users user = usersFacade.findById(getUserId(request));
-
         // Initially select the highest tier the user has ore for
         if (selectedTierId < 1)
         {
-            for (UserOreAsset userOreAsset : user.getUserOreAssetList())
+            for (Entry<Ore, UserOreAsset> userOreAssetMapEntry :
+                    user.getUserOreAssetMap().entrySet())
             {
-                if (userOreAsset.getAmount() > 0 &&
-                    userOreAsset.getOre().getId() > selectedTierId)
+                if (userOreAssetMapEntry.getValue().getAmount() > 0 &&
+                    userOreAssetMapEntry.getValue().getOre().getId() > selectedTierId)
                 {
-                    selectedTierId = userOreAsset.getOre().getId();
+                    selectedTierId = userOreAssetMapEntry.getValue().getOre().getId();
                 }
             }
         }
@@ -150,6 +150,36 @@ public class ShopServlet extends RoboMinerServletBase
         request.getRequestDispatcher(JAVASCRIPT_VIEW).forward(request, response);
     }
 
+    /**
+     * Process the buy or sell request, if present.
+     *
+     * @param request The servlet request data.
+     */
+    private void processRequestedTransaction(HttpServletRequest request)
+    {
+        int buyRobotPartId          = getItemId(request, "buyRobotPartId");
+        int sellRobotPartId         = getItemId(request, "sellRobotPartId");
+
+        Users user = usersFacade.findById(getUserId(request));
+
+        // Process the buy or sell request
+        if (buyRobotPartId > 0)
+        {
+            RobotPart robotPart = robotPartFacade.find(buyRobotPartId);
+            user.buyRobotPart(robotPart);
+            usersFacade.edit(user);
+            updateOreAssetsList(request, user.getId());
+        }
+        else if (sellRobotPartId > 0)
+        {
+            RobotPart robotPart = robotPartFacade.find(sellRobotPartId);
+            user.sellRobotPart(robotPart);
+            usersFacade.edit(user);
+            updateOreAssetsList(request, user.getId());
+            userRobotPartAssetFacade.clearByUsersId(user.getId());
+        }
+    }
+    
     /**
      * Returns a short description of the servlet.
      *

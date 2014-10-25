@@ -19,7 +19,6 @@
 
 package nl.robominer.session;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,28 +43,9 @@ public class UserRobotPartAssetFacade extends AbstractFacade<UserRobotPartAsset>
         super(UserRobotPartAsset.class);
     }
     
-    public List<UserRobotPartAsset> findByUsersId(int usersId) {
-        Query query = getEntityManager().createNamedQuery("UserRobotPartAsset.findByUsersId", UserRobotPartAsset.class);
+    public void clearByUsersId(int usersId) {
+        Query query = getEntityManager().createNamedQuery("UserRobotPartAsset.clearByUsersId", UserRobotPartAsset.class);
         query.setParameter("usersId", usersId);
-        return query.getResultList();
-    }
-    
-    public List<UserRobotPartAsset> findByUsersIdAndPartType(int usersId, int robotPartTypeId) {
-        Query query = getEntityManager().createNamedQuery("UserRobotPartAsset.findByUsersIdAndPartType", UserRobotPartAsset.class);
-        query.setParameter("usersId", usersId);
-        query.setParameter("robotPartTypeId", robotPartTypeId);
-        return query.getResultList();
-    }
-    
-    public UserRobotPartAsset findByUsersIdAndRobotPartId(int usersId, int robotPartId) {
-        try {
-            Query query = getEntityManager().createNamedQuery("UserRobotPartAsset.findByUsersIdAndRobotPartId", UserRobotPartAsset.class);
-            query.setParameter("usersId", usersId);
-            query.setParameter("robotPartId", robotPartId);
-            return (UserRobotPartAsset)query.getSingleResult();
-        }
-        catch (javax.persistence.NoResultException exc) {
-            return null;
-        }
+        query.executeUpdate();
     }
 }
