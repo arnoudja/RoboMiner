@@ -27,6 +27,7 @@
 #include "robotcode/CompileInput.h"
 #include "robotcode/ProgramItem.h"
 #include "Database.h"
+#include "ConfigFile.h"
 
 #include <ctime>
 #include <iostream>
@@ -36,10 +37,8 @@ using namespace std;
 using namespace robotcode;
 
 
-void verifyCode(int id)
+void verifyCode(CDatabase& database, int id)
 {
-    CDatabase database;
-
     try
     {
         bool terminated;
@@ -183,10 +182,8 @@ bool processMiningQueues(CDatabase& database, const list<CDatabase::MiningArea>&
 }
 
 
-void runRallies()
+void runRallies(CDatabase& database)
 {
-    CDatabase database;
-
     list<CDatabase::MiningArea> miningAreas = database.getMiningAreas();
 
     while (true)
@@ -261,10 +258,8 @@ void runPoolRally(CDatabase& database,
 }
 
 
-void runPool(int poolId)
+void runPool(CDatabase& database, int poolId)
 {
-    CDatabase database;
-
     CDatabase::PoolData poolData = database.getPoolData(poolId);
 
     if (poolData.poolId == poolId)
@@ -310,6 +305,10 @@ void runPool(int poolId)
 
 int main(int argc, char* argv[])
 {
+    CConfigFile configFile(argc, argv);
+
+    CDatabase database(configFile);
+
     srand((unsigned int)time(NULL));
 
     string command(argc > 1 ? argv[1] : "");
@@ -318,19 +317,19 @@ int main(int argc, char* argv[])
     {
         if (argc > 2)
         {
-            verifyCode(atol(argv[2]));
+            verifyCode(database, atol(argv[2]));
         }
     }
     else if (command.compare("runpool") == 0)
     {
         if (argc > 2)
         {
-            runPool(atoi(argv[2]));
+            runPool(database, atoi(argv[2]));
         }
     }
     else
     {
-        runRallies();
+        runRallies(database);
     }
 
     return 0;

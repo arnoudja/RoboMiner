@@ -21,6 +21,7 @@
 
 #include "Database.h"
 #include "DatabaseStatement.h"
+#include "ConfigFile.h"
 
 #include <cstring>
 #include <list>
@@ -35,11 +36,16 @@ namespace
 }
 
 
-CDatabase::CDatabase()
+CDatabase::CDatabase(CConfigFile& configFile)
 {
     mysql_init(&m_mysql);
 
-    m_connection = mysql_real_connect(&m_mysql, "localhost", "root", "", "RoboMiner", 0, 0, 0);
+    m_connection = mysql_real_connect(&m_mysql,
+                                      configFile.getConfigValue("dbserver").c_str(),
+                                      configFile.getConfigValue("dbuser").c_str(),
+                                      configFile.getConfigValue("dbpassword").c_str(),
+                                      configFile.getConfigValue("dbdatabase").c_str(),
+                                      0, 0, 0);
 
     assert(m_connection);
 }

@@ -24,6 +24,9 @@
 #include <string>
 #include <list>
 
+class CConfigFile;
+
+
 class CDatabase
 {
 public:
@@ -108,7 +111,7 @@ public:
     };
 
 public:
-    CDatabase();
+    CDatabase(CConfigFile& configFile);
     ~CDatabase();
 
     std::string getSource(int id);

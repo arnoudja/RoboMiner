@@ -146,10 +146,8 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 usersId INT NOT NULL REFERENCES Users (id) ON DELETE CASCADE,
 robotPartId INT NOT NULL REFERENCES RobotPart (id) ON DELETE CASCADE,
 totalOwned INT NOT NULL DEFAULT 0,
-unassigned INT NOT NULL DEFAULT 0,
 CONSTRAINT UNIQUE INDEX (usersId, robotPartId)
 );
--- TODO: remove column 'unassigned'.
 
 
 create table Robot
@@ -421,3 +419,6 @@ oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 totalMined BIGINT NOT NULL DEFAULT 0,
 PRIMARY KEY (poolItemId, oreId)
 );
+
+
+grant SELECT,INSERT,UPDATE,DELETE on RoboMiner.* to robominer@localhost;
