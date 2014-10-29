@@ -55,9 +55,9 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>balanceTestData.sql</itemPath>
-      <itemPath>createDatabase.sql</itemPath>
-      <itemPath>gameData.sql</itemPath>
+      <itemPath>../RoboMinerWeb/web/WEB-INF/resources/database/balanceTestData.sql</itemPath>
+      <itemPath>../RoboMinerWeb/web/WEB-INF/resources/database/createDatabase.sql</itemPath>
+      <itemPath>../RoboMinerWeb/web/WEB-INF/resources/database/gameData.sql</itemPath>
       <itemPath>updateChanges.sql</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
@@ -152,6 +152,21 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/balanceTestData.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/createDatabase.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/gameData.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Animation.h" ex="false" tool="3" flavor2="0">
@@ -197,12 +212,6 @@
       <item path="Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Robot.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="balanceTestData.sql" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="createDatabase.sql" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gameData.sql" ex="false" tool="3" flavor2="0">
       </item>
       <item path="gpl.txt" ex="false" tool="3" flavor2="0">
       </item>
@@ -388,6 +397,21 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/balanceTestData.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/createDatabase.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../RoboMinerWeb/web/WEB-INF/resources/database/gameData.sql"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Animation.h" ex="false" tool="3" flavor2="0">
@@ -433,12 +457,6 @@
       <item path="Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Robot.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="balanceTestData.sql" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="createDatabase.sql" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="gameData.sql" ex="false" tool="3" flavor2="0">
       </item>
       <item path="gpl.txt" ex="false" tool="3" flavor2="0">
       </item>

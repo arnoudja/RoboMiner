@@ -421,4 +421,4 @@ PRIMARY KEY (poolItemId, oreId)
 );
 
 
-grant SELECT,INSERT,UPDATE,DELETE on RoboMiner.* to robominer@localhost;
+grant SELECT,INSERT,UPDATE,DELETE,LOCK TABLES on RoboMiner.* to robominer@localhost;
