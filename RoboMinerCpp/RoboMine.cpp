@@ -83,10 +83,10 @@ bool processMiningQueue(CDatabase& database, const CDatabase::MiningArea& mining
 
         CRobotProgram* robots[4];
         int miningQueueIds[4];
-        
+
         time_t now = time(NULL);
         cout << ctime(&now) << " Staring rally in area " << miningArea.miningAreaId << " for users: ";
-        
+
         int iRobot = 0;
         for (list<CDatabase::MiningRallyItem>::const_iterator iter = miningRallyItems.begin(); iter != miningRallyItems.end() && iRobot < 4; ++iter, ++iRobot)
         {

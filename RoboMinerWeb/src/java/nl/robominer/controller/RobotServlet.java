@@ -173,7 +173,11 @@ public class RobotServlet extends RoboMinerServletBase
 
             robot.setRobotName(robotName);
             robot.setProgramSourceId(programSourceId);
-            robot.setSourceCode(programSource.getSourceCode());
+
+            if (programSource.getVerified())
+            {
+                robot.setSourceCode(programSource.getSourceCode());
+            }
 
             if (robot.getOreContainer().getId() != oreContainerId &&
                 robot.getUser().getUnassignedRobotPartAmount(oreContainer) <= 0)

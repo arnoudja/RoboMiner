@@ -201,17 +201,15 @@ public class EditCodeServlet extends RoboMinerServletBase
     private String updateProgramSource(ProgramSource programSource,
                                        String sourceName, String sourceCode)
     {
-
         StringBuilder errorMessage = new StringBuilder();
 
         if (programSource != null)
         {
-
             programSource.setSourceName(sourceName);
             programSource.setSourceCode(sourceCode);
             programSource.setVerified(false);
 
-            // Communicate with the c++ part over the database to verify the code.
+            // Communicate with the C++ part over the database to verify the code.
             programSourceFacade.edit(programSource);
             roboMinerCppBean.verifyCode(getServletContext().getRealPath(
                     "/WEB-INF/binaries/robominercpp"), programSource.getId());
@@ -219,33 +217,26 @@ public class EditCodeServlet extends RoboMinerServletBase
 
             if (programSource.getVerified())
             {
-
                 List<Robot> robotList = programSource.getRobotList();
 
                 for (Robot robot : robotList)
                 {
-
                     List<MiningQueue> miningQueue = miningQueueFacade
-                            .findWaitingByRobotId(
-                                    robot.getId());
+                            .findWaitingByRobotId(robot.getId());
 
-                    if (miningQueue.isEmpty() && robot.getMemorySize()
-                            >= programSource.getCompiledSize())
+                    if (miningQueue.isEmpty() &&
+                        robot.getMemorySize() >= programSource.getCompiledSize())
                     {
-
                         robot.setSourceCode(programSource.getSourceCode());
                         robotFacade.edit(robot);
                     }
                     else
                     {
-
                         errorMessage
                                 .append("Unable to apply the code to robot ")
-                                .append(
-                                        robot.getRobotName()).append(": ");
+                                .append(robot.getRobotName()).append(": ");
 
-                        if (robot.getMemorySize()
-                                < programSource.getCompiledSize())
+                        if (robot.getMemorySize() < programSource.getCompiledSize())
                         {
                             errorMessage.append("Not enough memory.");
                         }
@@ -275,7 +266,6 @@ public class EditCodeServlet extends RoboMinerServletBase
     private int addProgramSource(int userId, String sourceName,
                                  String sourceCode)
     {
-
         ProgramSource programSource = new ProgramSource(userId);
 
         programSource.setSourceName(sourceName);
@@ -299,5 +289,4 @@ public class EditCodeServlet extends RoboMinerServletBase
     {
         return "Robot-program code-edit controller servlet";
     }
-
 }

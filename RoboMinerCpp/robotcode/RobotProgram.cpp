@@ -54,10 +54,17 @@ CRobotProgram::CRobotProgram(int robotId,
     m_currentStep(NULL),
     m_currentStatus(NULL)
 {
-    bool terminated;
-    CCompileInput inputSource(source);
+    try
+    {
+        bool terminated;
+        CCompileInput inputSource(source);
 
-    m_program = CProgramItem::compile(inputSource, terminated);
+        m_program = CProgramItem::compile(inputSource, terminated);
+    }
+    catch (string error)
+    {
+        m_program = NULL;
+    }
 }
 
 
@@ -81,7 +88,7 @@ CRobot::RobotAction CRobotProgram::getNextAction()
 
     robotAction.action = eWait;
 
-    while (robotAction.action == eWait && stepsDone++ < getCpuSpeed())
+    while (robotAction.action == eWait && m_program && stepsDone++ < getCpuSpeed())
     {
         if (!m_currentStep)
         {
