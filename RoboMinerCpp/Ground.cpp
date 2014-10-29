@@ -71,7 +71,7 @@ void CGround::addOreHeap(int x, int y, int type, int topAmount, int radius)
             {
                 double distance = sqrt(dx * dx + dy * dy);
 
-                int amount = (int)(.999 + topAmount * (radius - distance) / radius);
+                int amount = (int)(.5 + topAmount * (radius - distance) / radius);
                 amount -= m_resources[xPos][yPos].getOre(type);
 
                 if (amount > 0)
