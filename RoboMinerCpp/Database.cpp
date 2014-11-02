@@ -534,6 +534,7 @@ void CDatabase::applyRobotPendingChanges(int robotId, MYSQL_TIME miningEndTime)
                  " Robot.batteryId = PendingRobotChanges.batteryId, "
                  " Robot.memoryModuleId = PendingRobotChanges.memoryModuleId, "
                  " Robot.cpuId = PendingRobotChanges.cpuId, "
+                 " Robot.engineId = PendingRobotChanges.engineId, "
                  " Robot.rechargeTime = PendingRobotChanges.rechargeTime, "
                  " Robot.maxOre = PendingRobotChanges.maxOre, "
                  " Robot.miningSpeed = PendingRobotChanges.miningSpeed, "

@@ -65,10 +65,11 @@
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
                     <h1>Latest news</h1>
-                    <p>22-10-2014 The achievements are changed.</p>
+                    <p>3-11-2014 Layout changes. Refreshing the page pay help in applying them.</p>
+                    <p>3-11-2014 Engine redesign. Engine power has been significantly reduced, please make sure your robot has the right engine.</p>
+                    <p>3-11-2014 Battery recharge time changes, for Prantum level and higher.</p>
                     <p>
-                        Please visit the Achievements page and claim your achievements.
-                        Some requirements are changed, so be prepared for some new challenges.
+                        As always, feedback is welcome.
                     </p>
                 </form>
                 <form id="signupForm" action="<c:url value='Login'/>" method="post" onsubmit="return checkSignupForm(this);">

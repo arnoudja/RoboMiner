@@ -180,13 +180,18 @@ td.miningqueuecheckbox {
     text-align: center;
 }
 
-th.miningqueuestatus {
+th.miningqueuestatus, td.miningqueuestatus {
+    text-align: center;
     min-width: 65pt;
 }
 
 td.miningqueuetime, th.miningqueuetime {
     text-align: right;
     min-width: 50pt;
+}
+
+td.miningqueuebutton {
+    text-align: center;
 }
 
 div.miningqueue {

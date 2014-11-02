@@ -70,7 +70,7 @@
                                     </c:if>
                                 </td>
                                 <td>${fn:escapeXml(miningQueueItem.miningQueue.miningArea.areaName)}</td>
-                                <td>${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
+                                <td class="miningqueuestatus">${fn:escapeXml(miningQueueItem.itemStatus.description)}</td>
                                 <td class="miningqueuetime" id="timeLeft${miningQueueItem.miningQueue.id}" >
                                     <script>
                                         <c:choose>
@@ -97,7 +97,7 @@
                             <c:set var="rownr" value="${rownr + 1}"/>
                         </c:forEach>
                         <tr>
-                            <td>
+                            <td class="miningqueuebutton">
                                 <c:if test="${robotMiningQueueMap.get(robot.id).size() gt 1}">
                                     <input type="button" value="remove" onclick="removeMiningQueueItems(${robot.id});" />
                                 </c:if>
@@ -109,12 +109,12 @@
                                     </c:forEach>
                                 </select>
                             </td>
-                            <td>
+                            <td class="miningqueuebutton">
                                 <c:if test="${user.miningQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
                                     <input type='button' value='add' onclick="addMiningQueueItem(${robot.id}, 'miningArea${robot.id}');"/>
                                 </c:if>
                             </td>
-                            <td>
+                            <td class="miningqueuebutton">
                                 <c:if test="${user.miningQueueSize gt robotMiningQueueMap.get(robot.id).size()}">
                                     <input type='button' value='fill' onclick="fillMiningQueue(${robot.id}, 'miningArea${robot.id}');"/>
                                 </c:if>

@@ -30,7 +30,6 @@ import nl.robominer.entity.MiningQueue;
 import nl.robominer.entity.ProgramSource;
 import nl.robominer.entity.Robot;
 import nl.robominer.entity.RobotPart;
-import nl.robominer.entity.UserRobotPartAsset;
 import nl.robominer.entity.Users;
 import nl.robominer.session.MiningQueueFacade;
 import nl.robominer.session.RobotPartFacade;
