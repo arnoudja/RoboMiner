@@ -172,12 +172,21 @@ table.miningqueue {
     float: left;
 }
 
-td.miningqueuetime, th.miningqueuetime {
-    text-align: right;
+th.miningqueuecheckbox {
+    min-width: 57pt;
 }
 
 td.miningqueuecheckbox {
     text-align: center;
+}
+
+th.miningqueuestatus {
+    min-width: 65pt;
+}
+
+td.miningqueuetime, th.miningqueuetime {
+    text-align: right;
+    min-width: 50pt;
 }
 
 div.miningqueue {
@@ -245,7 +254,7 @@ td.shopPartName {
 div.userassets {
     clear: right;
     float: right;
-    min-height: 50vh;
+    min-height: 70vh;
 }
 
 table.userassets {

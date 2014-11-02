@@ -49,9 +49,9 @@
                     <table class="miningqueue">
                         <caption>${fn:escapeXml(robot.robotName)}</caption>
                         <tr>
-                            <th></th>
+                            <th class="miningqueuecheckbox"></th>
                             <th>Area</th>
-                            <th>Status</th>
+                            <th class="miningqueuestatus">Status</th>
                             <th class="miningqueuetime">ETC</th>
                         </tr>
                         <c:set var="rownr" value="0"/>
