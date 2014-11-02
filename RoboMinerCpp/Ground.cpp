@@ -32,11 +32,6 @@ m_resources(boost::extents[sizeX][sizeY])
 }
 
 
-CGround::~CGround()
-{
-}
-
-
 void CGround::resize(int sizeX, int sizeY)
 {
     m_resources.resize(boost::extents[sizeX][sizeY]);

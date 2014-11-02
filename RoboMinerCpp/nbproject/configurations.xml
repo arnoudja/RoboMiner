@@ -40,6 +40,7 @@
         <itemPath>robotcode/WhileProgramItem.h</itemPath>
       </logicalFolder>
       <itemPath>Animation.h</itemPath>
+      <itemPath>AnimationArrayData.h</itemPath>
       <itemPath>AnimationStep.h</itemPath>
       <itemPath>ConfigFile.h</itemPath>
       <itemPath>Database.h</itemPath>
@@ -95,6 +96,7 @@
         <itemPath>robotcode/WhileProgramItem.cpp</itemPath>
       </logicalFolder>
       <itemPath>Animation.cpp</itemPath>
+      <itemPath>AnimationArrayData.cpp</itemPath>
       <itemPath>AnimationStep.cpp</itemPath>
       <itemPath>ConfigFile.cpp</itemPath>
       <itemPath>Database.cpp</itemPath>
@@ -151,6 +153,10 @@
       <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Animation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="AnimationArrayData.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AnimationArrayData.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="AnimationStep.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -379,6 +385,10 @@
       <item path="Animation.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Animation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="AnimationArrayData.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AnimationArrayData.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="AnimationStep.cpp" ex="false" tool="1" flavor2="0">
       </item>

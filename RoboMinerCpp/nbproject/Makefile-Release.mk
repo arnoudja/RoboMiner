@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Animation.o \
+	${OBJECTDIR}/AnimationArrayData.o \
 	${OBJECTDIR}/AnimationStep.o \
 	${OBJECTDIR}/ConfigFile.o \
 	${OBJECTDIR}/Database.o \
@@ -111,6 +112,11 @@ ${OBJECTDIR}/Animation.o: Animation.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Animation.o Animation.cpp
+
+${OBJECTDIR}/AnimationArrayData.o: AnimationArrayData.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/mysql -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AnimationArrayData.o AnimationArrayData.cpp
 
 ${OBJECTDIR}/AnimationStep.o: AnimationStep.cpp 
 	${MKDIR} -p ${OBJECTDIR}

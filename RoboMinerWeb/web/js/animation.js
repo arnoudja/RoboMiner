@@ -160,9 +160,10 @@ function drawInitialGround(scale)
         var x = myGround.positions[i].x;
         var y = myGround.positions[i].y;
 
-        var oreA = myGround.positions[i].changes[0].A;
-        var oreB = myGround.positions[i].changes[0].B;
-        var oreC = myGround.positions[i].changes[0].C;
+        var changes = myGround.positions[i].c[0];
+        var oreA = typeof changes.A !== 'undefined' ? changes.A : 0;
+        var oreB = typeof changes.B !== 'undefined' ? changes.B : 0;
+        var oreC = typeof changes.C !== 'undefined' ? changes.C : 0;
 
         var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
         var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));
@@ -197,17 +198,18 @@ function drawGroundAt(step, scale, fromX, fromY, tillX, tillY)
 
             var j = myGround.positions[i].lastDrawn;
 
-            while (myGround.positions[i].changes.length > (j + 1) &&
-                   myGround.positions[i].changes[j + 1].t <= step)
+            while (myGround.positions[i].c.length > (j + 1) &&
+                   myGround.positions[i].c[j + 1].t <= step)
             {
                 j++;
             }
 
             myGround.positions[i].lastDrawn = j;
 
-            var oreA = myGround.positions[i].changes[j].A;
-            var oreB = myGround.positions[i].changes[j].B;
-            var oreC = myGround.positions[i].changes[j].C;
+            var changes = myGround.positions[i].c[j];
+            var oreA = typeof changes.A !== 'undefined' ? changes.A : 0;
+            var oreB = typeof changes.B !== 'undefined' ? changes.B : 0;
+            var oreC = typeof changes.C !== 'undefined' ? changes.C : 0;
 
             var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
             var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));

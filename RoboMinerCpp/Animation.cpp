@@ -20,6 +20,7 @@
 #include "stdafx.h"
 
 #include "Animation.h"
+#include "AnimationArrayData.h"
 #include "Position.h"
 #include "Robot.h"
 #include "Rally.h"
@@ -56,6 +57,9 @@ void CAnimation::addGroundChange(const CPosition& position, const CGroundChangeS
 string CAnimation::getAnimationData(const TRobots& robotList, const CGround& ground, const map<int, OreData>& oreData)
 {
     m_output.clear();
+
+    m_output.setf(ios::fixed, ios::floatfield);
+    m_output.precision(1);
 
     writeRobotsData(robotList);
     writeGroundData(ground);
@@ -183,7 +187,9 @@ void CAnimation::writeGroundData(const CGround& ground)
 
             m_output << "{x:" << iterRow->first << ","
                 << "y:" << iterPos->first << ","
-                << "changes:[";
+                << "c:";
+
+            CAnimationArrayData arrayData(m_output);
 
             TGroundChangeStepList& changesList = iterPos->second;
 
@@ -191,16 +197,30 @@ void CAnimation::writeGroundData(const CGround& ground)
             {
                 if (iterChanges != changesList.begin())
                 {
-                    m_output << ",";
+                    arrayData.addValue("t", iterChanges->getTime());
                 }
 
-                m_output << "{t:" << iterChanges->getTime() << ","
-                    << "A:" << iterChanges->getOre(0) << ","
-                    << "B:" << iterChanges->getOre(1) << ","
-                    << "C:" << iterChanges->getOre(2) << "}";
+                if (iterChanges->getOre(0) > 0)
+                {
+                    arrayData.addValue("A", iterChanges->getOre(0));
+                }
+
+                if (iterChanges->getOre(1) > 0)
+                {
+                    arrayData.addValue("B", iterChanges->getOre(1));
+                }
+                
+                if (iterChanges->getOre(2) > 0)
+                {
+                    arrayData.addValue("C", iterChanges->getOre(2));
+                }
+
+                arrayData.nextArrayElement();
             }
 
-            m_output << "]}" << std::endl;
+            arrayData.closeArray();
+
+            m_output << "}" << std::endl;
         }
     }
 

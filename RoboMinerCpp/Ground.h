@@ -29,7 +29,7 @@ class CGround
 {
 public:
 	CGround(int sizeX, int sizeY);
-	virtual ~CGround();
+	virtual ~CGround()                                      {}
 
     void resize(int sizeX, int sizeY);
 
