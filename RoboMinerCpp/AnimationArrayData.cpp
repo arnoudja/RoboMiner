@@ -40,27 +40,19 @@ CAnimationArrayData::~CAnimationArrayData()
 }
 
 
-void CAnimationArrayData::addValue(const string& name, long value)
+void CAnimationArrayData::addIntValue(const char* name, long value)
 {
-    if (m_firstValue)
-    {
-        if (!m_firstElement)
-        {
-            m_output << ",";
-        }
-
-        m_output << "{";
-
-        m_firstElement = false;
-    }
-    else
-    {
-        m_output << ",";
-    }
+    prepareAddValue();
 
     m_output << name << ":" << value;
+}
 
-    m_firstValue = false;
+
+void CAnimationArrayData::addDoubleValue(const char* name, double value)
+{
+    prepareAddValue();
+
+    m_output << name << ":" << value;
 }
 
 
@@ -85,4 +77,26 @@ void CAnimationArrayData::closeArray()
         m_output << "]";
         m_isClosed = true;
     }
+}
+
+
+void CAnimationArrayData::prepareAddValue()
+{
+    if (m_firstValue)
+    {
+        if (!m_firstElement)
+        {
+            m_output << ",";
+        }
+
+        m_output << "{";
+
+        m_firstElement = false;
+    }
+    else
+    {
+        m_output << ",";
+    }
+
+    m_firstValue = false;
 }

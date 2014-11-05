@@ -29,11 +29,16 @@ public:
     CAnimationArrayData(std::stringstream& output);
     virtual ~CAnimationArrayData();
 
-    void addValue(const std::string& name, long value);
+    void addIntValue(const char* name, long value);
+    void addDoubleValue(const char* name, double value);
+    bool hasValue() const                               { return !m_firstValue; }
 
     void nextArrayElement();
     
     void closeArray();
+
+private:
+    void prepareAddValue();
 
 private:
     std::stringstream&  m_output;

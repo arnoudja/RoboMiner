@@ -60,7 +60,11 @@
                                 <td>${miningResult.totalOreMined}</td>
                                 <td>${miningResult.totalTax}</td>
                                 <td>${miningResult.totalReward}</td>
-                                <td><a href="<c:url value='miningResults?rallyResultId=${miningResult.rallyResult.id}'/>">View</a></td>
+                                <td>
+                                    <c:if test="${not empty miningResult.rallyResult}">
+                                        <a href="<c:url value='miningResults?rallyResultId=${miningResult.rallyResult.id}'/>">View</a>
+                                    </c:if>
+                                </td>
                             </tr>
                             <c:if test="${miningResult.miningOreResults.size() gt 1}">
                                 <c:forEach var='miningOreResult' items='${miningResult.miningOreResults}'>

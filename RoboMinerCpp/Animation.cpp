@@ -97,7 +97,7 @@ void CAnimation::writeRobotsData(const TRobots& robotList)
             << "size:" << robot.getSize() << ","
             << "maxore:" << robot.getMaxOre() << ","
             << "maxturns:" << robot.getMaxTurns() << ","
-            << "locations:[";
+            << "locations:";
 
         bool first = true;
         double lastXPos = .0;
@@ -106,58 +106,59 @@ void CAnimation::writeRobotsData(const TRobots& robotList)
         int lastOreA = 0;
         int lastOreB = 0;
         int lastOreC = 0;
-        
+
+        CAnimationArrayData arrayData(m_output);
+
         for (TAnimationStepList::iterator iter = stepList.begin(); iter != stepList.end(); ++iter)
         {
-            if (iter != stepList.begin())
-            {
-                m_output << ",";
-            }
-
-            m_output << "{";
-            
             if (first || iter->getPosition().getXPos() != lastXPos)
             {
-                m_output << "x:" << iter->getPosition().getXPos() << ",";
+                arrayData.addDoubleValue("x", iter->getPosition().getXPos());
                 lastXPos = iter->getPosition().getXPos();
             }
-            
+
             if (first || iter->getPosition().getYPos() != lastYPos)
             {
-                m_output << "y:" << iter->getPosition().getYPos() << ",";
+                arrayData.addDoubleValue("y", iter->getPosition().getYPos());
                 lastYPos = iter->getPosition().getYPos();
             }
-            
+
             if (first || iter->getPosition().getOrientation() != lastOrientation)
             {
-                m_output << "o:" << iter->getPosition().getOrientation() << ",";
+                arrayData.addIntValue("o", iter->getPosition().getOrientation());
                 lastOrientation = iter->getPosition().getOrientation() ;
             }
-            
+
             if (first || iter->getOre(0) != lastOreA)
             {
-                m_output << "A:" << iter->getOre(0) << ",";
+                arrayData.addIntValue("A", iter->getOre(0));
                 lastOreA = iter->getOre(0);
             }
-            
+
             if (first || iter->getOre(1) != lastOreB)
             {
-                m_output << "B:" << iter->getOre(1) << ",";
+                arrayData.addIntValue("B", iter->getOre(1));
                 lastOreB = iter->getOre(1);
             }
             
             if (first || iter->getOre(2) != lastOreC)
             {
-                m_output << "C:" << iter->getOre(2) << ",";
+                arrayData.addIntValue("C", iter->getOre(2));
                 lastOreC = iter->getOre(2);
             }
-            
-            m_output << "t:" << iter->getTimeFraction() << "}";
-            
+
+            if (iter->getTimeFraction() < .9 || !arrayData.hasValue())
+            {
+                arrayData.addDoubleValue("t", iter->getTimeFraction());
+            }
+
+            arrayData.nextArrayElement();
+
             first = false;
         }
 
-        m_output << "]}" << std::endl;
+        arrayData.closeArray();
+        m_output << "}" << std::endl;
     }
 
     m_output << "]};" << std::endl;
@@ -197,22 +198,22 @@ void CAnimation::writeGroundData(const CGround& ground)
             {
                 if (iterChanges != changesList.begin())
                 {
-                    arrayData.addValue("t", iterChanges->getTime());
+                    arrayData.addIntValue("t", iterChanges->getTime());
                 }
 
                 if (iterChanges->getOre(0) > 0)
                 {
-                    arrayData.addValue("A", iterChanges->getOre(0));
+                    arrayData.addIntValue("A", iterChanges->getOre(0));
                 }
 
                 if (iterChanges->getOre(1) > 0)
                 {
-                    arrayData.addValue("B", iterChanges->getOre(1));
+                    arrayData.addIntValue("B", iterChanges->getOre(1));
                 }
                 
                 if (iterChanges->getOre(2) > 0)
                 {
-                    arrayData.addValue("C", iterChanges->getOre(2));
+                    arrayData.addIntValue("C", iterChanges->getOre(2));
                 }
 
                 arrayData.nextArrayElement();

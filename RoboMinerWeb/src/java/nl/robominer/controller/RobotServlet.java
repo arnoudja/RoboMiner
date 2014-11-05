@@ -98,6 +98,8 @@ public class RobotServlet extends RoboMinerServletBase
             {
                 updateRobot(request, robot);
                 usersFacade.edit(user);
+
+                user = usersFacade.findById(user.getId());
             }
             catch (IllegalStateException | IllegalArgumentException exc)
             {

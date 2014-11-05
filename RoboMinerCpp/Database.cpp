@@ -582,7 +582,7 @@ list<CDatabase::OldMiningQueueItem> CDatabase::findOldMiningQueueItems(int robot
                  "WHERE robotId = ? "
                  "AND claimed = true "
                  "ORDER BY MiningQueue.id DESC "
-                 "LIMIT 100, 100000 ");
+                 "LIMIT 12, 100000 ");
 
     CDatabaseStatement statement(m_connection, query);
 

@@ -280,8 +280,9 @@ function updateRobotPosition(robotNr, time, stepTime)
     else
     {
         var dt = time % stepTime;
+        var timeFraction = typeof myRobots.robot[robotNr].locations[t2].t !== 'undefined' ? myRobots.robot[robotNr].locations[t2].t : 1.0;
 
-        if (dt >= stepTime * myRobots.robot[robotNr].locations[t2].t)
+        if (dt >= stepTime * timeFraction)
         {
             myRobots.robot[robotNr].x = myRobots.robot[robotNr].locations[t2].x;
             myRobots.robot[robotNr].y = myRobots.robot[robotNr].locations[t2].y;
@@ -292,7 +293,7 @@ function updateRobotPosition(robotNr, time, stepTime)
         }
         else
         {
-            var travelTime = stepTime * myRobots.robot[robotNr].locations[t2].t;
+            var travelTime = stepTime * timeFraction;
             myRobots.robot[robotNr].x = smoothen(myRobots.robot[robotNr].locations[t1].x, myRobots.robot[robotNr].locations[t2].x, dt, travelTime);
             myRobots.robot[robotNr].y = smoothen(myRobots.robot[robotNr].locations[t1].y, myRobots.robot[robotNr].locations[t2].y, dt, travelTime);
             myRobots.robot[robotNr].o = myRobots.robot[robotNr].locations[t1].o;

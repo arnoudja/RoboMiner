@@ -192,6 +192,15 @@ from MiningQueue
 where MiningQueue.rallyResultId = RallyResult.id
 );
 
+-- Remove links to non-existing RallyResult records
+update MiningQueue
+set rallyResultId = NULL
+where not exists
+(
+select *
+from RallyResult
+where RallyResult.id = MiningQueue.rallyResultId
+);
 
 -- Update user values
 
