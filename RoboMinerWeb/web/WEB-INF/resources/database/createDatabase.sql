@@ -72,7 +72,8 @@ create table OrePriceAmount
 id INT AUTO_INCREMENT PRIMARY KEY,
 orePriceId INT NOT NULL REFERENCES OrePrice (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
-amount INT NOT NULL
+amount INT NOT NULL,
+CONSTRAINT UNIQUE INDEX (orePriceId, oreId)
 );
 
 
@@ -107,7 +108,8 @@ sourceName VARCHAR(255) NOT NULL,
 sourceCode TEXT,
 verified BOOL NOT NULL DEFAULT FALSE,
 compiledSize INT NOT NULL DEFAULT -1,
-errorDescription VARCHAR(255)
+errorDescription VARCHAR(255),
+INDEX (usersId, id)
 );
 
 
@@ -175,7 +177,8 @@ rotateSpeed INT NOT NULL,
 robotSize DOUBLE NOT NULL,
 rechargeEndTime TIMESTAMP NOT NULL DEFAULT NOW(),
 miningEndTime TIMESTAMP NULL,
-totalMiningRuns INT NOT NULL DEFAULT 0
+totalMiningRuns INT NOT NULL DEFAULT 0,
+INDEX (usersId, id)
 );
 
 
@@ -280,7 +283,8 @@ playerNumber INT NULL,
 score DOUBLE NULL,
 creationTime TIMESTAMP NOT NULL DEFAULT NOW(),
 miningEndTime TIMESTAMP NULL,
-claimed BOOL NOT NULL DEFAULT FALSE
+claimed BOOL NOT NULL DEFAULT FALSE,
+INDEX (miningAreaId, rallyResultId)
 );
 
 

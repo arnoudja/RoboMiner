@@ -265,7 +265,7 @@ list<CDatabase::MiningRallyItem> CDatabase::getNextMiningRally(int miningAreaId)
                  "Robot.robotSize "
                  "FROM MiningQueue, Robot, MiningArea "
                  "WHERE MiningQueue.miningAreaId = ? "
-                 "AND MiningQueue.rallyResultId IS NULL "
+                 "AND MiningQueue.miningEndTime IS NULL "
                  "AND Robot.id = MiningQueue.robotId "
                  "AND (Robot.rechargeEndTime IS NULL OR Robot.rechargeEndTime <= NOW()) "
                  "AND (Robot.miningEndTime IS NULL OR Robot.miningEndTime <= NOW()) "
@@ -275,7 +275,7 @@ list<CDatabase::MiningRallyItem> CDatabase::getNextMiningRally(int miningAreaId)
                     "FROM MiningQueue prev "
                     "WHERE prev.id < MiningQueue.id "
                     "AND prev.robotId = MiningQueue.robotId "
-                    "AND prev.rallyResultId IS NULL "
+                    "AND prev.miningEndTime IS NULL "
                  ")"
                  "ORDER BY miningEndTime ");
 
