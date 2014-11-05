@@ -286,6 +286,11 @@ p.helptext {
     max-width: 600px;
 }
 
+p.codeexample {
+    font-family: monospace;
+    white-space: pre;
+}
+
 table.helptable {
     border: 1px solid black;
     border-collapse: collapse;

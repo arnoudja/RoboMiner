@@ -65,6 +65,8 @@
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
                     <h1>Latest news</h1>
+                    <p>5-11-2014 New help text: Tips and tricks. Click on the help button on the mining queue page or code edit page to open it.</p>
+                    <p>5-11-2014 New page: View the last rallies on the Activity page, even when you didn't participate yourself.</p>
                     <p>3-11-2014 Layout changes. Refreshing the page pay help in applying them.</p>
                     <p>3-11-2014 Engine redesign. Engine power has been significantly reduced, please make sure your robot has the right engine.</p>
                     <p>3-11-2014 Battery recharge time changes, for Prantum level and higher.</p>
