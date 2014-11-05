@@ -62,7 +62,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "MiningQueue.findClaimableByUsersId",
                 query = "SELECT m FROM MiningQueue m WHERE m.miningEndTime IS NOT NULL AND m.miningEndTime < CURRENT_TIMESTAMP AND m.robot.user.id = :usersId and m.claimed = false"),
     @NamedQuery(name = "MiningQueue.findByRallyAndUsersId",
-                query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId")
+                query = "SELECT m FROM MiningQueue m WHERE m.claimed = true AND m.rallyResult.id = :rallyResultId AND m.robot.user.id = :usersId"),
+    @NamedQuery(name = "MiningQueue.findMostRecent",
+                query = "SELECT m FROM MiningQueue m WHERE m.playerNumber = 0 AND m.miningEndTime <= CURRENT_TIMESTAMP ORDER BY m.miningEndTime DESC")
 })
 public class MiningQueue implements Serializable
 {

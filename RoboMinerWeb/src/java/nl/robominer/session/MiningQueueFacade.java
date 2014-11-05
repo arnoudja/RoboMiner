@@ -31,53 +31,70 @@ import nl.robominer.entity.MiningQueue;
  * @author Arnoud Jagerman
  */
 @Stateless
-public class MiningQueueFacade extends AbstractFacade<MiningQueue> {
+public class MiningQueueFacade extends AbstractFacade<MiningQueue>
+{
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    protected EntityManager getEntityManager()
+    {
         return em;
     }
 
-    public MiningQueueFacade() {
+    public MiningQueueFacade()
+    {
         super(MiningQueue.class);
     }
 
-    public List<MiningQueue> findWaitingByUsersId(int usersId) {
+    public List<MiningQueue> findWaitingByUsersId(int usersId)
+    {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findWaitingByUsersId", MiningQueue.class);
         query.setParameter("usersId", usersId);
         return query.getResultList();
     }
-    
-    public List<MiningQueue> findWaitingByRobotId(int robotId) {
+
+    public List<MiningQueue> findWaitingByRobotId(int robotId)
+    {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findWaitingByRobotId", MiningQueue.class);
         query.setParameter("robotId", robotId);
         return query.getResultList();
     }
 
-    public List<MiningQueue> findResultsByRobotId(int robotId, int maxSize) {
+    public List<MiningQueue> findResultsByRobotId(int robotId, int maxSize)
+    {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findResultsByRobotId", MiningQueue.class);
         query.setParameter("robotId", robotId);
         query.setMaxResults(maxSize);
         return query.getResultList();
     }
 
-    public List<MiningQueue> findClaimableByUsersId(int usersId) {
+    public List<MiningQueue> findClaimableByUsersId(int usersId)
+    {
         Query query = getEntityManager().createNamedQuery("MiningQueue.findClaimableByUsersId", MiningQueue.class);
         query.setParameter("usersId", usersId);
         return query.getResultList();
     }
-    
-    public MiningQueue findByRallyAndUsersId(int rallyResultId, int usersId) {
-        try {
+
+    public MiningQueue findByRallyAndUsersId(int rallyResultId, int usersId)
+    {
+        try
+        {
             Query query = getEntityManager().createNamedQuery("MiningQueue.findByRallyAndUsersId", MiningQueue.class);
             query.setParameter("rallyResultId", rallyResultId);
             query.setParameter("usersId", usersId);
             return (MiningQueue)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
+    }
+
+    public List<MiningQueue> findMostRecent(int maxSize)
+    {
+        Query query = getEntityManager().createNamedQuery("MiningQueue.findMostRecent", MiningQueue.class);
+        query.setMaxResults(maxSize);
+        return query.getResultList();
     }
 }

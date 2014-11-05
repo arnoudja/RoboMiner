@@ -19,6 +19,7 @@
 
 package nl.robominer.session;
 
+import java.util.List;
 import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,12 +33,13 @@ import nl.robominer.entity.Users;
  * @author Arnoud Jagerman
  */
 @Stateless
-public class UsersFacade extends AbstractFacade<Users> {
-
+public class UsersFacade extends AbstractFacade<Users>
+{
     /**
      * Write result type.
      */
-    public enum EWriteResult {
+    public enum EWriteResult
+    {
         eSuccess,
         eDuplicateUsername,
         eDuplicateEmail
@@ -55,14 +57,16 @@ public class UsersFacade extends AbstractFacade<Users> {
      * @return The EntityManager instance for this session bean.
      */
     @Override
-    protected EntityManager getEntityManager() {
+    protected EntityManager getEntityManager()
+    {
         return em;
     }
 
     /**
      * Default constructor.
      */
-    public UsersFacade() {
+    public UsersFacade()
+    {
         super(Users.class);
     }
 
@@ -71,20 +75,22 @@ public class UsersFacade extends AbstractFacade<Users> {
      *
      * @param users The Users instance to add to the database.
      *
-     * @return <code>eSuccess</code> when successful, or the reason
-     * why the database insert failed.
+     * @return <code>eSuccess</code> when successful, or the reason why the database insert failed.
      */
-    public EWriteResult createNew(Users users) {
-
+    public EWriteResult createNew(Users users)
+    {
         EWriteResult result;
 
-        if (findByUsername(users.getUsername()) != null) {
+        if (findByUsername(users.getUsername()) != null)
+        {
             result = EWriteResult.eDuplicateUsername;
         }
-        else if (findByEmail(users.getEmail()) != null) {
+        else if (findByEmail(users.getEmail()) != null)
+        {
             result = EWriteResult.eDuplicateEmail;
         }
-        else {
+        else
+        {
             super.create(users);
 
             // Flush the sql queries to make sure the primary key value is available.
@@ -101,27 +107,29 @@ public class UsersFacade extends AbstractFacade<Users> {
      *
      * @param users The Users instance to update in the database.
      *
-     * @return <code>eSuccess</code> when successful, or the reason
-     * why the database update failed.
+     * @return <code>eSuccess</code> when successful, or the reason why the database update failed.
      */
-    public EWriteResult update(Users users) {
-
+    public EWriteResult update(Users users)
+    {
         EWriteResult result;
 
         Users duplicateUsername = findByUsername(users.getUsername());
-        Users duplicateEmail    = findByEmail(users.getEmail());
+        Users duplicateEmail = findByEmail(users.getEmail());
 
         if (duplicateUsername != null &&
-            !Objects.equals(duplicateUsername.getId(), users.getId())) {
+            !Objects.equals(duplicateUsername.getId(), users.getId()))
+        {
 
             result = EWriteResult.eDuplicateUsername;
         }
         else if (duplicateEmail != null &&
-                 !Objects.equals(duplicateEmail.getId(), users.getId())) {
+                 !Objects.equals(duplicateEmail.getId(), users.getId()))
+        {
 
             result = EWriteResult.eDuplicateEmail;
         }
-        else {
+        else
+        {
             super.edit(users);
             result = EWriteResult.eSuccess;
         }
@@ -134,17 +142,18 @@ public class UsersFacade extends AbstractFacade<Users> {
      *
      * @param id The primary key value to retrieve the Users instance for.
      *
-     * @return The Users instance for the specified primary key value, or null
-     * if not found.
+     * @return The Users instance for the specified primary key value, or null if not found.
      */
-    public Users findById(int id) {
-
-        try {
+    public Users findById(int id)
+    {
+        try
+        {
             Query query = getEntityManager().createNamedQuery("Users.findById", Users.class);
             query.setParameter("id", id);
             return (Users)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
     }
@@ -154,17 +163,18 @@ public class UsersFacade extends AbstractFacade<Users> {
      *
      * @param username The username value to retrieve the Users instance for.
      *
-     * @return The Users instance for the specified username value, or null
-     * if not found.
+     * @return The Users instance for the specified username value, or null if not found.
      */
-    public Users findByUsername(String username) {
-
-        try {
+    public Users findByUsername(String username)
+    {
+        try
+        {
             Query query = getEntityManager().createNamedQuery("Users.findByUsername", Users.class);
             query.setParameter("username", username);
             return (Users)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
     }
@@ -174,39 +184,54 @@ public class UsersFacade extends AbstractFacade<Users> {
      *
      * @param email The email value to retrieve the Users instance for.
      *
-     * @return The Users instance for the specified email value, or null
-     * if not found.
+     * @return The Users instance for the specified email value, or null if not found.
      */
-    public Users findByEmail(String email) {
-
-        try {
+    public Users findByEmail(String email)
+    {
+        try
+        {
             Query query = getEntityManager().createNamedQuery("Users.findByEmail", Users.class);
             query.setParameter("email", email);
             return (Users)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
     }
 
     /**
-     * Find a Users record where the specified value matches the username or
-     * email address.
+     * Find a Users record where the specified value matches the username or email address.
      *
      * @param name The value which should match the username or email value.
      *
      * @return The found Users instance, or null if not found.
      */
-    public Users findByUsernameOrEmail(String name) {
-
-        try {
+    public Users findByUsernameOrEmail(String name)
+    {
+        try
+        {
             Query query = getEntityManager().createNamedQuery("Users.findByUsernameOrEmail", Users.class);
             query.setParameter("name", name);
             return (Users)query.getSingleResult();
         }
-        catch (javax.persistence.NoResultException exc) {
+        catch (javax.persistence.NoResultException exc)
+        {
             return null;
         }
     }
 
+    /**
+     * Retrieve the list of users who logged in most recently.
+     *
+     * @param maxSize The maximum number of users to retrieve.
+     *
+     * @return The list of users who logged in most recently.
+     */
+    public List<Users> findMostRecent(int maxSize)
+    {
+        Query query = getEntityManager().createNamedQuery("Users.findMostRecent", Users.class);
+        query.setMaxResults(maxSize);
+        return query.getResultList();
+    }
 }

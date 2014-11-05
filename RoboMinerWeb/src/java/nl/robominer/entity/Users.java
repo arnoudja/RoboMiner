@@ -65,7 +65,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Users.findByEmail",
                 query = "SELECT u FROM Users u WHERE u.email = :email"),
     @NamedQuery(name = "Users.findByUsernameOrEmail",
-                query = "SELECT u FROM Users u WHERE u.username = :name OR u.email = :name")
+                query = "SELECT u FROM Users u WHERE u.username = :name OR u.email = :name"),
+    @NamedQuery(name = "Users.findMostRecent",
+                query = "SELECT u FROM Users u ORDER BY u.lastLoginTime DESC")
 })
 public class Users implements Serializable
 {

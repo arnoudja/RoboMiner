@@ -22,6 +22,7 @@ package nl.robominer.session;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import nl.robominer.entity.RallyResult;
 
 /**
@@ -29,17 +30,40 @@ import nl.robominer.entity.RallyResult;
  * @author Arnoud Jagerman
  */
 @Stateless
-public class RallyResultFacade extends AbstractFacade<RallyResult> {
+public class RallyResultFacade extends AbstractFacade<RallyResult>
+{
     @PersistenceContext(unitName = "RoboMinerWebPU")
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    protected EntityManager getEntityManager()
+    {
         return em;
     }
 
-    public RallyResultFacade() {
+    public RallyResultFacade()
+    {
         super(RallyResult.class);
     }
-    
+
+    /**
+     * Find a RallyResult record with the specified primary key value.
+     *
+     * @param id The primary key value to retrieve the RallyResult instance for.
+     *
+     * @return The RallyResult instance for the specified primary key value, or null if not found.
+     */
+    public RallyResult findById(int id)
+    {
+        try
+        {
+            Query query = getEntityManager().createNamedQuery("RallyResult.findById", RallyResult.class);
+            query.setParameter("id", id);
+            return (RallyResult)query.getSingleResult();
+        }
+        catch (javax.persistence.NoResultException exc)
+        {
+            return null;
+        }
+    }
 }
