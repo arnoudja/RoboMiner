@@ -39,8 +39,8 @@ import nl.robominer.session.UsersFacade;
  * @author Arnoud Jagerman
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends RoboMinerServletBase {
-
+public class LoginServlet extends RoboMinerServletBase
+{
     /**
      * The javascript view used for displaying the leaderboard page.
      */
@@ -63,34 +63,35 @@ public class LoginServlet extends RoboMinerServletBase {
     private UsersFacade usersFacade;
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
-     * @param request The servlet request.
+     * @param request  The servlet request.
      * @param response The servlet response.
+     *
      * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException      if an I/O error occurs.
      */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+        throws ServletException, IOException
+    {
         // Process a login request, if found.
-        if (loginUser(request, response)) {
-
+        if (loginUser(request, response))
+        {
             response.sendRedirect("miningQueue");
         }
         // Process a signup request, if found.
-        else if (!createNewUser(request, response)) {
-
+        else if (!createNewUser(request, response))
+        {
             // No (valid) login or signup found, initialise the login page.
             Cookie[] cookies = request.getCookies();
 
-            if (cookies != null) {
-
-                for (Cookie cookie : cookies) {
-
-                    if (cookie.getName().equals(REMEMBER_USERNAME_COOKIE_NAME)) {
+            if (cookies != null)
+            {
+                for (Cookie cookie : cookies)
+                {
+                    if (cookie.getName().equals(REMEMBER_USERNAME_COOKIE_NAME))
+                    {
                         request.setAttribute("loginName", cookie.getValue());
                     }
                 }
@@ -103,40 +104,45 @@ public class LoginServlet extends RoboMinerServletBase {
     /**
      * Process a login attempt, if found.
      *
-     * @param request The servlet request.
+     * @param request  The servlet request.
      * @param response The servlet response.
      *
      * @return true when the user is logged in successful, false if not.
      */
-    private boolean loginUser(HttpServletRequest request, HttpServletResponse response) {
-
+    private boolean loginUser(HttpServletRequest request, HttpServletResponse response)
+    {
         boolean result = false;
 
         String loginName = request.getParameter("loginName");
-        String password  = request.getParameter("password");
-        String remember  = request.getParameter("remember");
+        String password = request.getParameter("password");
+        String remember = request.getParameter("remember");
 
         Users user = null;
-        
+
         if (loginName != null)
         {
             user = usersFacade.findByUsernameOrEmail(loginName);
         }
 
-        if (user != null && user.verifyPassword(password)) {
-
+        if (user != null && user.verifyPassword(password))
+        {
             Cookie rememberCookie = new Cookie(REMEMBER_USERNAME_COOKIE_NAME, loginName);
 
-            if (remember == null || remember.isEmpty()) {
+            if (remember == null || remember.isEmpty())
+            {
                 rememberCookie.setMaxAge(0);
             }
-            else {
+            else
+            {
                 rememberCookie.setMaxAge(REMEMBER_USERNAME_COOKIE_MAXAGE);
             }
 
             response.addCookie(rememberCookie);
 
             setUserId(request, user.getId());
+
+            user.updateLastLoginTime();
+            usersFacade.edit(user);
 
             result = true;
         }
@@ -147,68 +153,76 @@ public class LoginServlet extends RoboMinerServletBase {
     /**
      * Process a create user request, if found in the request.
      *
-     * @param request The servlet request.
+     * @param request  The servlet request.
      * @param response The servlet response.
      *
-     * @return true when a user creation attempt is done, false when not.
-     * Response handling is done if and only if true is returned.
+     * @return true when a user creation attempt is done, false when not. Response handling is done if and only if true
+     *         is returned.
      *
      * @throws ServletException if a servlet-specific error occurs.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException      if an I/O error occurs.
      */
-    private boolean createNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+    private boolean createNewUser(HttpServletRequest request, HttpServletResponse response) throws IOException,
+                                                                                                   ServletException
+    {
         boolean result = false;
 
-        String newusername      = request.getParameter("newusername");
-        String email            = request.getParameter("email");
-        String newpassword      = request.getParameter("newpassword");
-        String confirmpassword  = request.getParameter("confirmpassword");
+        String newusername = request.getParameter("newusername");
+        String email = request.getParameter("email");
+        String newpassword = request.getParameter("newpassword");
+        String confirmpassword = request.getParameter("confirmpassword");
 
         if (newusername != null && email != null && newpassword != null &&
-            confirmpassword != null && confirmpassword.equals(newpassword)) {
-
+            confirmpassword != null && confirmpassword.equals(newpassword))
+        {
             String errorMessage = null;
 
             Users user = new Users();
 
-            if (!user.setUsername(newusername)) {
+            if (!user.setUsername(newusername))
+            {
                 errorMessage = "Invalid username";
             }
-            else if (!user.setEmail(email)) {
+            else if (!user.setEmail(email))
+            {
                 errorMessage = "Invalid e-mail address";
             }
-            else if (!user.setPassword(newpassword)) {
+            else if (!user.setPassword(newpassword))
+            {
                 errorMessage = "The password doesn't meet the requirements";
             }
-            else {
-                try {
+            else
+            {
+                try
+                {
                     UsersFacade.EWriteResult createResult = getUserAssets().createNewUser(user);
 
-                    switch (createResult) {
-                        case eDuplicateUsername:
-                            errorMessage = "Username already taken, please choose another one";
-                            break;
+                    switch (createResult)
+                    {
+                    case eDuplicateUsername:
+                        errorMessage = "Username already taken, please choose another one";
+                        break;
 
-                        case eDuplicateEmail:
-                            errorMessage = "You already have an account, please login using your e-mail address";
-                            break;
+                    case eDuplicateEmail:
+                        errorMessage = "You already have an account, please login using your e-mail address";
+                        break;
 
-                        case eSuccess:
-                            setUserId(request, user.getId());
-                            result = true;
-                            response.sendRedirect("miningQueue");
-                            break;
+                    case eSuccess:
+                        setUserId(request, user.getId());
+                        result = true;
+                        response.sendRedirect("miningQueue");
+                        break;
                     }
                 }
                 catch (NotSupportedException | SystemException | RollbackException |
-                       HeuristicMixedException | HeuristicRollbackException ex) {
+                       HeuristicMixedException | HeuristicRollbackException ex)
+                {
                     throw new ServletException(ex);
                 }
             }
 
-            if (!result) {
-
+            if (!result)
+            {
                 request.setAttribute("errorMessage", errorMessage);
                 request.setAttribute("newusername", newusername);
                 request.setAttribute("email", email);
@@ -226,7 +240,8 @@ public class LoginServlet extends RoboMinerServletBase {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Login-page controller servlet";
     }
 }

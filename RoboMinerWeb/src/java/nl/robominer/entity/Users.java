@@ -22,6 +22,7 @@ package nl.robominer.entity;
 import bcrypt.BCrypt;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,8 +40,9 @@ import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -135,6 +137,10 @@ public class Users implements Serializable
     @NotNull
     @Column(name = "miningQueueSize")
     private int miningQueueSize;
+
+    @Column(name = "lastLoginTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLoginTime;
 
     /**
      * The list of mining areas the user is allowed to mine in.
@@ -345,6 +351,24 @@ public class Users implements Serializable
     public void increaseMiningQueueSize(int miningQueueIncrement)
     {
         this.miningQueueSize += miningQueueIncrement;
+    }
+
+    /**
+     * Retrieve the last date/time the user was logged in.
+     *
+     * @return The last date/time the user was logged in.
+     */
+    public Date getLastLoginTime()
+    {
+        return lastLoginTime;
+    }
+
+    /**
+     * Update the last date/time the user was logged in to now.
+     */
+    public void updateLastLoginTime()
+    {
+        lastLoginTime = new Date();
     }
 
     /**
