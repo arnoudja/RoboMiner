@@ -82,11 +82,11 @@ while (mine());
                 When you use the constant value 'true', the block is executed repeatedly until the mining session ends or the robot's battery is depleted.
             </p>
             <p class="codeexample">
-[Insert the one-time code here]
+&lsaquo;Insert the one-time code here&gt;
 
 while (true)
 {
-    [Insert the repeated code here]
+    &lsaquo;Insert the repeated code here&gt;
 }
             </p>
             <h2>Detecting a collision</h2>
@@ -111,7 +111,7 @@ while (true)
             <p class="codeexample">
 if (move(1) &lt; 0.9)
 {
-    [Insert some smooth collision-avoiding moves here]
+    &lsaquo;Insert some smooth collision-avoiding moves here&gt;
 }
             </p>
             <p class="helptext">
@@ -145,7 +145,7 @@ if (move(1) &lt; 0.9)
             </p>
             <p class="helptext">
                 As a next step we could do a rotation.
-                'rotate(90);' will rotate the robot one quarter of a round clockwise.
+                'rotate(135);' will rotate the robot clockwise.
                 If you prefer to rotate counter-clockwise you can use a negative number.
             </p>
             <p class="helptext">
@@ -159,7 +159,7 @@ if (move(1) &lt; 0.9)
 if (move(1) &lt; 0.9)
 {
     move(-1);
-    rotate(90);
+    rotate(135);
     move(1);
 }
             </p>
@@ -206,6 +206,197 @@ do {
             </p>
             <p class="helptext">
                 This will repeat the mining process until there is no more high quality ore to mine at the current robot location.
+            </p>
+            <h2>Ore heaps</h2>
+            <p class="helptext">
+                Ore is concentrated in heaps.
+                In the first mining areas, just searching for ore and picking it up will work fine.
+                As the mining areas get more difficult, however, the number of times your robot runs into an ore heap of the right type will decrease.
+            </p>
+            <p class="helptext">
+                When your robot does run into the right type of ore, you want it to pick up as much of its ore as possible.
+            </p>
+            <p class="helptext">
+                This can be achieved with three steps:
+            </p>
+            <ul>
+                <li>Detect when the robot enters an ore heap.</li>
+                <li>Detect when the robot leaves an ore heap.</li>
+                <li>Move back into the ore heap.</li>
+            </ul>
+            <p class="helptext">
+                For the first step, we'll use a variable which we will set to true when we've mined something.
+                For example:
+            </p>
+            <p class="codeexample">
+bool inOreHeap = false;
+&lsaquo;other initialisation code&gt;
+
+while (true)
+{
+    // Check whether ore is found.
+    if (mine())
+    {
+        // Ore found, so we are in an ore heap.
+        inOreHeap = true;
+
+        // Mine the rest of the ore at the current location.
+        while (mine());
+    }
+
+    &lsaquo;Movement, collision detection etc.&gt;
+}
+            </p>
+            <p class="helptext">
+                This way, when the robot mines something, it will remember it did so.
+                For this example, the robot accepts any type of ore.
+                But of course you can change the code in such a way that the inOreHeap variable is only set to true when the right type of ore is found.
+            </p>
+            <p class="helptext">
+                As a second step, we want to detect when the robot leaves an ore heap.
+                Ore heaps are round, so when the robot mines in a straight line we know the robot leaves the heap when:
+            </p>
+            <ul>
+                <li>The robot detected an ore heap.</li>
+                <li>The robot didn't find ore in the new location.</li>
+            </ul>
+            <p class="helptext">
+                The tricky part here is the 'new location'.
+                When the robot mines all the ore in one location and then makes a move of 0.5, for example, changes are the robot is still in the same location.
+            </p>
+            <p class="helptext">
+                To avoid this, make sure your move is about 1.42.
+                The squares are one by one, so the distance between two opposite corners is just under 1.42.
+                By moving at least 1.42, we can make sure the robot is in a new location after the move.
+            </p>
+            <p class="helptext">
+                Again, we'll use a variable to store the information.
+                After adding this, it will look something like this:
+            </p>
+            <p class="codeexample">
+bool inOeHeap = false;
+bool leftOreHeap = false;
+&lsaquo;other initialisation code&gt;
+
+while (true)
+{
+    // Check whether ore is found.
+    if (mine())
+    {
+        // Ore found, so we are in an ore heap.
+        inOreHeap = true;
+
+        // Mine the rest of the ore at the current location.
+        while (mine());
+    }
+    else if (inOreHeap)
+    {
+        // No ore found, but we're in an ore heap, so we just left it.
+        leftOreHeap = true;
+    }
+
+    &lsaquo;Movement, collision detection etc.&gt;
+}
+            </p>
+            <p class="helptext">
+                Now the robot knows when it detected an ore heap and it knows when it left it.
+                The next step is to take action when the robot leaves the ore heap.
+            </p>
+            <p class="helptext">
+                Depending on the 'leftOreHeap' variable, the robot can move normally or try to head back into the ore heap.
+            </p>
+            <p class="helptext">
+                There are a lot of ways to try to get back into the ore heap.
+                We don't know whether the robot entered it through the middle, right part or left part.
+                For this example we pick an easy way: The robot makes a large turn and we hope it enters the heap again.
+            </p>
+            <p class="helptext">
+                Making a complete 180 degree turn won't be a good idea.
+                The robot will end up exactly on the path it just mined clear.
+                So we'll make a 160 degree turn.
+                Feel free to try other values between 90 and 180.
+            </p>
+            <p class="helptext">
+                The code now looks something like this:
+            </p>
+            <p class="codeexample">
+bool inOreHeap = false;
+bool leftOreHeap = false;
+&lsaquo;other initialisation code&gt;
+
+while (true)
+{
+    // Check whether ore is found.
+    if (mine())
+    {
+        // Ore found, so we are in an ore heap.
+        inOreHeap = true;
+
+        // Mine the rest of the ore at the current location.
+        while (mine());
+    }
+    else if (inOreHeap)
+    {
+        // No ore found, but we're in an ore heap, so we just left it.
+        leftOreHeap = true;
+    }
+
+    if (leftOreHeap)
+    {
+        // Try to head back into the ore heap.
+        rotate(160);
+    }
+
+    &lsaquo;Movement, collision detection etc.&gt;
+}
+            </p>
+            <p class="helptext">
+                Now there is one more change to make.
+                The code will work fine when the robot is lucky enough to re-enter the ore heap right after the turn.
+                But when it doesn't, it will keep moving in a circle!
+            </p>
+            <p class="helptext">
+                After the robot has done the 160 degree turn, we want the variables to be reset to their original values.
+                When the robot does run back into the heap, it will detect it in the same way again.
+                When it doesn't, the original search for ore will continue.
+            </p>
+            <p class="helptext">
+                The final code will look something like this:
+            </p>
+            <p class="codeexample">
+bool inOreHeap = false;
+bool leftOreHeap = false;
+&lsaquo;other initialisation code&gt;
+
+while (true)
+{
+    // Check whether ore is found.
+    if (mine())
+    {
+        // Ore found, so we are in an ore heap.
+        inOreHeap = true;
+
+        // Mine the rest of the ore at the current location.
+        while (mine());
+    }
+    else if (inOreHeap)
+    {
+        // No ore found, but we're in an ore heap, so we just left it.
+        leftOreHeap = true;
+    }
+
+    if (leftOreHeap)
+    {
+        // Try to head back into the ore heap.
+        rotate(160);
+        
+        // Reset the variables to their original state.
+        inOreHeap = false;
+        leftOreHeap = false;
+    }
+
+    &lsaquo;Movement, collision detection etc.&gt;
+}
             </p>
         </div>
     </body>
