@@ -39,8 +39,6 @@
 
         <rm:defaultpage currentform="editCode" username="${user.username}">
 
-            <button class="helpbutton" onclick="window.open('<c:url value='help_index.html'/>')">help</button>
-
             <form id="eraseProgramSourceForm" action="<c:url value='editCode'/>" method="post">
                 <input type="hidden" name="requestType" value="erase" />
                 <input type="hidden" id="eraseProgramSourceId" name="programSourceId" value=""/>

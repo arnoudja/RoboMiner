@@ -33,7 +33,7 @@
         <title>RoboMiner - Activity</title>
     </head>
     <body>
-        <rm:defaultpage currentform="activity" username="${currentusername}">
+        <rm:defaultpage currentform="activity" username="${user.username}">
             <table>
                 <caption>Latest rallies</caption>
                 <tr>

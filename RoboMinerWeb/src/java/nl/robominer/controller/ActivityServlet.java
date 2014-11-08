@@ -108,6 +108,7 @@ public class ActivityServlet extends RoboMinerServletBase
         }
         else
         {
+            request.setAttribute("user", usersFacade.findById(getUserId(request)));
             request.setAttribute("usersList", usersFacade.findMostRecent(MAX_USERS));
             request.setAttribute("miningQueueList", miningQueueFacade.findMostRecent(MAX_RALLIES));
 

@@ -26,6 +26,7 @@
 <header>
     <nav class="logoff">
         <ul class="menubar">
+            <li class="${(currentform == 'help')    ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='help'/>');">Help</li>
             <li class="${(currentform == 'account') ? 'menuitemselected' : 'menuitem'}" onclick="openUrl('<c:url value='account'/>');">${fn:escapeXml(username)}</li>
             <li class="menuitem" onclick="openUrlConfirm('<c:url value='logoff'/>', 'Logoff. Are you sure?');">Logoff</li>
         </ul>
