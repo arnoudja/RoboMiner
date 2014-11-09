@@ -249,6 +249,79 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 If the Wait actions are above 20%, you might consider buying a better CPU or creating a more efficient program.
             </p>
             <h2>Engine</h2>
+            <p class="helptext">
+                The Engine is responsible for moving the Robot around.
+                Stronger Engines can move and rotate faster.
+                The Strength of the engine is split into three parts: Forward power, backward power and rotate power.
+            </p>
+            <p class="helptext">
+                The other important factor for speed is weight.
+                Every Robot part has a weight value.
+                When you add up the weight values of all the Robot parts, you end up with the total weight of the Robot.
+            </p>
+            <p class="helptext">
+                The Robots page will tell you the current maximum speeds of the Robot, again split into the three parts.
+                The speed is the maximum distance the Robot can travel or rotate in one cycle.
+            </p>
+            <p class="helptext">
+                When a move() or rotate() command is given which exceeds the speed of the Robot,
+                the action is divided into two or more parts.
+                The first cycle(s), the Robot will move at the maximum speed for the full duration of those cycles.
+                In the last cycle, the Robot will still move at its maximum speed but only during the first part of the cycle.
+            </p>
+            <p class="helptext">
+                Assume the Robot has a forward speed of 1.2 and a move(1.8) is executed.
+                With a 4 i/c CPU, the timeline will look like this:
+            </p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">move(1.8)</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                </tr>
+                <tr>
+                    <td class="helptable" colspan="4">...</td>
+                    <td class="helptable" colspan="4">move(1.2)</td>
+                    <td class="helptable" colspan="2">move(0.6)</td>
+                    <td class="helptable" colspan="2">idle</td>
+                </tr>
+            </table>
+            <p class="helptext">
+                A collision cancels the move or rotate from the moment the collision occurs.
+                So, when a collision occurs at one half of the move(1.2) cycle,
+                the Robot has moved a distance of 0.6 and the second move(0.6) will not be executed.
+            </p>
+            <table class="helptable">
+                <tr>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">move(1.8)</td>
+                    <td class="helptable">X</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                    <td class="helptable">CPU</td>
+                </tr>
+                <tr>
+                    <td class="helptable" colspan="4">...</td>
+                    <td class="helptable" colspan="2">move(0.6)</td>
+                    <td class="helptable" colspan="2">collision</td>
+                    <td class="helptable" colspan="4">...</td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>
