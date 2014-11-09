@@ -210,7 +210,7 @@ public class LoginServlet extends RoboMinerServletBase
                     case eSuccess:
                         setUserId(request, user.getId());
                         result = true;
-                        response.sendRedirect("miningQueue");
+                        response.sendRedirect("help");
                         break;
                     }
                 }
