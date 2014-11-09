@@ -68,7 +68,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Sourcecode:</td>
+                                <td>Source code:</td>
                                 <td>
                                     <select id="programSourceId${robot.id}" name="programSourceId${robot.id}" class="tableitem" onchange="updateMemorySizes();">
                                         <c:forEach var='programSource' items="${user.programSourceList}">

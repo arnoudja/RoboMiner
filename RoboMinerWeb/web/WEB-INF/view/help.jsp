@@ -56,6 +56,13 @@
                 The <a href="help_robotprogram.html" target="robotProgramWindow">Robot programming language description</a>
                 contains an explanation about the syntax and options of the Robot programming language.
             </p>
+            <h2>The Mechanics</h2>
+            <p>
+                Want to know what's the meaning of all those numbers shown in the Shop?
+                And want to know how they affect your Robots performance?
+                Then you can check out the
+                <a href="help_mechanics.html" target="mechanicsWindow">Mechanics Guide</a>.
+            </p>
         </rm:defaultpage>
     </body>
 </html>

@@ -155,6 +155,12 @@
                                     <td colspan="4">${robotPart.weight}</td>
                                 </tr>
                             </c:if>
+                            <c:if test="${robotPart.volume gt 0}">
+                                <tr>
+                                    <td>Volume:</td>
+                                    <td colspan="4">${robotPart.volume}</td>
+                                </tr>
+                            </c:if>
                             <tr>
                                 <td colspan="5">Ore cost:</td>
                             </tr>

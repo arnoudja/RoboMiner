@@ -278,7 +278,7 @@ div.helptext {
     background: #eee;
 }
 
-p.helptext {
+p.helptext, li.helptext {
     max-width: 600px;
 }
 
