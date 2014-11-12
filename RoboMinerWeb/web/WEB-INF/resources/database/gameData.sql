@@ -935,7 +935,7 @@ insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves,
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 1, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 2, 10, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1201, 3, 5, 5);
 
 insert into OrePrice (id, description) values (1202, 'Mining Area Lithabine-2 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12021, 1202, 1, 15);
@@ -946,7 +946,7 @@ insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves,
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 1, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 2, 10, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1202, 3, 5, 5);
 
 insert into OrePrice (id, description) values (1203, 'Mining Area Lithabine-3 price');
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (12031, 1203, 1, 20);
@@ -957,7 +957,7 @@ insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves,
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1203, 1, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1203, 2, 10, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1203, 3, 5, 5);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1203, 3, 5, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1203, 3, 5, 5);
 
 -- Neudralion
 insert into OrePrice (id, description) values (1301, 'Mining Area Neudralion-1 price');
@@ -968,6 +968,7 @@ insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves
                 values (1301, 'Neudralion-1', 1301,       50,    50,    450,      300,        40,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 2, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 3, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 5, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1301, 4, 5, 5);
 
 insert into OrePrice (id, description) values (1302, 'Mining Area Neudralion-2 price');
@@ -980,6 +981,7 @@ insert into MiningArea (id,   areaName,       orePriceId, sizeX, sizeY, maxMoves
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 2, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 3, 10, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1302, 4, 5, 5);
 
 -- Complatix
 insert into OrePrice (id, description) values (1401, 'Mining Area Complatix-1 price');
@@ -991,6 +993,7 @@ insert into MiningArea (id,   areaName,      orePriceId, sizeX, sizeY, maxMoves,
                 values (1401, 'Complatix-1', 1401,       60,    60,    600,      900,        50,      3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 3, 10, 6);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 4, 10, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 5, 5);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1401, 5, 5, 5);
 
 insert into OrePrice (id, description) values (1402, 'Mining Area Complatix-2 price');
@@ -1018,8 +1021,8 @@ insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, m
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 3, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 3, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 4, 15, 15);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 5);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1501, 6, 4, 5);
 
 -- Raxia
 insert into OrePrice (id, description) values (1601, 'Mining Area Raxia-1 price');
@@ -1051,9 +1054,9 @@ insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, m
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 2, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 2, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 4, 15, 15);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1701, 8, 2, 4);
 
 -- Asradon
 insert into OrePrice (id, description) values (1801, 'Mining Area Asradon-1 price');
@@ -1070,9 +1073,9 @@ insert into MiningArea (id,   areaName,    orePriceId, sizeX, sizeY, maxMoves, m
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 2, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 2, 15, 15);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 3, 15, 15);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 1, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 1, 3);
-insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 4);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1801, 9, 2, 4);
 
 
 -- Achievements - Initial achievement

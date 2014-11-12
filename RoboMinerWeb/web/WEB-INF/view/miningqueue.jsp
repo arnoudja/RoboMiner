@@ -180,7 +180,7 @@
                                     <tr>
                                         <td></td>
                                         <td>${fn:escapeXml(miningAreaOreSupply.ore.oreName)}:</td>
-                                        <td colspan="2">${miningAreaOreSupply.supply} / ${miningAreaOreSupply.radius}</td>
+                                        <td colspan="2">h ${miningAreaOreSupply.supply} / r ${miningAreaOreSupply.radius}</td>
                                     </tr>
                                 </c:forEach>
                                 <tr>
