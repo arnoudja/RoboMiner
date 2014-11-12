@@ -196,7 +196,7 @@ void CAnimation::writeGroundData(const CGround& ground)
 
             for (TGroundChangeStepList::iterator iterChanges = changesList.begin(); iterChanges != changesList.end(); ++iterChanges)
             {
-                if (iterChanges != changesList.begin())
+                if (iterChanges->getTime() > 0)
                 {
                     arrayData.addIntValue("t", iterChanges->getTime());
                 }

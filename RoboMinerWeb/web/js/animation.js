@@ -161,9 +161,17 @@ function drawInitialGround(scale)
         var y = myGround.positions[i].y;
 
         var changes = myGround.positions[i].c[0];
-        var oreA = typeof changes.A !== 'undefined' ? changes.A : 0;
-        var oreB = typeof changes.B !== 'undefined' ? changes.B : 0;
-        var oreC = typeof changes.C !== 'undefined' ? changes.C : 0;
+
+        var oreA = 0;
+        var oreB = 0;
+        var oreC = 0;
+
+        if (typeof changes.t === 'undefined' || changes.t === 0)
+        {
+            oreA = typeof changes.A !== 'undefined' ? changes.A : 0;
+            oreB = typeof changes.B !== 'undefined' ? changes.B : 0;
+            oreC = typeof changes.C !== 'undefined' ? changes.C : 0;
+        }
 
         var oreAIntensity = Math.min(255, Math.floor(oreA * 255 / oreAMax));
         var oreBIntensity = Math.min(255, Math.floor(oreB * 255 / oreBMax));
