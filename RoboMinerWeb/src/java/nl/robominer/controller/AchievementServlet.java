@@ -62,6 +62,7 @@ public class AchievementServlet extends RoboMinerServletBase
         if (achievementId > 0)
         {
             claimAchievementStep(user, achievementId);
+            updateOreAssetsList(request, user.getId());
         }
 
         // Add the user data

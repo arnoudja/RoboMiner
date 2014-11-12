@@ -179,6 +179,11 @@ public class UserAchievement implements Serializable
             user.addRobot();
         }
 
+        if (achievementStep.getOre() != null)
+        {
+            user.increaseUserOreMaximum(achievementStep.getOre(), achievementStep.getMaxOreReward());
+        }
+
         List<AchievementPredecessor> achievementPredecessorList = achievement.getAchievementSuccessorList();
 
         for (AchievementPredecessor successor : achievementPredecessorList)

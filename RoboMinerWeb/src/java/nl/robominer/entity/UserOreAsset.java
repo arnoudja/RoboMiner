@@ -74,6 +74,11 @@ public class UserOreAsset implements Serializable
     @Column(name = "amount")
     private int amount;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "maxAllowed")
+    private int maxAllowed;
+
     public UserOreAsset()
     {
     }
@@ -83,6 +88,7 @@ public class UserOreAsset implements Serializable
         this.usersId = usersId;
         this.ore = ore;
         this.amount = 0;
+        this.maxAllowed = 25;
     }
 
     public int getUsersId()
@@ -100,19 +106,36 @@ public class UserOreAsset implements Serializable
         return amount;
     }
 
-    public void setAmount(int amount)
-    {
-        this.amount = amount;
-    }
-
     public void increaseAmount(int amount)
     {
-        this.amount += amount;
+        int newAmount = this.amount + amount;
+
+        if (newAmount <= maxAllowed)
+        {
+            this.amount = newAmount;
+        }
+        else if (this.amount < maxAllowed)
+        {
+            this.amount = maxAllowed;
+        }
     }
 
     public void decreaseAmount(int amount)
     {
         this.amount -= amount;
+    }
+
+    public int getMaxAllowed()
+    {
+        return maxAllowed;
+    }
+
+    public void setMaxAllowed(int newMaxAllowed)
+    {
+        if (newMaxAllowed > maxAllowed)
+        {
+            maxAllowed = newMaxAllowed;
+        }
     }
 
     @Override

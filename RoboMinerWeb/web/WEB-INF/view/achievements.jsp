@@ -78,6 +78,12 @@
                                     <td>${achievementStep.miningQueueReward}</td>
                                 </tr>
                             </c:if>
+                            <c:if test="${not empty achievementStep.ore}">
+                                <tr>
+                                    <td colspan="2">${fn:escapeXml(achievementStep.ore.oreName)} ore maximum:</td>
+                                    <td>${achievementStep.maxOreReward}</td>
+                                </tr>
+                            </c:if>
                             <c:if test="${achievementStep.robotReward gt user.robotList.size()}">
                                 <tr>
                                     <td colspan="3">New robot!</td>

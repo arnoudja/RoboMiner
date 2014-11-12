@@ -230,6 +230,20 @@ and AchievementStep.step <= UserAchievement.stepsClaimed
 );
 
 
+-- Update the ore maximums
+update UserOreAsset
+set maxAllowed =
+(
+select coalesce(max(AchievementStep.maxOreReward), 25)
+from UserAchievement
+inner join AchievementStep
+on AchievementStep.achievementId = UserAchievement.achievementId
+where UserAchievement.usersId = UserOreAsset.usersId
+and AchievementStep.step <= UserAchievement.stepsClaimed
+and AchievementStep.oreId = UserOreAsset.oreId
+);
+
+
 -- Update the available mining areas earned with achievements
 delete from UserMiningArea;
 

@@ -91,6 +91,15 @@ public class AchievementStep implements Serializable
     @JoinColumn(name = "miningAreaId")
     private MiningArea miningArea;
 
+    @ManyToOne
+    @JoinColumn(name = "oreId")
+    private Ore ore;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "maxOreReward")
+    private int maxOreReward;
+
     @OneToMany
     @JoinColumn(name = "AchievementStepMiningTotalRequirement.achievementStepId")
     private List<AchievementStepMiningTotalRequirement> achievementStepMiningTotalRequirementList;
@@ -161,6 +170,26 @@ public class AchievementStep implements Serializable
     public MiningArea getMiningArea()
     {
         return miningArea;
+    }
+
+    /**
+     * Retrieve the ore type for the maximum ore increase reward.
+     *
+     * @return The ore type for the maximum ore increase reward, or null if none.
+     */
+    public Ore getOre()
+    {
+        return ore;
+    }
+
+    /**
+     * The new maximum ore amount for the type specified with getOre().
+     *
+     * @return The new maximum ore amount, or 0 if no reward of this type.
+     */
+    public int getMaxOreReward()
+    {
+        return maxOreReward;
     }
 
     /**

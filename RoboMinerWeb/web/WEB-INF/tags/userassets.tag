@@ -29,11 +29,13 @@
         <tr>
             <th>Ore</th>
             <th>Amount</th>
+            <th>Max</th>
         </tr>
         <c:forEach var='oreAsset' items='${oreassetlist}'>
             <tr>
                 <td>${fn:escapeXml(oreAsset.ore.oreName)}</td>
                 <td>${oreAsset.amount}</td>
+                <td>${oreAsset.maxAllowed}</td>
             </tr>
         </c:forEach>
     </table>

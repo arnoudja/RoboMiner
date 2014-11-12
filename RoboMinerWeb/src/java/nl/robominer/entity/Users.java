@@ -494,6 +494,25 @@ public class Users implements Serializable
     }
 
     /**
+     * Increase the maximum amount of ore allowed for the specified ore to the specified value, if higher.
+     *
+     * @param ore           The ore type to increase the maximum amount for.
+     * @param newMaxAllowed The new maximum amount of ore.
+     */
+    public void increaseUserOreMaximum(Ore ore, int newMaxAllowed)
+    {
+        UserOreAsset userOreAsset = userOreAssetMap.get(ore);
+
+        if (userOreAsset == null)
+        {
+            userOreAsset = new UserOreAsset(id, ore);
+            userOreAssetMap.put(ore, userOreAsset);
+        }
+
+        userOreAsset.setMaxAllowed(newMaxAllowed);
+    }
+
+    /**
      * Retrieve the user robot part asset for the specified robot part id.
      *
      * @param robotPart The robot part to return the asset for.
