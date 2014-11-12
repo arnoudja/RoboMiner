@@ -65,6 +65,7 @@
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
                     <h1>Latest news</h1>
+                    <p>12-11-2014 New ore type available.</p>
                     <p>9-11-2014 Top menu item 'Help' added as access to the help texts.</p>
                     <p>5-11-2014 New help text: Tips and tricks. Click on the help button on the mining queue page or code edit page to open it.</p>
                     <p>5-11-2014 New page: View the last rallies on the Activity page, even when you didn't participate yourself.</p>
