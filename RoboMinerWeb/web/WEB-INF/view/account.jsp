@@ -33,6 +33,8 @@
         <title>RoboMiner - Account</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="account" username="${currentusername}">
 
             <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />

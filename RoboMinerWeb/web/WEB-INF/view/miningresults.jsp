@@ -33,6 +33,8 @@
         <title>RoboMiner - Mining results</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="miningResults" username="${user.username}">
 
             <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />

@@ -92,6 +92,9 @@ public class LeaderboardServlet extends RoboMinerServletBase {
         // Add the list of top robots to the request.
         request.setAttribute("topRobotsList", topRobotsViewFacade.getTopRobots(MAX_ENTRIES));
 
+        // Add the list of top users to the request.
+        request.setAttribute("topUsersList", usersFacade.findTopAchievementPoints(MAX_ENTRIES));
+
         // Add the list of mining areas to the request.
         List<MiningArea> miningAreaList = miningAreaFacade.findAll();
         request.setAttribute("miningAreaList", miningAreaList);

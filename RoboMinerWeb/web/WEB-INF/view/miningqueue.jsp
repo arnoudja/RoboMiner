@@ -33,6 +33,8 @@
         <title>RoboMiner - Mining queue</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="miningQueue" username="${user.username}">
 
             <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
@@ -183,6 +185,24 @@
                                         <td colspan="2">h ${miningAreaOreSupply.supply} / r ${miningAreaOreSupply.radius}</td>
                                     </tr>
                                 </c:forEach>
+                                <c:set var="titleAdded" value="false"/>
+                                <c:forEach var='robot' items="${user.robotList}">
+                                    <c:if test="${robot.getMiningAreaScore(miningArea.id) gt 0}">
+                                        <c:if test="${!titleAdded}">
+                                            <tr>
+                                                <td colspan="4">Robot score:</td>
+                                            </tr>
+                                            <c:set var="titleAdded" value="true"/>
+                                        </c:if>
+                                        <tr>
+                                            <td></td>
+                                            <td>${fn:escapeXml(robot.robotName)}</td>
+                                            <td colspan="2">
+                                                <fmt:formatNumber value="${robot.getMiningAreaScore(miningArea.id)}" minFractionDigits="1" maxFractionDigits="1"/>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </c:forEach>
                                 <tr>
                                     <td colspan="4">Historic yield:</td>
                                 </tr>
@@ -193,7 +213,7 @@
                                         <td></td>
                                         <td>${fn:escapeXml(miningAreaLifetimeResult.ore.oreName)}:</td>
                                         <td colspan="2">
-                                            <fmt:formatNumber value="${miningAreaLifetimeResult.percentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                                            <fmt:formatNumber value="${miningAreaLifetimeResult.percentage}" minFractionDigits="1" maxFractionDigits="1"/>%
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -201,7 +221,7 @@
                                     <td></td>
                                     <td>Total:</td>
                                     <td colspan="2">
-                                        <fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%
+                                        <fmt:formatNumber value="${totalPercentage}" minFractionDigits="1" maxFractionDigits="1"/>%
                                     </td>
                                 </tr>
                             </tbody>

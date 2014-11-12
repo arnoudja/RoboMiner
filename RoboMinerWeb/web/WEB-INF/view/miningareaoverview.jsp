@@ -32,6 +32,8 @@
         <title>RoboMiner - Mining area overview</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="miningAreaOverview" username="${user.username}">
 
             <table>
@@ -50,9 +52,9 @@
                         </c:forEach>
                         <tr>
                             <td>${fn:escapeXml(miningArea.areaName)}</td>
-                            <td><fmt:formatNumber value="${totalPercentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                            <td><fmt:formatNumber value="${totalPercentage}" minFractionDigits="1" maxFractionDigits="1"/>%</td>
                             <c:forEach var="ore" items="${oreList}">
-                                <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" minFractionDigits="2" maxFractionDigits="2"/>%</td>
+                                <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" minFractionDigits="1" maxFractionDigits="1"/>%</td>
                             </c:forEach>
                         </tr>
                     </c:if>

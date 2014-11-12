@@ -33,6 +33,8 @@
         <title>RoboMiner - Robot</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <input type="hidden" id="prevRobotId" value="${robotId}"/>
 
         <c:forEach var="memoryModuleAsset" items="${user.getUserRobotPartAssetListOfType(4)}">

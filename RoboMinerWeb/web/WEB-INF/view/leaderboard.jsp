@@ -32,6 +32,8 @@
         <title>RoboMiner - Leaderboard</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="leaderboard" username="${user.username}">
 
             <c:forEach var="miningArea" items="${miningAreaList}">
@@ -50,7 +52,7 @@
                                 <td>${fn:escapeXml(robotMiningAreaScore.robot.robotName)}</td>
                                 <td>${fn:escapeXml(robotMiningAreaScore.robot.user.username)}</td>
                                 <td>
-                                    <fmt:formatNumber value="${robotMiningAreaScore.score}" minFractionDigits="3" maxFractionDigits="3"/>
+                                    <fmt:formatNumber value="${robotMiningAreaScore.score}" minFractionDigits="1" maxFractionDigits="1"/>
                                 </td>
                                 <td>${robotMiningAreaScore.totalRuns}</td>
                             </tr>
@@ -58,7 +60,7 @@
                     </table>
                 </c:if>
             </c:forEach>
-            
+
             <table>
                 <caption>Top robots</caption>
                 <tr>
@@ -71,8 +73,22 @@
                         <td>${fn:escapeXml(topRobot.robotName)}</td>
                         <td>${fn:escapeXml(topRobot.username)}</td>
                         <td>
-                            <fmt:formatNumber value="${topRobot.orePerRun}" minFractionDigits="3" maxFractionDigits="3"/>
+                            <fmt:formatNumber value="${topRobot.orePerRun}" minFractionDigits="1" maxFractionDigits="1"/>
                         </td>
+                    </tr>
+                </c:forEach>
+            </table>
+
+            <table>
+                <caption>Top players</caption>
+                <tr>
+                    <th>Player</th>
+                    <th>Achievement points</th>
+                </tr>
+                <c:forEach var="topUser" items="${topUsersList}">
+                    <tr>
+                        <td>${fn:escapeXml(topUser.username)}</td>
+                        <td>${topUser.achievementPoints}</td>
                     </tr>
                 </c:forEach>
             </table>

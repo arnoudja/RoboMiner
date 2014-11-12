@@ -33,6 +33,8 @@
         <title>RoboMiner - Activity</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="activity" username="${user.username}">
             <table>
                 <caption>Latest rallies</caption>

@@ -87,7 +87,9 @@ achievementPoints INT NOT NULL DEFAULT 0,
 miningQueueSize INT NOT NULL DEFAULT 0,
 lastLoginTime TIMESTAMP NOT NULL DEFAULT NOW(),
 INDEX (username),
-INDEX (email)
+INDEX (email),
+INDEX (achievementPoints),
+INDEX (lastLoginTime)
 );
 
 

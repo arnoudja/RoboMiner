@@ -33,6 +33,8 @@
         <title>RoboMiner - Achievements</title>
     </head>
     <body>
+        <fmt:setLocale value="en_US" />
+
         <rm:defaultpage currentform="achievements" username="${user.username}">
 
             <rm:userassets oreassetlist="${oreAssetList}" user="${user}" />
@@ -105,10 +107,10 @@
                                 <tr>
                                     <td>Average ${fn:escapeXml(achievementStepMiningScoreRequirement.miningArea.areaName)} score</td>
                                     <td>
-                                        <fmt:formatNumber value="${achievementStepMiningScoreRequirement.minimumScore}" minFractionDigits="3" maxFractionDigits="3"/>
+                                        <fmt:formatNumber value="${achievementStepMiningScoreRequirement.minimumScore}" minFractionDigits="1" maxFractionDigits="1"/>
                                     </td>
                                     <td class="${currentScore ge achievementStepMiningScoreRequirement.minimumScore ? 'sufficientbalance' : 'insufficientbalance'}">
-                                        (<fmt:formatNumber value="${currentScore}" minFractionDigits="3" maxFractionDigits="3"/>)
+                                        (<fmt:formatNumber value="${currentScore}" minFractionDigits="1" maxFractionDigits="1"/>)
                                     </td>
                                 </tr>
                             </c:forEach>

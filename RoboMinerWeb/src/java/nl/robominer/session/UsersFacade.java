@@ -234,4 +234,18 @@ public class UsersFacade extends AbstractFacade<Users>
         query.setMaxResults(maxSize);
         return query.getResultList();
     }
+
+    /**
+     * Retrieve the list of users with the most achievement points.
+     *
+     * @param maxSize The maximum number of users to retrieve.
+     *
+     * @return The list of users with the most achievement points.
+     */
+    public List<Users> findTopAchievementPoints(int maxSize)
+    {
+        Query query = getEntityManager().createNamedQuery("Users.findTopAchievementPoints", Users.class);
+        query.setMaxResults(maxSize);
+        return query.getResultList();
+    }
 }
