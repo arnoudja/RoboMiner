@@ -48,13 +48,13 @@
                     <c:if test="${miningArea.miningAreaLifetimeResultList.size() > 0}">
                         <c:set var="totalPercentage" value="0" />
                         <c:forEach var="ore" items="${oreList}">
-                            <c:set var="totalPercentage" value="${totalPercentage + miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" />
+                            <c:set var="totalPercentage" value="${totalPercentage + miningArea.getMiningAreaLifetimeResult(ore).percentage}" />
                         </c:forEach>
                         <tr>
                             <td>${fn:escapeXml(miningArea.areaName)}</td>
                             <td><fmt:formatNumber value="${totalPercentage}" minFractionDigits="1" maxFractionDigits="1"/>%</td>
                             <c:forEach var="ore" items="${oreList}">
-                                <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore.id).percentage}" minFractionDigits="1" maxFractionDigits="1"/>%</td>
+                                <td><fmt:formatNumber value="${miningArea.getMiningAreaLifetimeResult(ore).percentage}" minFractionDigits="1" maxFractionDigits="1"/>%</td>
                             </c:forEach>
                         </tr>
                     </c:if>

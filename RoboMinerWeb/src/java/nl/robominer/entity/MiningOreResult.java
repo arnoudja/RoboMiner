@@ -22,8 +22,10 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,17 +41,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "MiningOreResult")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "MiningOreResult.findAll", query = "SELECT m FROM MiningOreResult m"),
-    @NamedQuery(name = "MiningOreResult.findByMiningQueueId", query = "SELECT m FROM MiningOreResult m WHERE m.miningOreResultPK.miningQueueId = :miningQueueId"),
-    @NamedQuery(name = "MiningOreResult.findByOreId", query = "SELECT m FROM MiningOreResult m WHERE m.miningOreResultPK.oreId = :oreId"),
-    @NamedQuery(name = "MiningOreResult.findByAmount", query = "SELECT m FROM MiningOreResult m WHERE m.amount = :amount")})
-public class MiningOreResult implements Serializable {
-    
+    @NamedQuery(name = "MiningOreResult.findByMiningQueueId",
+                query = "SELECT m FROM MiningOreResult m WHERE m.miningQueue.id = :miningQueueId"),
+    @NamedQuery(name = "MiningOreResult.findByOreId",
+                query = "SELECT m FROM MiningOreResult m WHERE m.ore.id = :oreId"),
+    @NamedQuery(name = "MiningOreResult.findByAmount",
+                query = "SELECT m FROM MiningOreResult m WHERE m.amount = :amount")
+})
+public class MiningOreResult implements Serializable
+{
     private static final long serialVersionUID = 1L;
-    
-    @EmbeddedId
-    protected MiningOreResultPK miningOreResultPK;
+
+    /**
+     * The primary key value.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
 
     @Basic(optional = false)
     @NotNull
@@ -61,81 +74,80 @@ public class MiningOreResult implements Serializable {
     private int tax;
 
     @ManyToOne
-    @JoinColumn(name = "miningQueueId", insertable = false, updatable = false)
+    @JoinColumn(name = "miningQueueId")
     private MiningQueue miningQueue;
 
     @ManyToOne
-    @JoinColumn(name = "oreId", insertable = false, updatable = false)
+    @JoinColumn(name = "oreId")
     private Ore ore;
 
-    public MiningOreResult() {
+    public MiningOreResult()
+    {
     }
 
-    public MiningOreResult(MiningOreResultPK miningOreResultPK) {
-        this.miningOreResultPK = miningOreResultPK;
+    public Integer getId()
+    {
+        return id;
     }
 
-    public MiningOreResult(MiningOreResultPK miningOreResultPK, int amount) {
-        this.miningOreResultPK = miningOreResultPK;
-        this.amount = amount;
-    }
-
-    public MiningOreResult(int miningQueueId, int oreId) {
-        this.miningOreResultPK = new MiningOreResultPK(miningQueueId, oreId);
-    }
-
-    public MiningOreResultPK getMiningOreResultPK() {
-        return miningOreResultPK;
-    }
-
-    public Ore getOre() {
-        return ore;
-    }
-    
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public MiningQueue getMiningQueue() {
+    public MiningQueue getMiningQueue()
+    {
         return miningQueue;
     }
 
-    public void calculateTax() {
+    public Ore getOre()
+    {
+        return ore;
+    }
+
+    public int getAmount()
+    {
+        return amount;
+    }
+
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
+
+    public void calculateTax()
+    {
         tax = (int)Math.floor(amount * miningQueue.getMiningArea().getTaxRate() / 100);
     }
 
-    public int getTax() {
+    public int getTax()
+    {
         return tax;
     }
 
-    public int getReward() {
+    public int getReward()
+    {
         return amount - tax;
     }
-    
+
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (miningOreResultPK != null ? miningOreResultPK.hashCode() : 0);
-        return hash;
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MiningOreResult)) {
+        if (!(object instanceof MiningOreResult))
+        {
             return false;
         }
-        MiningOreResult other = (MiningOreResult) object;
-        return (this.miningOreResultPK != null || other.miningOreResultPK == null) && (this.miningOreResultPK == null || this.miningOreResultPK.equals(other.miningOreResultPK));
+
+        MiningOreResult other = (MiningOreResult)object;
+
+        return (this.id != null && other.id != null && this.id.equals(other.id));
     }
 
     @Override
-    public String toString() {
-        return "nl.robominer.entity.MiningOreResult[ miningOreResultPK=" + miningOreResultPK + " ]";
+    public String toString()
+    {
+        return "nl.robominer.entity.MiningOreResult[ id=" + id + " ]";
     }
-    
 }

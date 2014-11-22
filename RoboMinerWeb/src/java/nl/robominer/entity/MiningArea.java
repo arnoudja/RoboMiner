@@ -178,11 +178,11 @@ public class MiningArea implements Serializable {
         return miningAreaLifetimeResultList;
     }
 
-    public MiningAreaLifetimeResult getMiningAreaLifetimeResult(int oreId) {
-        MiningAreaLifetimeResult result = new MiningAreaLifetimeResult(id, oreId, 0, 0);
+    public MiningAreaLifetimeResult getMiningAreaLifetimeResult(Ore ore) {
+        MiningAreaLifetimeResult result = new MiningAreaLifetimeResult(id, ore, 0, 0);
 
         for (MiningAreaLifetimeResult miningAreaLifetimeResult : miningAreaLifetimeResultList) {
-            if (miningAreaLifetimeResult.getOre().getId() == oreId) {
+            if (miningAreaLifetimeResult.getOre().equals(ore)) {
                 result = miningAreaLifetimeResult;
             }
         }

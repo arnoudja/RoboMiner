@@ -22,8 +22,10 @@ package nl.robominer.entity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -43,17 +45,36 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RobotActionsDone.findAll",
                 query = "SELECT r FROM RobotActionsDone r"),
     @NamedQuery(name = "RobotActionsDone.findByMiningQueueId",
-                query = "SELECT r FROM RobotActionsDone r WHERE r.robotActionsDonePK.miningQueueId = :miningQueueId")
+                query = "SELECT r FROM RobotActionsDone r WHERE r.miningQueueId = :miningQueueId")
 })
 public class RobotActionsDone implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The primary key entity.
+     * The primary key value.
      */
-    @EmbeddedId
-    protected RobotActionsDonePK robotActionsDonePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    /**
+     * The mining queue item id this robot action is done for.
+     */
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "miningQueueId")
+    private int miningQueueId;
+
+    /**
+     * The type of action this robot action represents.
+     */
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "actionType")
+    private int actionType;
 
     /**
      * The number of times this action was done.
@@ -71,6 +92,26 @@ public class RobotActionsDone implements Serializable
     }
 
     /**
+     * Retrieve the primary key value.
+     *
+     * @return The primary key value.
+     */
+    public Integer getId()
+    {
+        return id;
+    }
+
+    /**
+     * Retrieve the MiningQueueId value this instance represents.
+     *
+     * @return The MiningQueueId value this instance represents.
+     */
+    public int getMiningQueueId()
+    {
+        return miningQueueId;
+    }
+
+    /**
      * Retrieve the action type this instance represents. See the
      * CRobot::EAction enumeration in the C++ part for the meaning of the
      * values.
@@ -79,7 +120,7 @@ public class RobotActionsDone implements Serializable
      */
     public int getActionType()
     {
-        return robotActionsDonePK.getActionType();
+        return actionType;
     }
 
     /**
@@ -101,7 +142,7 @@ public class RobotActionsDone implements Serializable
     @Override
     public int hashCode()
     {
-        return (robotActionsDonePK != null ? robotActionsDonePK.hashCode() : 0);
+        return (id != null ? id.hashCode() : 0);
     }
 
     /**
@@ -123,9 +164,7 @@ public class RobotActionsDone implements Serializable
 
         RobotActionsDone other = (RobotActionsDone)object;
 
-        return (this.robotActionsDonePK != null &&
-                other.robotActionsDonePK != null &&
-                this.robotActionsDonePK.equals(other.robotActionsDonePK));
+        return (this.id != null && other.id != null && this.id.equals(other.id));
     }
 
     /**
@@ -136,7 +175,6 @@ public class RobotActionsDone implements Serializable
     @Override
     public String toString()
     {
-        return "nl.robominer.entity.RobotActionsDone[ robotActionsDonePK=" +
-                robotActionsDonePK + " ]";
+        return "nl.robominer.entity.RobotActionsDone[ id=" + id + " ]";
     }
 }

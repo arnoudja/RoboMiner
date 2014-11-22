@@ -243,11 +243,12 @@ radius INT NOT NULL
 
 create table MiningAreaLifetimeResult
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 totalAmount BIGINT NOT NULL,
 totalContainerSize BIGINT NOT NULL,
-PRIMARY KEY (miningAreaId, oreId)
+CONSTRAINT UNIQUE INDEX (miningAreaId, oreId)
 );
 
 
@@ -268,11 +269,12 @@ resultData MEDIUMTEXT NOT NULL
 
 create table RobotMiningAreaScore
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 robotId INT NOT NULL REFERENCES Robot (id) ON DELETE CASCADE,
 miningAreaId INT NOT NULL REFERENCES MiningArea (id) ON DELETE CASCADE,
 totalRuns INT NOT NULL DEFAULT 0,
 score DOUBLE NOT NULL DEFAULT .0,
-PRIMARY KEY (robotId, miningAreaId),
+CONSTRAINT UNIQUE INDEX (robotId, miningAreaId),
 INDEX (miningAreaId, score)
 );
 
@@ -294,20 +296,22 @@ INDEX (miningAreaId, rallyResultId)
 
 create table MiningOreResult
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 miningQueueId INT NOT NULL REFERENCES MiningQueue (id) ON DELETE CASCADE,
 oreId INT NOT NULL REFERENCES Ore (id) ON DELETE CASCADE,
 amount INT NOT NULL,
 tax INT NULL,
-PRIMARY KEY (miningQueueId, oreId)
+CONSTRAINT UNIQUE INDEX (miningQueueId, oreId)
 );
 
 
 create table RobotActionsDone
 (
+id INT AUTO_INCREMENT PRIMARY KEY,
 miningQueueId INT NOT NULL REFERENCES MiningQueue (id) ON DELETE CASCADE,
 actionType INT NOT NULL,
 amount INT NOT NULL,
-PRIMARY KEY (miningQueueId, actionType)
+CONSTRAINT UNIQUE INDEX (miningQueueId, actionType)
 );
 
 

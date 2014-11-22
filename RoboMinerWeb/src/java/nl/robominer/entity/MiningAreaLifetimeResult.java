@@ -24,6 +24,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,16 +42,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "MiningAreaLifetimeResult")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "MiningAreaLifetimeResult.findAll", query = "SELECT m FROM MiningAreaLifetimeResult m"),
-    @NamedQuery(name = "MiningAreaLifetimeResult.findByMiningAreaId", query = "SELECT m FROM MiningAreaLifetimeResult m WHERE m.miningAreaLifetimeResultPK.miningAreaId = :miningAreaId"),
-    @NamedQuery(name = "MiningAreaLifetimeResult.findByPK", query = "SELECT m FROM MiningAreaLifetimeResult m WHERE m.miningAreaLifetimeResultPK.miningAreaId = :miningAreaId AND m.miningAreaLifetimeResultPK.oreId = :oreId")})
-public class MiningAreaLifetimeResult implements Serializable {
-
+    @NamedQuery(name = "MiningAreaLifetimeResult.findByMiningAreaId",
+                query = "SELECT m FROM MiningAreaLifetimeResult m WHERE m.miningAreaId = :miningAreaId"),
+    @NamedQuery(name = "MiningAreaLifetimeResult.findByPK",
+                query = "SELECT m FROM MiningAreaLifetimeResult m WHERE m.miningAreaId = :miningAreaId AND m.ore.id = :oreId")
+})
+public class MiningAreaLifetimeResult implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    protected MiningAreaLifetimeResultPK miningAreaLifetimeResultPK;
+    /**
+     * The primary key value.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "miningAreaId")
+    private int miningAreaId;
 
     @Basic(optional = false)
     @NotNull
@@ -61,63 +79,84 @@ public class MiningAreaLifetimeResult implements Serializable {
     private long totalContainerSize;
 
     @ManyToOne
-    @JoinColumn(name = "oreId", insertable = false, updatable = false)
+    @JoinColumn(name = "oreId")
     private Ore ore;
 
-    public MiningAreaLifetimeResult() {
+    public MiningAreaLifetimeResult()
+    {
     }
 
-    public MiningAreaLifetimeResult(int miningAreaId, int oreId, int amount, int containerSize) {
-        this.miningAreaLifetimeResultPK = new MiningAreaLifetimeResultPK(miningAreaId, oreId);
-        this.totalAmount = amount;
+    public MiningAreaLifetimeResult(int miningAreaId, Ore ore, int amount, int containerSize)
+    {
+        this.miningAreaId       = miningAreaId;
+        this.ore                = ore;
+        this.totalAmount        = amount;
         this.totalContainerSize = containerSize;
     }
 
-    public long getTotalAmount() {
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public int getMiningAreaId()
+    {
+        return miningAreaId;
+    }
+
+    public long getTotalAmount()
+    {
         return totalAmount;
     }
 
-    public void increaseTotalAmount(int amount) {
+    public void increaseTotalAmount(int amount)
+    {
         this.totalAmount += amount;
     }
 
-    public long getTotalContainerSize() {
+    public long getTotalContainerSize()
+    {
         return totalContainerSize;
     }
 
-    public void increaseTotalContainerSize(int containerSize) {
+    public void increaseTotalContainerSize(int containerSize)
+    {
         this.totalContainerSize += containerSize;
     }
 
-    public Ore getOre() {
+    public Ore getOre()
+    {
         return ore;
     }
 
-    public double getPercentage() {
+    public double getPercentage()
+    {
         return (totalContainerSize > 0 ? (totalAmount * 100.0 / totalContainerSize) : .0);
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (miningAreaLifetimeResultPK != null ? miningAreaLifetimeResultPK.hashCode() : 0);
-        return hash;
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MiningAreaLifetimeResult)) {
+        if (!(object instanceof MiningAreaLifetimeResult))
+        {
             return false;
         }
-        MiningAreaLifetimeResult other = (MiningAreaLifetimeResult) object;
-        return (this.miningAreaLifetimeResultPK != null || other.miningAreaLifetimeResultPK == null) &&
-               (this.miningAreaLifetimeResultPK == null || this.miningAreaLifetimeResultPK.equals(other.miningAreaLifetimeResultPK));
+
+        MiningAreaLifetimeResult other = (MiningAreaLifetimeResult)object;
+
+        return (this.id != null && other.id != null && this.id.equals(other.id));
     }
 
     @Override
-    public String toString() {
-        return "nl.robominer.entity.MiningAreaLifetimeResult[ miningAreaLifetimeResultPK=" + miningAreaLifetimeResultPK + " ]";
+    public String toString()
+    {
+        return "nl.robominer.entity.MiningAreaLifetimeResult[ id=" + id + " ]";
     }
-    
 }

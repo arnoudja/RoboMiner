@@ -360,7 +360,7 @@ public class UserAssets
             if (miningAreaLifetimeResult == null)
             {
                 miningAreaLifetimeResult = new MiningAreaLifetimeResult(
-                        miningArea.getId(), ore.getId(), amount, containerSize);
+                        miningArea.getId(), ore, amount, containerSize);
                 miningAreaLifetimeResultFacade.create(miningAreaLifetimeResult);
             }
             else

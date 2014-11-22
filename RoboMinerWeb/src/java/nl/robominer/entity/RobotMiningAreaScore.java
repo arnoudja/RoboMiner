@@ -16,13 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package nl.robominer.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -39,19 +42,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "RobotMiningAreaScore")
 @XmlRootElement
-@NamedQueries({
+@NamedQueries(
+{
     @NamedQuery(name = "RobotMiningAreaScore.findAll", query = "SELECT r FROM RobotMiningAreaScore r"),
-    @NamedQuery(name = "RobotMiningAreaScore.findByRobotId", query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robotMiningAreaScorePK.robotId = :robotId"),
-    @NamedQuery(name = "RobotMiningAreaScore.findByMiningAreaId", query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robotMiningAreaScorePK.miningAreaId = :miningAreaId ORDER BY r.score DESC")})
-public class RobotMiningAreaScore implements Serializable {
-
+    @NamedQuery(name = "RobotMiningAreaScore.findByRobotId",
+                query = "SELECT r FROM RobotMiningAreaScore r WHERE r.robot.id = :robotId"),
+    @NamedQuery(name = "RobotMiningAreaScore.findByMiningAreaId",
+                query = "SELECT r FROM RobotMiningAreaScore r WHERE r.miningAreaId = :miningAreaId ORDER BY r.score DESC")
+})
+public class RobotMiningAreaScore implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     /**
      * The primary key value.
      */
-    @EmbeddedId
-    protected RobotMiningAreaScorePK robotMiningAreaScorePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    /**
+     * The miningAreaId value part of the primary key.
+     */
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "miningAreaId")
+    private int miningAreaId;
 
     /**
      * The total number of runs this robot made in this mining area.
@@ -73,13 +91,14 @@ public class RobotMiningAreaScore implements Serializable {
      * The robot this score is for.
      */
     @ManyToOne
-    @JoinColumn(name = "robotId", insertable = false, updatable = false)
+    @JoinColumn(name = "robotId")
     private Robot robot;
 
     /**
      * Default constructor.
      */
-    public RobotMiningAreaScore() {
+    public RobotMiningAreaScore()
+    {
     }
 
     /**
@@ -87,8 +106,9 @@ public class RobotMiningAreaScore implements Serializable {
      *
      * @return The primary key value of this instance.
      */
-    public RobotMiningAreaScorePK getRobotMiningAreaScorePK() {
-        return robotMiningAreaScorePK;
+    public Integer getId()
+    {
+        return id;
     }
 
     /**
@@ -96,8 +116,9 @@ public class RobotMiningAreaScore implements Serializable {
      *
      * @return The mining area id.
      */
-    public int getMiningAreaId() {
-        return robotMiningAreaScorePK.getMiningAreaId();
+    public int getMiningAreaId()
+    {
+        return miningAreaId;
     }
 
     /**
@@ -105,7 +126,8 @@ public class RobotMiningAreaScore implements Serializable {
      *
      * @return The total number of runs.
      */
-    public int getTotalRuns() {
+    public int getTotalRuns()
+    {
         return totalRuns;
     }
 
@@ -114,7 +136,8 @@ public class RobotMiningAreaScore implements Serializable {
      *
      * @return The score value.
      */
-    public double getScore() {
+    public double getScore()
+    {
         return score;
     }
 
@@ -123,7 +146,8 @@ public class RobotMiningAreaScore implements Serializable {
      *
      * @return The robot.
      */
-    public Robot getRobot() {
+    public Robot getRobot()
+    {
         return robot;
     }
 
@@ -133,26 +157,30 @@ public class RobotMiningAreaScore implements Serializable {
      * @return The calculated hash value.
      */
     @Override
-    public int hashCode() {
-        return (robotMiningAreaScorePK != null ? robotMiningAreaScorePK.hashCode() : 0);
+    public int hashCode()
+    {
+        return (id != null ? id.hashCode() : 0);
     }
 
     /**
-     * Compares two instances of this class. Only works if the primary key values
-     * of both instances are set.
+     * Compares two instances of this class. Only works if the primary key values of both instances are set.
      *
      * @param object The other instance of this class to compare to.
+     *
      * @return true when the instances represent the same item, else false.
      */
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RobotMiningAreaScore)) {
+        if (!(object instanceof RobotMiningAreaScore))
+        {
             return false;
         }
-        RobotMiningAreaScore other = (RobotMiningAreaScore) object;
-        return !((this.robotMiningAreaScorePK == null && other.robotMiningAreaScorePK != null) ||
-                 (this.robotMiningAreaScorePK != null && !this.robotMiningAreaScorePK.equals(other.robotMiningAreaScorePK)));
+
+        RobotMiningAreaScore other = (RobotMiningAreaScore)object;
+
+        return (this.id != null && other.id != null && this.id.equals(other.id));
     }
 
     /**
@@ -161,8 +189,8 @@ public class RobotMiningAreaScore implements Serializable {
      * @return A string representation of the id value of this instance.
      */
     @Override
-    public String toString() {
-        return "nl.robominer.entity.RobotMiningAreaScore[ robotMiningAreaScorePK=" + robotMiningAreaScorePK + " ]";
+    public String toString()
+    {
+        return "nl.robominer.entity.RobotMiningAreaScore[ id=" + id + " ]";
     }
-
 }
