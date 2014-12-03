@@ -33,6 +33,7 @@ insert into Ore (id, oreName) values (7, 'Raxia');
 insert into Ore (id, oreName) values (8, 'Dipolir');
 insert into Ore (id, oreName) values (9, 'Asradon');
 insert into Ore (id, oreName) values (10, 'Baratiem');
+insert into Ore (id, oreName) values (11, 'Etaxy');
 
 -- The robot part names
 insert into RobotPartType (id, typeName) values (1, 'Ore container');
@@ -152,6 +153,17 @@ insert into OrePriceAmount (id, orePriceId, oreId, amount) values (100208, 1002,
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (100209, 1002,  9, 250);
 insert into OrePriceAmount (id, orePriceId, oreId, amount) values (100210, 1002, 10, 60);
 
+-- Shop prices - Etaxy
+insert into OrePrice (id, description) values (1101, 'Etaxy price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110109, 1101,  9, 300);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110110, 1101, 10, 150);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110111, 1101, 11, 15);
+
+insert into OrePrice (id, description) values (1102, 'Etaxy Baratiem price');
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110209, 1102,  9, 500);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110210, 1102, 10, 250);
+insert into OrePriceAmount (id, orePriceId, oreId, amount) values (110211, 1102, 11, 60);
+
 
 -- Ore containers - Cerbonium
 insert into RobotPart (id,  typeId, partName,                 orePriceId, oreCapacity, weight, volume, powerUsage)
@@ -214,6 +226,12 @@ insert into RobotPart (id,  typeId, partName,                 orePriceId, oreCap
                values (190, 1,      'Baratiem Ore Container', 1001,       115,         48,     120,    20);
 insert into RobotPart (id,  typeId, partName,                          orePriceId, oreCapacity, weight, volume, powerUsage)
                values (191, 1,      'Enhanced Baratiem Ore Container', 1002,       120,         50,     125,    21);
+
+-- Ore containers - Etaxy
+insert into RobotPart (id,  typeId, partName,              orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (105, 1,      'Etaxy Ore Container', 1101,       125,         52,     130,    22);
+insert into RobotPart (id,  typeId, partName,                       orePriceId, oreCapacity, weight, volume, powerUsage)
+               values (106, 1,      'Enhanced Etaxy Ore Container', 1102,       130,         54,     135,    23);
 
 
 -- Mining units - Cerbonium
@@ -278,6 +296,12 @@ insert into RobotPart (id,  typeId, partName,               orePriceId, miningCa
 insert into RobotPart (id,  typeId, partName,                        orePriceId, miningCapacity, weight, volume, powerUsage)
                values (291, 2,      'Enhanced Baratiem Mining Unit', 1002,       3,              18,     11,     14);
 
+-- Mining units - Etaxy
+insert into RobotPart (id,  typeId, partName,            orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (205, 2,      'Etaxy Mining Unit', 1101,       12,             36,     26,     56);
+insert into RobotPart (id,  typeId, partName,                     orePriceId, miningCapacity, weight, volume, powerUsage)
+               values (206, 2,      'Enhanced Etaxy Mining Unit', 1102,       2,              12,     7,      10);
+
 
 -- Batteries - Cerbonium
 insert into RobotPart (id,  typeId, partName,           orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
@@ -333,15 +357,21 @@ insert into RobotPart (id,  typeId, partName,                   orePriceId, batt
 
 -- Batteries - Asradon
 insert into RobotPart (id,  typeId, partName,          orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (380, 3,      'Asradon Battery', 901,        420000,          720,          18,      17,     0);
+               values (380, 3,      'Asradon Battery', 901,        420000,          720,          18,     17,     0);
 insert into RobotPart (id,  typeId, partName,                   orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
                values (381, 3,      'Enhanced Asradon Battery', 902,        420000,          360,          19,     18,     0);
 
 -- Batteries - Baratiem
 insert into RobotPart (id,  typeId, partName,           orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
-               values (390, 3,      'Baratiem Battery', 1001,       520000,          840,          20,      19,     0);
+               values (390, 3,      'Baratiem Battery', 1001,       520000,          840,          20,     19,     0);
 insert into RobotPart (id,  typeId, partName,                    orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
                values (391, 3,      'Enhanced Baratiem Battery', 1002,       520000,          420,          21,     20,     0);
+
+-- Batteries - Etaxy
+insert into RobotPart (id,  typeId, partName,        orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (305, 3,      'Etaxy Battery', 1101,       620000,          960,          22,     21,     0);
+insert into RobotPart (id,  typeId, partName,                 orePriceId, batteryCapacity, rechargeTime, weight, volume, powerUsage)
+               values (306, 3,      'Enhanced Etaxy Battery', 1102,       620000,          480,          23,     22,     0);
 
 
 -- Memory modules - Cerbonium
@@ -406,6 +436,12 @@ insert into RobotPart (id,  typeId, partName,                 orePriceId, memory
 insert into RobotPart (id,  typeId, partName,                          orePriceId, memoryCapacity, weight, volume, powerUsage)
                values (491, 4,      'Enhanced Baratiem Memory Module', 1002,       480,            1,      1,      21);
 
+-- Memory modules - Etaxy
+insert into RobotPart (id,  typeId, partName,              orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (405, 4,      'Etaxy Memory Module', 1101,       512,            1,      1,      22);
+insert into RobotPart (id,  typeId, partName,                       orePriceId, memoryCapacity, weight, volume, powerUsage)
+               values (406, 4,      'Enhanced Etaxy Memory Module', 1102,       544,            1,      1,      23);
+
 
 -- CPUs - Cerbonium
 insert into RobotPart (id,  typeId, partName,       orePriceId, cpuCapacity, weight, volume, powerUsage)
@@ -469,6 +505,12 @@ insert into RobotPart (id,  typeId, partName,       orePriceId, cpuCapacity, wei
 insert into RobotPart (id,  typeId, partName,                orePriceId, cpuCapacity, weight, volume, powerUsage)
                values (591, 5,      'Enhanced Baratiem CPU', 1002,       80,          1,      1,      20);
 
+-- CPUs - Etaxy
+insert into RobotPart (id,  typeId, partName,    orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (505, 5,      'Etaxy CPU', 1101,       84,          1,      1,      21);
+insert into RobotPart (id,  typeId, partName,             orePriceId, cpuCapacity, weight, volume, powerUsage)
+               values (506, 5,      'Enhanced Etaxy CPU', 1102,       88,          1,      1,      22);
+
 
 -- Engines - Cerbonium
 insert into RobotPart (id,  typeId, partName,          orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
@@ -531,6 +573,12 @@ insert into RobotPart (id,  typeId, partName,          orePriceId, forwardCapaci
                values (690, 6,      'Baratiem Engine', 1001,       252,             252,              348,            27,     23,     95);
 insert into RobotPart (id,  typeId, partName,                   orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
                values (691, 6,      'Enhanced Baratiem Engine', 1002,       268,             268,              380,            28,     24,     100);
+
+-- Engines - Etaxy
+insert into RobotPart (id,  typeId, partName,       orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (605, 6,      'Etaxy Engine', 1101,       284,             284,              412,            29,     23,     105);
+insert into RobotPart (id,  typeId, partName,                orePriceId, forwardCapacity, backwardCapacity, rotateCapacity, weight, volume, powerUsage)
+               values (606, 6,      'Enhanced Etaxy Engine', 1102,       300,             300,              444,            30,     24,     110);
 
 
 -- AI player
@@ -762,6 +810,21 @@ insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (19
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1901, 10,  2, 3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1901, 10,  2, 3);
 insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (1901, 10,  2, 3);
+
+-- Etaxy
+insert into OrePrice (id, description) values (20001, 'Mining Area Etaxy-1 price');
+insert into OrePriceAmount (orePriceId, oreId, amount) values (20001,  7, 25);
+insert into OrePriceAmount (orePriceId, oreId, amount) values (20001,  8, 20);
+insert into OrePriceAmount (orePriceId, oreId, amount) values (20001,  9, 15);
+insert into OrePriceAmount (orePriceId, oreId, amount) values (20001, 10, 10);
+insert into MiningArea (id,   areaName,  orePriceId, sizeX, sizeY, maxMoves, miningTime, taxRate, aiRobotId)
+                values (2001, 'Etaxy-1', 20001,      120,   120,   3500,     21600,      75,      3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001,  1, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001,  1, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001,  2, 15, 15);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001, 11,  2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001, 11,  2, 3);
+insert into MiningAreaOreSupply (miningAreaId, oreId, supply, radius) values (2001, 11,  2, 3);
 
 
 -- Achievements - Initial achievement
@@ -1007,6 +1070,17 @@ insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId,
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3094, 309, 1601, 400.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3095, 309, 1701, 250.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3096, 309, 1801, 200.0);
+
+-- Etaxy-1
+insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
+                     values (310, 3,             10,   10,                2001);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3101, 310,  8, 10000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3102, 310,  9, 2000);
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3103, 310, 10, 500);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3104, 310, 1701, 400.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3105, 310, 1801, 250.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3106, 310, 1901, 200.0);
 
 
 -- Achievements - New robot
@@ -1667,6 +1741,63 @@ insert into AchievementStep (id,    achievementId, step, achievementPoints, oreI
 
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (100081, 10008, 10, 100000);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (100082, 10008, 1901, 700.0);
+
+
+-- Achievements - Etaxy - Quantity mining
+insert into Achievement (id,  title,          description)
+                 values (110, 'Etaxy mining', 'Mine Etaxy');
+
+insert into AchievementPredecessor (id, predecessorId, predecessorStep, successorId) values (11001, 3, 10, 110);
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11001, 110,           1,    10,                11,    50);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110011, 11001, 11, 50);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11002, 110,           2,    10,                11,    75);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110021, 11002, 11, 150);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11003, 110,           3,    10,                11,    200);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110031, 11003, 11, 400);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11004, 110,           4,    10,                11,    600);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110041, 11004, 11, 1500);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11005, 110,           5,    10,                11,    1200);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110051, 11005, 11, 3000);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11006, 110,           6,    10,                11,    2000);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110061, 11006, 11, 10000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110062, 11006, 2001, 600.0);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11007, 110,           7,    10,                11,    5000);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110071, 11007, 11, 50000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110072, 11007, 2001, 650.0);
+
+
+insert into AchievementStep (id,    achievementId, step, achievementPoints, oreId, maxOreReward)
+                     values (11008, 110,           8,    10,                11,    9999);
+
+insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (110081, 11008, 11, 100000);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (110082, 11008, 2001, 700.0);
 
 
 -- Calculate the tier levels
