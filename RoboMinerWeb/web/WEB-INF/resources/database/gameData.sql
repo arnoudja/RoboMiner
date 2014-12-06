@@ -983,7 +983,7 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
                      values (301, 3,             1,    10,                1101);
 
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3011, 301, 1, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3012, 301, 1001, 500.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3012, 301, 1001, 400.0);
 
 -- Lithabine-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -991,7 +991,7 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3021, 302, 1, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3022, 302, 2, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3023, 302, 1001, 600.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3023, 302, 1001, 500.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3024, 302, 1101, 300.0);
 
 -- Neudralion-1
@@ -1001,7 +1001,7 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3031, 303, 1, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3032, 303, 2, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3033, 303, 3, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3034, 303, 1001, 700.0);
+insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3034, 303, 1001, 600.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3035, 303, 1101, 350.0);
 insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3036, 303, 1201, 200.0);
 

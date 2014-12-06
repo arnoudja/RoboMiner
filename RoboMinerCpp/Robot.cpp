@@ -146,14 +146,34 @@ void CRobot::setTargetMining(const CGroundUnit& groundUnit)
 
 double CRobot::calculateScore() const
 {
-    double score  = .0;
-    double factor = 1000.;
+    int highOre = m_ore[0];
+    int medOre = m_ore[1];
+    int lowOre = m_ore[2];
 
-    for (int i = 0; i < MAX_ORE_TYPES; ++i)
+    double score = std::min(highOre, 30) * 30;
+
+    if (highOre > 30)
     {
-        score += factor * m_ore[i];
+        medOre += (highOre - 30) * 2;
+    }
+    
+    score += std::min(medOre, 90);
+    
+    if (medOre > 90)
+    {
+        lowOre += (medOre - 90) * 2;
+    }
+
+    score += std::min(lowOre, 360) / 40.0;
+    lowOre -= 360;
+
+    double factor = .01;
+    while (lowOre > 0)
+    {
+        score += std::min(lowOre, 90) * factor;
+        lowOre -= 90;
         factor /= 10.;
     }
 
-    return score / (m_maxOre + 5.);
+    return score;
 }

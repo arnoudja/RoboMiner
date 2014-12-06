@@ -65,10 +65,8 @@
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
                     <h1>Latest news</h1>
-                    <p>3-12-2014 New ore type added.</p>
-                    <p>12-11-2014 Ore limits implemented. Please check your achievements.
-                        When you've got more ore then allowed you won't loose it, but you won't receive any more ore of that type from mining.</p>
-                    <p>12-11-2014 New ore type available.</p>
+                    <p>6-12-2014 Score calculation changed.</p>
+                    <p>6-12-2014 New ore type added.</p>
                     <p>
                         As always, feedback is welcome.
                     </p>
