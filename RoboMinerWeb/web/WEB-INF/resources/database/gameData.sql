@@ -983,7 +983,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
                      values (301, 3,             1,    10,                1101);
 
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3011, 301, 1, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3012, 301, 1001, 400.0);
 
 -- Lithabine-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -991,8 +990,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3021, 302, 1, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3022, 302, 2, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3023, 302, 1001, 500.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3024, 302, 1101, 300.0);
 
 -- Neudralion-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1001,9 +998,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3031, 303, 1, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3032, 303, 2, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3033, 303, 3, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3034, 303, 1001, 600.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3035, 303, 1101, 350.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3036, 303, 1201, 200.0);
 
 -- Complatix-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1012,9 +1006,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3041, 304, 2, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3042, 304, 3, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3043, 304, 4, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3044, 304, 1101, 400.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3045, 304, 1201, 240.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3046, 304, 1301, 200.0);
 
 -- Prantum-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1023,9 +1014,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3051, 305, 3, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3052, 305, 4, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3053, 305, 5, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3054, 305, 1201, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3055, 305, 1301, 230.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3056, 305, 1401, 210.0);
 
 -- Raxia-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1034,9 +1022,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3061, 306, 4, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3062, 306, 5, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3063, 306, 6, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3064, 306, 1301, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3065, 306, 1401, 230.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3066, 306, 1501, 210.0);
 
 -- Dipolir-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1045,9 +1030,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3071, 307, 5, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3072, 307, 6, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3073, 307, 7, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3074, 307, 1401, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3075, 307, 1501, 230.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3076, 307, 1601, 210.0);
 
 -- Asradon-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1056,9 +1038,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3081, 308, 6, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3082, 308, 7, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3083, 308, 8, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3084, 308, 1501, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3085, 308, 1601, 230.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3086, 308, 1701, 210.0);
 
 -- Baratiem-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1067,9 +1046,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3091, 309, 7, 5000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3092, 309, 8, 1000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3093, 309, 9, 250);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3094, 309, 1601, 400.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3095, 309, 1701, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3096, 309, 1801, 200.0);
 
 -- Etaxy-1
 insert into AchievementStep (id,  achievementId, step, achievementPoints, miningAreaId)
@@ -1078,9 +1054,6 @@ insert into AchievementStep (id,  achievementId, step, achievementPoints, mining
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3101, 310,  8, 10000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3102, 310,  9, 2000);
 insert into AchievementStepMiningTotalRequirement (id, achievementStepId, oreId, amount) values (3103, 310, 10, 500);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3104, 310, 1701, 400.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3105, 310, 1801, 250.0);
-insert into AchievementStepMiningScoreRequirement (id, achievementStepId, miningAreaId, minimumScore) values (3106, 310, 1901, 200.0);
 
 
 -- Achievements - New robot
