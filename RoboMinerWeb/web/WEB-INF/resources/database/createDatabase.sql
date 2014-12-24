@@ -393,16 +393,15 @@ as
 select Robot.id as robotId,
        Robot.robotName as robotName,
        Users.username as username,
-       count(distinct MiningQueue.id) as totalRuns,
-       sum(MiningOreResult.amount) as totalAmount,
-       sum(MiningOreResult.amount) / count(distinct MiningQueue.id) as orePerRun
+       Robot.totalMiningRuns as totalRuns,
+       sum(RobotLifetimeResult.amount) as totalAmount,
+       sum(RobotLifetimeResult.amount) / Robot.totalMiningRuns as orePerRun
 from Robot
 inner join Users
 on Users.id = Robot.usersId
-left outer join MiningQueue
-on MiningQueue.robotId = Robot.id and MiningQueue.claimed = true
-left outer join MiningOreResult
-on MiningOreResult.miningQueueId = MiningQueue.id
+left outer join RobotLifetimeResult
+on RobotLifetimeResult.robotId = Robot.id
+where Robot.totalMiningRuns > 0
 group by Robot.id;
 
 

@@ -65,6 +65,8 @@
                     <br>
                     <p>No account yet? <a href="#" onclick="showSignupForm();">Sign up</a> for free.</p>
                     <h1>Latest news</h1>
+                    <p>24-12-2014 Fixed average ore per run calculation.</p>
+                    <p>10-12-2014 Mining-score requirements for better ore type mining removed.</p>
                     <p>6-12-2014 Score calculation changed.</p>
                     <p>6-12-2014 New ore type added.</p>
                     <p>
