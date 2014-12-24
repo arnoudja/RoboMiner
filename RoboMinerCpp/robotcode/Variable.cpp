@@ -26,14 +26,16 @@ using namespace robotcode;
 
 
 CVariable::CVariable() :
-    m_variableType(CValue::eUndefinedValue)
+    m_variableType(CValue::eUndefinedValue),
+    m_isConst(false)
 {
 }
 
 
-CVariable::CVariable(const string& name, CValue::EValueType variableType, const CValue& value) :
+CVariable::CVariable(const string& name, CValue::EValueType variableType, const CValue& value, bool isConst) :
     m_variableName(name),
-    m_variableType(variableType)
+    m_variableType(variableType),
+    m_isConst(isConst)
 {
     setValue(value);
 }

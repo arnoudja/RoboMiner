@@ -38,7 +38,8 @@ namespace robotcode
         int getScopeDepth() const                   { return m_currentScopeLevel; }
 
         CVariable* getVariable(const std::string& variableName);
-        void addVariable(const std::string& variableName, CValue::EValueType variableType, const CValue& value = CValue());
+        void addVariable(const std::string& variableName, CValue::EValueType variableType,
+                         const CValue& value = CValue(), bool isConst = false);
         void updateValue(const std::string& variableName, const CValue& value);
 
         bool variableExistsAtCurrentLevel(const std::string& variableName) const;

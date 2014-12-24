@@ -35,7 +35,7 @@ void CVariableStorage::setScopeDepth(int depth)
 {
     m_currentScopeLevel = depth;
 
-    TScopedVariables::iterator iter = m_variables.find(m_currentScopeLevel + 2);
+    TScopedVariables::iterator iter = m_variables.find(m_currentScopeLevel + 1);
 
     if (iter != m_variables.end())
     {
@@ -66,9 +66,10 @@ CVariable* CVariableStorage::getVariable(const string& variableName)
 }
 
 
-void CVariableStorage::addVariable(const string& variableName, CValue::EValueType variableType, const CValue& value)
+void CVariableStorage::addVariable(const string& variableName, CValue::EValueType variableType,
+                                   const CValue& value, bool isConst)
 {
-    m_variables[m_currentScopeLevel][variableName] = CVariable(variableName, variableType, value);
+    m_variables[m_currentScopeLevel][variableName] = CVariable(variableName, variableType, value, isConst);
 }
 
 

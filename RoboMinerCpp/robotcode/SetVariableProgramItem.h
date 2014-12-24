@@ -42,7 +42,8 @@ namespace robotcode
         static CSetVariableProgramItem* compile(CCompileInput& input, bool& terminated);
 
     protected:
-        static CSetVariableProgramItem* compileVariableCreation(CCompileInput& input, bool& terminated, CValue::EValueType valueType);
+        static CSetVariableProgramItem* compileVariableCreation(CCompileInput& input, bool& terminated,
+                                                                CValue::EValueType valueType, bool isConst);
         static CSetVariableProgramItem* compileVariableAssignment(CCompileInput& input, bool& terminated);
 
     private:

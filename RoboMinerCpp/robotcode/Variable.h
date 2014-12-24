@@ -29,7 +29,7 @@ namespace robotcode
     {
     public:
         CVariable();
-        CVariable(const std::string& name, CValue::EValueType variableType, const CValue& value);
+        CVariable(const std::string& name, CValue::EValueType variableType, const CValue& value, bool isConst);
         virtual ~CVariable()                            {}
 
         const CValue& getValue() const                  { return m_value; }
@@ -38,9 +38,12 @@ namespace robotcode
         void incrementValue()                           { m_value.incrementValue(); }
         void decrementValue()                           { m_value.decrementValue(); }
 
+        bool isConst() const                            { return m_isConst; }
+
     private:
         std::string         m_variableName;
         CValue::EValueType  m_variableType;
         CValue              m_value;
+        bool                m_isConst;
     };
 }

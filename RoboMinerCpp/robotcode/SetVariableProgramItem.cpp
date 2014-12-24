@@ -104,28 +104,38 @@ CSetVariableProgramItem* CSetVariableProgramItem::compile(CCompileInput& input, 
 {
     CSetVariableProgramItem* result = NULL;
 
+    bool isConst = input.useNextWord("const");
+
     if (input.useNextWord("int"))
     {
-        result = compileVariableCreation(input, terminated, CValue::eIntValue);
+        result = compileVariableCreation(input, terminated, CValue::eIntValue, isConst);
     }
-    else if (input.useNextWord("double"))
+    else if (input.useNextWord("double") || input.useNextWord("float"))
     {
-        result = compileVariableCreation(input, terminated, CValue::eDoubleValue);
+        result = compileVariableCreation(input, terminated, CValue::eDoubleValue, isConst);
     }
     else if (input.useNextWord("bool"))
     {
-        result = compileVariableCreation(input, terminated, CValue::eBoolValue);
+        result = compileVariableCreation(input, terminated, CValue::eBoolValue, isConst);
     }
-    else
+    else if (!isConst)
     {
         result = compileVariableAssignment(input, terminated);
+    }
+
+    if (isConst && !result)
+    {
+        stringstream error;
+        error << "Syntax error at line " << input.getCurrentLine() << ". Variable type expected";
+        throw error.str();
     }
 
     return result;
 }
 
 
-CSetVariableProgramItem* CSetVariableProgramItem::compileVariableCreation(CCompileInput& input, bool& terminated, CValue::EValueType valueType)
+CSetVariableProgramItem* CSetVariableProgramItem::compileVariableCreation(CCompileInput& input, bool& terminated,
+                                                                          CValue::EValueType valueType, bool isConst)
 {
     string variableName = input.useNextWord();
 
@@ -149,10 +159,17 @@ CSetVariableProgramItem* CSetVariableProgramItem::compileVariableCreation(CCompi
     {
         valueProgramItem = CValueProgramItem::compile(input);
     }
+    else if (isConst)
+    {
+        stringstream error;
+        error << "Error at line " << input.getCurrentLine()
+              << ": const variables must be assigned a value on declaration";
+        throw error.str();
+    }
 
     terminated = input.eatChar(';');
 
-    input.getVariableStorage().addVariable(variableName, valueType);
+    input.getVariableStorage().addVariable(variableName, valueType, CValue(), isConst);
 
     return new CSetVariableProgramItem(variableName, valueType, valueProgramItem);
 }
@@ -171,6 +188,13 @@ CSetVariableProgramItem* CSetVariableProgramItem::compileVariableAssignment(CCom
             if (!input.eatChar('='))
             {
                 input.returnNextWord(*iter);
+            }
+            else if (input.getVariableStorage().getVariable(*iter)->isConst())
+            {
+                stringstream error;
+                error << "Error at line " << input.getCurrentLine()
+                      << ": The value of a const variable cannot be changed.";
+                throw error.str();
             }
             else
             {
