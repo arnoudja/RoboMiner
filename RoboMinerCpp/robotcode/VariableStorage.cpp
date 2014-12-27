@@ -20,6 +20,7 @@
 #include "../stdafx.h"
 #include "VariableStorage.h"
 
+#include <iostream>
 
 using namespace std;
 using namespace robotcode;
@@ -66,10 +67,15 @@ CVariable* CVariableStorage::getVariable(const string& variableName)
 }
 
 
-void CVariableStorage::addVariable(const string& variableName, CValue::EValueType variableType,
-                                   const CValue& value, bool isConst)
+void CVariableStorage::addVariable(const string& variableName, CValue::EValueType variableType, const CValue& value)
 {
-    m_variables[m_currentScopeLevel][variableName] = CVariable(variableName, variableType, value, isConst);
+    m_variables[m_currentScopeLevel - 1][variableName] = CVariable(variableName, variableType, value);
+}
+
+
+void CVariableStorage::declareVariable(const string& variableName, CValue::EValueType variableType, bool isConst)
+{
+    m_variables[m_currentScopeLevel][variableName] = CVariable(variableName, variableType, CValue(), isConst);
 }
 
 
@@ -83,7 +89,7 @@ void CVariableStorage::updateValue(const std::string& variableName, const CValue
     }
     else
     {
-        addVariable(variableName, value.getValueType(), value);
+        cout << "Unexpected error: Variable not found!\n";
     }
 }
 

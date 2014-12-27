@@ -29,7 +29,7 @@ namespace robotcode
     {
     public:
         CVariable();
-        CVariable(const std::string& name, CValue::EValueType variableType, const CValue& value, bool isConst);
+        CVariable(const std::string& name, CValue::EValueType variableType, const CValue& value, bool isConst = false);
         virtual ~CVariable()                            {}
 
         const CValue& getValue() const                  { return m_value; }

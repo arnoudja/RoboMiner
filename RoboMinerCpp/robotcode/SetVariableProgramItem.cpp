@@ -169,7 +169,7 @@ CSetVariableProgramItem* CSetVariableProgramItem::compileVariableCreation(CCompi
 
     terminated = input.eatChar(';');
 
-    input.getVariableStorage().addVariable(variableName, valueType, CValue(), isConst);
+    input.getVariableStorage().declareVariable(variableName, valueType, isConst);
 
     return new CSetVariableProgramItem(variableName, valueType, valueProgramItem);
 }
